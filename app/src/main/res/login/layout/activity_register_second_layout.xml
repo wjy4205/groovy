@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login_bg"
+    android:paddingTop="60dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        app:x_disableEmoji="true"
+        android:layout_marginTop="40dp"
+        android:hint="@string/verification_code" />
+
+
+    <TextView
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="@string/sign_up" />
+    <TextView
+        android:id="@+id/tv_have_no_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="By signing up,I agree with terms of the services"
+        android:textColor="@color/common_grey" />
+</LinearLayout>

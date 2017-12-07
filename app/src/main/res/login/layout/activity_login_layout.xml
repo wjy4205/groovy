@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_actionbar_layout" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/login_logo" />
+
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="40dp"
+        android:hint="@string/email_phone"
+        app:x_disableEmoji="true" />
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:x_disableEmoji="true"
+        app:x_hidePwdDrawable="@mipmap/login_closeeye"
+        app:x_showPwdDrawable="@mipmap/login_openeye" />
+
+    <TextView
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="@string/login" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tv_have_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't Have An Account ? "
+            android:textColor="@color/common_grey" />
+
+        <TextView
+            android:id="@+id/tv_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_have_no_account"
+            android:text="SIGN UP"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_forget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_have_no_account"
+            android:layout_centerInParent="true"
+            android:text="FORGET?"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="30dp">
+
+        <ImageView
+            android:id="@+id/iv_login_google"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/login_google" />
+
+        <ImageView
+            android:id="@+id/iv_login_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:src="@mipmap/login_facebook" />
+
+    </LinearLayout>
+</LinearLayout>

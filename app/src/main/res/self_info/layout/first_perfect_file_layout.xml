@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login_bg"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_blue_circle_solid_bg"
+            android:text="1"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+        <View style="@style/tranverse_line"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/shape_circle_stroke_bg"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="2"/>
+        <View style="@style/tranverse_line"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/shape_circle_stroke_bg"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="3"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/tell_us"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/head"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/common_grey"
+        />
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="20dp"
+        android:hint="@string/email_phone"
+        app:x_disableEmoji="true" />
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="10dp"
+        android:hint="ARTIST NAME"
+        app:x_disableEmoji="true" />
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="10dp"
+        android:hint="ZIP CODE"
+        app:x_disableEmoji="true" />
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="10dp"
+        android:hint="WEBSITE"
+        app:x_disableEmoji="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/common_grey"
+        android:textSize="10sp"
+        android:layout_marginLeft="65dp"
+        android:text="@string/required"/>
+
+    <TextView
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="@string/next" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tv_have_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_have_an_account"
+            android:textColor="@color/common_grey" />
+
+        <TextView
+            android:id="@+id/tv_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_have_no_account"
+            android:text="@string/login"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

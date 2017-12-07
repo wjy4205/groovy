@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">OVERVIEW</string>
+    <string name="tab_schedule">SCHEDULE</string>
+    <string name="tab_user">ME</string>
+    <string name="role_musician">MUSICIAN</string>
+    <string name="role_showgoer">SHOWGOER</string>
+    <string name="role_venue">VENUE</string>
+    <string name="info_select_role">SELECT YOUR ROLE</string>
+    <string name="password">PASSWORD</string>
+    <string name="password_again">PASSWORD AGAIN</string>
+    <string name="email_phone">EMAIL / PHONE</string>
+    <string name="login">LOGIN</string>
+    <string name="next">NEXT</string>
+    <string name="already_have_an_account">Already Have An Account ?</string>
+    <string name="verification_code">VERIFICATION CODE</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="tell_us">Tell Us About Yourself</string>
+    <string name="tell_us_about_your_music">Tell Us About Your Music</string>
+    <string name="required">REQUIRED</string>
+    <string name="facebook">FACEBOOK</string>
+    <string name="twitter">TWITTER</string>
+    <string name="soundcloud">SOUNDCLOUD</string>
+</resources>

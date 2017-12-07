@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+    <style name="tab_item_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="role_selected_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/shape_double_corner_rect_bg</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:layout_marginRight">60dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--输入框-->
+    <style name="base_edit_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:layout_marginRight">60dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/common_grey</item>
+    </style>
+
+    <!--横向分割线-->
+    <style name="tranverse_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/common_grey</item>
+    </style>
+</resources>

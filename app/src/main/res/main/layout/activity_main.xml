@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.bunny.groovy.weidget.NoScrollViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.chaychan.library.BottomBarLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#333">
+
+        <com.chaychan.library.BottomBarItem
+            android:id="@+id/tab_overview"
+            style="@style/tab_item_style"
+            app:iconHeight="25dp"
+            app:iconNormal="@mipmap/tab_overview"
+            app:iconSelected="@mipmap/tab_overview_selected"
+            app:iconWidth="25dp"
+            app:itemText="@string/tab_home"
+            app:itemTextSize="8sp"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab" />
+
+        <com.chaychan.library.BottomBarItem
+            style="@style/tab_item_style"
+            android:id="@+id/tab_schedule"
+            app:itemTextSize="8sp"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab"
+            app:iconHeight="25dp"
+            app:iconNormal="@mipmap/tab_schedule"
+            app:iconSelected="@mipmap/tab_schedule_selected"
+            app:iconWidth="20dp"
+            app:itemText="@string/tab_schedule" />
+
+        <com.chaychan.library.BottomBarItem
+            android:id="@+id/tab_me"
+            style="@style/tab_item_style"
+            app:itemTextSize="8sp"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab"
+            app:iconHeight="25dp"
+            app:iconNormal="@mipmap/tab_me"
+            app:iconSelected="@mipmap/tab_me_selected"
+            app:iconWidth="20dp"
+            app:itemText="@string/tab_user" />
+    </com.chaychan.library.BottomBarLayout>
+
+</LinearLayout>

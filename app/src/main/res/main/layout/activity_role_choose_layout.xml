@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_bg"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login_logo"
+        android:scaleType="fitCenter"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="@string/info_select_role"
+        android:textColor="@color/common_grey"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_showgoer"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="20dp"
+        android:text="@string/role_showgoer" />
+
+    <TextView
+        android:id="@+id/tv_musician"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="20dp"
+        android:text="@string/role_musician" />
+
+    <TextView
+        android:id="@+id/tv_venue"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="20dp"
+        android:text="@string/role_venue" />
+</LinearLayout>

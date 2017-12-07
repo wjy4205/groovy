@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login_bg"
+    android:paddingTop="60dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        app:x_disableEmoji="true"
+        android:layout_marginTop="40dp"
+        android:hint="@string/email_phone" />
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        app:x_disableEmoji="true"
+        app:x_hidePwdDrawable="@mipmap/login_closeeye"
+        app:x_showPwdDrawable="@mipmap/login_openeye"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <com.xw.repo.XEditText
+        style="@style/base_edit_text_style"
+        app:x_disableEmoji="true"
+        app:x_hidePwdDrawable="@mipmap/login_closeeye"
+        app:x_showPwdDrawable="@mipmap/login_openeye"
+        android:hint="@string/password_again"
+        android:inputType="textPassword" />
+
+    <TextView
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="@string/next" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tv_have_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_have_an_account"
+            android:textColor="@color/common_grey" />
+
+        <TextView
+            android:id="@+id/tv_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_have_no_account"
+            android:text="@string/login"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

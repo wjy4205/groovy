@@ -1,1 +1,1 @@
-include ':app', ':statusbar-lib', ':uikit', ':xedittext'
+include ':app', ':statusbar-lib', ':uikit', ':xedittext', ':sinch-android-rtc-3.12.3'

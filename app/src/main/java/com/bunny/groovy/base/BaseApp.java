@@ -1,13 +1,12 @@
 package com.bunny.groovy.base;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
-public class BaseApp extends MultiDexApplication {
+public class BaseApp extends Application {
 
     //以下属性应用于整个应用程序，合理利用资源，减少资源浪费
     private static Context mContext;//上下文
@@ -19,7 +18,7 @@ public class BaseApp extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
+//        MultiDex.install(this);
     }
 
     @Override

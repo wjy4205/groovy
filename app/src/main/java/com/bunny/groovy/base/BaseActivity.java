@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.listener.PermissionListener;
+import com.bunny.groovy.ui.RoleChooseActivity;
 import com.bunny.groovy.weidget.SlidingLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,13 +29,13 @@ import butterknife.ButterKnife;
  *
  * @param <T>
  */
-public abstract class BaseActivity<T extends BasePresenter>  extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
     protected T mPresenter;
     private static long mPreTime;
     private static Activity mCurrentActivity;// 对所有activity进行管理
     public static List<Activity> mActivities = new LinkedList<Activity>();
-    protected  Bundle savedInstanceState;
+    protected Bundle savedInstanceState;
     public PermissionListener mPermissionListener;
 
     @Override
@@ -132,7 +133,8 @@ public abstract class BaseActivity<T extends BasePresenter>  extends AppCompatAc
      */
     @Override
     public void onBackPressed() {
-        if (mCurrentActivity instanceof MainActivity){
+        if (mCurrentActivity instanceof RoleChooseActivity
+                || mCurrentActivity instanceof MainActivity) {
             //如果是主页面
             if (System.currentTimeMillis() - mPreTime > 2000) {// 两次点击间隔大于2秒
 //                UIUtils.showToast("再按一次，退出应用");

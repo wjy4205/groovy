@@ -8,6 +8,8 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -22,6 +24,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -59,6 +62,10 @@ public class XEditText extends AppCompatEditText {
     private int mCorrectRes;
     private int mErrorRes;
     private Bitmap bitmapCorrect;
+    private boolean isImportantWord = false;//是否为必填项
+    private String mImportantChar = "*";//星号
+    private Paint mPaint;
+    private int mInfoRes;
 
     public XEditText(Context context) {
         this(context, null);
@@ -91,6 +98,7 @@ public class XEditText extends AppCompatEditText {
 
     /**
      * 初始化
+     *
      * @param context
      * @param attrs
      * @param defStyleAttr
@@ -156,11 +164,18 @@ public class XEditText extends AppCompatEditText {
         //标识格式对错的drawable
         mCorrectRes = a.getResourceId(R.styleable.XEditText_x_correctDrawable, R.drawable.icon_correct);
         mErrorRes = a.getResourceId(R.styleable.XEditText_x_errorDrawable, R.drawable.icon_error);
+        mInfoRes = a.getResourceId(R.styleable.XEditText_x_infoDrawable, R.drawable.icon_info);
         bitmapCorrect = getBitmapFromVectorDrawable(context, mCorrectRes, false);
 
         disableEmoji = a.getBoolean(R.styleable.XEditText_x_disableEmoji, false);
-
+        //必填项
+        isImportantWord = a.getBoolean(R.styleable.XEditText_x_importantWord, false);
         a.recycle();
+        //初始化画笔
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setTextSize(dp2px(13));
+        mPaint.setColor(Color.parseColor("#7B87F1"));
     }
 
     private Bitmap getBitmapFromVectorDrawable(Context context, int drawableId, boolean tint) {
@@ -184,13 +199,49 @@ public class XEditText extends AppCompatEditText {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //密码框，绘制眼睛
-        if (isPwdInputType){
-            int left = getMeasuredWidth() - dp2px(4)- bitmapCorrect.getWidth()-mTogglePwdDrawable.getIntrinsicWidth()-dp2px(4);
-            int top = (getMeasuredHeight() -mTogglePwdDrawable.getIntrinsicHeight()) >> 1;
-            if (!isPwdShow){
-                canvas.drawBitmap(getBitmapFromVectorDrawable(getContext(),mHidePwdResId,false),left,top,null);
-            }else
-                canvas.drawBitmap(getBitmapFromVectorDrawable(getContext(),mShowPwdResId,false),left,top,null);
+        if (isPwdInputType) {
+            int left = getMeasuredWidth() - dp2px(4) - bitmapCorrect.getWidth() - mTogglePwdDrawable.getIntrinsicWidth() - dp2px(4);
+            int top = (getMeasuredHeight() - mTogglePwdDrawable.getIntrinsicHeight()) >> 1;
+            if (!isPwdShow) {
+                canvas.drawBitmap(getBitmapFromVectorDrawable(getContext(), mHidePwdResId, false), left, top, null);
+            } else
+                canvas.drawBitmap(getBitmapFromVectorDrawable(getContext(), mShowPwdResId, false), left, top, null);
+        }
+        //必填项
+        if (isImportantWord) {
+            String hintText = getHint().toString();
+            String text = getText().toString();
+            if (!TextUtils.isEmpty(hintText) && (TextUtils.isEmpty(text) || text.length() == 0)) {
+                float hintTextWidth = mPaint.measureText(hintText);
+                canvas.drawText(mImportantChar, hintTextWidth, getMeasuredHeight() / 2, mPaint);
+            }
+        }
+        //状态标记
+        int left = 0;
+        int top = 0;
+        switch (mStatus) {
+            case INVALID:
+                Bitmap invalidBitmap = getBitmapFromVectorDrawable(getContext(), mInfoRes, false);
+                left = getMeasuredWidth() - invalidBitmap.getWidth();
+                top = (getMeasuredHeight() - invalidBitmap.getHeight()) / 2;
+                canvas.drawBitmap(invalidBitmap, left, top, null);
+                invalidBitmap.recycle();
+                break;
+            case CORRECT:
+                left = getMeasuredWidth() - bitmapCorrect.getWidth();
+                top = (getMeasuredHeight() - bitmapCorrect.getHeight()) / 2;
+                canvas.drawBitmap(bitmapCorrect, left, top, null);
+                break;
+            case INFO:
+                Bitmap infoBitmap = getBitmapFromVectorDrawable(getContext(), mInfoRes, false);
+                left = getMeasuredWidth() - infoBitmap.getWidth();
+                top = (getMeasuredHeight() - infoBitmap.getHeight()) / 2;
+                canvas.drawBitmap(infoBitmap, left, top, null);
+                infoBitmap.recycle();
+                break;
+            case NONE:
+            default:
+                break;
         }
 //        if (hasFocused && bitmapCorrect != null && !isTextEmpty()) {
 //            int left = getMeasuredWidth() - getPaddingRight() - bitmapCorrect.getWidth();
@@ -205,7 +256,7 @@ public class XEditText extends AppCompatEditText {
             int w = mTogglePwdDrawable.getIntrinsicWidth();
             int h = mTogglePwdDrawable.getIntrinsicHeight();
             int top = (getMeasuredHeight() - h) >> 1;
-            int right = getMeasuredWidth() - bitmapCorrect.getWidth()-getPaddingRight()-dp2px(4);
+            int right = getMeasuredWidth() - bitmapCorrect.getWidth() - getPaddingRight() - dp2px(4);
             boolean isAreaX = event.getX() <= right && event.getX() >= right - w;
             boolean isAreaY = event.getY() >= top && event.getY() <= top + h;
             if (isAreaX && isAreaY) {
@@ -256,6 +307,32 @@ public class XEditText extends AppCompatEditText {
         }
 
         return super.onTouchEvent(event);
+    }
+
+    /**
+     * 各种状态标识
+     */
+    public enum CheckStatus {
+        //无状态
+        NONE,
+        //提示信息
+        INFO,
+        //对号
+        CORRECT,
+        //错误
+        INVALID
+    }
+
+    private CheckStatus mStatus = CheckStatus.NONE;
+
+    /**
+     * 设置状态
+     *
+     * @param status
+     */
+    public void setCheckStatus(CheckStatus status) {
+        this.mStatus = status;
+        invalidate();
     }
 
     @Override

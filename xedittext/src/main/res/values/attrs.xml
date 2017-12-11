@@ -8,7 +8,10 @@
         <attr name="x_hidePwdDrawable" format="reference"/>
         <attr name="x_correctDrawable" format="reference"/>
         <attr name="x_errorDrawable" format="reference"/>
+        <attr name="x_infoDrawable" format="reference"/>
         <attr name="x_disableEmoji" format="boolean"/>
         <attr name="x_disableTogglePwdDrawable" format="boolean"/>
+        <!--是否为必填项，会显示一个星星-->
+        <attr name="x_importantWord" format="boolean"/>
     </declare-styleable>
 </resources>

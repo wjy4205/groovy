@@ -17,20 +17,24 @@
 
 
     <com.xw.repo.XEditText
+        android:id="@+id/login_et_account"
         style="@style/base_edit_text_style"
         android:layout_marginTop="40dp"
         android:hint="@string/email_phone"
         app:x_disableEmoji="true" />
 
     <com.xw.repo.XEditText
+        android:id="@+id/login_et_password"
         style="@style/base_edit_text_style"
         android:hint="@string/password"
         android:inputType="textPassword"
+        app:x_importantWord="true"
         app:x_disableEmoji="true"
         app:x_hidePwdDrawable="@mipmap/login_closeeye"
         app:x_showPwdDrawable="@mipmap/login_openeye" />
 
     <TextView
+        android:id="@+id/tv_login"
         style="@style/role_selected_text_style"
         android:layout_marginTop="30dp"
         android:text="@string/login" />

@@ -17,12 +17,14 @@
 
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_phone_or_email"
         style="@style/base_edit_text_style"
         android:layout_marginTop="40dp"
         android:hint="@string/email_phone"
         app:x_disableEmoji="true" />
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_password"
         style="@style/base_edit_text_style"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -30,7 +32,17 @@
         app:x_hidePwdDrawable="@mipmap/login_closeeye"
         app:x_showPwdDrawable="@mipmap/login_openeye" />
 
+    <!--<com.xw.repo.XEditText-->
+        <!--android:id="@+id/et_password_aggin"-->
+        <!--style="@style/base_edit_text_style"-->
+        <!--android:hint="@string/password_again"-->
+        <!--android:inputType="textPassword"-->
+        <!--app:x_disableEmoji="true"-->
+        <!--app:x_hidePwdDrawable="@mipmap/login_closeeye"-->
+        <!--app:x_showPwdDrawable="@mipmap/login_openeye" />-->
+
     <TextView
+        android:id="@+id/tv_musician_login"
         style="@style/role_selected_text_style"
         android:layout_marginTop="30dp"
         android:text="@string/login" />

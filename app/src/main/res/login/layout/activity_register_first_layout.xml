@@ -9,12 +9,14 @@
     android:orientation="vertical">
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_signup_phone_or_email"
         style="@style/base_edit_text_style"
         app:x_disableEmoji="true"
         android:layout_marginTop="40dp"
         android:hint="@string/email_phone" />
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_signup_password"
         style="@style/base_edit_text_style"
         app:x_disableEmoji="true"
         app:x_hidePwdDrawable="@mipmap/login_closeeye"
@@ -23,6 +25,7 @@
         android:inputType="textPassword" />
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_signup_password_again"
         style="@style/base_edit_text_style"
         app:x_disableEmoji="true"
         app:x_hidePwdDrawable="@mipmap/login_closeeye"
@@ -31,6 +34,7 @@
         android:inputType="textPassword" />
 
     <TextView
+        android:id="@+id/tv_signup_next"
         style="@style/role_selected_text_style"
         android:layout_marginTop="30dp"
         android:text="@string/next" />
@@ -48,7 +52,7 @@
             android:textColor="@color/common_grey" />
 
         <TextView
-            android:id="@+id/tv_sign_up"
+            android:id="@+id/tv_signup_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_have_no_account"

@@ -16,4 +16,11 @@ public interface ApiService {
     @POST("FrontUserController/performerFrontUserRegister")
     Observable<ResponseBody> showerRegister(@Field("userName")String userName,@Field("userPwd")String userPwd,
                                             @Field("telephone")String telephone,@Field("userEmail")String userEmail);
+
+    //发送邮箱验证码
+
+    //检查邮箱是否被占用
+    @FormUrlEncoded
+    @POST("FrontUserController/checkUserAccountRegister")
+    Observable<ResponseBody> checkAccountUsed(@Field("userAccount")String userAccount);
 }

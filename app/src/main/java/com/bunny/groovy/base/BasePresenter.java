@@ -1,6 +1,9 @@
 package com.bunny.groovy.base;
 
 
+import com.bunny.groovy.api.ApiRetrofit;
+import com.bunny.groovy.api.ApiService;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -10,6 +13,8 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class BasePresenter<V> {
 
     protected V mView;
+    protected ApiService apiService = ApiRetrofit.getInstance().getApiService();
+
     private CompositeSubscription mCompositeSubscription;
 
     public BasePresenter(V view) {

@@ -1,8 +1,11 @@
 package com.bunny.groovy.api;
 
-import android.text.TextUtils;
+import android.app.Activity;
+import android.content.Context;
 
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.weidget.ProgressHUD;
 import com.socks.library.KLog;
 
 import rx.Subscriber;
@@ -13,24 +16,50 @@ import rx.Subscriber;
  * @date 2017/6/18  21:37
  */
 public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>> {
+    private Context mContext;
+    private ProgressHUD mProgressHUD;
+
+    public SubscriberCallBack(Context context) {
+        this.mContext = context;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (this.mContext != null && isShowProgress() && this.mContext instanceof Activity) {
+            mProgressHUD = ProgressHUD.show(mContext, "", true, true, null);
+            mProgressHUD.setCancelable(false);
+            mProgressHUD.setMessage("");
+            mProgressHUD.show();
+        }
+    }
+
+    /**
+     * 是否展示进度框浮层
+     *
+     * @return
+     */
+    protected boolean isShowProgress() {
+        return false;
+    }
 
     @Override
     public void onNext(ResultResponse response) {
         if (response.success) {
             onSuccess((T) response.resultData);
         } else {
-            com.bunny.groovy.utils.UIUtils.showToast(response.errorMsg);
             onFailure(response);
         }
     }
 
     @Override
     public void onCompleted() {
-
+        if (mProgressHUD != null) mProgressHUD.dismiss();
     }
 
     @Override
     public void onError(Throwable e) {
+        if (mProgressHUD != null) mProgressHUD.dismiss();
         KLog.e(e.getLocalizedMessage());
         onError();
     }
@@ -40,6 +69,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
     protected abstract void onError();
 
     protected void onFailure(ResultResponse response) {
+        UIUtils.showToast(response.errorMsg);
     }
 
 }

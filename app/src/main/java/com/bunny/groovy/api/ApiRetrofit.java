@@ -1,8 +1,6 @@
 package com.bunny.groovy.api;
 
-import com.bunny.groovy.api.interceptor.LogInterceptor;
 import com.bunny.groovy.base.BaseApp;
-import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * 网络请求类
@@ -45,8 +44,9 @@ public class ApiRetrofit {
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(ApiConstants.BASE_SERVER_URL)
-//                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .addConverterFactory(ScalarsConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//支持RxJava
                 .client(mClient)
                 .build();

@@ -15,6 +15,8 @@ public class PatternUtils {
 
     private static String emailPattern = "^[A-Za-z0-9\\u4e00-\\u9fa5._]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
 
+    private static String chainPhonePattern = "^1[0-9]{10}$";
+
     /**
      * 匹配美国手机号
      *
@@ -33,5 +35,14 @@ public class PatternUtils {
      */
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && email.matches(emailPattern);
+    }
+
+    /**
+     * 中国手机号
+     * @param phone
+     * @return
+     */
+    public static boolean isCNPhone(String phone){
+        return !TextUtils.isEmpty(phone) && phone.matches(chainPhonePattern);
     }
 }

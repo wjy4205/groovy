@@ -1,11 +1,13 @@
 package com.bunny.groovy.listener;
 
+import com.bunny.groovy.utils.UIUtils;
 import com.sinch.verification.CodeInterceptionException;
 import com.sinch.verification.IncorrectCodeException;
 import com.sinch.verification.InitiationResult;
 import com.sinch.verification.InvalidInputException;
 import com.sinch.verification.ServiceErrorException;
 import com.sinch.verification.VerificationListener;
+import com.socks.library.KLog;
 
 /****************************************
  * 功能说明:  短信验证码回调
@@ -18,7 +20,7 @@ public class MyVerificationListener implements VerificationListener {
 
     @Override
     public void onInitiated(InitiationResult initiationResult) {
-
+        UIUtils.showBaseToast("Send successful.");
     }
 
     @Override
@@ -30,11 +32,15 @@ public class MyVerificationListener implements VerificationListener {
         } else {
             // Other system error, such as UnknownHostException in case of network error
         }
+        UIUtils.showBaseToast("Send fail."+e.toString());
+
+        KLog.a(e.toString());
     }
 
     @Override
     public void onVerified() {
         // Verification successful
+        KLog.a("Verification successful!!!!");
     }
 
     @Override
@@ -50,6 +56,8 @@ public class MyVerificationListener implements VerificationListener {
         } else {
             // Other system error, such as UnknownHostException in case of network error
         }
+
+        KLog.a(e.toString());
     }
 
     @Override

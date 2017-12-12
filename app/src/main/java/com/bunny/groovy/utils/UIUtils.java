@@ -4,9 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseApp;
+
+import java.lang.reflect.Field;
 
 
 public class UIUtils {
@@ -40,6 +48,44 @@ public class UIUtils {
                 mToast.show();
             }
         });
+    }
+
+    /**
+     * 打印吐司
+     *
+     * @param msg
+     */
+    private static Toast baseToast;
+    public static void showBaseToast(String msg) {
+        TextView tvToastMsg = null;
+        if (baseToast == null) {
+            baseToast = new Toast(getContext());
+            View inflate = LayoutInflater.from(getContext()).inflate(R.layout.base_toast_layout, null);
+            tvToastMsg = (TextView) inflate.findViewById(R.id.toast_msg);
+            baseToast.setView(inflate);
+            //获取屏幕高度
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            int height = wm.getDefaultDisplay().getHeight();
+            baseToast.setGravity(Gravity.TOP,0,height/3);
+        }
+        if (tvToastMsg != null)
+            tvToastMsg.setText(msg);
+        try {
+            Field mTNField = baseToast.getClass().getDeclaredField("mTN");
+            mTNField.setAccessible(true);
+            Object mTNObject = mTNField.get(baseToast);
+            Class tnClass = mTNObject.getClass();
+            Field paramsField = tnClass.getDeclaredField("mParams");
+            /**由于WindowManager.LayoutParams mParams的权限是private*/
+            paramsField.setAccessible(true);
+            WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) paramsField.get(mTNObject);
+            layoutParams.windowAnimations = R.anim.toast_in_anim;
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        baseToast.show();
     }
 
 

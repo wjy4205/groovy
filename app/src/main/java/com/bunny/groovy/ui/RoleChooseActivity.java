@@ -1,13 +1,11 @@
 package com.bunny.groovy.ui;
 
 import android.content.Intent;
-import android.view.View;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
-import com.bunny.groovy.ui.login.ITestView;
+import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.ui.login.LoginActivity;
-import com.bunny.groovy.ui.login.TestPresenter;
 
 import butterknife.OnClick;
 import flyn.Eyes;
@@ -18,15 +16,15 @@ import flyn.Eyes;
  * Created by Administrator on 2017/12/2.
  */
 
-public class RoleChooseActivity extends BaseActivity<TestPresenter> implements ITestView{
+public class RoleChooseActivity extends BaseActivity{
     @OnClick(R.id.tv_musician)
     void login() {
         startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
-    protected TestPresenter createPresenter() {
-        return new TestPresenter(this);
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
     @Override

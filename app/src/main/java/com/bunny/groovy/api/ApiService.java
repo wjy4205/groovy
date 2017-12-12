@@ -1,5 +1,7 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.model.BooleanBean;
+
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -22,5 +24,5 @@ public interface ApiService {
     //检查邮箱是否被占用
     @FormUrlEncoded
     @POST("FrontUserController/checkUserAccountRegister")
-    Observable<ResponseBody> checkAccountUsed(@Field("userAccount")String userAccount);
+    Observable<BooleanBean> checkAccountUsed(@Field("userAccount")String userAccount);
 }

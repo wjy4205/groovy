@@ -64,4 +64,12 @@
         <item name="android:layout_height">1px</item>
         <item name="android:background">@color/common_grey</item>
     </style>
+
+    <!--remark text-->
+    <style name="remark_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/common_grey</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>

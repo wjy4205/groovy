@@ -16,8 +16,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
 
     @Override
     public void onNext(ResultResponse response) {
-        boolean isSuccess = (!TextUtils.isEmpty(response.success) && response.success.equals("true"));
-        if (isSuccess) {
+        if (response.success) {
             onSuccess((T) response.resultData);
         } else {
             com.bunny.groovy.utils.UIUtils.showToast(response.errorMsg);
@@ -37,6 +36,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
     }
 
     protected abstract void onSuccess(T response);
+
     protected abstract void onError();
 
     protected void onFailure(ResultResponse response) {

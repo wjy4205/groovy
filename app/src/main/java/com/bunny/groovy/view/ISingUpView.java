@@ -5,5 +5,7 @@ package com.bunny.groovy.view;
  */
 
 public interface ISingUpView {
-    void showMessage(String msg);
+//    void showMessage(String msg);
+    void showCheckResult(boolean invalid,int accountType,String msg);
+    void nextStep();
 }

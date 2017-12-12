@@ -7,10 +7,10 @@ public class ResultResponse<T> {
 
     public String errorCode;
     public String errorMsg;
-    public String success; 
+    public boolean success;
     public T resultData;
 
-    public ResultResponse(String errorCode, String errorMsg, String success, T resultData) {
+    public ResultResponse(String errorCode, String errorMsg, boolean success, T resultData) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
         this.success = success;

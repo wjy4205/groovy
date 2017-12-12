@@ -221,7 +221,7 @@ public class XEditText extends AppCompatEditText {
         int top = 0;
         switch (mStatus) {
             case INVALID:
-                Bitmap invalidBitmap = getBitmapFromVectorDrawable(getContext(), mInfoRes, false);
+                Bitmap invalidBitmap = getBitmapFromVectorDrawable(getContext(), mErrorRes, false);
                 left = getMeasuredWidth() - invalidBitmap.getWidth();
                 top = (getMeasuredHeight() - invalidBitmap.getHeight()) / 2;
                 canvas.drawBitmap(invalidBitmap, left, top, null);

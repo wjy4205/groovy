@@ -1,5 +1,7 @@
 package com.bunny.groovy.utils;
 
+import android.text.TextUtils;
+
 import java.util.regex.Pattern;
 
 /****************************************
@@ -9,9 +11,9 @@ import java.util.regex.Pattern;
  ****************************************/
 
 public class PatternUtils {
-    private static String USphone_1 = "/^(((1(\\s|))|)\\([1-9]{3}\\)(\\s|-|)[1-9]{3}(\\s|-|)[1-9]{4})$/";
-    private static String USphone_2 = "/^(((1(\\s)|)|)[1-9]{3}(\\s|-|)[1-9]{3}(\\s|-|)[1-9]{4})$/";
+    private static String phonePattern = "^(1\\-)?[0-9]{3}\\-?[0-9]{3}\\-?[0-9]{4}$";
 
+    private static String emailPattern = "^[A-Za-z0-9\\u4e00-\\u9fa5._]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
 
     /**
      * 匹配美国手机号
@@ -20,8 +22,16 @@ public class PatternUtils {
      * @return
      */
     public static boolean isUSphonenumber(String phone) {
-        Pattern pattern1 = Pattern.compile(USphone_1);
-        Pattern pattern2 = Pattern.compile(USphone_2);
-        return pattern1.matcher(phone).find()||pattern2.matcher(phone).find();
+        Pattern pattern1 = Pattern.compile(phonePattern);
+        return pattern1.matcher(phone).find();
+    }
+
+    /**
+     * 验证邮箱是否合法
+     * @param email
+     * @return
+     */
+    public static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && email.matches(emailPattern);
     }
 }

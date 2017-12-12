@@ -18,9 +18,9 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity {
-    @Bind(R.id.et_phone_or_email)
+    @Bind(R.id.login_et_account)
     XEditText etPhoneOrEmail;
-    @Bind(R.id.et_password)
+    @Bind(R.id.login_et_password)
     XEditText etPassword;
     @OnClick(R.id.tv_sign_up)
     void signUp(){

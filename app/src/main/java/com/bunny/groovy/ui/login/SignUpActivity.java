@@ -1,13 +1,16 @@
 package com.bunny.groovy.ui.login;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
-import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.presenter.SingUpPresenter;
+import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.PatternUtils;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
 import com.xw.repo.XEditText;
 
@@ -28,14 +31,34 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
     @Bind(R.id.et_signup_password_again)
     XEditText etPasswordAgain;
 
+    private int mAccountType = 0;//账号类型
+
     //下一步
     @OnClick(R.id.tv_signup_next)
     void next() {
+        String pwd = etPassword.getTrimmedString();
+        String pwdAgain = etPasswordAgain.getTrimmedString();
+        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
+            UIUtils.showToast("PASSWORD MUST NOT BE NULL!");
+        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
+            UIUtils.showToast("PASSWORD LENGTH AT LEAST 8");
+        } else if (!pwd.equals(pwdAgain)) {
+            UIUtils.showToast("PASSWORD NOT SAME!");
+        } else {
+            //检查账户
+            String account = etPhoneEmail.getTrimmedString();
+            if (TextUtils.isEmpty(account)){
+                UIUtils.showToast("ACCOUNT MUST NOT BE NULL!");
+                return;
+            }
+            mPresenter.checkAccount(account, true);
+        }
     }
 
     //登陆
     @OnClick(R.id.tv_signup_login)
     void login() {
+        finish();
     }
 
     @Override
@@ -51,20 +74,34 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
     @Override
     public void initListener() {
         super.initListener();
+        //账户输入框的监听
         etPhoneEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 String account = etPhoneEmail.getText().toString();
-                if (!hasFocus&&!TextUtils.isEmpty(account)){
-                    //检查账号是否占用
-                    mPresenter.checkAccount(account);
+                if (!hasFocus && !TextUtils.isEmpty(account)) {
+                    //检查是否合法
+                    mPresenter.checkAccount(account, false);
                 }
             }
         });
     }
 
+
     @Override
-    public void showMessage(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    public void showCheckResult(boolean invalid, int AccountType, String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        mAccountType = AccountType;
+        if (invalid) etPhoneEmail.setCheckStatus(XEditText.CheckStatus.CORRECT);
+        else etPhoneEmail.setCheckStatus(XEditText.CheckStatus.INVALID);
+    }
+
+    @Override
+    public void nextStep() {
+        Intent intent = new Intent();
+        intent.putExtra(SignUp2Activity.KEY_ACCOUNT, etPhoneEmail.getTrimmedString());
+        intent.putExtra(SignUp2Activity.KEY_TYPE, mAccountType);
+        intent.setClass(this, SignUp2Activity.class);
+        startActivity(intent);
     }
 }

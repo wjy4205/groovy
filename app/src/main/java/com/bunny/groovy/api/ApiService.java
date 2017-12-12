@@ -3,6 +3,7 @@ package com.bunny.groovy.api;
 import com.bunny.groovy.model.ResultResponse;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -45,8 +46,8 @@ public interface ApiService {
 
     //test
     @GET("FrontUserController/setSessiontest")
-    Observable<ResponseBody> testSet(@Query("code") String code);
+    Call<Object> testSet(@Query("code")String code);
 
     @GET("FrontUserController/getSessiontest")
-    Observable<ResponseBody> testGet();
+    Observable<Object> testGet();
 }

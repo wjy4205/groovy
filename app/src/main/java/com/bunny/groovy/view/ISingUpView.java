@@ -11,4 +11,5 @@ public interface ISingUpView {
     void showCheckResult(boolean invalid,int accountType,String msg);
     void nextStep();
     Activity get();
+    void registerSuccess();
 }

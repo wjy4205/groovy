@@ -16,6 +16,8 @@ import com.sinch.verification.Verification;
 import com.sinch.verification.VerificationListener;
 import com.socks.library.KLog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import rx.Subscriber;
 
 /**
@@ -67,7 +69,6 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
                 mView.showCheckResult(result.success, type, result.errorMsg);
                 if (result.success && next) {
                     //根据类型发送验证码
-
                     //邮箱账户
                     if (type == AppConstants.ACCOUNT_TYPE_EMAIL)
                         addSubscription(apiService.getEmailCheckCode(account, AppConstants.USER_TYPE_MUSICIAN),
@@ -108,17 +109,16 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
      *
      * @param code
      */
-    public void checkEmailCode(String code, String userAccount) {
+    public void checkEmailCode(String code, final String userAccount) {
         addSubscription(apiService.chekEmailCodeRegister(code, userAccount), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                // TODO: 2017/12/12 注册账户
-
+                EventBus.getDefault().post("success");
             }
 
             @Override
             protected void onError() {
-
+                EventBus.getDefault().post("onError");
             }
 
         });
@@ -155,10 +155,11 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
      * @param email
      */
     public void register(String account, String pwd, String phone, String email) {
+
         addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-
+                mView.registerSuccess();
             }
 
             @Override
@@ -172,4 +173,5 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             }
         });
     }
+
 }

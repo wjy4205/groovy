@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.presenter.SingUpPresenter;
 import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
 import com.xw.repo.XEditText;
@@ -36,6 +34,7 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
 
     private int mAccountType = 0;//账号类型
     private WeakReference<Activity> mWeakReference = new WeakReference<Activity>(this);
+
     //下一步
     @OnClick(R.id.tv_signup_next)
     void next() {
@@ -50,7 +49,7 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
         } else {
             //检查账户
             String account = etPhoneEmail.getTrimmedString();
-            if (TextUtils.isEmpty(account)){
+            if (TextUtils.isEmpty(account)) {
                 UIUtils.showBaseToast("ACCOUNT MUST NOT BE NULL!");
                 return;
             }
@@ -106,12 +105,27 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
         Intent intent = new Intent();
         intent.putExtra(SignUp2Activity.KEY_ACCOUNT, etPhoneEmail.getTrimmedString());
         intent.putExtra(SignUp2Activity.KEY_TYPE, mAccountType);
+        intent.putExtra(SignUp2Activity.KEY_PASSWORD,etPassword.getTrimmedString());
         intent.setClass(this, SignUp2Activity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public Activity get() {
         return mWeakReference.get();
+    }
+
+    @Override
+    public void registerSuccess() {
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == AppConstants.ACTIVITY_FINISH) {
+            finish();
+        }
     }
 }

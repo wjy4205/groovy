@@ -1,6 +1,9 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.api.cookie.CookieManger;
+import com.bunny.groovy.api.interceptor.HeaderInterceptor;
 import com.bunny.groovy.base.BaseApp;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -35,18 +38,19 @@ public class ApiRetrofit {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//请求/响应行 + 头 + 体
 
         mClient = new OkHttpClient.Builder()
-//                .addInterceptor(new HeaderInterceptor())//添加头部信息拦截器
+                .addInterceptor(new HeaderInterceptor())//添加头部信息拦截器
                 .addInterceptor(loggingInterceptor)//添加log拦截器
                 .cache(cache)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
+                .cookieJar(new CookieManger(BaseApp.getContext()))
                 .build();
 
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(ApiConstants.BASE_SERVER_URL)
+//                .baseUrl("http://120.136.175.43:8081/")
                 .addConverterFactory(ScalarsConverterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//支持RxJava
                 .client(mClient)
                 .build();

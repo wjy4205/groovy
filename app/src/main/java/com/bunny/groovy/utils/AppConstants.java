@@ -14,4 +14,6 @@ public class AppConstants {
     public static String USER_TYPE_NORMAL = "0";//用户类型 普通用户
     public static String USER_TYPE_MUSICIAN = "1";//用户类型 表演者
     public static String USER_TYPE_SHOWER = "2";//用户类型 演出厅
+
+    public static int ACTIVITY_FINISH = -100;//activity结束标志
 }

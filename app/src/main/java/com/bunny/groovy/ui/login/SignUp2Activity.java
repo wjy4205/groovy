@@ -2,18 +2,21 @@ package com.bunny.groovy.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.presenter.SingUpPresenter;
+import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
 import com.xw.repo.XEditText;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.net.URLEncoder;
 
 import butterknife.Bind;
@@ -30,6 +33,8 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
     private String mAccount;
     public static String KEY_TYPE = "key_type";
     private int mType;
+    public static String KEY_PASSWORD = "key_password";
+    private String mPassword;
     @Bind(R.id.signup_et_code)
     XEditText etCode;
     @Bind(R.id.signup_et_phone)
@@ -39,21 +44,52 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
 
     @OnClick(R.id.bt_sign_up)
     void signUp() {
-        //验证码不为空
+        //验证码为空
         if (TextUtils.isEmpty(etCode.getTrimmedString())) {
             UIUtils.showBaseToast("Code must not be null.");
             return;
         }
-//        if (mType == AppConstants.ACCOUNT_TYPE_PHONE)
-//            mPresenter.checkPhoneCode(etCode.getTrimmedString());
-//        else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL)
-//            try {
-//                mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount,"UTF-8"));
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-        //注册
 
+        if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
+            if (TextUtils.isEmpty(etEmail.getTrimmedString())) {
+                //邮箱为空
+                UIUtils.showBaseToast("E-mail must not be null.");
+                return;
+            } else if (!PatternUtils.isValidEmail(etEmail.getTrimmedString())) {
+                //邮箱不合法
+                UIUtils.showBaseToast("E-mail invalid.");
+                return;
+            }
+            mPresenter.checkPhoneCode(etCode.getTrimmedString());
+        } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
+            if (TextUtils.isEmpty(etPhone.getTrimmedString()))
+            //手机号为空
+            {
+                UIUtils.showBaseToast("Phone must not be null.");
+                return;
+            } else if (!PatternUtils.isUSphonenumber(etPhone.getTrimmedString())) {
+                UIUtils.showBaseToast("Phone invalid.");
+                return;
+            }
+            mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount));
+        }
+
+    }
+
+    /**
+     * 验证码结果回调
+     *
+     * @param result 结果
+     */
+    @Subscribe
+    public void onVerifyEvent(String result) {
+        if ("success".equals(result)) {
+            //code验证成功
+            //注册
+            mPresenter.register(mAccount, mPassword, etPhone.getTrimmedString(), etEmail.getTrimmedString());
+        } else {
+            UIUtils.showBaseToast(result);
+        }
     }
 
     @Override
@@ -63,17 +99,25 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
         if (intent != null) {
             mAccount = intent.getStringExtra(KEY_ACCOUNT);
             mType = intent.getIntExtra(KEY_TYPE, 0);
+            mPassword = intent.getStringExtra(KEY_PASSWORD);
         } else finish();
 
         //set view
         if (AppConstants.ACCOUNT_TYPE_EMAIL == mType) {
             etEmail.setText(mAccount);
             etEmail.setFocusable(false);
+            etEmail.setTextColor(Color.GRAY);
         } else if (AppConstants.ACCOUNT_TYPE_PHONE == mType) {
             etPhone.setText(mAccount);
             etPhone.setFocusable(false);
+            etPhone.setTextColor(Color.GRAY);
         }
+    }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        registerEventBus(this);
     }
 
     @Override
@@ -99,5 +143,12 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
     @Override
     public Activity get() {
         return getCurrentActivity();
+    }
+
+    @Override
+    public void registerSuccess() {
+        startActivity(new Intent(this, SetFile1Activity.class));
+        setResult(AppConstants.ACTIVITY_FINISH);
+        finish();
     }
 }

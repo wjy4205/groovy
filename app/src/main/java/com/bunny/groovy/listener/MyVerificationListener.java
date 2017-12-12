@@ -9,6 +9,8 @@ import com.sinch.verification.ServiceErrorException;
 import com.sinch.verification.VerificationListener;
 import com.socks.library.KLog;
 
+import org.greenrobot.eventbus.EventBus;
+
 /****************************************
  * 功能说明:  短信验证码回调
  *
@@ -41,6 +43,7 @@ public class MyVerificationListener implements VerificationListener {
     public void onVerified() {
         // Verification successful
         KLog.a("Verification successful!!!!");
+        EventBus.getDefault().post("success");
     }
 
     @Override
@@ -56,7 +59,7 @@ public class MyVerificationListener implements VerificationListener {
         } else {
             // Other system error, such as UnknownHostException in case of network error
         }
-
+        EventBus.getDefault().post(e.toString());
         KLog.a(e.toString());
     }
 

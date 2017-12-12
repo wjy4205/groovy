@@ -44,14 +44,16 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
             UIUtils.showBaseToast("Code must not be null.");
             return;
         }
-        if (mType == AppConstants.ACCOUNT_TYPE_PHONE)
-            mPresenter.checkPhoneCode(etCode.getTrimmedString());
-        else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL)
-            try {
-                mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount,"UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+//        if (mType == AppConstants.ACCOUNT_TYPE_PHONE)
+//            mPresenter.checkPhoneCode(etCode.getTrimmedString());
+//        else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL)
+//            try {
+//                mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount,"UTF-8"));
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+        //注册
+
     }
 
     @Override

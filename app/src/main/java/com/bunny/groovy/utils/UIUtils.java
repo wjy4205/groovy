@@ -56,20 +56,20 @@ public class UIUtils {
      * @param msg
      */
     private static Toast baseToast;
+
     public static void showBaseToast(String msg) {
-        TextView tvToastMsg = null;
         if (baseToast == null) {
             baseToast = new Toast(getContext());
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.base_toast_layout, null);
-            tvToastMsg = (TextView) inflate.findViewById(R.id.toast_msg);
             baseToast.setView(inflate);
             //获取屏幕高度
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             int height = wm.getDefaultDisplay().getHeight();
-            baseToast.setGravity(Gravity.TOP,0,height/3);
+            baseToast.setGravity(Gravity.TOP, 0, height / 3);
         }
-        if (tvToastMsg != null)
-            tvToastMsg.setText(msg);
+        TextView tvMsg = (TextView) baseToast.getView().findViewById(R.id.toast_msg);
+        if (tvMsg != null)
+            tvMsg.setText(msg);
         try {
             Field mTNField = baseToast.getClass().getDeclaredField("mTN");
             mTNField.setAccessible(true);

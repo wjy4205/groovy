@@ -4,9 +4,10 @@ import com.bunny.groovy.model.ResultResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -35,4 +36,17 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("FrontUserController/chekEmailCodeRegister")
     Observable<ResultResponse> chekEmailCodeRegister(@Field("checkCode") String checkCode, @Field("userAccount") String userAccount);
+
+    //表演者用户注册
+    @FormUrlEncoded
+    @POST("FrontUserController/performerFrontUserRegister")
+    Observable<ResultResponse> performerRegister(@Field("userName") String userAccount, @Field("userPwd") String userPwd,
+                                                 @Field("telephone") String phone, @Field("userEmail") String email);
+
+    //test
+    @GET("FrontUserController/setSessiontest")
+    Observable<ResponseBody> testSet(@Query("code") String code);
+
+    @GET("FrontUserController/getSessiontest")
+    Observable<ResponseBody> testGet();
 }

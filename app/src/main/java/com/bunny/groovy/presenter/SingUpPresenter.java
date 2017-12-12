@@ -58,6 +58,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             @Override
             public void onError(Throwable e) {
                 KLog.a(e.toString());
+                UIUtils.showBaseToast(e.toString());
             }
 
             @Override
@@ -107,7 +108,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
      *
      * @param code
      */
-    public void checkEmailCode(String code,String userAccount) {
+    public void checkEmailCode(String code, String userAccount) {
         addSubscription(apiService.chekEmailCodeRegister(code, userAccount), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
@@ -142,5 +143,33 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
      */
     public void checkPhoneCode(String code) {
         mVerification.verify(code);
+    }
+
+
+    /**
+     * 表演者注册
+     *
+     * @param account
+     * @param pwd
+     * @param phone
+     * @param email
+     */
+    public void register(String account, String pwd, String phone, String email) {
+        addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
+            @Override
+            protected void onSuccess(ResultResponse response) {
+
+            }
+
+            @Override
+            protected void onError() {
+
+            }
+
+            @Override
+            public void onNext(ResultResponse o) {
+
+            }
+        });
     }
 }

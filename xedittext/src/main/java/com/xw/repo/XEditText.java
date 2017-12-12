@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -64,7 +63,7 @@ public class XEditText extends AppCompatEditText {
     private Bitmap bitmapCorrect;
     private boolean isImportantWord = false;//是否为必填项
     private String mImportantChar = "*";//星号
-    private Paint mPaint;
+    private Paint mTextPaint;
     private int mInfoRes;
 
     public XEditText(Context context) {
@@ -172,10 +171,10 @@ public class XEditText extends AppCompatEditText {
         isImportantWord = a.getBoolean(R.styleable.XEditText_x_importantWord, false);
         a.recycle();
         //初始化画笔
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setTextSize(dp2px(13));
-        mPaint.setColor(Color.parseColor("#7B87F1"));
+        mTextPaint = new Paint();
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextSize(getTextSize());
+        mTextPaint.setColor(Color.parseColor("#7B87F1"));
     }
 
     private Bitmap getBitmapFromVectorDrawable(Context context, int drawableId, boolean tint) {
@@ -212,8 +211,10 @@ public class XEditText extends AppCompatEditText {
             String hintText = getHint().toString();
             String text = getText().toString();
             if (!TextUtils.isEmpty(hintText) && (TextUtils.isEmpty(text) || text.length() == 0)) {
-                float hintTextWidth = mPaint.measureText(hintText);
-                canvas.drawText(mImportantChar, hintTextWidth, getMeasuredHeight() / 2, mPaint);
+                float hintTextWidth = mTextPaint.measureText(hintText);
+                Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+                float offset = (fontMetrics.descent - fontMetrics.ascent) / 2;
+                canvas.drawText(mImportantChar, hintTextWidth+dp2px(3), getMeasuredHeight() / 2 + offset, mTextPaint);
             }
         }
         //状态标记

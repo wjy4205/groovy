@@ -5,6 +5,7 @@ import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.SharedPreferencesUtils;
 import com.bunny.groovy.utils.UIUtils;
@@ -30,7 +31,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                      */
                     @Override
                     protected void onSuccess(PerformerUserModel response) {
-                        //todo 缓存到本地
+                        //缓存到本地
+                        AppCacheData.setPerformerUserModel(response);
 
                         if (response != null) {
                             String level = (String) SharedPreferencesUtils.getParam(mView.get(),

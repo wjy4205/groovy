@@ -10,7 +10,9 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.presenter.SetFilePresenter;
+import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
@@ -48,7 +50,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
             @Override
             public void onGranted() {
                 //选择图片
-                choosePic(getCurrentActivity());
+                choosePic(SetFile1Activity.this);
             }
 
             @Override
@@ -66,8 +68,17 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
 
     @OnClick(R.id.perfect_info_tv_next)
     void next() {
-
+        //保存数据
+        AppCacheData.getPerformerUserModel().setUserName(etFullName.getTrimmedString());
+        AppCacheData.getPerformerUserModel().setStageName(etArtistName.getTrimmedString());
+        AppCacheData.getPerformerUserModel().setZipCode(etZipcode.getTrimmedString());
+        AppCacheData.getPerformerUserModel().setWebSiteAddress(etWebsite.getTrimmedString());
+        AppCacheData.getPerformerUserModel().setHeadImg(headImagePath);
+        Intent intent = new Intent(this, SetFile2Activity.class);
+        startActivityForResult(intent, 1);
     }
+
+    private String headImagePath = "";//头像文件路径
 
     @Override
     public void initView() {
@@ -96,9 +107,12 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
         if (requestCode == AppConstants.REQUESTCODE_SELECT_PIC && resultCode == RESULT_OK) {
             List<String> mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
             assert mResults != null;
-            //更新item的图片
-            Bitmap bitmap = BitmapFactory.decodeFile(mResults.get(0));
+            headImagePath = mResults.get(0);
+            Bitmap bitmap = BitmapFactory.decodeFile(headImagePath);
             headView.setImageBitmap(bitmap);
+        } else if (requestCode == 1 && resultCode == AppConstants.ACTIVITY_FINISH) {
+            MainActivity.launchWithData(this, null);
+            finish();
         }
     }
 }

@@ -1,11 +1,19 @@
 package com.bunny.groovy.ui;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.login.LoginActivity;
+import com.bunny.groovy.utils.UIUtils;
+
+import java.security.Permission;
+import java.security.Permissions;
+import java.util.List;
+import java.util.jar.Manifest;
 
 import butterknife.OnClick;
 import flyn.Eyes;
@@ -16,7 +24,7 @@ import flyn.Eyes;
  * Created by Administrator on 2017/12/2.
  */
 
-public class RoleChooseActivity extends BaseActivity{
+public class RoleChooseActivity extends BaseActivity {
     @OnClick(R.id.tv_musician)
     void login() {
         startActivity(new Intent(this, LoginActivity.class));
@@ -39,6 +47,22 @@ public class RoleChooseActivity extends BaseActivity{
 //        findViewById(R.id.tv_musician).setOnClickListener(v -> startActivity(new Intent(RoleChooseActivity.this, LoginActivity.class)));
     }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        requestRuntimePermission(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE}, new PermissionListener() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermissions) {
+
+            }
+        });
+    }
 
     @Override
     public boolean enableSlideClose() {

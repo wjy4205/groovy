@@ -20,5 +20,11 @@
     <string name="required">REQUIRED</string>
     <string name="facebook">FACEBOOK</string>
     <string name="twitter">TWITTER</string>
-    <string name="soundcloud">SOUNDCLOUD</string>
+    <string name="sound_cloud">SOUNDCLOUD</string>
+    <string name="account_not_be_null">Account must not be null.</string>
+    <string name="password_not_be_null">Password must not be null.</string>
+    <string name="invalid_account">Invalid account.</string>
+    <string name="invalid_password">Invalid password.</string>
+    <string name="perfect_info">Please perfect the information.</string>
+    <string name="full_name">FULL NAME</string>
 </resources>

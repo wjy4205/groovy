@@ -1,8 +1,14 @@
 package com.bunny.groovy.ui;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.weidget.NoScrollViewPager;
 import com.chaychan.library.BottomBarLayout;
 
@@ -13,6 +19,8 @@ public class MainActivity extends BaseActivity {
     NoScrollViewPager noScrollViewPager;
     @Bind(R.id.bottom_bar)
     BottomBarLayout bottomBarLayout;
+
+    private static PerformerUserModel mUserModel;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -28,5 +36,17 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         super.initView();
 
+    }
+
+    /**
+     * 启动本页面
+     *
+     * @param activity
+     * @param userModel
+     */
+    public static void launchWithData(Activity activity, PerformerUserModel userModel) {
+        mUserModel = userModel;
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
 }

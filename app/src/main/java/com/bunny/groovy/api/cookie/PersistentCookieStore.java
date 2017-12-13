@@ -156,7 +156,7 @@ public class PersistentCookieStore {
         Cookie cookie = null;
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            cookie = ((OkHttpCookies) objectInputStream.readObject()).getCookies();
+            cookie = ((OkHttpCookies) objectInputStream.readObject()).getCookie();
         } catch (IOException e) {
             Log.d(LOG_TAG, "IOException in decodeCookie", e);
         } catch (ClassNotFoundException e) {

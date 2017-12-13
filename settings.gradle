@@ -1,1 +1,1 @@
-include ':app', ':statusbar-lib', ':uikit', ':xedittext'
+include ':app', ':statusbar-lib', ':uikit', ':xedittext', ':selectpic_lib'

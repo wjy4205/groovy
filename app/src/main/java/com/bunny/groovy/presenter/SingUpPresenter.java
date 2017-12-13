@@ -80,11 +80,6 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
                                     }
 
                                     @Override
-                                    protected void onError() {
-
-                                    }
-
-                                    @Override
                                     protected void onFailure(ResultResponse response) {
                                         super.onFailure(response);
                                     }
@@ -117,10 +112,10 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             }
 
             @Override
-            protected void onError() {
-                EventBus.getDefault().post("onError");
+            protected void onFailure(ResultResponse response) {
+                super.onFailure(response);
+                EventBus.getDefault().post("success");
             }
-
         });
     }
 
@@ -159,16 +154,13 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
+                UIUtils.showBaseToast("Register success.");
                 mView.registerSuccess();
             }
 
             @Override
-            protected void onError() {
-
-            }
-
-            @Override
-            public void onNext(ResultResponse o) {
+            protected void onFailure(ResultResponse response) {
+                super.onFailure(response);
 
             }
         });

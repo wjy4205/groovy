@@ -48,32 +48,49 @@
         android:textSize="13sp"
         android:layout_gravity="center_horizontal"
         android:text="@string/tell_us"/>
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_gravity="center_horizontal"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/head"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/common_grey"
-        />
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/perfect_info_iv_headpic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/head"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/white"
+            />
+        <ImageView
+            android:id="@+id/perfect_info_iv_select_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/login_photo"
+            android:layout_gravity="right|bottom"/>
+    </FrameLayout>
+
 
     <com.xw.repo.XEditText
+        android:id="@+id/perfect_info_et_fullname"
         style="@style/base_edit_text_style"
         android:layout_marginTop="20dp"
-        android:hint="@string/email_phone"
+        android:hint="@string/full_name"
         app:x_disableEmoji="true" />
     <com.xw.repo.XEditText
+        android:id="@+id/perfect_info_et_artistname"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
+        app:x_importantWord="true"
         android:hint="ARTIST NAME"
         app:x_disableEmoji="true" />
     <com.xw.repo.XEditText
+        android:id="@+id/perfect_info_et_zipcode"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
         android:hint="ZIP CODE"
         app:x_disableEmoji="true" />
     <com.xw.repo.XEditText
+        android:id="@+id/perfect_info_et_website"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
         android:hint="WEBSITE"
@@ -87,6 +104,7 @@
         android:text="@string/required"/>
 
     <TextView
+        android:id="@+id/perfect_info_tv_next"
         style="@style/role_selected_text_style"
         android:layout_marginTop="30dp"
         android:text="@string/next" />
@@ -105,7 +123,7 @@
             android:textColor="@color/common_grey" />
 
         <TextView
-            android:id="@+id/tv_sign_up"
+            android:id="@+id/perfect_info_tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_have_no_account"

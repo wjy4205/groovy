@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.socks.library.KLog;
@@ -49,6 +50,9 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
             onSuccess((T) response.resultData);
         } else {
             onFailure(response);
+            if ("201".equals(response.errorCode)) {//未登录
+                LoginActivity.launch(mContext);
+            }
         }
     }
 
@@ -61,12 +65,12 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
     public void onError(Throwable e) {
         if (mProgressHUD != null) mProgressHUD.dismiss();
         KLog.e(e.getLocalizedMessage());
-        onError();
+//        onError();
     }
 
     protected abstract void onSuccess(T response);
 
-    protected abstract void onError();
+//    protected abstract void onError();
 
     protected void onFailure(ResultResponse response) {
         UIUtils.showToast(response.errorMsg);

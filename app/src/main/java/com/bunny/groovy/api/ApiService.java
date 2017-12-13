@@ -1,5 +1,6 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 
 import okhttp3.ResponseBody;
@@ -44,10 +45,14 @@ public interface ApiService {
     Observable<ResultResponse> performerRegister(@Field("userName") String userAccount, @Field("userPwd") String userPwd,
                                                  @Field("telephone") String phone, @Field("userEmail") String email);
 
-    //test
-    @GET("FrontUserController/setSessiontest")
-    Call<Object> testSet(@Query("code")String code);
+    //表演者登录
+    @FormUrlEncoded
+    @POST("FrontUserController/login")
+    Observable<ResultResponse<PerformerUserModel>> performerLogin(@Field("userAccount") String userAccount, @Field("userPwd") String password,
+                                                  @Field("UserType") String userType, @Field("userZone") String userZone);
 
-    @GET("FrontUserController/getSessiontest")
-    Observable<Object> testGet();
+    //表演者完善信息
+    @FormUrlEncoded
+    @POST("FrontUserController/updatePerformerInfoFirstLogin")
+    Observable<ResultResponse> updatePerformerInfo();
 }

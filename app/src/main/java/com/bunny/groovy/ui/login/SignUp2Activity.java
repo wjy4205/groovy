@@ -87,8 +87,6 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
             //code验证成功
             //注册
             mPresenter.register(mAccount, mPassword, etPhone.getTrimmedString(), etEmail.getTrimmedString());
-        } else {
-            UIUtils.showBaseToast(result);
         }
     }
 

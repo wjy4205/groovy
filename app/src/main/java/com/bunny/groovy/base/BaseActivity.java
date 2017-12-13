@@ -1,6 +1,7 @@
 package com.bunny.groovy.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,8 @@ import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.RoleChooseActivity;
 import com.bunny.groovy.weidget.SlidingLayout;
+import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
+import com.zfdang.multiple_images_selector.SelectorSettings;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,6 +26,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import butterknife.ButterKnife;
+
+import static com.bunny.groovy.utils.AppConstants.REQUESTCODE_SELECT_PIC;
 
 /**
  * activity的基类
@@ -202,5 +207,16 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 }
                 break;
         }
+    }
+
+    /**
+     * 跳转到选择图片页面
+     */
+    protected void choosePic(Activity activity) {
+        Intent intent = new Intent(activity, ImagesSelectorActivity.class);
+        intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 1);
+        intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 100000);
+        intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
+        startActivityForResult(intent, REQUESTCODE_SELECT_PIC);
     }
 }

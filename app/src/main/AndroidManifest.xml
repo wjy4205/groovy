@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".base.BaseApp"
@@ -30,6 +33,21 @@
         <activity android:name=".ui.login.SignUpActivity" />
         <activity android:name=".ui.login.SignUp2Activity" />
         <activity android:name=".ui.setfile.SetFile1Activity"/>
+
+        <activity
+            android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:configChanges="orientation|screenSize"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.bunny.groovy.fileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

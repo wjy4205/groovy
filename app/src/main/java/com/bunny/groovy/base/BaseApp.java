@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 public class BaseApp extends Application {
 
     //以下属性应用于整个应用程序，合理利用资源，减少资源浪费
@@ -24,7 +26,7 @@ public class BaseApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Fresco.initialize(this);
         //对全局属性赋值
         mContext = getApplicationContext();
         mMainThread = Thread.currentThread();

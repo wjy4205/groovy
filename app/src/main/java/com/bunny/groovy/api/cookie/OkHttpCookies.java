@@ -3,6 +3,7 @@ package com.bunny.groovy.api.cookie;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import okhttp3.Cookie;
 
@@ -10,35 +11,43 @@ import okhttp3.Cookie;
  * Created by Administrator on 2017/12/12.
  */
 
-public class OkHttpCookies {
-    private transient final Cookie cookies;
-    private transient Cookie clientCookies;
+public class OkHttpCookies implements Serializable{
+    private static final long serialVersionUID = 6374381323722046732L;
 
-    public OkHttpCookies(Cookie cookies) {
-        this.cookies = cookies;
+    private transient final Cookie cookie;
+    private transient Cookie clientCookie;
+
+    public OkHttpCookies(Cookie cookie)
+    {
+        this.cookie = cookie;
     }
 
-    public Cookie getCookies() {
-        Cookie bestCookies = cookies;
-        if (clientCookies != null) {
-            bestCookies = clientCookies;
+    public Cookie getCookie()
+    {
+        Cookie bestCookie = cookie;
+        if (clientCookie != null)
+        {
+            bestCookie = clientCookie;
         }
-        return bestCookies;
+
+        return bestCookie;
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.writeObject(cookies.name());
-        out.writeObject(cookies.value());
-        out.writeLong(cookies.expiresAt());
-        out.writeObject(cookies.domain());
-        out.writeObject(cookies.path());
-        out.writeBoolean(cookies.secure());
-        out.writeBoolean(cookies.httpOnly());
-        out.writeBoolean(cookies.hostOnly());
-        out.writeBoolean(cookies.persistent());
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.writeObject(cookie.name());
+        out.writeObject(cookie.value());
+        out.writeLong(cookie.expiresAt());
+        out.writeObject(cookie.domain());
+        out.writeObject(cookie.path());
+        out.writeBoolean(cookie.secure());
+        out.writeBoolean(cookie.httpOnly());
+        out.writeBoolean(cookie.hostOnly());
+        out.writeBoolean(cookie.persistent());
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    {
         String name = (String) in.readObject();
         String value = (String) in.readObject();
         long expiresAt = in.readLong();
@@ -56,6 +65,7 @@ public class OkHttpCookies {
         builder = builder.path(path);
         builder = secure ? builder.secure() : builder;
         builder = httpOnly ? builder.httpOnly() : builder;
-        clientCookies = builder.build();
+        clientCookie = builder.build();
+
     }
 }

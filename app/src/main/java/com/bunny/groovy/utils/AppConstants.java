@@ -16,4 +16,18 @@ public class AppConstants {
     public static String USER_TYPE_SHOWER = "2";//用户类型 演出厅
 
     public static int ACTIVITY_FINISH = -100;//activity结束标志
+
+    public static String GMT_FORMAT = "GMT%s";//格林尼治时间标志
+
+    public static String LOGIN_TAG_FIRST = "0";//首次登录标志
+
+    public static int REQUESTCODE_SETFILE = 9;//完善资料请求码
+
+    public static String KEY_USERFILE_LEVEL = "key_userfile_level";//用户资料完善级别
+    public final static String USERFILE_LEVLE_FULL = "0000";//已经完善
+    public final static String USERFILE_LEVLE_NONE = "1000";//初始状态
+    public final static String USERFILE_LEVLE_FIRST = "2000";//完善了第一页
+    public final static String USERFILE_LEVLE_SECOND = "3000";//完善了第二页
+
+    public static int REQUESTCODE_SELECT_PIC = 6;//选择图片的请求码
 }

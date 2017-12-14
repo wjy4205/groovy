@@ -52,6 +52,7 @@
 
 
     <com.xw.repo.XEditText
+        android:id="@+id/et_facebook"
         style="@style/base_edit_text_style"
         android:drawableLeft="@mipmap/login_facebook"
         android:layout_marginTop="20dp"
@@ -59,6 +60,7 @@
         android:drawablePadding="4dp"
         app:x_disableEmoji="true" />
     <com.xw.repo.XEditText
+        android:id="@+id/et_twitter"
         style="@style/base_edit_text_style"
         android:drawablePadding="4dp"
         android:layout_marginTop="10dp"
@@ -66,6 +68,7 @@
         android:drawableLeft="@mipmap/icon_twiter"
         app:x_disableEmoji="true" />
     <com.xw.repo.XEditText
+        android:id="@+id/et_soundcloud"
         android:drawablePadding="4dp"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
@@ -75,6 +78,7 @@
 
 
     <TextView
+        android:id="@+id/tv_go"
         style="@style/role_selected_text_style"
         android:layout_marginTop="30dp"
         android:text="GO!" />

@@ -7,21 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.model.MusicBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 音乐列表适配器
  * Created by Administrator on 2017/12/13.
  */
 
-public class MusciAdapter extends RecyclerView.Adapter<MusciAdapter.MHodler> {
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MHodler> {
 
-    private ArrayList<HashMap<String, String>> listData;
+    private ArrayList<MusicBean> listData;
 
-    public MusciAdapter(ArrayList<HashMap<String, String>> list) {
+    public MusicAdapter(ArrayList<MusicBean> list) {
         this.listData = list;
     }
 
@@ -32,10 +31,28 @@ public class MusciAdapter extends RecyclerView.Adapter<MusciAdapter.MHodler> {
     }
 
     @Override
-    public void onBindViewHolder(MHodler holder, int position) {
-        HashMap<String, String> map = listData.get(position);
-        holder.tvName.setText(String.valueOf(map.get("file_name")));
-        holder.tvSize.setText(String.valueOf(map.get("file_size")));
+    public void onBindViewHolder(MHodler holder, final int position) {
+        MusicBean map = listData.get(position);
+        holder.tvName.setText(String.valueOf(map.getTitle()));
+        holder.tvSize.setText(map.getLength() + "M");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(position);
+                }
+            }
+        });
+    }
+
+    private OnItemClickListener mItemClickListener;
+
+    public void setItemClickListener(OnItemClickListener listener) {
+        this.mItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int positon);
     }
 
     @Override

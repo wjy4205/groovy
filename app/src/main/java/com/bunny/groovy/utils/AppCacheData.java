@@ -2,6 +2,9 @@ package com.bunny.groovy.utils;
 
 import com.bunny.groovy.model.PerformerUserModel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * app运行时数据缓存
  * <p>
@@ -17,5 +20,12 @@ public class AppCacheData {
 
     public static void setPerformerUserModel(PerformerUserModel performerUserModel) {
         userModel = performerUserModel;
+    }
+
+    private static Map<String, String> fileMap;
+
+    public static Map<String, String> getFileMap() {
+        if (fileMap == null) fileMap = new HashMap<>();
+        return fileMap;
     }
 }

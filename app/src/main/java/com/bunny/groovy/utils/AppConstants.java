@@ -30,4 +30,8 @@ public class AppConstants {
     public final static String USERFILE_LEVLE_SECOND = "3000";//完善了第二页
 
     public static int REQUESTCODE_SELECT_PIC = 6;//选择图片的请求码
+
+    public static String KEY_LOGIN = "key_login";//是否登录标识
+    public static String KEY_USERID = "key_userid";//已登录的userid
+    public static String KEY_PHONE = "key_phone";//已登录的user 电话
 }

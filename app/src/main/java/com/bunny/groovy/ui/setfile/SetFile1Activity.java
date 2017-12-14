@@ -27,6 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /****************************************
  * 功能说明:  完善资料第一步
+ userName
+ zipCode
+ phoneNumber
+ stageName
+ webSiteAddress
+ imgfile
  *
  * Author: Created by bayin on 2017/12/12.
  ****************************************/
@@ -69,13 +75,15 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     @OnClick(R.id.perfect_info_tv_next)
     void next() {
         //保存数据
-        AppCacheData.getPerformerUserModel().setUserName(etFullName.getTrimmedString());
-        AppCacheData.getPerformerUserModel().setStageName(etArtistName.getTrimmedString());
-        AppCacheData.getPerformerUserModel().setZipCode(etZipcode.getTrimmedString());
-        AppCacheData.getPerformerUserModel().setWebSiteAddress(etWebsite.getTrimmedString());
-        AppCacheData.getPerformerUserModel().setHeadImg(headImagePath);
-        Intent intent = new Intent(this, SetFile2Activity.class);
-        startActivityForResult(intent, 1);
+        AppCacheData.getFileMap().put("userName", etFullName.getTrimmedString());
+        AppCacheData.getFileMap().put("zipCode", etZipcode.getTrimmedString());
+        AppCacheData.getFileMap().put("phoneNumber", AppCacheData.getPerformerUserModel().getTelephone());
+        AppCacheData.getFileMap().put("stageName", etArtistName.getTrimmedString());
+        AppCacheData.getFileMap().put("webSiteAddress", etWebsite.getTrimmedString());
+        AppCacheData.getFileMap().put("imgfile", headImagePath);
+        AppCacheData.getFileMap().put("userID", AppCacheData.getPerformerUserModel().getUserID());
+
+        mPresenter.searchLocation(etZipcode.getTrimmedString());
     }
 
     private String headImagePath = "";//头像文件路径

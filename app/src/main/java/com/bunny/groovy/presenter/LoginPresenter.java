@@ -32,7 +32,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     @Override
                     protected void onSuccess(PerformerUserModel response) {
                         //缓存到本地
-                        AppCacheData.setPerformerUserModel(response);
+                        Utils.initLoginData(mView.get(), response);
 
                         if (response != null) {
                             String level = (String) SharedPreferencesUtils.getParam(mView.get(),

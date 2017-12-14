@@ -1,11 +1,13 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -62,6 +64,10 @@ public interface ApiService {
     //表演者完善信息,上传文件
     @Multipart
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
-    Observable<ResultResponse> updatePerformerInfo(@FieldMap Map<String, String> map,
-                                                   @PartMap MultipartBody.Part file);
+    Observable<ResultResponse> updatePerformerInfo(@QueryMap Map<String, String> map,
+                                                   @PartMap Map<String, RequestBody> maps);
+
+    //根据邮编获取经纬度
+    @GET("https://maps.googleapis.com/maps/api/geocode/json")
+    Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key")String apiKey);
 }

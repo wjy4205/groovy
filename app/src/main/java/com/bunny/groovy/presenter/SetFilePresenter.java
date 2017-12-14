@@ -12,7 +12,9 @@ import com.bunny.groovy.ui.setfile.SetFile2Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISetFileView;
+import com.bunny.groovy.weidget.ProgressHUD;
 import com.google.gson.Gson;
 import com.google.gson.internal.Excluder;
 import com.socks.library.KLog;
@@ -41,15 +43,32 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
         super(view);
     }
 
+    /**
+     * 查询地址经纬度
+     *
+     * @param zipCode
+     */
     public void searchLocation(String zipCode) {
         addSubscription(apiService.getLocation(zipCode, ApiConstants.GoogleMapAppKey), new Subscriber<GoogleMapLoc>() {
+            ProgressHUD mProgressHUD;
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                mProgressHUD = ProgressHUD.show(mView.get(), "", true, true, null);
+                mProgressHUD.setCancelable(false);
+                mProgressHUD.setMessage("");
+                mProgressHUD.show();
+            }
+
             @Override
             public void onCompleted() {
-
+                if (mProgressHUD!=null) mProgressHUD.dismiss();
             }
 
             @Override
             public void onError(Throwable e) {
+                if (mProgressHUD!=null) mProgressHUD.dismiss();
                 UIUtils.showBaseToast(e.toString());
             }
 
@@ -81,27 +100,29 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
      */
     public void updateUserInfo(Map<String, String> fileMap) {
         HashMap<String, RequestBody> map = new HashMap<>();
+
+        //头像图片
         String imagePath = fileMap.get("imgfile");
         if (!TextUtils.isEmpty(imagePath)) {
             File imageFile = new File(imagePath);
             if (imageFile.isFile()) {
                 RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-//                MultipartBody.Part headimg = MultipartBody.Part.createFormData("headimg", imageFile.getName(), imageBody);
                 map.put("imgfile\"; filename=\"" + imageFile.getName(), imageBody);
             }
         }
-
+        fileMap.remove("imgfile");
+        //音频文件
         String musicPath = fileMap.get("music");
+        KLog.d("音频文件路径",musicPath);
         if (!TextUtils.isEmpty(musicPath)) {
-            File musicFile = new File(imagePath);
+            File musicFile = new File(musicPath);
             if (musicFile.isFile()) {
                 RequestBody musicBody = RequestBody.create(MediaType.parse("multipart/form-data"), musicFile);
                 map.put("music\"; filename=\"" + musicFile.getName(), musicBody);
             }
         }
-
-        fileMap.remove("imgfile");
         fileMap.remove("music");
+
         addSubscription(apiService.updatePerformerInfo(fileMap, map), new SubscriberCallBack(mView.get()) {
             @Override
             protected boolean isShowProgress() {

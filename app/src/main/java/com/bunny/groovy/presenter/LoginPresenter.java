@@ -1,10 +1,15 @@
 package com.bunny.groovy.presenter;
 
+import android.content.Intent;
+import android.text.TextUtils;
+
 import com.bunny.groovy.R;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.SharedPreferencesUtils;
@@ -35,26 +40,35 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         Utils.initLoginData(mView.get(), response);
 
                         if (response != null) {
-                            String level = (String) SharedPreferencesUtils.getParam(mView.get(),
-                                    AppConstants.KEY_USERFILE_LEVEL, AppConstants.USERFILE_LEVLE_NONE);
-                            switch (level) {
-                                case AppConstants.USERFILE_LEVLE_FULL:
-                                    //资料完善进入首页
-                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-                                    mView.loginSuccess(response);
-                                    break;
-                                case AppConstants.USERFILE_LEVLE_FIRST:
-                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-                                    mView.launchSecondPage();
-                                    break;
-                                case AppConstants.USERFILE_LEVLE_SECOND:
-                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-                                    mView.launchThirdPage();
-                                    break;
-                                default:
-                                case AppConstants.USERFILE_LEVLE_NONE:
-                                    mView.launchFirstPage();
-                                    break;
+//                            String level = (String) SharedPreferencesUtils.getParam(mView.get(),
+//                                    AppConstants.KEY_USERFILE_LEVEL, AppConstants.USERFILE_LEVLE_NONE);
+//                            switch (level) {
+//                                case AppConstants.USERFILE_LEVLE_FULL:
+//                                    //资料完善进入首页
+//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
+//                                    mView.loginSuccess(response);
+//                                    break;
+//                                case AppConstants.USERFILE_LEVLE_FIRST:
+//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
+//                                    mView.launchSecondPage();
+//                                    break;
+//                                case AppConstants.USERFILE_LEVLE_SECOND:
+//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
+//                                    mView.launchThirdPage();
+//                                    break;
+//                                default:
+//                                case AppConstants.USERFILE_LEVLE_NONE:
+//                                    mView.launchFirstPage();
+//                                    break;
+//                            }
+                            //判断资料是否完善
+                            if (TextUtils.isEmpty(response.getZipCode())) {
+                                //需要完善信息
+                                mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
+                            } else {
+                                //进入主页
+                                MainActivity.launch(mView.get());
+                                mView.get().finish();
                             }
                         }
                     }

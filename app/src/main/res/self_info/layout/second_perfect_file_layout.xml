@@ -1,184 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:background="@drawable/login_bg"
+        android:paddingTop="16dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/shape_circle_stroke_bg"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@color/white" />
-
-        <View
-            style="@style/tranverse_line"
-            android:layout_weight="1" />
-
-        <TextView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/shape_blue_circle_solid_bg"
-            android:gravity="center"
-            android:text="2"
-            android:textColor="@color/white" />
-
-        <View
-            style="@style/tranverse_line"
-            android:layout_weight="1" />
-
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/shape_circle_stroke_bg"
-            android:gravity="center"
-            android:text="3"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="@string/tell_us_about_your_music"
-        android:textColor="@color/white"
-        android:textSize="13sp" />
-
-    <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="26dp"
-        android:src="@drawable/head">
-
-        <ImageView
-            android:id="@+id/iv_select_music"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@mipmap/login_music" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bt_play_music"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|bottom"
-            android:background="@drawable/selector_music_play_bt" />
-    </FrameLayout>
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_circle_stroke_bg"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="within 5M"
-        android:textColor="@color/common_grey"
-        android:textSize="11sp" />
+            <View
+                style="@style/tranverse_line"
+                android:layout_weight="1"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="UPLOAD SAMPLE TRACK"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="13sp" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_blue_circle_solid_bg"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/white"/>
 
+            <View
+                style="@style/tranverse_line"
+                android:layout_weight="1"/>
 
-    <com.xw.repo.XEditText
-        android:id="@+id/et_select_style"
-        style="@style/base_edit_text_style"
-        android:layout_marginTop="20dp"
-        android:hint="YOUR STYLE"
-        app:x_importantWord="true"
-        app:x_disableEmoji="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="65dp"
-        android:layout_marginTop="20dp"
-        android:text="MUSIC BIO"
-        android:textColor="@color/common_grey"
-        android:textSize="13sp" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/shape_textarea_bg"
-        android:padding="10dp">
-
-        <EditText
-            android:id="@+id/et_bio"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="GIVE EVERYONE BRIEF IDEA OF WHO YOU ARE AND THE MUSIC YOU LIKE TO PLAY"
-            android:lineSpacingExtra="5dp"
-            android:lines="5"
-            android:maxEms="400"
-            android:textColorHint="@color/common_grey"
-            android:textSize="11sp" />
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/shape_circle_stroke_bg"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/white"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:text="(0/400)"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="@string/tell_us_about_your_music"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:src="@drawable/head">
+
+            <ImageView
+                android:id="@+id/iv_select_music"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/login_music"/>
+
+            <Button
+                android:id="@+id/bt_play_music"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|bottom"
+                android:background="@drawable/selector_music_play_bt"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="within 5M"
             android:textColor="@color/common_grey"
-            android:textSize="11sp" />
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="65dp"
-        android:text="@string/required"
-        android:drawablePadding="3dp"
-        android:layout_marginTop="4dp"
-        android:drawableLeft="@drawable/icon_start"
-        android:textColor="@color/common_grey"
-        android:textSize="10sp" />
-
-    <TextView
-        android:id="@+id/tv_next"
-        style="@style/role_selected_text_style"
-        android:layout_marginTop="30dp"
-        android:text="@string/next" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp">
+            android:textSize="11sp"/>
 
         <TextView
-            android:id="@+id/tv_have_no_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/already_have_an_account"
-            android:textColor="@color/common_grey" />
+            android:layout_gravity="center_horizontal"
+            android:text="UPLOAD SAMPLE TRACK"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="13sp"/>
+
+
+        <com.xw.repo.XEditText
+            android:id="@+id/et_select_style"
+            style="@style/base_edit_text_style"
+            android:layout_marginTop="20dp"
+            android:hint="YOUR STYLE"
+            app:x_disableEmoji="true"
+            app:x_importantWord="true"/>
 
         <TextView
-            android:id="@+id/tv_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_have_no_account"
-            android:text="@string/login"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-</LinearLayout>
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="20dp"
+            android:text="MUSIC BIO"
+            android:textColor="@color/common_grey"
+            android:textSize="13sp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_textarea_bg"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/et_bio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top"
+                android:textColor="@color/white"
+                android:hint="GIVE EVERYONE BRIEF IDEA OF WHO YOU ARE AND THE MUSIC YOU LIKE TO PLAY"
+                android:lineSpacingExtra="5dp"
+                android:lines="5"
+                android:maxEms="400"
+                android:textColorHint="@color/common_grey"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:text="(0/400)"
+                android:textColor="@color/common_grey"
+                android:textSize="11sp"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="4dp"
+            android:drawableLeft="@drawable/icon_start"
+            android:drawablePadding="3dp"
+            android:text="@string/required"
+            android:textColor="@color/common_grey"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/tv_next"
+            style="@style/role_selected_text_style"
+            android:layout_marginTop="30dp"
+            android:text="@string/next"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_have_no_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/already_have_an_account"
+                android:textColor="@color/common_grey"/>
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_have_no_account"
+                android:text="@string/login"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

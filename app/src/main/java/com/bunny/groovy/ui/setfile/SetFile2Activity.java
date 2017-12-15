@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.model.MusicBean;
+import com.bunny.groovy.model.PerformStyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.login.LoginActivity;
@@ -23,6 +24,8 @@ import com.bunny.groovy.view.ISetFileView;
 import com.xw.repo.XEditText;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -95,7 +98,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
 
     @OnClick(R.id.et_select_style)
     void selectStyle() {
-
+        mPresenter.rquestStyle();
     }
 
     @OnClick(R.id.tv_next)
@@ -133,9 +136,19 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
         btPlay.setBackgroundResource(R.mipmap.login_play);
     }
 
+    @Subscribe
+    public void onStyleSelect(String style){
+        etSelectStyle.setText(style);
+    }
+
     @Override
     public Activity get() {
         return getCurrentActivity();
+    }
+
+    @Override
+    public void showStylePop(List<PerformStyleModel> modelList) {
+        UIUtils.showPopWindow(this,etSelectStyle,modelList);
     }
 
     @Override
@@ -151,13 +164,19 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     @Override
     protected void onPause() {
         super.onPause();
-        if (callBack!=null && callBack.isPlaying()) callBack.isPlayerMusic();
+        if (callBack!=null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            btPlay.setBackgroundResource(R.mipmap.login_play);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (callBack!=null && callBack.isPlaying()) callBack.isPlayerMusic();
+        if (callBack!=null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            btPlay.setBackgroundResource(R.mipmap.login_play);
+        }
     }
 
     @Override

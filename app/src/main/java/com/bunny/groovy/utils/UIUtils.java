@@ -8,13 +8,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.StyleAdapter;
 import com.bunny.groovy.base.BaseApp;
+import com.bunny.groovy.model.PerformStyleModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 
 public class UIUtils {
@@ -86,6 +94,22 @@ public class UIUtils {
             e.printStackTrace();
         }
         baseToast.show();
+    }
+
+    public static void showPopWindow(Context context, View view, List<PerformStyleModel> dataList){
+        PopupWindow popupWindow = new PopupWindow(context);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_performer_style_layout, null, false);
+        ListView listView = (ListView) inflate.findViewById(R.id.style_listview);
+        final StyleAdapter adapter = new StyleAdapter(dataList);
+        listView.setAdapter(adapter);
+        popupWindow.setContentView(inflate);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                EventBus.getDefault().post(adapter.getSelectStyle());
+            }
+        });
+        popupWindow.showAsDropDown(view,0,0,Gravity.CENTER);
     }
 
 

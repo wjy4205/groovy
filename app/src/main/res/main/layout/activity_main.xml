@@ -17,9 +17,10 @@
             android:singleLine="true"
             android:layout_centerInParent="true"
             tool:text="Jack"
+            android:typeface="sans"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
     </RelativeLayout>
 
@@ -33,7 +34,7 @@
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#333">
+        android:background="#111111">
 
         <com.chaychan.library.BottomBarItem
             android:id="@+id/tab_overview"

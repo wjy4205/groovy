@@ -1,15 +1,15 @@
 package com.bunny.groovy.ui;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.os.Handler;
+import android.text.TextUtils;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
-import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.ui.setfile.SetFile1Activity;
-import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.presenter.SplashPresenter;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.SharedPreferencesUtils;
-import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.view.ISplashView;
 
 /****************************************
  * 功能说明:  
@@ -17,10 +17,10 @@ import com.bunny.groovy.utils.UIUtils;
  * Author: Created by bayin on 2017/12/14.
  ****************************************/
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity<SplashPresenter> implements ISplashView {
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected SplashPresenter createPresenter() {
+        return new SplashPresenter(this);
     }
 
     @Override
@@ -32,31 +32,31 @@ public class SplashActivity extends BaseActivity {
     public void initView() {
         super.initView();
         boolean isLogin = (boolean) SharedPreferencesUtils.getParam(this, AppConstants.KEY_LOGIN, false);
-        if (isLogin) {
+        String userID = (String) SharedPreferencesUtils.getParam(this, AppConstants.KEY_USERID, "");
+        if (isLogin && !TextUtils.isEmpty(userID)) {
             //已登录
-            //加载用户数据
-            AppCacheData.getPerformerUserModel().setUserID((String) SharedPreferencesUtils.getParam(this,AppConstants.KEY_USERID,""));
-            AppCacheData.getPerformerUserModel().setTelephone((String) SharedPreferencesUtils.getParam(this,AppConstants.KEY_PHONE,""));
-            //判断是去主页，还是完善资料
-            String level = (String) SharedPreferencesUtils.getParam(this,
-                    AppConstants.KEY_USERFILE_LEVEL, AppConstants.USERFILE_LEVLE_NONE);
-            switch (level) {
-                case AppConstants.USERFILE_LEVLE_FULL:
-                    //进入首页
-                    MainActivity.launch(this);
-                    break;
-                case AppConstants.USERFILE_LEVLE_FIRST:
-                case AppConstants.USERFILE_LEVLE_SECOND:
-                case AppConstants.USERFILE_LEVLE_NONE:
-                default:
-                    UIUtils.showBaseToast(getString(R.string.perfect_info));
-                    startActivity(new Intent(this, SetFile1Activity.class));
-                    break;
-            }
+            //请求表演者资料
+            mPresenter.requestPerformerInfo(userID);
         } else {
             //未登录
-            startActivity(new Intent(this, RoleChooseActivity.class));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    RoleChooseActivity.launch(SplashActivity.this);
+                    finish();
+                }
+            }, 2000);
         }
+    }
+
+    @Override
+    public Activity get() {
+        return getCurrentActivity();
+    }
+
+    @Override
+    public void requestFailed() {
+        RoleChooseActivity.launch(this);
         finish();
     }
 }

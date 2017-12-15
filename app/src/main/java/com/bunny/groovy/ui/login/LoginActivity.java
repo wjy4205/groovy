@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void loginSuccess(PerformerUserModel userModel) {
-        MainActivity.launchWithData(this,userModel);
+        MainActivity.launch(this);
         finish();
     }
 

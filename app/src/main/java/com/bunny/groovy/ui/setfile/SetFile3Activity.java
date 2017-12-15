@@ -4,10 +4,13 @@ import android.app.Activity;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
+import com.bunny.groovy.model.PerformStyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.ISetFileView;
 import com.xw.repo.XEditText;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -38,6 +41,11 @@ public class SetFile3Activity extends BaseActivity<SetFilePresenter> implements 
     @Override
     public Activity get() {
         return getCurrentActivity();
+    }
+
+    @Override
+    public void showStylePop(List<PerformStyleModel> modelList) {
+
     }
 
     @Override

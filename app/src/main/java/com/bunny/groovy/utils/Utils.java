@@ -150,7 +150,6 @@ public class Utils {
     public static void initLoginData(Context context, PerformerUserModel model) {
         SharedPreferencesUtils.setParam(context, AppConstants.KEY_LOGIN, true);
         SharedPreferencesUtils.setParam(context, AppConstants.KEY_USERID, model.getUserID());
-        SharedPreferencesUtils.setParam(context, AppConstants.KEY_PHONE, model.getTelephone());
         AppCacheData.setPerformerUserModel(model);
     }
 }

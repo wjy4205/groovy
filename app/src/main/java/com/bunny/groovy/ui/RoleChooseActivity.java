@@ -1,5 +1,7 @@
 package com.bunny.groovy.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 
@@ -44,7 +46,10 @@ public class RoleChooseActivity extends BaseActivity {
     public void initView() {
         super.initView();
         Eyes.translucentStatusBar(this, true);
-//        findViewById(R.id.tv_musician).setOnClickListener(v -> startActivity(new Intent(RoleChooseActivity.this, LoginActivity.class)));
+    }
+
+    public static void launch(Context activity) {
+        activity.startActivity(new Intent(activity, RoleChooseActivity.class));
     }
 
     @Override

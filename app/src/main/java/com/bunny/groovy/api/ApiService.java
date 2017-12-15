@@ -1,9 +1,13 @@
 package com.bunny.groovy.api;
 
 import com.bunny.groovy.model.GoogleMapLoc;
+import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.PerformStyleModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 
+import java.lang.annotation.Retention;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -67,7 +71,22 @@ public interface ApiService {
     Observable<ResultResponse> updatePerformerInfo(@QueryMap Map<String, String> map,
                                                    @PartMap Map<String, RequestBody> maps);
 
+    //获取表演者个人信息
+    @FormUrlEncoded
+    @POST("PerformerMeController/getPerformerMeList")
+    Observable<ResultResponse<PerformerUserModel>> getPerformerInfo(@Field("performerID") String userID);
+
+
+    //获取表演者下一个演出
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/getNextScheduledShow")
+    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Field("performerID")String performerID);
+
+    //获取表演类型
+    @GET("PerformerBasicsController/getPerformTypeListNotLogin")
+    Observable<List<PerformStyleModel>> getPerformStyle();
+
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")
-    Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key")String apiKey);
+    Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key") String apiKey);
 }

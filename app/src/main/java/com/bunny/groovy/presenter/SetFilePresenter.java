@@ -7,6 +7,8 @@ import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.GoogleMapLoc;
+import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.setfile.SetFile2Activity;
 import com.bunny.groovy.utils.AppCacheData;
@@ -24,6 +26,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -63,12 +66,12 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 
             @Override
             public void onCompleted() {
-                if (mProgressHUD!=null) mProgressHUD.dismiss();
+                if (mProgressHUD != null) mProgressHUD.dismiss();
             }
 
             @Override
             public void onError(Throwable e) {
-                if (mProgressHUD!=null) mProgressHUD.dismiss();
+                if (mProgressHUD != null) mProgressHUD.dismiss();
                 UIUtils.showBaseToast(e.toString());
             }
 
@@ -84,11 +87,33 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
                         //下一页
                         mView.get().startActivityForResult(new Intent(mView.get(), SetFile2Activity.class), 1);
                     } else {
-                        UIUtils.showBaseToast(loc.getError_message());
+                        UIUtils.showBaseToast("ZipCode incorrect. " + loc.getError_message());
                     }
                 } catch (Exception e) {
                     UIUtils.showBaseToast(e.toString());
                 }
+            }
+        });
+    }
+
+
+    /**
+     * 获取表演style
+     */
+    public void rquestStyle(){
+        addSubscription(apiService.getPerformStyle(), new SubscriberCallBack<List<PerformStyleModel>>(mView.get()) {
+            @Override
+            protected void onSuccess(List<PerformStyleModel> response) {
+                if (response!=null && response.size()>0){
+                    mView.showStylePop(response);
+                }else {
+                    UIUtils.showBaseToast("获取style失败，稍后再试");
+                }
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+                super.onFailure(response);
             }
         });
     }
@@ -113,7 +138,7 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
         fileMap.remove("imgfile");
         //音频文件
         String musicPath = fileMap.get("music");
-        KLog.d("音频文件路径",musicPath);
+        KLog.d("音频文件路径", musicPath);
         if (!TextUtils.isEmpty(musicPath)) {
             File musicFile = new File(musicPath);
             if (musicFile.isFile()) {

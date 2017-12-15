@@ -2,6 +2,10 @@ package com.bunny.groovy.view;
 
 import android.app.Activity;
 
+import com.bunny.groovy.model.PerformStyleModel;
+
+import java.util.List;
+
 /****************************************
  * 功能说明:  完善资料的控制器
  *
@@ -10,4 +14,5 @@ import android.app.Activity;
 
 public interface ISetFileView{
     Activity get();
+    void showStylePop(List<PerformStyleModel> modelList);
 }

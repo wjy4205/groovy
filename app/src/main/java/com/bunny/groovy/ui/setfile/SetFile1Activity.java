@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
+import com.bunny.groovy.model.PerformStyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
@@ -100,6 +101,11 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     }
 
     @Override
+    public void showStylePop(List<PerformStyleModel> modelList) {
+
+    }
+
+    @Override
     protected SetFilePresenter createPresenter() {
         return new SetFilePresenter(this);
     }
@@ -119,7 +125,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
             Bitmap bitmap = BitmapFactory.decodeFile(headImagePath);
             headView.setImageBitmap(bitmap);
         } else if (requestCode == 1 && resultCode == AppConstants.ACTIVITY_FINISH) {
-            MainActivity.launchWithData(this, null);
+            MainActivity.launch(this);
             finish();
         }
     }

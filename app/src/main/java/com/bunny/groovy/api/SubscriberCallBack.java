@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.ui.RoleChooseActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.weidget.ProgressHUD;
@@ -51,7 +52,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
         } else {
             onFailure(response);
             if ("201".equals(response.errorCode)) {//未登录
-                LoginActivity.launch(mContext);
+                RoleChooseActivity.launch(mContext);
             }
         }
     }
@@ -64,6 +65,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
     @Override
     public void onError(Throwable e) {
         if (mProgressHUD != null) mProgressHUD.dismiss();
+        UIUtils.showToast(e.toString());
         KLog.e(e.getLocalizedMessage());
 //        onError();
     }

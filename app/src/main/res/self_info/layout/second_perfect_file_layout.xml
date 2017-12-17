@@ -106,6 +106,7 @@
             android:layout_marginTop="20dp"
             android:hint="YOUR STYLE"
             app:x_disableEmoji="true"
+            android:focusable="false"
             app:x_importantWord="true"/>
 
         <TextView
@@ -115,16 +116,19 @@
             android:layout_marginTop="20dp"
             android:text="MUSIC BIO"
             android:textColor="@color/common_grey"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/shape_textarea_bg"
-            android:padding="10dp">
+            android:paddingLeft="10dp"
+            android:paddingTop="6dp"
+            android:paddingRight="10dp">
 
             <EditText
                 android:id="@+id/et_bio"
@@ -134,20 +138,22 @@
                 android:gravity="top"
                 android:textColor="@color/white"
                 android:hint="GIVE EVERYONE BRIEF IDEA OF WHO YOU ARE AND THE MUSIC YOU LIKE TO PLAY"
-                android:lineSpacingExtra="5dp"
-                android:lines="5"
-                android:maxEms="400"
+                android:lineSpacingExtra="3dp"
+                android:lines="4"
+                android:maxLength="400"
                 android:textColorHint="@color/common_grey"
-                android:textSize="11sp"/>
+                android:textSize="13sp"/>
 
             <TextView
+                android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
                 android:text="(0/400)"
+                android:paddingBottom="3dp"
                 android:textColor="@color/common_grey"
-                android:textSize="11sp"/>
-        </FrameLayout>
+                android:textSize="10sp"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

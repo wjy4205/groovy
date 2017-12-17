@@ -44,7 +44,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public PermissionListener mPermissionListener;
 
     @Override
-    public final void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (enableSlideClose()) {

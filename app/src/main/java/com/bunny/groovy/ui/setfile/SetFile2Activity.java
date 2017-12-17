@@ -3,18 +3,27 @@ package com.bunny.groovy.ui.setfile;
 import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.Parcelable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.StyleAdapter;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.model.MusicBean;
-import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.login.LoginActivity;
@@ -23,6 +32,7 @@ import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
 import com.xw.repo.XEditText;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
@@ -43,8 +53,8 @@ import butterknife.OnClick;
 public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
 
     private MusicBean mMusic_file;
-    private String performTypeName = "";//表演类型，用“，“隔开
     private MusicService.CallBack callBack;
+    private String strFormat = "(%d/400)";
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -56,6 +66,8 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
             callBack = null;
         }
     };
+    private PopupWindow popupWindow;
+    private StyleAdapter adapter;
 
     @OnClick(R.id.iv_select_music)
     void selectMusic() {
@@ -98,15 +110,23 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
 
     @OnClick(R.id.et_select_style)
     void selectStyle() {
-        mPresenter.rquestStyle();
+        mPresenter.requestStyle();
     }
 
     @OnClick(R.id.tv_next)
     void next() {
-        // TODO: 2017/12/14 拦截判断空
+        if (TextUtils.isEmpty(etSelectStyle.getTrimmedString())) {
+            UIUtils.showBaseToast("请选择类型");
+            return;
+        }
+        if (TextUtils.isEmpty(etBio.getText().toString())) {
+            UIUtils.showBaseToast("请输入签名");
+            return;
+        }
         AppCacheData.getFileMap().put("performTypeName", etSelectStyle.getTrimmedString());
         AppCacheData.getFileMap().put("signature", etBio.getText().toString().trim());
-        AppCacheData.getFileMap().put("music", mMusic_file.getMusicPath());
+        if (mMusic_file != null)
+            AppCacheData.getFileMap().put("music", mMusic_file.getMusicPath());
         startActivityForResult(new Intent(this, SetFile3Activity.class), 1);
     }
 
@@ -115,6 +135,8 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
         LoginActivity.launch(this);
     }
 
+    @Bind(R.id.tv_count)
+    TextView tvCount;
     @Bind(R.id.et_bio)
     EditText etBio;
     @Bind(R.id.et_select_style)
@@ -129,6 +151,22 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     public void initListener() {
         super.initListener();
         registerEventBus(this);
+        etBio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvCount.setText(String.format(strFormat, s.length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Subscribe
@@ -136,10 +174,6 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
         btPlay.setBackgroundResource(R.mipmap.login_play);
     }
 
-    @Subscribe
-    public void onStyleSelect(String style){
-        etSelectStyle.setText(style);
-    }
 
     @Override
     public Activity get() {
@@ -147,8 +181,36 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     }
 
     @Override
-    public void showStylePop(List<PerformStyleModel> modelList) {
-        UIUtils.showPopWindow(this,etSelectStyle,modelList);
+    public void showStylePop(List<StyleModel> modelList) {
+        showPopWindow(this, etSelectStyle, modelList);
+    }
+
+    private void initPopWindow(Context context, List<StyleModel> dataList, String selectStyle) {
+        if (popupWindow == null) {
+            popupWindow = new PopupWindow(context);
+            View inflate = LayoutInflater.from(context).inflate(R.layout.pop_performer_style_layout, null, false);
+            ListView listView = (ListView) inflate.findViewById(R.id.style_listview);
+            adapter = new StyleAdapter(dataList);
+            listView.setAdapter(adapter);
+            popupWindow.setContentView(inflate);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(130));
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    etSelectStyle.setText(adapter.getSelectStyle());
+                }
+            });
+        } else {
+            adapter.refresh(dataList, selectStyle);
+        }
+    }
+
+    public void showPopWindow(Context context, View view, List<StyleModel> dataList) {
+        UIUtils.hideSoftInput(etSelectStyle);
+        initPopWindow(context, dataList, etSelectStyle.getTrimmedString());
+        if (popupWindow.isShowing()) popupWindow.dismiss();
+        else popupWindow.showAsDropDown(etSelectStyle, 0, 0, Gravity.CENTER);
     }
 
     @Override
@@ -164,7 +226,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     @Override
     protected void onPause() {
         super.onPause();
-        if (callBack!=null && callBack.isPlaying()) {
+        if (callBack != null && callBack.isPlaying()) {
             callBack.isPlayerMusic();
             btPlay.setBackgroundResource(R.mipmap.login_play);
         }
@@ -173,7 +235,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (callBack!=null && callBack.isPlaying()) {
+        if (callBack != null && callBack.isPlaying()) {
             callBack.isPlayerMusic();
             btPlay.setBackgroundResource(R.mipmap.login_play);
         }

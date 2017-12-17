@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.bunny.groovy"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bunny.groovy">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".base.BaseApp"
@@ -23,33 +23,40 @@
         android:theme="@style/AppTheme.Slide">
         <activity
             android:name=".ui.RoleChooseActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.SplashActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".base.FragmentContainerActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack"
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTop" />
+        <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".ui.login.LoginActivity"/>
-        <activity android:name=".ui.login.SignUpActivity"/>
-        <activity android:name=".ui.login.SignUp2Activity"/>
-        <activity android:name=".ui.setfile.SetFile1Activity"/>
-        <activity android:name=".ui.setfile.SetFile2Activity"/>
-        <activity android:name=".ui.setfile.SetFile3Activity"/>
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.login.SignUpActivity" />
+        <activity android:name=".ui.login.SignUp2Activity" />
+        <activity android:name=".ui.setfile.SetFile1Activity" />
+        <activity android:name=".ui.setfile.SetFile2Activity" />
+        <activity android:name=".ui.setfile.SetFile3Activity" />
 
         <activity
             android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light"/>
-        <activity android:name=".ui.setfile.MusicListActivity"/>
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".ui.setfile.MusicListActivity" />
 
-        <service android:name=".service.MusicService"/>
+        <service android:name=".service.MusicService" />
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.bunny.groovy.fileProvider"
@@ -57,7 +64,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

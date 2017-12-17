@@ -6,7 +6,8 @@ package com.bunny.groovy.model;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class PerformStyleModel {
+public class StyleModel {
+
 
     /**
      * createDate : 2017-11-02 16:40

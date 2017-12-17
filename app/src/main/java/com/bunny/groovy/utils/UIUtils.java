@@ -8,7 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleAdapter;
 import com.bunny.groovy.base.BaseApp;
-import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.StyleModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,22 +96,16 @@ public class UIUtils {
         baseToast.show();
     }
 
-    public static void showPopWindow(Context context, View view, List<PerformStyleModel> dataList){
-        PopupWindow popupWindow = new PopupWindow(context);
-        View inflate = LayoutInflater.from(context).inflate(R.layout.pop_performer_style_layout, null, false);
-        ListView listView = (ListView) inflate.findViewById(R.id.style_listview);
-        final StyleAdapter adapter = new StyleAdapter(dataList);
-        listView.setAdapter(adapter);
-        popupWindow.setContentView(inflate);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                EventBus.getDefault().post(adapter.getSelectStyle());
-            }
-        });
-        popupWindow.showAsDropDown(view,0,0,Gravity.CENTER);
+    /**
+     * 隐藏键盘
+     *
+     * @param view
+     */
+    public static void hideSoftInput(View view) {
+        final InputMethodManager im = (InputMethodManager) view.getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 
     /**
      * 得到上下文
@@ -259,5 +253,10 @@ public class UIUtils {
      */
     public static int sp2px(int sp) {
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResource().getDisplayMetrics()) + 0.5f);
+    }
+
+    public static int getScreenWidth() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
+        return wm.getDefaultDisplay().getWidth();
     }
 }

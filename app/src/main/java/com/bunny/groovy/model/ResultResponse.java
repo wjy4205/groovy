@@ -10,6 +10,13 @@ public class ResultResponse<T> {
     public boolean success;
     public T resultData;
 
+    public ResultResponse(String errorCode, String errorMsg, boolean success, T resultData) {
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
+        this.success = success;
+        this.resultData = resultData;
+    }
+
     public String getErrorCode() {
         return errorCode;
     }

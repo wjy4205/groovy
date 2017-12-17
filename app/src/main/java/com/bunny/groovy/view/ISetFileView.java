@@ -2,7 +2,7 @@ package com.bunny.groovy.view;
 
 import android.app.Activity;
 
-import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.StyleModel;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
 
 public interface ISetFileView{
     Activity get();
-    void showStylePop(List<PerformStyleModel> modelList);
+    void showStylePop(List<StyleModel> modelList);
 }

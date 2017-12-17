@@ -11,10 +11,12 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /****************************************
  * 功能说明: 表演者主页
@@ -35,6 +37,10 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     TextView tvAddress;
     @Bind(R.id.nextshow_tv_time)
     TextView tvTime;
+    @OnClick(R.id.overview_tv_release_show)
+    void releaseShow(){
+        ReleaseShowFragment.launch(getActivity());
+    }
 
     @Override
     protected OverviewPresenter createPresenter() {

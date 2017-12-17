@@ -11,4 +11,6 @@
     <color name="tab_common_bg">#222</color>
 
     <color name="accentPurple">#7B87F1</color>
+
+    <color name="trans">#00ffffff</color>
 </resources>

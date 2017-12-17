@@ -2,25 +2,19 @@ package com.bunny.groovy.api;
 
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.NextShowModel;
-import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 
-import java.lang.annotation.Retention;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -31,11 +25,6 @@ import rx.Observable;
  */
 
 public interface ApiService {
-    //表演者用户注册
-    @FormUrlEncoded
-    @POST("FrontUserController/performerFrontUserRegister")
-    Observable<ResponseBody> showerRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
-                                            @Field("telephone") String telephone, @Field("userEmail") String userEmail);
 
     //检查邮箱是否被占用
     @FormUrlEncoded
@@ -84,7 +73,8 @@ public interface ApiService {
 
     //获取表演类型
     @GET("PerformerBasicsController/getPerformTypeListNotLogin")
-    Observable<List<PerformStyleModel>> getPerformStyle();
+    Observable<ResultResponse<List<StyleModel>>> getPerformStyle();
+
 
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")

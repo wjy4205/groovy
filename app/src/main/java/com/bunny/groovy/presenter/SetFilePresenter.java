@@ -7,22 +7,16 @@ import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.GoogleMapLoc;
-import com.bunny.groovy.model.PerformStyleModel;
-import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.setfile.SetFile2Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISetFileView;
 import com.bunny.groovy.weidget.ProgressHUD;
-import com.google.gson.Gson;
-import com.google.gson.internal.Excluder;
 import com.socks.library.KLog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,9 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Multipart;
 import rx.Subscriber;
 
 /****************************************
@@ -100,13 +92,13 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
     /**
      * 获取表演style
      */
-    public void rquestStyle(){
-        addSubscription(apiService.getPerformStyle(), new SubscriberCallBack<List<PerformStyleModel>>(mView.get()) {
+    public void requestStyle() {
+        addSubscription(apiService.getPerformStyle(), new SubscriberCallBack<List<StyleModel>>(mView.get()) {
             @Override
-            protected void onSuccess(List<PerformStyleModel> response) {
-                if (response!=null && response.size()>0){
+            protected void onSuccess(List<StyleModel> response) {
+                if (response != null && response.size() > 0) {
                     mView.showStylePop(response);
-                }else {
+                } else {
                     UIUtils.showBaseToast("获取style失败，稍后再试");
                 }
             }
@@ -134,8 +126,9 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
                 RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
                 map.put("imgfile\"; filename=\"" + imageFile.getName(), imageBody);
             }
+        } else {
+            map.put("imgfile\"; filename=\"image.jpg", RequestBody.create(MediaType.parse("multipart/form-data"), ""));
         }
-        fileMap.remove("imgfile");
         //音频文件
         String musicPath = fileMap.get("music");
         KLog.d("音频文件路径", musicPath);
@@ -145,8 +138,11 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
                 RequestBody musicBody = RequestBody.create(MediaType.parse("multipart/form-data"), musicFile);
                 map.put("music\"; filename=\"" + musicFile.getName(), musicBody);
             }
+        }else {
+            map.put("music\"; filename=\"music.mp3", RequestBody.create(MediaType.parse("multipart/form-data"), ""));
         }
-        fileMap.remove("music");
+//        fileMap.remove("music");
+//        fileMap.remove("imgfile");
 
         addSubscription(apiService.updatePerformerInfo(fileMap, map), new SubscriberCallBack(mView.get()) {
             @Override
@@ -156,7 +152,9 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 
             @Override
             protected void onSuccess(Object response) {
-
+                MainActivity.launch(mView.get());
+                mView.get().setResult(AppConstants.ACTIVITY_FINISH);
+                mView.get().finish();
             }
 
             @Override

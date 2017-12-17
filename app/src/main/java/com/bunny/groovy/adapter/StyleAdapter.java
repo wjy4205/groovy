@@ -1,5 +1,6 @@
 package com.bunny.groovy.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,8 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.model.PerformStyleModel;
-import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.model.StyleModel;
 import com.socks.library.KLog;
 
 import java.util.List;
@@ -21,10 +21,10 @@ import java.util.List;
  ****************************************/
 
 public class StyleAdapter extends BaseAdapter {
-    private List<PerformStyleModel> dataList;
-    private StringBuffer mStringBuffer = new StringBuffer();//选择的style
+    private List<StyleModel> dataList;
+    private StringBuilder mStringBuffer;
 
-    public StyleAdapter(List<PerformStyleModel> dataList) {
+    public StyleAdapter(List<StyleModel> dataList) {
         this.dataList = dataList;
     }
 
@@ -35,7 +35,7 @@ public class StyleAdapter extends BaseAdapter {
     }
 
     @Override
-    public PerformStyleModel getItem(int position) {
+    public StyleModel getItem(int position) {
         return dataList.get(position);
     }
 
@@ -46,53 +46,49 @@ public class StyleAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        MyHolder holder;
-        if (convertView == null) {
-            holder = new MyHolder();
-            convertView = View.inflate(parent.getContext(), R.layout.item_perform_style_layout, null);
-            holder.tvName = (TextView) convertView.findViewById(R.id.item_style_tv_name);
-            holder.mCheckBox = (CheckBox) convertView.findViewById(R.id.item_style_checkbox);
-            convertView.setTag(holder);
-        } else {
-            holder = (MyHolder) convertView.getTag();
-        }
-        holder.tvName.setText(dataList.get(position).getTypeName());
-        holder.mCheckBox.setChecked(dataList.get(position).isChecked());
-        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        convertView = View.inflate(parent.getContext(), R.layout.item_perform_style_layout, null);
+        TextView tvName = (TextView) convertView.findViewById(R.id.item_style_tv_name);
+        CheckBox mCheckBox = (CheckBox) convertView.findViewById(R.id.item_style_checkbox);
+        tvName.setText(dataList.get(position).getTypeName());
+        mCheckBox.setChecked(dataList.get(position).isChecked());
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mCheckListener != null) {
-                    mCheckListener.onCheck(dataList.get(position), isChecked);
-                }
                 dataList.get(position).setChecked(isChecked);
             }
         });
         return convertView;
     }
 
-    public String getSelectStyle(){
-        for (PerformStyleModel model:
-             dataList) {
+    public String getSelectStyle() {
+        mStringBuffer = new StringBuilder();
+        for (StyleModel model :
+                dataList) {
             if (model.isChecked())
                 mStringBuffer.append(model.getTypeName()).append(",");
         }
+        if (mStringBuffer.length() == 0) return "";
         String substring = mStringBuffer.substring(0, mStringBuffer.length() - 1);
         KLog.a(substring);
         return substring;
     }
 
-    private static class MyHolder {
-        private TextView tvName;
-        private CheckBox mCheckBox;
-    }
 
-    private CheckListener mCheckListener;
+    public void refresh(List<StyleModel> list, String selectStyle) {
+//        this.dataList = list;
+        if (dataList != null && !TextUtils.isEmpty(selectStyle)) {
+            String[] split = selectStyle.split(",");
 
-    public void setCheckListener(CheckListener listener) {
-        mCheckListener = listener;
-    }
-
-    public interface CheckListener {
-        void onCheck(PerformStyleModel styleModel, boolean isCheck);
+            for (int i = 0; i < dataList.size(); i++) {
+                for (String str :
+                        split) {
+                    if (str.equals(dataList.get(i).getTypeName())) {
+                        dataList.get(i).setChecked(true);
+                        break;
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

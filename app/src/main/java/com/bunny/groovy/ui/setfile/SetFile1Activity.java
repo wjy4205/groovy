@@ -5,11 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
-import com.bunny.groovy.model.PerformStyleModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
@@ -75,6 +76,23 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
 
     @OnClick(R.id.perfect_info_tv_next)
     void next() {
+        //拦截
+        if (TextUtils.isEmpty(etFullName.getTrimmedString())){
+            UIUtils.showBaseToast("请输入名字");
+            return;
+        }
+        if (TextUtils.isEmpty(etArtistName.getTrimmedString())){
+            UIUtils.showBaseToast("请输入昵称");
+            return;
+        }
+        if (TextUtils.isEmpty(etZipcode.getTrimmedString())){
+            UIUtils.showBaseToast("请输入邮编");
+            return;
+        }
+        if (TextUtils.isEmpty(etWebsite.getTrimmedString())){
+            UIUtils.showBaseToast("请输入网站");
+            return;
+        }
         //保存数据
         AppCacheData.getFileMap().put("userName", etFullName.getTrimmedString());
         AppCacheData.getFileMap().put("zipCode", etZipcode.getTrimmedString());
@@ -101,7 +119,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     }
 
     @Override
-    public void showStylePop(List<PerformStyleModel> modelList) {
+    public void showStylePop(List<StyleModel> modelList) {
 
     }
 

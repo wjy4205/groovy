@@ -27,4 +27,6 @@
     <string name="invalid_password">Invalid password.</string>
     <string name="perfect_info">Please perfect the information.</string>
     <string name="full_name">FULL NAME</string>
+    <string name="search">SEARCH</string>
+    <string name="release">RELEASE</string>
 </resources>

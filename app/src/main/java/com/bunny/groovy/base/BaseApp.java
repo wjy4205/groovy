@@ -1,14 +1,15 @@
 package com.bunny.groovy.base;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
-public class BaseApp extends Application {
+public class BaseApp extends MultiDexApplication{
 
     //以下属性应用于整个应用程序，合理利用资源，减少资源浪费
     private static Context mContext;//上下文

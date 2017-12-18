@@ -11,6 +11,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.releaseshow.MapsFragment;
 import com.bunny.groovy.ui.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
@@ -40,6 +41,10 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @OnClick(R.id.overview_tv_release_show)
     void releaseShow(){
         ReleaseShowFragment.launch(getActivity());
+    }
+    @OnClick(R.id.overview_tv_explore_show)
+    void exploreShow(){
+        MapsFragment.launch(getActivity());
     }
 
     @Override

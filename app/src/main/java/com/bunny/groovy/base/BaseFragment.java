@@ -24,7 +24,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends LazyLoadFrag
     protected T mPresenter;
     private View rootView;
     protected StateView mStateView;//用于显示加载中、网络异常，空布局、内容布局
-    protected Activity mActivity;
+    protected BaseActivity mActivity;
 
 
     @Override
@@ -66,7 +66,12 @@ public abstract class BaseFragment<T extends BasePresenter> extends LazyLoadFrag
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity) context;
+        mActivity = (BaseActivity) context;
+        afterAttach();
+    }
+
+    public void afterAttach() {
+
     }
 
     /**

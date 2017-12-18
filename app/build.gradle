@@ -82,4 +82,6 @@ dependencies {
     //scalars
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile project(':selectpic_lib')
+    //map
+    compile 'com.google.android.gms:play-services-location:11.0.4'
 }

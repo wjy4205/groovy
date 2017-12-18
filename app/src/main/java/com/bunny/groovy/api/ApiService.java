@@ -76,6 +76,10 @@ public interface ApiService {
     Observable<ResultResponse<List<StyleModel>>> getPerformStyle();
 
 
+    //获取演出厅列表-关键字查询
+    @GET("PerformerOverviewController/getVenueListBykeyword")
+    Observable<ResultResponse<Object>> getVenueList(@Query("keyword")String keyword);
+
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")
     Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key") String apiKey);

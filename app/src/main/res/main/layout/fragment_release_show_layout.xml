@@ -17,7 +17,7 @@
         <EditText
             android:id="@+id/release_tv_venue"
             style="@style/common_input_text"
-            tools:hint="@string/search" />
+            android:hint="@string/search" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         <EditText
             android:id="@+id/release_tv_style"
             style="@style/common_input_text"
-            tools:hint="STYLE" />
+            android:hint="STYLE" />
     </LinearLayout>
 
     <TextView
@@ -50,7 +50,7 @@
         <EditText
             android:id="@+id/release_tv_time"
             style="@style/common_input_text"
-            tools:hint="CHOOSE" />
+            android:hint="CHOOSE" />
 
     </LinearLayout>
 

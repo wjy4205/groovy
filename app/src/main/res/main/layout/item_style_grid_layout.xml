@@ -14,18 +14,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <CheckBox
+        <Button
             android:id="@+id/item_style_grid_cb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/btn_square"
             />
 
         <TextView
+            android:layout_marginTop="7dp"
             android:id="@+id/item_style_grid_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             android:text="style"/>
     </LinearLayout>
 

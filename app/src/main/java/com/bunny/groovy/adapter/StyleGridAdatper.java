@@ -6,14 +6,18 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.utils.UIUtils;
+import com.socks.library.KLog;
 
 import java.util.List;
 
@@ -27,10 +31,14 @@ public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.Styl
     private List<StyleModel> dataList;
     private Context mContext;
     private String selectedStyle;
+    private final RelativeLayout.LayoutParams params;
+    private int count = 0;
 
     public StyleGridAdatper(List<StyleModel> dataList, String selected) {
         this.dataList = dataList;
         selectedStyle = selected;
+        int unitWidth = (UIUtils.getScreenWidth() - UIUtils.dip2Px(32)) / 3;
+        params = new RelativeLayout.LayoutParams(unitWidth, unitWidth);
     }
 
     @Override
@@ -41,17 +49,39 @@ public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.Styl
     }
 
     @Override
-    public void onBindViewHolder(StyleHolder holder, final int position) {
-        StyleModel styleModel = dataList.get(position);
+    public void onBindViewHolder(final StyleHolder holder, final int position) {
+        final StyleModel styleModel = dataList.get(position);
         if (!TextUtils.isEmpty(styleModel.getTypeImg())) {
             Glide.with(mContext).load(styleModel.getTypeImg()).into(holder.mIvPic);
         } else holder.mIvPic.setImageResource(R.mipmap.icon_load_pic);
-        holder.mTvCheckBox.setChecked(styleModel.isChecked());
+        holder.itemView.setLayoutParams(params);
+        KLog.d(position + "--" + styleModel.isChecked());
+        if (styleModel.isChecked()){
+            holder.mTvCheckBox.setBackgroundResource(R.mipmap.btn_square_selected);
+        }else {
+            holder.mTvCheckBox.setBackgroundResource(R.mipmap.btn_square);
+        }
         holder.mTvName.setText(styleModel.getTypeName());
-        holder.mTvCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.mTvCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                dataList.get(position).setChecked(isChecked);
+            public void onClick(View v) {
+                if (styleModel.isChecked()) {
+                    holder.mTvCheckBox.setBackgroundResource(R.mipmap.btn_square);
+                    dataList.get(position).setChecked(false);
+                }
+                else {
+                    count = 0;
+                    for (StyleModel model :
+                            dataList) {
+                        if (model.isChecked()) count++;
+                    }
+                    if (count>=2) {
+                        UIUtils.showBaseToast("最多选两个");
+                        return;
+                    }
+                    holder.mTvCheckBox.setBackgroundResource(R.mipmap.btn_square_selected);
+                    dataList.get(position).setChecked(true);
+                }
             }
         });
     }
@@ -73,15 +103,20 @@ public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.Styl
         return selectedStyle;
     }
 
-    public void updateSelectedStyle(String selectedStyle) {
-        if (TextUtils.isEmpty(selectedStyle)) return;
-        String[] split = selectedStyle.split(",");
-        for (int i = 0; i < dataList.size(); i++) {
-            for (int j = 0; j < split.length; j++) {
-                if (split[j].equals(dataList.get(i)))
-                    dataList.get(i).setChecked(true);
-                else dataList.get(i).setChecked(false);
-                break;
+    public void updateSelectedStyle(List<StyleModel> list, String selectedStyle) {
+        this.dataList = list;
+        if (dataList != null && !TextUtils.isEmpty(selectedStyle)) {
+            String[] split = selectedStyle.split(",");
+
+            for (int i = 0; i < dataList.size(); i++) {
+                dataList.get(i).setChecked(false);
+                for (String str :
+                        split) {
+                    if (str.equals(dataList.get(i).getTypeName())) {
+                        dataList.get(i).setChecked(true);
+                        break;
+                    }
+                }
             }
         }
         notifyDataSetChanged();
@@ -89,7 +124,7 @@ public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.Styl
 
     static class StyleHolder extends RecyclerView.ViewHolder {
 
-        private final CheckBox mTvCheckBox;
+        private final Button mTvCheckBox;
         private final TextView mTvName;
         private final ImageView mIvPic;
 
@@ -97,7 +132,7 @@ public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.Styl
             super(itemView);
             mIvPic = (ImageView) itemView.findViewById(R.id.item_style_grid_iv_pic);
             mTvName = (TextView) itemView.findViewById(R.id.item_style_grid_tv_name);
-            mTvCheckBox = (CheckBox) itemView.findViewById(R.id.item_style_grid_cb);
+            mTvCheckBox = (Button) itemView.findViewById(R.id.item_style_grid_cb);
         }
     }
 

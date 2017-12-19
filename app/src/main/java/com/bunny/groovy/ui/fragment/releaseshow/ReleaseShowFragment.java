@@ -1,9 +1,12 @@
 package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -34,6 +38,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
 
     private PopupWindow mPopupWindow;
     private StyleGridAdatper mAdatper;
+    private List<StyleModel> styleList;
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -68,7 +73,14 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
 
     @OnClick(R.id.release_et_style)
     public void showPop() {
-        mPresenter.requestStyle();
+        if (styleList == null || styleList.size() == 0)
+            mPresenter.requestStyle();
+        else showStylePop(styleList);
+    }
+
+    @OnClick(R.id.release_et_time)
+    public void selectTime(){
+
     }
 
     private void closePop() {
@@ -102,25 +114,45 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     }
 
     @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        //禁用编辑
+        etVenue.setFocusable(false);
+        etStyle.setFocusable(false);
+        etTime.setFocusable(false);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        registerEventBus(this);
+    }
+
+    @Override
     public Activity get() {
         return getActivity();
     }
 
     @Override
     public void showStylePop(List<StyleModel> modelList) {
+        UIUtils.hideSoftInput(etStyle);
+        styleList = modelList;
         if (mPopupWindow == null)
             initPopWindow(modelList);
-
-        mPopupWindow.showAsDropDown(etStyle);
-        mAdatper.updateSelectedStyle(etStyle.getText().toString().trim());
+        mPopupWindow.showAtLocation(etBio, Gravity.CENTER,0,0);
     }
 
     private void initPopWindow(List<StyleModel> modelList) {
         mPopupWindow = new PopupWindow(getActivity());
         View popview = LayoutInflater.from(getActivity()).inflate(R.layout.pop_style_grid_layout, null, false);
+        mPopupWindow.setContentView(popview);
+        mPopupWindow.setOutsideTouchable(false);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setWidth(UIUtils.getScreenWidth()-UIUtils.dip2Px(32));
         RecyclerView recyclerview = (RecyclerView) popview.findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mAdatper = new StyleGridAdatper(modelList, etStyle.getText().toString().trim());
+        recyclerview.setAdapter(mAdatper);
         popview.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +166,19 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
                 etStyle.setText(mAdatper.getSelectStyles());
             }
         });
-        mPopupWindow.setContentView(popview);
+        // 按下android回退物理键 PopipWindow消失解决
+        recyclerview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                    if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                        mPopupWindow.dismiss();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 }

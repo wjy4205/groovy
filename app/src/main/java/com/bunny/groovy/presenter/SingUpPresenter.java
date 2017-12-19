@@ -1,6 +1,7 @@
 package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
+import com.bunny.groovy.api.VerifyEvent;
 import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.MyVerificationListener;
@@ -9,6 +10,7 @@ import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
+import com.bunny.groovy.weidget.ProgressHUD;
 import com.sinch.verification.Config;
 import com.sinch.verification.PhoneNumberUtils;
 import com.sinch.verification.SinchVerification;
@@ -48,26 +50,21 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             type = AppConstants.ACCOUNT_TYPE_EMAIL;
         } else {
             //不合法，提示用户
-            mView.showCheckResult(false, type, "ACCOUNT INVALID!");
+            mView.showCheckResult(false, type, "账户不是合法的手机号或者邮箱!");
             return;
         }
 
-        addSubscription(apiService.checkAccountUsed(account), new Subscriber<ResultResponse>() {
+        //检测账户是否可用
+        addSubscription(apiService.checkAccountUsed(account), new SubscriberCallBack<Object>(mView.get()) {
             @Override
-            public void onCompleted() {
+            protected boolean isShowProgress() {
+                return true;
             }
 
             @Override
-            public void onError(Throwable e) {
-                KLog.a(e.toString());
-                UIUtils.showBaseToast(e.toString());
-            }
-
-            @Override
-            public void onNext(ResultResponse result) {
-                KLog.a("checkAccount", result.success);
-                mView.showCheckResult(result.success, type, result.errorMsg);
-                if (result.success && next) {
+            protected void onSuccess(Object response) {
+                mView.showCheckResult(true, type, "");
+                if (next) {
                     //根据类型发送验证码
                     //邮箱账户
                     if (type == AppConstants.ACCOUNT_TYPE_EMAIL)
@@ -81,7 +78,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
 
                                     @Override
                                     protected void onFailure(ResultResponse response) {
-                                        super.onFailure(response);
+
                                     }
 
                                     @Override
@@ -92,11 +89,63 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
 
                         //手机账户
                     else if (type == AppConstants.ACCOUNT_TYPE_PHONE) {
-                        sendPhoneCheckCode(account);
+//                        sendPhoneCheckCode(account);
+                        VerifyEvent.initSinch(mView.get(),account);
                     }
                 }
             }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+                mView.showCheckResult(false, type, response.errorMsg);
+            }
         });
+
+//        addSubscription(apiService.checkAccountUsed(account), new Subscriber<ResultResponse>() {
+//            @Override
+//            public void onCompleted() {
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                KLog.a(e.toString());
+//                UIUtils.showBaseToast(e.toString());
+//            }
+//
+//            @Override
+//            public void onNext(ResultResponse result) {
+//                KLog.a("checkAccount", result.success);
+//                mView.showCheckResult(result.success, type, result.errorMsg);
+//                if (result.success && next) {
+//                    //根据类型发送验证码
+//                    //邮箱账户
+//                    if (type == AppConstants.ACCOUNT_TYPE_EMAIL)
+//                        addSubscription(apiService.getEmailCheckCode(account, AppConstants.USER_TYPE_MUSICIAN),
+//                                new SubscriberCallBack<ResultResponse>(mView.get()) {
+//                                    @Override
+//                                    protected void onSuccess(ResultResponse response) {
+//                                        UIUtils.showBaseToast("Code send to your E-mail successfully.");
+//                                        mView.nextStep();
+//                                    }
+//
+//                                    @Override
+//                                    protected void onFailure(ResultResponse response) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    protected boolean isShowProgress() {
+//                                        return true;
+//                                    }
+//                                });
+//
+//                        //手机账户
+//                    else if (type == AppConstants.ACCOUNT_TYPE_PHONE) {
+//                        sendPhoneCheckCode(account);
+//                    }
+//                }
+//            }
+//        });
     }
 
     /**
@@ -113,22 +162,25 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
-                EventBus.getDefault().post("success");
+                EventBus.getDefault().post("fail");
             }
         });
     }
 
     //发送手机验证码
     private void sendPhoneCheckCode(String account) {
+        ProgressHUD show = ProgressHUD.show(mView.get(), "发送验证码...", true, true, null);
         if (mVerification == null) {
             Config config = SinchVerification.config().applicationKey(AppConstants.SINCH_APPKEY).context(BaseApp.getContext()).build();
             mListener = new MyVerificationListener();
             String defaultRegion = PhoneNumberUtils.getDefaultCountryIso(BaseApp.getContext());
+            KLog.d("地区", defaultRegion);
             String phoneNumberInE164 = PhoneNumberUtils.formatNumberToE164(account, defaultRegion);
+            KLog.d("格式化的号码", phoneNumberInE164);
             mVerification = SinchVerification.createSmsVerification(config, phoneNumberInE164, mListener);
         }
         mVerification.initiate();
+        show.dismiss();
     }
 
     /**
@@ -136,8 +188,8 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
      *
      * @param code
      */
-    public void checkPhoneCode(String code) {
-        mVerification.verify(code);
+    public void checkPhoneCode(Verification verification,String code) {
+        verification.verify(code);
     }
 
 
@@ -160,7 +212,6 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
 
             }
         });

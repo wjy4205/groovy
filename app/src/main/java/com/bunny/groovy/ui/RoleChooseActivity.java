@@ -10,6 +10,7 @@ import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.login.LoginActivity;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 
 import java.security.Permission;
@@ -29,7 +30,7 @@ import flyn.Eyes;
 public class RoleChooseActivity extends BaseActivity {
     @OnClick(R.id.tv_musician)
     void login() {
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivityForResult(new Intent(this, LoginActivity.class),2);
     }
 
     @Override
@@ -72,5 +73,13 @@ public class RoleChooseActivity extends BaseActivity {
     @Override
     public boolean enableSlideClose() {
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==2 && resultCode == AppConstants.ACTIVITY_FINISH){
+            finish();
+        }
     }
 }

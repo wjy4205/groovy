@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.tv_sign_up)
     void signUp() {
-        startActivity(new Intent(this, SignUpActivity.class));
+        startActivityForResult(new Intent(this, SignUpActivity.class),2);
     }
 
     @OnClick(R.id.tv_musician_login)
@@ -48,6 +48,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             return;
         }
         if (!(PatternUtils.isUSphonenumber(etPhoneOrEmail.getTrimmedString())
+                || PatternUtils.isCNPhone(etPhoneOrEmail.getTrimmedString())
                 || PatternUtils.isValidEmail(etPhoneOrEmail.getTrimmedString()))) {
             //不是email也不是手机
             UIUtils.showBaseToast(getString(R.string.invalid_account));
@@ -86,7 +87,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void loginSuccess(PerformerUserModel userModel) {
+        //登录成功，进入主页，结束登录页面
         MainActivity.launch(this);
+        setResult(AppConstants.ACTIVITY_FINISH);
         finish();
     }
 
@@ -119,7 +122,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
+        //设置资料结束，结束本页面
+        if (requestCode ==2&& resultCode == AppConstants.ACTIVITY_FINISH) {
             finish();
         }
     }

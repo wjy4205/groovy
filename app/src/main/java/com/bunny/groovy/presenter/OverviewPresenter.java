@@ -34,7 +34,6 @@ public class OverviewPresenter extends BasePresenter<IOverView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
                 mView.showEmptyNextShow();
             }
 

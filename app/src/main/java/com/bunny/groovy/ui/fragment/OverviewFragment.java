@@ -7,14 +7,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
-import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
-import com.bunny.groovy.ui.releaseshow.MapsFragment;
-import com.bunny.groovy.ui.releaseshow.ReleaseShowFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.MapsFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
+import com.bunny.groovy.weidget.HeightLightTextView;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -31,7 +31,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Bind(R.id.nextshow_iv_head)
     ImageView ivHead;
     @Bind(R.id.nextshow_tv_performerName)
-    TextView tvName;
+    HeightLightTextView tvName;
     @Bind(R.id.nextshow_tv_performerStar)
     TextView tvStar;
     @Bind(R.id.nextshow_tv_address)

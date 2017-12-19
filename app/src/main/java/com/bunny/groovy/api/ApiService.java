@@ -5,6 +5,7 @@ import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.model.VenueModel;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public interface ApiService {
     //检查邮箱是否被占用
     @FormUrlEncoded
     @POST("FrontUserController/checkUserAccountRegister")
-    Observable<ResultResponse> checkAccountUsed(@Field("userAccount") String userAccount);
+    Observable<ResultResponse<Object>> checkAccountUsed(@Field("userAccount") String userAccount);
 
     //发送邮箱验证码
     //userType:角色类型（0-普通用户 1-表演者 2-演出厅）
@@ -57,7 +58,7 @@ public interface ApiService {
     //表演者完善信息,上传文件
     @Multipart
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
-    Observable<ResultResponse> updatePerformerInfo(@QueryMap Map<String, String> map,
+    Observable<ResultResponse<Object>> updatePerformerInfo(@QueryMap Map<String, String> map,
                                                    @PartMap Map<String, RequestBody> maps);
 
     //获取表演者个人信息
@@ -78,7 +79,7 @@ public interface ApiService {
 
     //获取演出厅列表-关键字查询
     @GET("PerformerOverviewController/getVenueListBykeyword")
-    Observable<ResultResponse<Object>> getVenueList(@Query("keyword")String keyword);
+    Observable<ResultResponse<List<VenueModel>>> getVenueList(@Query("keyword")String keyword);
 
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")

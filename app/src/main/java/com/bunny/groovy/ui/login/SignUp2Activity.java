@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.api.VerifyEvent;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.presenter.SingUpPresenter;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
@@ -60,7 +61,7 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
                 UIUtils.showBaseToast("E-mail invalid.");
                 return;
             }
-            mPresenter.checkPhoneCode(etCode.getTrimmedString());
+            VerifyEvent.verifyCode(etCode.getTrimmedString());
         } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
             if (TextUtils.isEmpty(etPhone.getTrimmedString()))
             //手机号为空
@@ -83,10 +84,17 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
      */
     @Subscribe
     public void onVerifyEvent(String result) {
-        if ("success".equals(result)) {
-            //code验证成功
-            //注册
-            mPresenter.register(mAccount, mPassword, etPhone.getTrimmedString(), etEmail.getTrimmedString());
+        switch (result) {
+            case AppConstants.Code_Verify_Correct:
+                mPresenter.register(mAccount, mPassword, etPhone.getTrimmedString(), etEmail.getTrimmedString());
+                break;
+            case AppConstants.Code_Verify_Invalid:
+                UIUtils.showBaseToast("验证码不正确");
+                break;
+            case AppConstants.Code_Send_ServerError:
+            default:
+                UIUtils.showBaseToast("服务器出错");
+                break;
         }
     }
 

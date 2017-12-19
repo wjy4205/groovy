@@ -1,6 +1,7 @@
 package com.bunny.groovy.presenter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.bunny.groovy.api.SubscriberCallBack;
@@ -23,10 +24,18 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
         super(view);
     }
 
+    private long startRequestTime = 0;
+    private long endRequestTime = 0;
+
     public void requestPerformerInfo(String userID) {
+        startRequestTime = SystemClock.currentThreadTimeMillis();
         addSubscription(apiService.getPerformerInfo(userID), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
+                endRequestTime = SystemClock.currentThreadTimeMillis();
+                long delta = endRequestTime - startRequestTime;
+                if (delta / 1000 < 3000)
+                    SystemClock.sleep(3000-(delta/1000));//3秒延迟
                 //缓存数据
                 Utils.initLoginData(mView.get(), response);
                 //判断资料是否完善
@@ -42,7 +51,6 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
                 mView.requestFailed();
             }
 

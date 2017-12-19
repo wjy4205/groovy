@@ -30,7 +30,7 @@ public class UIUtils {
     public static Toast mToast;
 
     public static void showToast(String msg) {
-        showToast(msg, Toast.LENGTH_SHORT);
+        showToast(msg, Toast.LENGTH_LONG);
     }
 
     public static void showToast(String msg, int duration) {

@@ -34,4 +34,13 @@ public class AppConstants {
     public static String KEY_LOGIN = "key_login";//是否登录标识
     public static String KEY_USERID = "key_userid";//已登录的userid
     public static String KEY_PHONE = "key_phone";//已登录的user 电话
+
+    public final static String Code_Send_Success = "0000";//发送成功
+    public final static String Code_Send_ServerError = "5000";//sinch服务器出错
+    public final static String Code_Send_InvalidPhone = "1000";//填的不对
+
+    public final static String Code_Verify_Correct = "6666";//验证通过
+    public final static String Code_Verify_Invalid = "1111";//验证未通过
+    public final static String Code_Verify_ServerError = "5555";//验证未通过
+
 }

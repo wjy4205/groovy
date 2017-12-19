@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.api.SubscriberCallBack;
+import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.StyleModel;
@@ -77,9 +78,9 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
                         AppCacheData.getFileMap().put("longitude", loc.getResults().get(0).getGeometry().getLocation().getLng());
                         AppCacheData.getFileMap().put("latitude", loc.getResults().get(0).getGeometry().getLocation().getLat());
                         //下一页
-                        mView.get().startActivityForResult(new Intent(mView.get(), SetFile2Activity.class), 1);
+                        mView.get().startActivityForResult(new Intent(mView.get(), SetFile2Activity.class), 2);
                     } else {
-                        UIUtils.showBaseToast("ZipCode incorrect. " + loc.getError_message());
+                        UIUtils.showBaseToast("邮编错误" + loc.getError_message());
                     }
                 } catch (Exception e) {
                     UIUtils.showBaseToast(e.toString());
@@ -105,7 +106,6 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
             }
         });
     }
@@ -144,7 +144,7 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 //        fileMap.remove("music");
 //        fileMap.remove("imgfile");
 
-        addSubscription(apiService.updatePerformerInfo(fileMap, map), new SubscriberCallBack(mView.get()) {
+        addSubscription(apiService.updatePerformerInfo(fileMap, map), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -152,14 +152,12 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 
             @Override
             protected void onSuccess(Object response) {
-                MainActivity.launch(mView.get());
                 mView.get().setResult(AppConstants.ACTIVITY_FINISH);
                 mView.get().finish();
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
-                super.onFailure(response);
             }
         });
     }

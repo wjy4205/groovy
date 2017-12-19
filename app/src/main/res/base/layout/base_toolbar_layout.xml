@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:maxWidth="360px"
             android:layout_gravity="center"
             android:textStyle="bold"
             android:textColor="@android:color/white"

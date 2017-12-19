@@ -50,6 +50,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
         if (response.success) {
             onSuccess((T) response.resultData);
         } else {
+            UIUtils.showToast(response.errorMsg);
             onFailure(response);
             if ("201".equals(response.errorCode)) {//未登录
                 RoleChooseActivity.launch(mContext);
@@ -65,7 +66,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
     @Override
     public void onError(Throwable e) {
         if (mProgressHUD != null) mProgressHUD.dismiss();
-        UIUtils.showToast(e.toString());
+        UIUtils.showToast("Error!请检查网络\n"+e.toString());
         KLog.e(e.getLocalizedMessage());
 //        onError();
     }
@@ -74,8 +75,6 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
 
 //    protected abstract void onError();
 
-    protected void onFailure(ResultResponse response) {
-        UIUtils.showToast(response.errorMsg);
-    }
+    protected abstract void onFailure(ResultResponse response);
 
 }

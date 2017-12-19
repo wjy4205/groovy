@@ -28,6 +28,7 @@ import com.bunny.groovy.presenter.SetFilePresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
 import com.xw.repo.XEditText;
@@ -127,7 +128,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
         AppCacheData.getFileMap().put("signature", etBio.getText().toString().trim());
         if (mMusic_file != null)
             AppCacheData.getFileMap().put("music", mMusic_file.getMusicPath());
-        startActivityForResult(new Intent(this, SetFile3Activity.class), 1);
+        startActivityForResult(new Intent(this, SetFile3Activity.class), 2);
     }
 
     @OnClick(R.id.tv_login)
@@ -249,6 +250,9 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
                 mMusic_file = data.getParcelableExtra("music_file");
                 initMusicService();
             }
+        } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH){
+            setResult(AppConstants.ACTIVITY_FINISH);
+            finish();
         }
     }
 }

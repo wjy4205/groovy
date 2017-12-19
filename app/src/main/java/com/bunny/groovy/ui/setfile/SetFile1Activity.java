@@ -77,19 +77,19 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     @OnClick(R.id.perfect_info_tv_next)
     void next() {
         //拦截
-        if (TextUtils.isEmpty(etFullName.getTrimmedString())){
+        if (TextUtils.isEmpty(etFullName.getTrimmedString())) {
             UIUtils.showBaseToast("请输入名字");
             return;
         }
-        if (TextUtils.isEmpty(etArtistName.getTrimmedString())){
+        if (TextUtils.isEmpty(etArtistName.getTrimmedString())) {
             UIUtils.showBaseToast("请输入昵称");
             return;
         }
-        if (TextUtils.isEmpty(etZipcode.getTrimmedString())){
+        if (TextUtils.isEmpty(etZipcode.getTrimmedString())) {
             UIUtils.showBaseToast("请输入邮编");
             return;
         }
-        if (TextUtils.isEmpty(etWebsite.getTrimmedString())){
+        if (TextUtils.isEmpty(etWebsite.getTrimmedString())) {
             UIUtils.showBaseToast("请输入网站");
             return;
         }
@@ -142,8 +142,8 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
             headImagePath = mResults.get(0);
             Bitmap bitmap = BitmapFactory.decodeFile(headImagePath);
             headView.setImageBitmap(bitmap);
-        } else if (requestCode == 1 && resultCode == AppConstants.ACTIVITY_FINISH) {
-            MainActivity.launch(this);
+        } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
+            setResult(AppConstants.ACTIVITY_FINISH);
             finish();
         }
     }

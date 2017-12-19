@@ -23,3 +23,31 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#保护注解
+-keepattributes *Annotation*
+
+#butterknife的混淆打代码
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+-keep class com.facebook.** { *; }
+-dontwarn com.facebook.**
+
+-keep class okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+-keep class okio.** { *; }
+-dontwarn okio.**
+
+-keep class retrofit2.** { *;}
+-dontwarn retrofit2.**
+
+-libraryjars /libs/sinch-android-verification-1.5.0.aar
+-keep class com.sinch.vertification.** { *; }

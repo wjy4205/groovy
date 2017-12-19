@@ -15,11 +15,12 @@
     <LinearLayout style="@style/input_text_parent">
 
         <EditText
-            android:id="@+id/release_tv_venue"
+            android:id="@+id/release_et_venue"
             style="@style/common_input_text"
             android:hint="@string/search" />
 
         <TextView
+            android:id="@+id/release_tv_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search"
@@ -35,9 +36,9 @@
     <LinearLayout style="@style/input_text_parent">
 
         <EditText
-            android:id="@+id/release_tv_style"
+            android:id="@+id/release_et_style"
             style="@style/common_input_text"
-            android:hint="STYLE" />
+            android:hint="STYLE"/>
     </LinearLayout>
 
     <TextView
@@ -48,7 +49,7 @@
     <LinearLayout style="@style/input_text_parent">
 
         <EditText
-            android:id="@+id/release_tv_time"
+            android:id="@+id/release_et_time"
             style="@style/common_input_text"
             android:hint="CHOOSE" />
 
@@ -70,7 +71,7 @@
         android:paddingTop="6dp">
 
         <EditText
-            android:id="@+id/et_bio"
+            android:id="@+id/release_et_bio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"

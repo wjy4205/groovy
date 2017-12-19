@@ -13,6 +13,8 @@ import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
 import com.xw.repo.XEditText;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
@@ -41,16 +43,16 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
         String pwd = etPassword.getTrimmedString();
         String pwdAgain = etPasswordAgain.getTrimmedString();
         if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
-            UIUtils.showBaseToast("PASSWORD MUST NOT BE NULL!");
+            UIUtils.showBaseToast("请输入密码");
         } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("PASSWORD LENGTH AT LEAST 8");
+            UIUtils.showBaseToast("密码至少8位");
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("PASSWORD NOT SAME!");
+            UIUtils.showBaseToast("密码输入不一致");
         } else {
             //检查账户
             String account = etPhoneEmail.getTrimmedString();
             if (TextUtils.isEmpty(account)) {
-                UIUtils.showBaseToast("ACCOUNT MUST NOT BE NULL!");
+                UIUtils.showBaseToast("Please input account!");
                 return;
             }
             mPresenter.checkAccount(account, true);
@@ -87,8 +89,26 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
                 }
             }
         });
+        //event bus
+        registerEventBus(this);
     }
 
+
+    @Subscribe
+    public void onRecevieSms(String code) {
+        switch (code) {
+            case AppConstants.Code_Send_Success://发送成功，跳转到下一个页面
+                nextStep();
+                break;
+            case AppConstants.Code_Send_InvalidPhone://发送失败
+                UIUtils.showBaseToast("手机号码不正确");
+                break;
+            default:
+            case "5000"://网络错误
+                UIUtils.showBaseToast("服务器出错");
+                break;
+        }
+    }
 
     @Override
     public void showCheckResult(boolean invalid, int AccountType, String msg) {
@@ -105,9 +125,9 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
         Intent intent = new Intent();
         intent.putExtra(SignUp2Activity.KEY_ACCOUNT, etPhoneEmail.getTrimmedString());
         intent.putExtra(SignUp2Activity.KEY_TYPE, mAccountType);
-        intent.putExtra(SignUp2Activity.KEY_PASSWORD,etPassword.getTrimmedString());
+        intent.putExtra(SignUp2Activity.KEY_PASSWORD, etPassword.getTrimmedString());
         intent.setClass(this, SignUp2Activity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 2);
     }
 
     @Override
@@ -117,14 +137,15 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
 
     @Override
     public void registerSuccess() {
-
+        //第二步才用到
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == AppConstants.ACTIVITY_FINISH) {
+        if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
+            setResult(AppConstants.ACTIVITY_FINISH);
             finish();
         }
     }

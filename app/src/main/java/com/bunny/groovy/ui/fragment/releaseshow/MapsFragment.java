@@ -1,6 +1,5 @@
-package com.bunny.groovy.ui.releaseshow;
+package com.bunny.groovy.ui.fragment.releaseshow;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,9 +15,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
-import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.presenter.MapPresenter;
-import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMapView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,9 +24,6 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
-
-
-import java.util.List;
 
 import butterknife.Bind;
 

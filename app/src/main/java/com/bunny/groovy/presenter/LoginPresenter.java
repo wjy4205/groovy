@@ -38,44 +38,20 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     protected void onSuccess(PerformerUserModel response) {
                         //缓存到本地
                         Utils.initLoginData(mView.get(), response);
-
                         if (response != null) {
-//                            String level = (String) SharedPreferencesUtils.getParam(mView.get(),
-//                                    AppConstants.KEY_USERFILE_LEVEL, AppConstants.USERFILE_LEVLE_NONE);
-//                            switch (level) {
-//                                case AppConstants.USERFILE_LEVLE_FULL:
-//                                    //资料完善进入首页
-//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-//                                    mView.loginSuccess(response);
-//                                    break;
-//                                case AppConstants.USERFILE_LEVLE_FIRST:
-//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-//                                    mView.launchSecondPage();
-//                                    break;
-//                                case AppConstants.USERFILE_LEVLE_SECOND:
-//                                    UIUtils.showBaseToast(UIUtils.getString(R.string.perfect_info));
-//                                    mView.launchThirdPage();
-//                                    break;
-//                                default:
-//                                case AppConstants.USERFILE_LEVLE_NONE:
-//                                    mView.launchFirstPage();
-//                                    break;
-//                            }
                             //判断资料是否完善
                             if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-                                mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
+                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class),2);
                             } else {
                                 //进入主页
-                                MainActivity.launch(mView.get());
-                                mView.get().finish();
+                                mView.loginSuccess(response);
                             }
                         }
                     }
 
                     @Override
                     protected void onFailure(ResultResponse response) {
-                        super.onFailure(response);
                     }
 
                     @Override

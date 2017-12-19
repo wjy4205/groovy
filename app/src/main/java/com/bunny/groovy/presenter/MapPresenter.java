@@ -2,6 +2,7 @@ package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.view.IMapView;
 
 /**
@@ -20,6 +21,11 @@ public class MapPresenter extends BasePresenter<IMapView> {
         addSubscription(apiService.getVenueList(keyword), new SubscriberCallBack(null) {
             @Override
             protected void onSuccess(Object response) {
+
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
 
             }
 

@@ -72,6 +72,12 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    public static Date getDate(int year,int month,int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day);
+        return calendar.getTime();
+    }
+
     public static int getScreenWidth(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();

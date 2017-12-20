@@ -62,9 +62,8 @@ public interface ApiService {
                                                            @PartMap Map<String, RequestBody> maps);
 
     //获取表演者个人信息
-    @FormUrlEncoded
-    @POST("PerformerMeController/getPerformerMeList")
-    Observable<ResultResponse<PerformerUserModel>> getPerformerInfo(@Field("performerID") String userID);
+    @GET("PerformerMeController/getPerformerMeList")
+    Observable<ResultResponse<PerformerUserModel>> getPerformerInfo(@Query("performerID") String userID);
 
 
     //获取表演者下一个演出

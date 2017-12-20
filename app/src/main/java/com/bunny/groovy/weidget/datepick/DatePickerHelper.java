@@ -168,6 +168,15 @@ public class DatePickerHelper {
         return getDisplayWeek(YEAR_START, MONTH_START, DAY_START);
     }
 
+    public String[] getDisplayDayAndWeek(int year, int month) {
+        Integer[] days = genDay(year, month);
+        String[] dayAndWeek = new String[days.length];
+        for (int i = 0; i < days.length; i++) {
+            String displayWeek = getDisplayWeek(year, month, days[i]);
+            dayAndWeek[i] = days[i] + "," + displayWeek;
+        }
+        return dayAndWeek;
+    }
 
     public static void main(String[] args) {
         System.out.println(Arrays.toString(new DatePickerHelper().genMonth()));

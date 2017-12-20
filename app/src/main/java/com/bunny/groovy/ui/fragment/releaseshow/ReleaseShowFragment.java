@@ -19,14 +19,17 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
+import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISetFileView;
 import com.bunny.groovy.weidget.datepick.DatePickerHelper;
 import com.bunny.groovy.weidget.loopview.LoopView;
+import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -129,6 +132,10 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         });
     }
 
+    private int currentYear = new Date().getYear();
+    private int currentMonth = new Date().getMonth();
+    private int currentDay = new Date().getDay();
+
     /**
      * 显示日期选择器
      */
@@ -139,23 +146,48 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         maxCalendar.add(Calendar.MINUTE, -1);
 
         PopupWindow datePop = new PopupWindow(getActivity());
-        View dateView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_time_choose_layout, null);
+        View dateView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_date_choose_layout, null,false);
         datePop.setContentView(dateView);
         LoopView loopMonth = (LoopView) dateView.findViewById(R.id.weidget_month);
-        LoopView loopDay = (LoopView) dateView.findViewById(R.id.weidget_day);
+        final LoopView loopDay = (LoopView) dateView.findViewById(R.id.weidget_day);
         LoopView loopYear = (LoopView) dateView.findViewById(R.id.weidget_year);
 
-        DatePickerHelper helper = new DatePickerHelper();
+        final DatePickerHelper helper = new DatePickerHelper();
+        //年
+        final List<String> years = new ArrayList<>();
+        years.add(String.valueOf(minCalendar.get(Calendar.YEAR)));
+        years.add(String.valueOf(maxCalendar.get(Calendar.YEAR)));
+        loopYear.setItems(years);
 
+        loopYear.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                currentYear = Integer.parseInt(years.get(index));
+            }
+        });
         //月份
         Integer[] intMonth = helper.genMonth();
         String[] monthValues = helper.getDisplayValue(intMonth, "月");
         loopMonth.setItems(Arrays.asList(monthValues));
-        //日期
-        Integer[] intDay = helper.genDay(minCalendar.get(Calendar.YEAR), minCalendar.get(Calendar.MONTH) + 1);
-        String[] dayValues = helper.getDisplayValue(intDay, "日");
-        loopDay.setItems(Arrays.asList(dayValues));
 
+        loopMonth.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                currentMonth = index + 1;
+                loopDay.setItems(Arrays.asList(helper.getDisplayDayAndWeek(currentYear, currentMonth)));
+            }
+        });
+        //日期
+//        Integer[] intDay = helper.genDay(minCalendar.get(Calendar.YEAR), minCalendar.get(Calendar.MONTH) + 1);
+        String[] dayValues = helper.getDisplayDayAndWeek(currentYear, currentMonth);
+        loopDay.setItems(Arrays.asList(dayValues));
+        loopDay.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                currentDay = index + 1;
+            }
+        });
+//        DateUtils.getDate(currentYear,currentMonth,currentDay)
         datePop.showAtLocation(etBio, Gravity.CENTER, 0, 0);
     }
 

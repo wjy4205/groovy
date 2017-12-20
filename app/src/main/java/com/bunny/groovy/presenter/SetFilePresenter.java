@@ -116,6 +116,7 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
      * @param fileMap
      */
     public void updateUserInfo(Map<String, String> fileMap) {
+        fileMap.put("userID", AppCacheData.getPerformerUserModel().getUserID());
         HashMap<String, RequestBody> map = new HashMap<>();
 
         //头像图片
@@ -138,7 +139,7 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
                 RequestBody musicBody = RequestBody.create(MediaType.parse("multipart/form-data"), musicFile);
                 map.put("music\"; filename=\"" + musicFile.getName(), musicBody);
             }
-        }else {
+        } else {
             map.put("music\"; filename=\"music.mp3", RequestBody.create(MediaType.parse("multipart/form-data"), ""));
         }
 //        fileMap.remove("music");
@@ -152,6 +153,7 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
 
             @Override
             protected void onSuccess(Object response) {
+                MainActivity.launch(mView.get());
                 mView.get().setResult(AppConstants.ACTIVITY_FINISH);
                 mView.get().finish();
             }

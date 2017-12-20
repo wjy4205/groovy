@@ -9,6 +9,7 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISingUpView;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.sinch.verification.Config;
@@ -157,12 +158,12 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.chekEmailCodeRegister(code, userAccount), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                EventBus.getDefault().post("success");
+                EventBus.getDefault().post(AppConstants.Code_Verify_Correct);
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
-                EventBus.getDefault().post("fail");
+                EventBus.getDefault().post(AppConstants.Code_Verify_Invalid);
             }
         });
     }

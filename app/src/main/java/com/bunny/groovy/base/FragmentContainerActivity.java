@@ -162,10 +162,11 @@ public class FragmentContainerActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        if (values == null || TextUtils.isEmpty(values.getString(FRAGMENT_TITLE))) {
+        String title = values.getString(FRAGMENT_TITLE);
+        if (values == null || TextUtils.isEmpty(title)) {
             toolBarTitle.setText(getString(R.string.app_name));
         } else {
-            toolBarTitle.setText(values.getString(FRAGMENT_TITLE));
+            toolBarTitle.setText(title.toUpperCase());
         }
         mToolBar.setTitle("");
         setSupportActionBar(mToolBar);

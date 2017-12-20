@@ -13,8 +13,10 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /****************************************
  * 功能说明:统一工具类
@@ -33,6 +35,29 @@ public class Utils {
         String format = String.format(AppConstants.GMT_FORMAT, dateFormat.format(new Date()));
         KLog.d(format);
         return format;
+    }
+
+
+    /**
+     * @param date
+     * @return 周几, 月份. 日期.年
+     */
+    private static String str = "%s,%s. %s,%s";
+
+    public static String getFormatDate(Date date) {
+        String[] split = date.toString().split(" ");
+        if (split.length == 6)
+            return String.format(str, split[0], split[1], split[2], split[5]);
+        return "";
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(date);
+        int i = calendar.get(Calendar.MONTH);
+
+        System.out.println(i);
     }
 
 
@@ -102,7 +127,7 @@ public class Utils {
             music.setTitle(title);
             music.setArtist(artist);
             music.setMusicPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
-            KLog.d("Utils",music.getMusicPath());
+            KLog.d("Utils", music.getMusicPath());
 //            music.setLength(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 //            music.setImage(getAlbumImage(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID))));
             mMediaLists.add(music);

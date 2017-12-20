@@ -1,7 +1,6 @@
 package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleGridAdatper;
@@ -20,10 +20,16 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISetFileView;
+import com.bunny.groovy.weidget.datepick.DatePickerHelper;
+import com.bunny.groovy.weidget.loopview.LoopView;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,6 +45,10 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private PopupWindow mPopupWindow;
     private StyleGridAdatper mAdatper;
     private List<StyleModel> styleList;
+    private PopupWindow mTimePop;
+    private Date mSelectDate = new Date();//选择的日期
+    private String startTime = "";//开始时间
+    private String endTime = "";//结束时间
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -79,8 +89,74 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     }
 
     @OnClick(R.id.release_et_time)
-    public void selectTime(){
+    public void selectTime() {
+        showTimeChoosePop();
+    }
 
+    /**
+     * 弹出选择时间窗口
+     */
+    private void showTimeChoosePop() {
+        if (mTimePop == null)
+            initTimePop();
+        mTimePop.showAtLocation(etBio, Gravity.CENTER, 0, 0);
+    }
+
+    private void closeTimePop() {
+        if (mTimePop != null) mTimePop.dismiss();
+    }
+
+    private void initTimePop() {
+        mTimePop = new PopupWindow(getActivity());
+        View timeView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_time_choose_layout, null);
+        mTimePop.setContentView(timeView);
+        TextView tvTimeTitle = (TextView) timeView.findViewById(R.id.weidget_tv_title);
+        LoopView loopviewFromTime = (LoopView) timeView.findViewById(R.id.weidget_from_time);
+        LoopView loopviewEndTime = (LoopView) timeView.findViewById(R.id.weidget_end_time);
+        //获取时间
+        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array);
+        List<String> stringList = Arrays.asList(timeClockArray);
+        //set data
+        tvTimeTitle.setText(Utils.getFormatDate(new Date()));
+        loopviewFromTime.setItems(stringList);
+        loopviewEndTime.setItems(stringList);
+        tvTimeTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //弹出选择日期的弹窗
+                showDatePop();
+            }
+        });
+    }
+
+    /**
+     * 显示日期选择器
+     */
+    private void showDatePop() {
+        Calendar minCalendar = Calendar.getInstance();
+        Calendar maxCalendar = Calendar.getInstance();
+        maxCalendar.add(Calendar.YEAR, 1);
+        maxCalendar.add(Calendar.MINUTE, -1);
+
+        PopupWindow datePop = new PopupWindow(getActivity());
+        View dateView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_time_choose_layout, null);
+        datePop.setContentView(dateView);
+        LoopView loopMonth = (LoopView) dateView.findViewById(R.id.weidget_month);
+        LoopView loopDay = (LoopView) dateView.findViewById(R.id.weidget_day);
+        LoopView loopYear = (LoopView) dateView.findViewById(R.id.weidget_year);
+
+        DatePickerHelper helper = new DatePickerHelper();
+
+        //月份
+        Integer[] intMonth = helper.genMonth();
+        String[] monthValues = helper.getDisplayValue(intMonth, "月");
+        loopMonth.setItems(Arrays.asList(monthValues));
+        //日期
+        Integer[] intDay = helper.genDay(minCalendar.get(Calendar.YEAR), minCalendar.get(Calendar.MONTH) + 1);
+        String[] dayValues = helper.getDisplayValue(intDay, "日");
+        loopDay.setItems(Arrays.asList(dayValues));
+
+        datePop.showAtLocation(etBio, Gravity.CENTER, 0, 0);
     }
 
     private void closePop() {
@@ -139,7 +215,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         styleList = modelList;
         if (mPopupWindow == null)
             initPopWindow(modelList);
-        mPopupWindow.showAtLocation(etBio, Gravity.CENTER,0,0);
+        mPopupWindow.showAtLocation(etBio, Gravity.CENTER, 0, 0);
     }
 
     private void initPopWindow(List<StyleModel> modelList) {
@@ -148,7 +224,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         mPopupWindow.setContentView(popview);
         mPopupWindow.setOutsideTouchable(false);
         mPopupWindow.setTouchable(true);
-        mPopupWindow.setWidth(UIUtils.getScreenWidth()-UIUtils.dip2Px(32));
+        mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
         RecyclerView recyclerview = (RecyclerView) popview.findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mAdatper = new StyleGridAdatper(modelList, etStyle.getText().toString().trim());

@@ -59,7 +59,7 @@ public interface ApiService {
     @Multipart
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
     Observable<ResultResponse<Object>> updatePerformerInfo(@QueryMap Map<String, String> map,
-                                                   @PartMap Map<String, RequestBody> maps);
+                                                           @PartMap Map<String, RequestBody> maps);
 
     //获取表演者个人信息
     @FormUrlEncoded
@@ -70,7 +70,7 @@ public interface ApiService {
     //获取表演者下一个演出
     @FormUrlEncoded
     @POST("PerformerOverviewController/getNextScheduledShow")
-    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Field("performerID")String performerID);
+    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Field("performerID") String performerID);
 
     //获取表演类型
     @GET("PerformerBasicsController/getPerformTypeListNotLogin")
@@ -79,7 +79,16 @@ public interface ApiService {
 
     //获取演出厅列表-关键字查询
     @GET("PerformerOverviewController/getVenueListBykeyword")
-    Observable<ResultResponse<List<VenueModel>>> getVenueList(@Query("keyword")String keyword);
+    Observable<ResultResponse<List<VenueModel>>> getVenueList(@Query("keyword") String keyword);
+
+
+    //Release Show: 发布演出-待验证演出
+    @GET("PerformController/addPerformApply")
+    Observable<ResultResponse<Object>> releaseShow(@Query("venueID") String venueID, @Query("performType") String performType,
+                                                   @Query("performStartDate") String startTime, @Query("performEndDate") String endTime,
+                                                   @Query("performDesc") String performDesc, @Query("performerID") String performerID,
+                                                   @Query("venueName") String venueName, @Query("venueAddress") String venueAddress);
+
 
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")

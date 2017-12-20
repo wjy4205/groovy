@@ -1,6 +1,7 @@
 package com.bunny.groovy.utils;
 
 import android.content.Context;
+import android.content.Loader;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.util.TypedValue;
@@ -22,7 +23,17 @@ import com.bunny.groovy.model.StyleModel;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static java.util.Calendar.HOUR_OF_DAY;
+import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.SECOND;
+import static java.util.Calendar.YEAR;
 
 
 public class UIUtils {
@@ -105,6 +116,60 @@ public class UIUtils {
         final InputMethodManager im = (InputMethodManager) view.getContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private static Calendar minCal;
+    private static Calendar maxCal;
+    private static Calendar monthCounter;
+
+    public static void showDateChoosePopWindow(Date minDate, Date maxDate) {
+        if (minDate == null || maxDate == null) {
+            throw new IllegalArgumentException(
+                    "minDate and maxDate must be non-null.  " + dbg(minDate, maxDate));
+        }
+        if (minDate.after(maxDate)) {
+            throw new IllegalArgumentException(
+                    "minDate must be before maxDate.  " + dbg(minDate, maxDate));
+        }
+
+        minCal = Calendar.getInstance(Locale.getDefault());
+        maxCal = Calendar.getInstance(Locale.getDefault());
+        monthCounter = Calendar.getInstance(Locale.getDefault());
+
+        minCal.setTime(minDate);
+        maxCal.setTime(maxDate);
+        setMidnight(minCal);
+        setMidnight(maxCal);
+
+        maxCal.add(MINUTE, -1);
+
+        // Now iterate between minCal and maxCal and build up our list of months to show.
+        monthCounter.setTime(minCal.getTime());
+        final int maxMonth = maxCal.get(MONTH);
+        final int maxYear = maxCal.get(YEAR);
+
+        while ((monthCounter.get(MONTH) <= maxMonth // Up to, including the month.
+                || monthCounter.get(YEAR) < maxYear) // Up to the year.
+                && monthCounter.get(YEAR) < maxYear + 1) { // But not > next yr.
+            Date date = monthCounter.getTime();
+//            MonthDescriptor month =
+//                    new MonthDescriptor(monthCounter.get(MONTH), monthCounter.get(YEAR), date,
+//                            Utils.formatDateToMMYYYY(date));
+//            cells.add(getMonthCells(month, monthCounter, priceDescriptor));
+//            Logr.d("Adding month %s", month);
+//            months.add(month);
+            monthCounter.add(MONTH, 1);
+        }
+    }
+
+    private static String dbg(Date minDate, Date maxDate) {
+        return "minDate: " + minDate + "\nmaxDate: " + maxDate;
+    }
+    private static void setMidnight(Calendar cal) {
+        cal.set(HOUR_OF_DAY, 0);
+        cal.set(MINUTE, 0);
+        cal.set(SECOND, 0);
+        cal.set(MILLISECOND, 0);
     }
 
     /**

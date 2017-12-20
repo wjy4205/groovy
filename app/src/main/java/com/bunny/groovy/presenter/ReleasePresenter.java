@@ -8,6 +8,7 @@ import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
 
 import java.util.List;
+import java.util.Map;
 
 /****************************************
  * 功能说明:  
@@ -39,4 +40,19 @@ public class ReleasePresenter extends BasePresenter<ISetFileView> {
             }
         });
     }
+
+//    public void releaseShow(Map<String,String> fieldMap){
+//        addSubscription(apiService.releaseShow(), new SubscriberCallBack(mView.get()) {
+//            @Override
+//            protected void onSuccess(Object response) {
+//
+//            }
+//
+//            @Override
+//            protected void onFailure(ResultResponse response) {
+//
+//            }
+//
+//        });
+//    }
 }

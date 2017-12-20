@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#333"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <com.bunny.groovy.weidget.loopview.LoopView
+            android:id="@+id/weidget_month"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            app:awv_centerTextColor="0xffffffff"
+            app:awv_outerTextColor="0xff666666"
+            app:awv_textsize="14"/>
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:background="@color/white"/>
+
+
+        <com.bunny.groovy.weidget.loopview.LoopView
+            android:id="@+id/weidget_day"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            app:awv_centerTextColor="0xffffffff"
+            app:awv_outerTextColor="0xff666666"
+            app:awv_textsize="14"/>
+
+        <com.bunny.groovy.weidget.loopview.LoopView
+            android:id="@+id/weidget_year"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            app:awv_centerTextColor="0xffffffff"
+            app:awv_outerTextColor="0xff666666"
+            app:awv_textsize="14"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#444"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/pop_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/pop_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="CONFIRM"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.bunny.groovy.ui.fragment;
 
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.fragment.releaseshow.MapsFragment;
@@ -38,12 +40,14 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     TextView tvAddress;
     @Bind(R.id.nextshow_tv_time)
     TextView tvTime;
+
     @OnClick(R.id.overview_tv_release_show)
-    void releaseShow(){
+    void releaseShow() {
         ReleaseShowFragment.launch(getActivity());
     }
+
     @OnClick(R.id.overview_tv_explore_show)
-    void exploreShow(){
+    void exploreShow() {
         MapsFragment.launch(getActivity());
     }
 
@@ -59,9 +63,15 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
 
     @Override
     protected void loadData() {
-        if (mActivity instanceof MainActivity) {
-            ((MainActivity) mActivity).setPageTitle(AppCacheData.getPerformerUserModel().getStageName());
-        }
+        //请求用户数据
+        mPresenter.requestUserData();
+        //请求最近一场演出
+//        mPresenter.requestNextShow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.requestNextShow();
     }
 
@@ -78,5 +88,17 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Override
     public void showEmptyNextShow() {
         nextShowLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public FragmentActivity get() {
+        return getActivity();
+    }
+
+    @Override
+    public void setView(PerformerUserModel userModel) {
+        if (mActivity instanceof MainActivity) {
+            ((MainActivity) mActivity).setPageTitle(userModel.getStageName());
+        }
     }
 }

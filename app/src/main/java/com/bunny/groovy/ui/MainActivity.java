@@ -19,6 +19,8 @@ import com.bunny.groovy.ui.fragment.MeFragment;
 import com.bunny.groovy.ui.fragment.OverviewFragment;
 import com.bunny.groovy.ui.fragment.ScheduleFragment;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.NoScrollViewPager;
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
@@ -66,7 +68,9 @@ public class MainActivity extends BaseActivity {
      * @param title
      */
     public void setPageTitle(String title) {
-        tvTitle.setText(title);
+        if (Utils.isEnglish(title))
+            tvTitle.setText(title.toUpperCase());
+        else tvTitle.setText(title);
     }
 
     @Override

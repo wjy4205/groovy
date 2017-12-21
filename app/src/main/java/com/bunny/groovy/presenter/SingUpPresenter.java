@@ -102,51 +102,6 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             }
         });
 
-//        addSubscription(apiService.checkAccountUsed(account), new Subscriber<ResultResponse>() {
-//            @Override
-//            public void onCompleted() {
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                KLog.a(e.toString());
-//                UIUtils.showBaseToast(e.toString());
-//            }
-//
-//            @Override
-//            public void onNext(ResultResponse result) {
-//                KLog.a("checkAccount", result.success);
-//                mView.showCheckResult(result.success, type, result.errorMsg);
-//                if (result.success && next) {
-//                    //根据类型发送验证码
-//                    //邮箱账户
-//                    if (type == AppConstants.ACCOUNT_TYPE_EMAIL)
-//                        addSubscription(apiService.getEmailCheckCode(account, AppConstants.USER_TYPE_MUSICIAN),
-//                                new SubscriberCallBack<ResultResponse>(mView.get()) {
-//                                    @Override
-//                                    protected void onSuccess(ResultResponse response) {
-//                                        UIUtils.showBaseToast("Code send to your E-mail successfully.");
-//                                        mView.nextStep();
-//                                    }
-//
-//                                    @Override
-//                                    protected void onFailure(ResultResponse response) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    protected boolean isShowProgress() {
-//                                        return true;
-//                                    }
-//                                });
-//
-//                        //手机账户
-//                    else if (type == AppConstants.ACCOUNT_TYPE_PHONE) {
-//                        sendPhoneCheckCode(account);
-//                    }
-//                }
-//            }
-//        });
     }
 
     /**
@@ -207,13 +162,12 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                UIUtils.showBaseToast("Register success.");
+                UIUtils.showBaseToast("注册成功！");
                 mView.registerSuccess();
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
-
             }
         });
     }

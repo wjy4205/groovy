@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,14 +25,14 @@ import java.util.List;
  * Author: Created by bayin on 2017/12/19.
  ****************************************/
 
-public class StyleGridAdatper extends RecyclerView.Adapter<StyleGridAdatper.StyleHolder> {
+public class StyleGridAdapter extends RecyclerView.Adapter<StyleGridAdapter.StyleHolder> {
     private List<StyleModel> dataList;
     private Context mContext;
     private String selectedStyle;
     private final RelativeLayout.LayoutParams params;
     private int count = 0;
 
-    public StyleGridAdatper(List<StyleModel> dataList, String selected) {
+    public StyleGridAdapter(List<StyleModel> dataList, String selected) {
         this.dataList = dataList;
         selectedStyle = selected;
         int unitWidth = (UIUtils.getScreenWidth() - UIUtils.dip2Px(32)) / 3;

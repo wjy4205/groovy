@@ -62,38 +62,46 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
 
-        <com.bunny.groovy.weidget.loopview.LoopView
-            android:id="@+id/weidget_from_time"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_weight="1"
-            app:awv_centerTextColor="0xffffffff"
-            app:awv_outerTextColor="0xff666666"
-            app:awv_textsize="14"/>
+            <com.bunny.groovy.weidget.loopview.LoopView
+                android:id="@+id/weidget_from_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:awv_centerTextColor="0xffffffff"
+                app:awv_outerTextColor="0xff666666"
+                app:awv_textsize="14"/>
+
+
+            <com.bunny.groovy.weidget.loopview.LoopView
+                android:id="@+id/weidget_end_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:awv_centerTextColor="0xffffffff"
+                app:awv_outerTextColor="0xff666666"
+                app:awv_textsize="14"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width="30dp"
             android:layout_height="1dp"
+            android:layout_gravity="center"
             android:background="@color/white"/>
+    </FrameLayout>
 
-
-        <com.bunny.groovy.weidget.loopview.LoopView
-            android:id="@+id/weidget_end_time"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_weight="1"
-            app:awv_centerTextColor="0xffffffff"
-            app:awv_outerTextColor="0xff666666"
-            app:awv_textsize="14"/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

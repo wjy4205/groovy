@@ -42,10 +42,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //判断资料是否完善
                             if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class),2);
+                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class),AppConstants.REQUESTCODE_SETFILE);
                             } else {
                                 //进入主页
-                                mView.loginSuccess(response);
+                                mView.launchMainPage();
                             }
                         }
                     }

@@ -2,6 +2,7 @@ package com.bunny.groovy.weidget.datepick;
 
 
 import com.bunny.groovy.utils.DateUtils;
+import com.socks.library.KLog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ public class DatePickerHelper {
 
     private ArrayList<Integer> tem = new ArrayList<>();
     private ArrayList<String> dispalyTem = new ArrayList<>();
-    private String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    private String[] weeks = { "Sun.","Mon.", "Tues.", "Wed.", "Thur.", "Fri.", "Sat."};
+    private String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 
     public enum Type {
@@ -94,6 +96,10 @@ public class DatePickerHelper {
         return 0;
     }
 
+    public String[] getEnMonths() {
+        return months;
+    }
+
     public String[] getDisplayValue(Integer[] arr, String per) {
         dispalyTem.clear();
         for (Integer i : arr) {
@@ -141,8 +147,8 @@ public class DatePickerHelper {
     public Integer[] genDay(int year, int moth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, moth, 1);
-        calendar.add(Calendar.DATE, -1);
-        int day = Integer.parseInt(new SimpleDateFormat("d").format(calendar.getTime()));
+        int day = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        KLog.a(year + "年" + (moth + 1) + "月  " + day + "天");
         return genArr(day, false);
     }
 
@@ -169,11 +175,16 @@ public class DatePickerHelper {
     }
 
     public String[] getDisplayDayAndWeek(int year, int month) {
+
+        Calendar calendar = Calendar.getInstance();
         Integer[] days = genDay(year, month);
         String[] dayAndWeek = new String[days.length];
         for (int i = 0; i < days.length; i++) {
-            String displayWeek = getDisplayWeek(year, month, days[i]);
-            dayAndWeek[i] = days[i] + "," + displayWeek;
+            calendar.clear();
+            calendar.set(year, month, days[i]);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            KLog.d(year + "年" + (month + 1) + "月" + days[i] + "号是周" + dayOfWeek);
+            dayAndWeek[i] = weeks[dayOfWeek-1] + days[i];
         }
         return dayAndWeek;
     }

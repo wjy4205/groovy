@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.tv_sign_up)
     void signUp() {
-        startActivityForResult(new Intent(this, SignUpActivity.class),2);
+        startActivityForResult(new Intent(this, SignUpActivity.class), 2);
     }
 
     @OnClick(R.id.tv_musician_login)
@@ -87,10 +87,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void loginSuccess(PerformerUserModel userModel) {
-        //登录成功，进入主页，结束登录页面
-        MainActivity.launch(this);
-        setResult(AppConstants.ACTIVITY_FINISH);
-        finish();
+
     }
 
     @Override
@@ -98,33 +95,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         return getCurrentActivity();
     }
 
-    @Override
-    public void launchFirstPage() {
-        startActivityForResult(new Intent(this, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
-    }
-
-    @Override
-    public void launchSecondPage() {
-        startActivityForResult(new Intent(this, SetFile2Activity.class), AppConstants.REQUESTCODE_SETFILE);
-    }
-
-    @Override
-    public void launchThirdPage() {
-        startActivityForResult(new Intent(this, SetFile3Activity.class), AppConstants.REQUESTCODE_SETFILE);
-    }
 
     @Override
     public void launchMainPage() {
-        startActivity(new Intent(this, MainActivity.class));
+        //登录成功，进入主页，结束登录页面
+        MainActivity.launch(this);
+        setResult(AppConstants.ACTIVITY_FINISH);
         finish();
+    }
+
+    @Override
+    public void launchToSetFile() {
+        startActivityForResult(new Intent(this, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //设置资料结束，结束本页面
-        if (requestCode ==2&& resultCode == AppConstants.ACTIVITY_FINISH) {
-            finish();
+        //设置资料结束，结束本页面,跳转至首页
+        if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
+           launchMainPage();
         }
     }
 }

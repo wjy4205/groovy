@@ -151,10 +151,13 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
         return getCurrentActivity();
     }
 
+    /**
+     * 注册成功，返回登录页面
+     */
     @Override
     public void registerSuccess() {
-        startActivity(new Intent(this, SetFile1Activity.class));
-        setResult(AppConstants.ACTIVITY_FINISH);
-        finish();
+//        setResult(AppConstants.ACTIVITY_FINISH);
+//        finish();
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

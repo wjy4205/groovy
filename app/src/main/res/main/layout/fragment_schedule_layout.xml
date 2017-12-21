@@ -1,13 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/black"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/black"
+             android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/tab_schedule"/>
-</LinearLayout>
+        android:text="@string/tab_schedule"
+        android:textColor="@color/white"/>
+
+    <com.bunny.groovy.weidget.MoveLayout
+        android:id="@+id/moveLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:background="#222"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="16dp"
+            android:text="SHOW LIST ON MON"
+            android:textColor="@color/white"
+            android:textSize="19sp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="EMPTY"
+                android:textColor="@color/white"
+                android:textSize="30sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+    </com.bunny.groovy.weidget.MoveLayout>
+</FrameLayout>

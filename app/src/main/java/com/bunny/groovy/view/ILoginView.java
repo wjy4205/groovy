@@ -14,24 +14,10 @@ public interface ILoginView {
     void loginSuccess(PerformerUserModel userModel);
 
     Activity get();
-
-    /**
-     * 跳转完善资料第一页
-     */
-    void launchFirstPage();
-
-    /**
-     * 跳转至第二页
-     */
-    void launchSecondPage();
-
-    /**
-     * 跳转至第三页
-     */
-    void launchThirdPage();
-
     /**
      * 跳转至主页
      */
     void launchMainPage();
+
+    void launchToSetFile();
 }

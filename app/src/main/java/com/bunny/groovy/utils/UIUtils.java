@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Loader;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -165,6 +167,7 @@ public class UIUtils {
     private static String dbg(Date minDate, Date maxDate) {
         return "minDate: " + minDate + "\nmaxDate: " + maxDate;
     }
+
     private static void setMidnight(Calendar cal) {
         cal.set(HOUR_OF_DAY, 0);
         cal.set(MINUTE, 0);
@@ -323,5 +326,21 @@ public class UIUtils {
     public static int getScreenWidth() {
         WindowManager wm = (WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
         return wm.getDefaultDisplay().getWidth();
+    }
+
+    public static int getScreenHeight() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(getContext().WINDOW_SERVICE);
+        return wm.getDefaultDisplay().getHeight();
+    }
+
+    /**
+     * 判断输入框是否为空
+     *
+     * @param editText
+     * @return
+     */
+    public static boolean isEdittextEmpty(EditText editText) {
+        if (editText == null) return true;
+        return TextUtils.isEmpty(editText.getText().toString());
     }
 }

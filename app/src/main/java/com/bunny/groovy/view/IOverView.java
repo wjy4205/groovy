@@ -1,6 +1,9 @@
 package com.bunny.groovy.view;
 
+import android.support.v4.app.FragmentActivity;
+
 import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.PerformerUserModel;
 
 /****************************************
  * 功能说明:  首页接口
@@ -11,4 +14,6 @@ import com.bunny.groovy.model.NextShowModel;
 public interface IOverView {
     void initNextView(NextShowModel nextShowModel);
     void showEmptyNextShow();
+    FragmentActivity get();
+    void setView(PerformerUserModel userModel);
 }

@@ -36,23 +36,33 @@ public class ReleasePresenter extends BasePresenter<ISetFileView> {
             }
 
             @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
             protected void onFailure(ResultResponse response) {
             }
         });
     }
 
-//    public void releaseShow(Map<String,String> fieldMap){
-//        addSubscription(apiService.releaseShow(), new SubscriberCallBack(mView.get()) {
-//            @Override
-//            protected void onSuccess(Object response) {
-//
-//            }
-//
-//            @Override
-//            protected void onFailure(ResultResponse response) {
-//
-//            }
-//
-//        });
-//    }
+    public void releaseShow(Map<String,String> fieldMap){
+        addSubscription(apiService.releaseShow(fieldMap), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("发布成功");
+                mView.get().finish();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
 }

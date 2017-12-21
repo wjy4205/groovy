@@ -100,7 +100,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
         AppCacheData.getFileMap().put("stageName", etArtistName.getTrimmedString());
         AppCacheData.getFileMap().put("webSiteAddress", etWebsite.getTrimmedString());
         AppCacheData.getFileMap().put("imgfile", headImagePath);
-        AppCacheData.getFileMap().put("userID", AppCacheData.getPerformerUserModel().getUserID());
+//        AppCacheData.getFileMap().put("userID", AppCacheData.getPerformerUserModel().getUserID());
 
         mPresenter.searchLocation(etZipcode.getTrimmedString());
     }

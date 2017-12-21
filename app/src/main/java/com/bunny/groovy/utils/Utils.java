@@ -51,6 +51,16 @@ public class Utils {
         return "";
     }
 
+    /**
+     * 判断是否为英文
+     *
+     * @param word
+     * @return
+     */
+    public static boolean isEnglish(String word) {
+        return word.matches("^[a-zA-Z]*");
+    }
+
     public static void main(String[] args) {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance(Locale.getDefault());

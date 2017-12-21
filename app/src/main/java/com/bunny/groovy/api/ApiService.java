@@ -67,9 +67,8 @@ public interface ApiService {
 
 
     //获取表演者下一个演出
-    @FormUrlEncoded
-    @POST("PerformerOverviewController/getNextScheduledShow")
-    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Field("performerID") String performerID);
+    @GET("PerformerOverviewController/getNextScheduledShow")
+    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Query("performerID") String performerID);
 
     //获取表演类型
     @GET("PerformerBasicsController/getPerformTypeListNotLogin")
@@ -82,11 +81,8 @@ public interface ApiService {
 
 
     //Release Show: 发布演出-待验证演出
-    @GET("PerformController/addPerformApply")
-    Observable<ResultResponse<Object>> releaseShow(@Query("venueID") String venueID, @Query("performType") String performType,
-                                                   @Query("performStartDate") String startTime, @Query("performEndDate") String endTime,
-                                                   @Query("performDesc") String performDesc, @Query("performerID") String performerID,
-                                                   @Query("venueName") String venueName, @Query("venueAddress") String venueAddress);
+    @GET("PerformerOverviewController/addPerformApply")
+    Observable<ResultResponse<Object>> releaseShow(@QueryMap Map<String, String> map);
 
 
     //根据邮编获取经纬度

@@ -145,7 +145,6 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
-            setResult(AppConstants.ACTIVITY_FINISH);
             finish();
         }
     }

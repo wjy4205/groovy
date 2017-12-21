@@ -1,5 +1,6 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.model.StyleModel;
@@ -83,6 +84,11 @@ public interface ApiService {
     //Release Show: 发布演出-待验证演出
     @GET("PerformerOverviewController/addPerformApply")
     Observable<ResultResponse<Object>> releaseShow(@QueryMap Map<String, String> map);
+
+
+    //获取收藏演出厅记录
+    @GET("PerformerMeController/getPerformerMeMyFavoriteV")
+    Observable<ResultResponse<List<FavoriteModel>>> getMyFavorite(@Query("performerID") String performerID);
 
 
     //根据邮编获取经纬度

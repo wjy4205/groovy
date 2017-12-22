@@ -13,6 +13,7 @@ import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -59,7 +60,7 @@ public interface ApiService {
     //表演者完善信息,上传文件
     @Multipart
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
-    Observable<ResultResponse<Object>> updatePerformerInfo(@QueryMap Map<String, String> map,
+    Observable<ResultResponse<Object>> updatePerformerInfo(@FieldMap(encoded = true) Map<String, String> map,
                                                            @PartMap Map<String, RequestBody> maps);
 
     //获取表演者个人信息
@@ -89,6 +90,16 @@ public interface ApiService {
     //获取收藏演出厅记录
     @GET("PerformerMeController/getPerformerMeMyFavoriteV")
     Observable<ResultResponse<List<FavoriteModel>>> getMyFavorite(@Query("performerID") String performerID);
+
+
+    //获取演出记录
+    @GET("PerformerMeController/getPerformerMeShowHistory")
+    Observable<ResultResponse<List<VenueModel>>> getHistoryList(@Query("performerID") String performerID);
+
+
+    //登出
+    @GET("FrontUserController/loginOut")
+    Observable<ResultResponse<Object>> loginOut(@Query("userID")String userId);
 
 
     //根据邮编获取经纬度

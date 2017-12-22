@@ -13,9 +13,9 @@ public class FavoriteModel {
     private String venueAddress;//演出厅地址
     private String phoneNumber;//演出厅联系方式
     private String webSiteAddress;//演出厅网址
-    private Float longitude;//经度（°）
-    private Float latitude;//纬度（°）
-    private Float venueScore;//评分
+    private String longitude;//经度（°）
+    private String latitude;//纬度（°）
+    private String venueScore;//评分
     private String venueTypeName;//【演出厅】类型（多选）
     private String twitterAccount;//twitter用户名【表演者/演出厅】
     private String facebookAccount;//facebook用户名【表演者/演出厅】
@@ -70,27 +70,27 @@ public class FavoriteModel {
         this.webSiteAddress = webSiteAddress;
     }
 
-    public Float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public Float getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public Float getVenueScore() {
+    public String getVenueScore() {
         return venueScore;
     }
 
-    public void setVenueScore(Float venueScore) {
+    public void setVenueScore(String venueScore) {
         this.venueScore = venueScore;
     }
 

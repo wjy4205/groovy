@@ -86,4 +86,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.2.6'
     compile 'com.google.android.gms:play-services-places:10.2.6'
     compile 'com.android.support:multidex:1.0.1'
+    //switch button
+    compile 'com.kyleduo.switchbutton:library:2.0.0'
 }

@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.app.Activity;
 
+import com.bunny.groovy.adapter.FavoriteListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.presenter.ListPresenter;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/21.
  */
 
-public class FavoriteFragment extends BaseListFragment implements IListPageView<List<FavoriteModel>> {
+public class FavoriteFragment extends BaseListFragment<ListPresenter, FavoriteListAdapter> implements IListPageView<List<FavoriteModel>> {
 
     @Override
     public Activity get() {
@@ -24,6 +25,12 @@ public class FavoriteFragment extends BaseListFragment implements IListPageView<
     @Override
     public void setView(List<FavoriteModel> o) {
         setNormalView();
+        if (mAdapter == null) {
+            mAdapter = new FavoriteListAdapter(o);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.refresh(o);
+        }
     }
 
     @Override

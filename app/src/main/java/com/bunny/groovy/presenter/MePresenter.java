@@ -25,7 +25,7 @@ public class MePresenter extends BasePresenter<IMeView> {
                 new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
-
+                mView.setUserView(response);
             }
 
             @Override

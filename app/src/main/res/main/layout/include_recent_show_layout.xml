@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:maxEms="14"
+                android:maxEms="11"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="13sp"
@@ -49,6 +49,8 @@
                 android:layout_height="wrap_content"
                 android:text="4.1"
                 android:layout_marginLeft="16dp"
+                android:drawableLeft="@mipmap/list_star"
+                android:drawablePadding="4dp"
                 android:textColor="@color/white"
                 android:textSize="12sp"/>
         </LinearLayout>

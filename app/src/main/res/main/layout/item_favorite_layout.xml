@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="@color/black"
+              android:gravity="center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/item_favorite_iv_header"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/head"/>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/item_favorite_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:text="The Gooota"/>
+
+            <TextView
+                android:id="@+id/item_favorite_tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_marginLeft="16dp"
+                android:drawableLeft="@mipmap/list_star"
+                android:drawablePadding="4dp"
+                android:text="2.0"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/item_favorite_tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_grey"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_gravity="center_vertical"
+            android:text="The GoootaThe GoootaThe GoootaTheGoootaTheGoootaThe Gooota"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            >
+            <TextView
+                android:id="@+id/item_favorite_tv_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textAccent"
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:text="Booking Contact"/>
+
+            <ImageView
+                android:id="@+id/item_favorite_iv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/item_favorite_tv_contact"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/list_phone"/>
+
+            <ImageView
+                android:id="@+id/item_favorite_iv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/item_favorite_iv_phone"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/list_email"/>
+
+            <TextView
+                android:id="@+id/item_favorite_tv_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/textAccent"
+                android:textSize="11sp"
+                android:background="@drawable/shape_double_corner_rect_bg"
+                android:layout_centerVertical="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="APPLY"/>
+
+        </RelativeLayout>
+    </FrameLayout>
+</LinearLayout>

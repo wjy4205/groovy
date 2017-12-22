@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +63,10 @@ public class MainActivity extends BaseActivity {
         return tvTitle;
     }
 
+    public void setTitleVisible(int visible) {
+        actionBarLayout.setVisibility(visible);
+    }
+
     /**
      * 设置页面标题
      *
@@ -99,7 +104,8 @@ public class MainActivity extends BaseActivity {
         bottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
             public void onItemSelected(BottomBarItem bottomBarItem, int position) {
-
+                if (position == 0 || position == 1) setTitleVisible(View.VISIBLE);
+                else setTitleVisible(View.GONE);
             }
         });
     }

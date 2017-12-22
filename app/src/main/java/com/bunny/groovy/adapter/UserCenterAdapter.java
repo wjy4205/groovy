@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.bunny.groovy.base.BaseFragment;
+import com.bunny.groovy.base.BaseListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,17 @@ import java.util.List;
  */
 
 public class UserCenterAdapter extends FragmentStatePagerAdapter {
+    private List<BaseListFragment> mFragments = new ArrayList<BaseListFragment>();
+    private String[] title;
 
-    private List<BaseFragment> mFragments = new ArrayList<BaseFragment>();
-
-    public UserCenterAdapter(List<BaseFragment> fragmentList, FragmentManager fm) {
+    public UserCenterAdapter(List<BaseListFragment> fragmentList, String[] titles, FragmentManager fm) {
         super(fm);
         if (fragmentList != null) {
             mFragments = fragmentList;
         }
+        if (titles != null && titles.length >= mFragments.size())
+            this.title = titles;
+        else throw new IllegalArgumentException("fragment的标题长度小于页面数量");
     }
 
     @Override
@@ -32,5 +36,10 @@ public class UserCenterAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mFragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return title[position];
     }
 }

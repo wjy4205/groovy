@@ -13,6 +13,8 @@ import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.security.Permission;
 import java.security.Permissions;
 import java.util.List;
@@ -30,7 +32,7 @@ import flyn.Eyes;
 public class RoleChooseActivity extends BaseActivity {
     @OnClick(R.id.tv_musician)
     void login() {
-        startActivityForResult(new Intent(this, LoginActivity.class),2);
+        startActivityForResult(new Intent(this, LoginActivity.class), 2);
     }
 
     @Override
@@ -68,6 +70,13 @@ public class RoleChooseActivity extends BaseActivity {
 
             }
         });
+        registerEventBus(this);
+    }
+
+    @Subscribe
+    public void onLoginSuccess(String result) {
+        if (AppConstants.EVENT_LOGIN_SUCCESS.equals(result))
+            finish();
     }
 
     @Override
@@ -75,11 +84,4 @@ public class RoleChooseActivity extends BaseActivity {
         return false;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==2 && resultCode == AppConstants.ACTIVITY_FINISH){
-            finish();
-        }
-    }
 }

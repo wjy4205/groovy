@@ -5,6 +5,7 @@ import android.view.View;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.MoveLayout;
@@ -42,5 +43,13 @@ public class ScheduleFragment extends BaseFragment {
     @Override
     protected void loadData() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mActivity instanceof MainActivity) {
+            ((MainActivity) mActivity).setPageTitle("SCHEDULE");
+        }
     }
 }

@@ -65,13 +65,18 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     protected void loadData() {
         //请求用户数据
         mPresenter.requestUserData();
-        //请求最近一场演出
-//        mPresenter.requestNextShow();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        //请求最近一场演出
+        mPresenter.requestNextShow();
+    }
+
+    @Override
+    public void refreshUI() {
+        mPresenter.requestUserData();
         mPresenter.requestNextShow();
     }
 

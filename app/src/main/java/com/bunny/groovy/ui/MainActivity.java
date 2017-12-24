@@ -2,10 +2,6 @@ package com.bunny.groovy.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,21 +11,20 @@ import com.bunny.groovy.adapter.MainTabAdapter;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.ui.fragment.MeFragment;
 import com.bunny.groovy.ui.fragment.OverviewFragment;
 import com.bunny.groovy.ui.fragment.ScheduleFragment;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.NoScrollViewPager;
 import com.chaychan.library.BottomBarItem;
 import com.chaychan.library.BottomBarLayout;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 
@@ -104,10 +99,36 @@ public class MainActivity extends BaseActivity {
         bottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
             public void onItemSelected(BottomBarItem bottomBarItem, int position) {
-                if (position == 0 || position == 1) setTitleVisible(View.VISIBLE);
-                else setTitleVisible(View.GONE);
+                switch (position){
+                    case 0:
+                        setTitleVisible(View.VISIBLE);
+                        mFragments.get(0).refreshUI();
+                        break;
+                    case 1:
+                        setTitleVisible(View.VISIBLE);
+                        setPageTitle("SCHEDULE");
+                        mFragments.get(1).refreshUI();
+                        break;
+                    case 2:
+                        setTitleVisible(View.GONE);
+                        mFragments.get(2).refreshUI();
+                        break;
+                }
             }
         });
+        //eventbus
+        registerEventBus(this);
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param code
+     */
+    @Subscribe
+    public void onLogout(String code) {
+        if (AppConstants.EVENT_LOGIN_OUT.equals(code))
+            finish();
     }
 
     private void intiFragments() {
@@ -126,6 +147,12 @@ public class MainActivity extends BaseActivity {
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
+        for (Activity ac :
+                mActivities) {
+            if (ac instanceof MainActivity) {
+
+            } else ac.finish();
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="@color/tab_common_bg"
+    android:background="@color/theme_bg"
     android:orientation="vertical">
 
     <include

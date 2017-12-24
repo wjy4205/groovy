@@ -19,7 +19,6 @@ public class AppConstants {
 
     public static String GMT_FORMAT = "GMT%s";//格林尼治时间标志
 
-    public static String LOGIN_TAG_FIRST = "0";//首次登录标志
 
     public static int REQUESTCODE_SETFILE = 9;//完善资料请求码
 
@@ -30,6 +29,7 @@ public class AppConstants {
     public final static String USERFILE_LEVLE_SECOND = "3000";//完善了第二页
 
     public static int REQUESTCODE_SELECT_PIC = 6;//选择图片的请求码
+    public static int REQUESTCODE_SELECT_MUSIC = 666;//选择音乐的请求码
 
     public static String KEY_LOGIN = "key_login";//是否登录标识
     public static String KEY_USERID = "key_userid";//已登录的userid
@@ -42,5 +42,9 @@ public class AppConstants {
     public final static String Code_Verify_Correct = "6666";//验证通过
     public final static String Code_Verify_Invalid = "1111";//验证未通过
     public final static String Code_Verify_ServerError = "5555";//验证未通过
+
+
+    public final static String EVENT_LOGIN_SUCCESS = "logout_success";//eventbus 用户退出标志
+    public final static String EVENT_LOGIN_OUT = "logout";//eventbus 用户退出标志
 
 }

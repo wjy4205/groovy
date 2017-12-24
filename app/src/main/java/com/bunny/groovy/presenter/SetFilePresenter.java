@@ -23,8 +23,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Subscriber;
 
@@ -117,35 +119,43 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
      */
     public void updateUserInfo(Map<String, String> fileMap) {
         fileMap.put("userID", AppCacheData.getPerformerUserModel().getUserID());
-        HashMap<String, RequestBody> map = new HashMap<>();
-
         //头像图片
         String imagePath = fileMap.get("imgfile");
-        if (!TextUtils.isEmpty(imagePath)) {
-            File imageFile = new File(imagePath);
-            if (imageFile.isFile()) {
-                RequestBody imageBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-                map.put("imgfile\"; filename=\"" + imageFile.getName(), imageBody);
-            }
-        } else {
-            map.put("imgfile\"; filename=\"image.jpg", RequestBody.create(MediaType.parse("multipart/form-data"), ""));
-        }
         //音频文件
         String musicPath = fileMap.get("music");
-        KLog.d("音频文件路径", musicPath);
-        if (!TextUtils.isEmpty(musicPath)) {
-            File musicFile = new File(musicPath);
-            if (musicFile.isFile()) {
-                RequestBody musicBody = RequestBody.create(MediaType.parse("multipart/form-data"), musicFile);
-                map.put("music\"; filename=\"" + musicFile.getName(), musicBody);
+        //构建body
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        Set<Map.Entry<String, String>> entries = fileMap.entrySet();
+        for (Map.Entry<String, String> entry :
+                entries) {
+            //文本参数
+            if (!TextUtils.isEmpty(entry.getValue()) && (!entry.getValue().equals("imgfile") || !entry.getValue().equals("music"))) {
+                builder.addFormDataPart(entry.getKey(), entry.getValue());
+            }
+        }
+        //文件参数
+        if (!TextUtils.isEmpty(imagePath)) {
+            File img = new File(imagePath);
+            if (img.isFile()) {
+                builder.addFormDataPart("imgfile", img.getName(), RequestBody.create(MediaType.parse("image/*"), img));
             }
         } else {
-            map.put("music\"; filename=\"music.mp3", RequestBody.create(MediaType.parse("multipart/form-data"), ""));
+            builder.addFormDataPart("imgfile", "image.jpg", RequestBody.create(MediaType.parse("image/*"), ""));
         }
-//        fileMap.remove("music");
-//        fileMap.remove("imgfile");
 
-        addSubscription(apiService.updatePerformerInfo(fileMap, map), new SubscriberCallBack<Object>(mView.get()) {
+        if (!TextUtils.isEmpty(musicPath)) {
+            File music = new File(musicPath);
+            if (music.isFile()) {
+                builder.addFormDataPart("music", music.getName(), RequestBody.create(MediaType.parse("*/*"), music));
+            }
+        } else {
+            builder.addFormDataPart("music", "music.mp3", RequestBody.create(MediaType.parse("*/*"), ""));
+        }
+
+
+        RequestBody build = builder.build();
+
+        addSubscription(apiService.updatePerformerInfo(build), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -162,5 +172,6 @@ public class SetFilePresenter extends BasePresenter<ISetFileView> {
             protected void onFailure(ResultResponse response) {
             }
         });
+
     }
 }

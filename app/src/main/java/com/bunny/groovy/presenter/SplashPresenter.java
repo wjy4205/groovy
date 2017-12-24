@@ -1,6 +1,7 @@
 package com.bunny.groovy.presenter;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
@@ -31,22 +32,26 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
         startRequestTime = SystemClock.currentThreadTimeMillis();
         addSubscription(apiService.getPerformerInfo(userID), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
-            protected void onSuccess(PerformerUserModel response) {
+            protected void onSuccess(final PerformerUserModel response) {
                 endRequestTime = SystemClock.currentThreadTimeMillis();
                 long delta = endRequestTime - startRequestTime;
                 if (delta / 1000 < 3000)
-                    SystemClock.sleep(3000-(delta/1000));//3秒延迟
-                //缓存数据
-                Utils.initLoginData(mView.get(), response);
-                //判断资料是否完善
-                if (TextUtils.isEmpty(response.getZipCode())) {
-                    //需要完善信息
-                    mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
-                } else {
-                    //进入主页
-                    MainActivity.launch(mView.get());
-                }
-                mView.get().finish();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //缓存数据
+                            Utils.initLoginData(mView.get(), response);
+                            //判断资料是否完善
+                            if (TextUtils.isEmpty(response.getZipCode())) {
+                                //需要完善信息
+                                mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
+                            } else {
+                                //进入主页
+                                MainActivity.launch(mView.get());
+                            }
+                            mView.get().finish();
+                        }
+                    }, 3000 - (delta / 1000));
             }
 
             @Override

@@ -51,6 +51,7 @@ abstract public class BaseListFragment<T extends BasePresenter,A extends Recycle
         super.onCreate(savedInstanceState);
 
         mPresenter = createPresenter();
+        setHasOptionsMenu(true);
     }
 
     @Override

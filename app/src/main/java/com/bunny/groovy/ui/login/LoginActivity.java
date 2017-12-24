@@ -20,6 +20,8 @@ import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ILoginView;
 import com.xw.repo.XEditText;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -100,8 +102,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     public void launchMainPage() {
         //登录成功，进入主页，结束登录页面
         MainActivity.launch(this);
-        setResult(AppConstants.ACTIVITY_FINISH);
-        finish();
     }
 
     @Override

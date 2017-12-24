@@ -16,9 +16,12 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.MePresenter;
 import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
+import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
+import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.view.IOverView;
@@ -58,8 +61,13 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     SlidingTabLayout pagerTabStrip;
 
     @OnClick(R.id.user_center_tv_settings)
-    public void setttings(){
+    public void setttings() {
+        SettingsFragment.launch(getActivity());
+    }
 
+    @OnClick(R.id.user_center_iv_header)
+    public void setProfile() {
+        PersonalDataFragment.launch(getActivity());
     }
 
     private List<BaseListFragment> mFragments = new ArrayList<>();
@@ -110,7 +118,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
 
     @Override
     public Activity get() {
-        return getActivity();
+        return mActivity;
     }
 
 
@@ -126,6 +134,17 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         if (TextUtils.isEmpty(model.getStarLevel()))
             tvScore.setText("0.0");
         else tvScore.setText(model.getStarLevel());
-        Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
+        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.head).into(ivHeader);
+    }
+
+    @Override
+    public void showStylePop(List<StyleModel> modelList) {
+        //do nothing
+    }
+
+    @Override
+    public void refreshUI() {
+        //获取用户数据
+        mPresenter.requestUserData();
     }
 }

@@ -22,6 +22,13 @@ public class AppCacheData {
         userModel = performerUserModel;
     }
 
+    /**
+     * 清空缓存表演者信息
+     */
+    public static void resetPerformer(){
+        userModel = new PerformerUserModel();
+    }
+
     private static Map<String, String> fileMap;
 
     public static Map<String, String> getFileMap() {

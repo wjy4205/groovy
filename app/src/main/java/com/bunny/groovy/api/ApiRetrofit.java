@@ -41,8 +41,8 @@ public class ApiRetrofit {
                 .addInterceptor(new HeaderInterceptor())//添加头部信息拦截器
                 .addInterceptor(loggingInterceptor)//添加log拦截器
                 .cache(cache)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .cookieJar(new CookieManger(BaseApp.getContext()))
                 .build();
 

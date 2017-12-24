@@ -31,6 +31,7 @@ public class VerifyEvent {
      */
     public static void initSinch(Activity activity, String phone) {
         ProgressHUD show = ProgressHUD.show(activity, "发送验证码...", true, true, null);
+        show.show();
         if (mVerification == null) {
             Config config = SinchVerification.config().applicationKey(AppConstants.SINCH_APPKEY).context(BaseApp.getContext()).build();
             sListener = new MyVerificationListener();

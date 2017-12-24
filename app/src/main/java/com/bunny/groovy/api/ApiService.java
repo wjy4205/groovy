@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -58,10 +60,9 @@ public interface ApiService {
                                                                   @Field("UserType") String userType, @Field("userZone") String userZone);
 
     //表演者完善信息,上传文件
-    @Multipart
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
-    Observable<ResultResponse<Object>> updatePerformerInfo(@FieldMap(encoded = true) Map<String, String> map,
-                                                           @PartMap Map<String, RequestBody> maps);
+    Observable<ResultResponse<Object>> updatePerformerInfo(@Body RequestBody body);
+
 
     //获取表演者个人信息
     @GET("PerformerMeController/getPerformerMeList")

@@ -216,7 +216,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         Intent intent = new Intent(activity, ImagesSelectorActivity.class);
         intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 1);
         intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 100000);
-        intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
+        intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
         startActivityForResult(intent, REQUESTCODE_SELECT_PIC);
     }
 }

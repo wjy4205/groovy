@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/groovy.iml" filepath="$PROJECT_DIR$/groovy.iml" />
       <module fileurl="file://$PROJECT_DIR$/selectpic_lib/selectpic_lib.iml" filepath="$PROJECT_DIR$/selectpic_lib/selectpic_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/statusbar-lib/statusbar-lib.iml" filepath="$PROJECT_DIR$/statusbar-lib/statusbar-lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/uikit/uikit.iml" filepath="$PROJECT_DIR$/uikit/uikit.iml" />
       <module fileurl="file://$PROJECT_DIR$/xedittext/xedittext.iml" filepath="$PROJECT_DIR$/xedittext/xedittext.iml" />
     </modules>
   </component>

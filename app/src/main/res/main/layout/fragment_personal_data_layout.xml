@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_bg"
+        android:paddingBottom="16dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/personal_headview"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/head"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <ImageView
+                android:id="@+id/personal_iv_select_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:src="@mipmap/login_photo" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/personal_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:maxLength="30"
+            android:maxLines="1"
+            android:text="NAME"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="ARTIST NAME" />
+
+        <EditText
+            android:id="@+id/personal_et_artist_name"
+            style="@style/personal_data_input_text"
+            android:hint="ARTIST NAME"
+            tools:text="HAHHAHA" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="ZIP CODE" />
+
+        <EditText
+            android:id="@+id/personal_et_zipcode"
+            style="@style/personal_data_input_text"
+            android:hint="ARTIST NAME"
+            tools:text="HAHHAHA" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="WEBSITE" />
+
+        <EditText
+            android:id="@+id/personal_et_website"
+            style="@style/personal_data_input_text"
+            android:hint="ARTIST NAME"
+            tools:text="HAHHAHA" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="40dp"
+            android:background="#333" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="MUSIC" />
+
+        <RelativeLayout
+            style="@style/input_text_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:id="@+id/personal_iv_play"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/login_play" />
+
+            <TextView
+                android:id="@+id/personal_tv_replace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="REPLACE"
+                android:textColor="@color/accentPurple"
+                android:textSize="13sp" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="SHOW GENRE" />
+
+        <EditText
+            android:id="@+id/personal_et_style"
+            style="@style/personal_data_input_text"
+            android:hint="SHOW GENRE"
+            tools:text="JAZZ" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="MUSIC BIO" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_textarea_bg"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="6dp">
+
+            <EditText
+                android:id="@+id/personal_et_bio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="GIVE EVERYONE BRIEF IDEA OF WHO YOU ARE AND THE MUSIC YOU LIKE TO PLAY"
+                android:lineSpacingExtra="3dp"
+                android:lines="4"
+                android:maxLength="400"
+                android:textColor="@color/white"
+                android:textColorHint="@color/common_grey"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:paddingBottom="3dp"
+                android:text="(0/400)"
+                android:textColor="@color/common_grey"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginTop="40dp"
+            android:background="#333" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/facebook" />
+
+        <EditText
+            android:id="@+id/personal_et_facebook"
+            style="@style/personal_data_input_text"
+            android:hint="@string/facebook"
+            tools:text="HAHHAHA" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/twitter" />
+
+        <EditText
+            android:id="@+id/personal_et_twitter"
+            style="@style/personal_data_input_text"
+            android:hint="@string/twitter"
+            tools:text="HAHHAHA" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/sound_cloud" />
+
+        <EditText
+            android:id="@+id/personal_et_soundcloud"
+            style="@style/personal_data_input_text"
+            android:hint="@string/sound_cloud"
+            tools:text="HAHHAHA" />
+
+    </LinearLayout>
+</ScrollView>

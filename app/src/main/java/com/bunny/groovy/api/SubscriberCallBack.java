@@ -47,6 +47,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
 
     @Override
     public void onNext(ResultResponse response) {
+        if (mProgressHUD != null && mProgressHUD.isShowing()) mProgressHUD.dismiss();
         if (response.success) {
             onSuccess((T) response.resultData);
         } else {
@@ -60,12 +61,12 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
 
     @Override
     public void onCompleted() {
-        if (mProgressHUD != null) mProgressHUD.dismiss();
+
     }
 
     @Override
     public void onError(Throwable e) {
-        if (mProgressHUD != null) mProgressHUD.dismiss();
+        if (mProgressHUD != null&& mProgressHUD.isShowing()) mProgressHUD.dismiss();
         UIUtils.showToast("Error!请检查网络\n"+e.toString());
         KLog.e(e.getLocalizedMessage());
 //        onError();

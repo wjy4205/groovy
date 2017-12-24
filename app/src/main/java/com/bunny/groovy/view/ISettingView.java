@@ -1,5 +1,7 @@
 package com.bunny.groovy.view;
 
+import android.app.Activity;
+
 /****************************************
  * 功能说明:  
  *
@@ -8,4 +10,5 @@ package com.bunny.groovy.view;
 
 public interface ISettingView {
     void loginOut();
+    Activity get();
 }

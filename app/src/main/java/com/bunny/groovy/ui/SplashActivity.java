@@ -31,8 +31,14 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
     @Override
     public void initView() {
         super.initView();
-        boolean isLogin = (boolean) SharedPreferencesUtils.getParam(this, AppConstants.KEY_LOGIN, false);
-        String userID = (String) SharedPreferencesUtils.getParam(this, AppConstants.KEY_USERID, "");
+
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        boolean isLogin = (boolean) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_LOGIN, false);
+        String userID = (String) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_USERID, "");
         if (isLogin && !TextUtils.isEmpty(userID)) {
             //已登录
             //请求表演者资料

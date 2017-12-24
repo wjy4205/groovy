@@ -30,8 +30,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends LazyLoadFrag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mPresenter = createPresenter();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -100,6 +100,13 @@ public abstract class BaseFragment<T extends BasePresenter> extends LazyLoadFrag
     protected void onFragmentFirstVisible() {
         //当第一次可见的时候，加载数据
         loadData();
+    }
+
+    /**
+     * 子类实现，刷新界面
+     */
+    public void refreshUI(){
+
     }
 
 

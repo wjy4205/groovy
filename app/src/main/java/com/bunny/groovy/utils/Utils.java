@@ -208,8 +208,17 @@ public class Utils {
      * @param model
      */
     public static void initLoginData(Context context, PerformerUserModel model) {
-        SharedPreferencesUtils.setParam(context, AppConstants.KEY_LOGIN, true);
-        SharedPreferencesUtils.setParam(context, AppConstants.KEY_USERID, model.getUserID());
+        SharedPreferencesUtils.setUserParam(context, AppConstants.KEY_LOGIN, true);
+        SharedPreferencesUtils.setUserParam(context, AppConstants.KEY_USERID, model.getUserID());
         AppCacheData.setPerformerUserModel(model);
+    }
+
+    /**
+     * 登出，清空缓存信息
+     * @param context
+     */
+    public static void clearLoginData(Context context){
+        SharedPreferencesUtils.clearUserData(context);
+        AppCacheData.resetPerformer();
     }
 }

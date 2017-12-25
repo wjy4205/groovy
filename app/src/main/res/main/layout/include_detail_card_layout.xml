@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <com.bunny.groovy.weidget.HeightLightTextView
+                android:id="@+id/include_detail_tv_venueName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:maxEms="11"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="13sp"
+                tools:text="The Show The"/>
+
+            <TextView
+                android:id="@+id/include_detail_tv_venueStar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.1"
+                android:layout_marginLeft="16dp"
+                android:drawableLeft="@mipmap/list_star"
+                android:drawablePadding="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/include_detail_tv_venueAddress"
+            style="@style/common_text_style"
+            android:layout_marginTop="8dp"
+            android:text="Net 999 st"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/user_facebook"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:src="@mipmap/user_twiter"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/common_text_style"
+                android:drawableLeft="@drawable/icon_yes"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="21+"/>
+            <TextView
+                style="@style/common_text_style"
+                android:drawableLeft="@drawable/icon_yes"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Food"/>
+            <TextView
+                style="@style/common_text_style"
+                android:drawableLeft="@drawable/icon_yes"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Alcohol"/>
+        </LinearLayout>
+        <TextView
+            style="@style/common_text_style"
+            android:drawableLeft="@drawable/icon_no"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:text="Cover Charge"/>
+
+        <TextView
+            android:id="@+id/include_detail_tv_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15088889999"
+            android:drawablePadding="10dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/textAccent"
+            android:drawableRight="@drawable/icon_phone"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/include_detail_tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="www.abc.com"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/textAccent"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/include_detail_iv_head"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@mipmap/venue_instead_pic"/>
+</LinearLayout>

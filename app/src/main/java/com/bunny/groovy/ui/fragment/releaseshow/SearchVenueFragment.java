@@ -1,6 +1,7 @@
 package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -18,6 +22,9 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.SearchVenueListPresenter;
 import com.bunny.groovy.view.ISearchVenueList;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.util.List;
 
@@ -84,6 +91,27 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     @Override
     protected void loadData() {
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.release_menu, menu);
+    }
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(mActivity);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO:Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO:Handle the error.
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

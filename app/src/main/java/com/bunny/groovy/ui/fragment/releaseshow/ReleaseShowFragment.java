@@ -1,6 +1,7 @@
 package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,6 +33,9 @@ import com.bunny.groovy.view.ISetFileView;
 import com.bunny.groovy.weidget.datepick.DatePickerHelper;
 import com.bunny.groovy.weidget.loopview.LoopView;
 import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -119,20 +123,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
         map.put("venueAddress", etVenue.getText().toString());
         mPresenter.releaseShow(map);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.release_menu,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.release_menu_add){
-            //todo
-            UIUtils.showBaseToast("add");
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**

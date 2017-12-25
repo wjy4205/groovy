@@ -15,5 +15,6 @@
     <color name="accentPurple">#7B87F1</color>
 
     <color name="textAccent">#7985F2</color>
+    <color name="light_purple">#66689c</color>
     <color name="trans">#00ffffff</color>
 </resources>

@@ -1,12 +1,15 @@
 package com.bunny.groovy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /****************************************
  * 功能说明:  演出者下一个表演
  *
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class NextShowModel {
+public class NextShowModel implements Parcelable {
 
     /**
      * createDate : 2017-12-25 10:38
@@ -99,6 +102,65 @@ public class NextShowModel {
     private String venueLongitude;
     private String venueLatitude;
     private String scheduleList;
+
+    protected NextShowModel(Parcel in) {
+        createDate = in.readString();
+        venueID = in.readString();
+        venueName = in.readString();
+        headImg = in.readString();
+        venueAddress = in.readString();
+        phoneNumber = in.readString();
+        webSiteAddress = in.readString();
+        longitude = in.readString();
+        latitude = in.readString();
+        venueScore = in.readString();
+        venueTypeName = in.readString();
+        twitterAccount = in.readString();
+        facebookAccount = in.readString();
+        isHaveCharges = in.readString();
+        venueEmail = in.readString();
+        performID = in.readString();
+        performStartDate = in.readString();
+        performEndDate = in.readString();
+        performType = in.readString();
+        performDesc = in.readString();
+        performerID = in.readString();
+        performerName = in.readString();
+        pheadImg = in.readString();
+        plongitude = in.readString();
+        platitude = in.readString();
+        performerType = in.readString();
+        performState = in.readString();
+        isOpportunity = in.readString();
+        publishType = in.readString();
+        ptwitterAccount = in.readString();
+        pfacebookAccount = in.readString();
+        distance = in.readString();
+        pvenueScore = in.readString();
+        signature = in.readString();
+        soundcloudAccount = in.readString();
+        musicFile = in.readString();
+        stageName = in.readString();
+        zipCode = in.readString();
+        performDate = in.readString();
+        performTime = in.readString();
+        week = in.readString();
+        venueLongitude = in.readString();
+        venueLatitude = in.readString();
+        scheduleList = in.readString();
+    }
+
+    public static final Creator<NextShowModel> CREATOR = new Creator<NextShowModel>() {
+        @Override
+        public NextShowModel createFromParcel(Parcel in) {
+            return new NextShowModel(in);
+        }
+
+        @Override
+        public NextShowModel[] newArray(int size) {
+            return new NextShowModel[size];
+        }
+    };
 
     public String getCreateDate() {
         return createDate;
@@ -450,5 +512,58 @@ public class NextShowModel {
 
     public void setScheduleList(String scheduleList) {
         this.scheduleList = scheduleList;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createDate);
+        dest.writeString(venueID);
+        dest.writeString(venueName);
+        dest.writeString(headImg);
+        dest.writeString(venueAddress);
+        dest.writeString(phoneNumber);
+        dest.writeString(webSiteAddress);
+        dest.writeString(longitude);
+        dest.writeString(latitude);
+        dest.writeString(venueScore);
+        dest.writeString(venueTypeName);
+        dest.writeString(twitterAccount);
+        dest.writeString(facebookAccount);
+        dest.writeString(isHaveCharges);
+        dest.writeString(venueEmail);
+        dest.writeString(performID);
+        dest.writeString(performStartDate);
+        dest.writeString(performEndDate);
+        dest.writeString(performType);
+        dest.writeString(performDesc);
+        dest.writeString(performerID);
+        dest.writeString(performerName);
+        dest.writeString(pheadImg);
+        dest.writeString(plongitude);
+        dest.writeString(platitude);
+        dest.writeString(performerType);
+        dest.writeString(performState);
+        dest.writeString(isOpportunity);
+        dest.writeString(publishType);
+        dest.writeString(ptwitterAccount);
+        dest.writeString(pfacebookAccount);
+        dest.writeString(distance);
+        dest.writeString(pvenueScore);
+        dest.writeString(signature);
+        dest.writeString(soundcloudAccount);
+        dest.writeString(musicFile);
+        dest.writeString(stageName);
+        dest.writeString(zipCode);
+        dest.writeString(performDate);
+        dest.writeString(performTime);
+        dest.writeString(week);
+        dest.writeString(venueLongitude);
+        dest.writeString(venueLatitude);
+        dest.writeString(scheduleList);
     }
 }

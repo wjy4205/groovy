@@ -1,5 +1,6 @@
 package com.bunny.groovy.ui.fragment;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.fragment.releaseshow.ExploreShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.ShowDetailFragment;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
@@ -39,6 +41,14 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     TextView tvPerformType;
     @Bind(R.id.nextshow_tv_time)
     TextView tvTime;
+    private NextShowModel model;
+
+    @OnClick(R.id.nextshow_layout)
+    public void showDetail(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN,model);
+        ShowDetailFragment.launch(mActivity,bundle);
+    }
 
     @OnClick(R.id.overview_tv_release_show)
     void releaseShow() {
@@ -90,6 +100,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
 
     @Override
     public void initNextView(NextShowModel nextShowModel) {
+        model = nextShowModel;
         nextShowLayout.setVisibility(View.VISIBLE);
         Glide.with(this).load(nextShowModel.getPheadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic).into(ivHead);
         tvName.setText(nextShowModel.getVenueName());

@@ -1,12 +1,14 @@
 package com.bunny.groovy.model;
 
+import java.util.List;
+
 /****************************************
- * 功能说明:  演出者下一个表演
+ * 功能说明:  
  *
- * Author: Created by bayin on 2017/12/15.
+ * Author: Created by bayin on 2017/12/25.
  ****************************************/
 
-public class NextShowModel {
+public class ShowHistoryModel {
 
     /**
      * createDate : 2017-12-25 10:38
@@ -22,7 +24,7 @@ public class NextShowModel {
      * venueTypeName : Exclue 21+,Serves Food,Serves Alcohol
      * twitterAccount : 22222222
      * facebookAccount : 11111111
-     * isHaveCharges : 0
+     * isHaveCharges : null
      * venueEmail : null
      * performID : 46
      * performStartDate : 2017-12-29 12:00
@@ -31,27 +33,13 @@ public class NextShowModel {
      * performDesc : 这是描述信息
      * performerID : 26
      * performerName : 巴银
-     * pheadImg : http://47.100.104.82:8083/upload/headImgFile/headImg_1514168839014.3.839-_4345c67e90434b3ab048c6fb0a241c8f.jpg
-     * plongitude : null
-     * platitude : null
-     * performerType : null
+     * pheadImg : null
      * performState : 0
      * isOpportunity : 0
      * publishType : 0
-     * ptwitterAccount : null
-     * pfacebookAccount : null
-     * distance : null
-     * pvenueScore : 0
-     * signature : 个性签名
-     * soundcloudAccount : null
-     * musicFile : music_1514168839013.mp3
-     * stageName : null
-     * zipCode : null
      * performDate : Dec 29
      * performTime : 0:00PM-6:30PM
-     * week : null
-     * venueLongitude : 121.65
-     * venueLatitude : 31.23
+     * evaluate : []
      * scheduleList : null
      */
 
@@ -68,8 +56,8 @@ public class NextShowModel {
     private String venueTypeName;
     private String twitterAccount;
     private String facebookAccount;
-    private String isHaveCharges;
-    private String venueEmail;
+    private Object isHaveCharges;
+    private Object venueEmail;
     private String performID;
     private String performStartDate;
     private String performEndDate;
@@ -78,27 +66,13 @@ public class NextShowModel {
     private String performerID;
     private String performerName;
     private String pheadImg;
-    private String plongitude;
-    private String platitude;
-    private String performerType;
     private String performState;
     private String isOpportunity;
     private String publishType;
-    private String ptwitterAccount;
-    private String pfacebookAccount;
-    private String distance;
-    private String pvenueScore;
-    private String signature;
-    private String soundcloudAccount;
-    private String musicFile;
-    private String stageName;
-    private String zipCode;
     private String performDate;
     private String performTime;
-    private String week;
-    private String venueLongitude;
-    private String venueLatitude;
-    private String scheduleList;
+    private Object scheduleList;
+    private List<?> evaluate;
 
     public String getCreateDate() {
         return createDate;
@@ -124,7 +98,7 @@ public class NextShowModel {
         this.venueName = venueName;
     }
 
-    public String getHeadImg() {
+    public Object getHeadImg() {
         return headImg;
     }
 
@@ -204,19 +178,19 @@ public class NextShowModel {
         this.facebookAccount = facebookAccount;
     }
 
-    public String getIsHaveCharges() {
+    public Object getIsHaveCharges() {
         return isHaveCharges;
     }
 
-    public void setIsHaveCharges(String isHaveCharges) {
+    public void setIsHaveCharges(Object isHaveCharges) {
         this.isHaveCharges = isHaveCharges;
     }
 
-    public String getVenueEmail() {
+    public Object getVenueEmail() {
         return venueEmail;
     }
 
-    public void setVenueEmail(String venueEmail) {
+    public void setVenueEmail(Object venueEmail) {
         this.venueEmail = venueEmail;
     }
 
@@ -276,36 +250,12 @@ public class NextShowModel {
         this.performerName = performerName;
     }
 
-    public String getPheadImg() {
+    public Object getPheadImg() {
         return pheadImg;
     }
 
     public void setPheadImg(String pheadImg) {
         this.pheadImg = pheadImg;
-    }
-
-    public String getPlongitude() {
-        return plongitude;
-    }
-
-    public void setPlongitude(String plongitude) {
-        this.plongitude = plongitude;
-    }
-
-    public String getPlatitude() {
-        return platitude;
-    }
-
-    public void setPlatitude(String platitude) {
-        this.platitude = platitude;
-    }
-
-    public String getPerformerType() {
-        return performerType;
-    }
-
-    public void setPerformerType(String performerType) {
-        this.performerType = performerType;
     }
 
     public String getPerformState() {
@@ -332,78 +282,6 @@ public class NextShowModel {
         this.publishType = publishType;
     }
 
-    public String getPtwitterAccount() {
-        return ptwitterAccount;
-    }
-
-    public void setPtwitterAccount(String ptwitterAccount) {
-        this.ptwitterAccount = ptwitterAccount;
-    }
-
-    public String getPfacebookAccount() {
-        return pfacebookAccount;
-    }
-
-    public void setPfacebookAccount(String pfacebookAccount) {
-        this.pfacebookAccount = pfacebookAccount;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
-
-    public String getPvenueScore() {
-        return pvenueScore;
-    }
-
-    public void setPvenueScore(String pvenueScore) {
-        this.pvenueScore = pvenueScore;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public String getSoundcloudAccount() {
-        return soundcloudAccount;
-    }
-
-    public void setSoundcloudAccount(String soundcloudAccount) {
-        this.soundcloudAccount = soundcloudAccount;
-    }
-
-    public String getMusicFile() {
-        return musicFile;
-    }
-
-    public void setMusicFile(String musicFile) {
-        this.musicFile = musicFile;
-    }
-
-    public String getStageName() {
-        return stageName;
-    }
-
-    public void setStageName(String stageName) {
-        this.stageName = stageName;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
     public String getPerformDate() {
         return performDate;
     }
@@ -420,35 +298,19 @@ public class NextShowModel {
         this.performTime = performTime;
     }
 
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
-
-    public String getVenueLongitude() {
-        return venueLongitude;
-    }
-
-    public void setVenueLongitude(String venueLongitude) {
-        this.venueLongitude = venueLongitude;
-    }
-
-    public String getVenueLatitude() {
-        return venueLatitude;
-    }
-
-    public void setVenueLatitude(String venueLatitude) {
-        this.venueLatitude = venueLatitude;
-    }
-
-    public String getScheduleList() {
+    public Object getScheduleList() {
         return scheduleList;
     }
 
-    public void setScheduleList(String scheduleList) {
+    public void setScheduleList(Object scheduleList) {
         this.scheduleList = scheduleList;
+    }
+
+    public List<?> getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(List<?> evaluate) {
+        this.evaluate = evaluate;
     }
 }

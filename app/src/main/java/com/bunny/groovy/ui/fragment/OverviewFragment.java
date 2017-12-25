@@ -12,9 +12,8 @@ import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.OverviewPresenter;
 import com.bunny.groovy.ui.MainActivity;
-import com.bunny.groovy.ui.fragment.releaseshow.MapsFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.ExploreShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
@@ -37,7 +36,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Bind(R.id.nextshow_tv_performerStar)
     TextView tvStar;
     @Bind(R.id.nextshow_tv_address)
-    TextView tvAddress;
+    TextView tvPerformType;
     @Bind(R.id.nextshow_tv_time)
     TextView tvTime;
 
@@ -48,7 +47,16 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
 
     @OnClick(R.id.overview_tv_explore_show)
     void exploreShow() {
-        MapsFragment.launch(getActivity());
+        ExploreShowFragment.launch(getActivity());
+//        int PLACE_PICKER_REQUEST = 1;
+//        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+//        try {
+//            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            e.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -83,11 +91,11 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Override
     public void initNextView(NextShowModel nextShowModel) {
         nextShowLayout.setVisibility(View.VISIBLE);
-        Glide.with(this).load(nextShowModel.getPheadImg()).into(ivHead);
-        tvName.setText(nextShowModel.getPerformerName());
+        Glide.with(this).load(nextShowModel.getPheadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic).into(ivHead);
+        tvName.setText(nextShowModel.getVenueName());
         tvStar.setText(nextShowModel.getPvenueScore());
-        tvAddress.setText("未知");
-        tvTime.setText(nextShowModel.getPerformStartDate());
+        tvPerformType.setText(nextShowModel.getPerformType());
+        tvTime.setText(nextShowModel.getPerformDate() + " " + nextShowModel.getPerformTime());
     }
 
     @Override

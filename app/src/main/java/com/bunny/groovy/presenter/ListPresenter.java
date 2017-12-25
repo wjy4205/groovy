@@ -5,6 +5,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.NextShowModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.model.ShowHistoryModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IListPageView;
@@ -53,9 +54,9 @@ public class ListPresenter extends BasePresenter<IListPageView> {
      */
     public void getHistoryList() {
         addSubscription(apiService.getHistoryList(AppCacheData.getPerformerUserModel().getUserID()),
-                new SubscriberCallBack<List<NextShowModel>>(mView.get()) {
+                new SubscriberCallBack<List<ShowHistoryModel>>(mView.get()) {
                     @Override
-                    protected void onSuccess(List<NextShowModel> response) {
+                    protected void onSuccess(List<ShowHistoryModel> response) {
                         if (response != null && response.size() > 0)
                             mView.setView(response);
                         else mView.setNodata();

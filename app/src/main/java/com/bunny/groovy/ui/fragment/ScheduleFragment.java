@@ -45,11 +45,4 @@ public class ScheduleFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mActivity instanceof MainActivity) {
-            ((MainActivity) mActivity).setPageTitle("SCHEDULE");
-        }
-    }
 }

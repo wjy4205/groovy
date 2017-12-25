@@ -9,6 +9,9 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -100,10 +103,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             UIUtils.showBaseToast("请填写演出介绍");
             return;
         }
-//        @Query("venueID") String venueID, @Query("performType") String performType,
-//        @Query("performStartDate") String startTime, @Query("performEndDate") String endTime,
-//        @Query("performDesc") String performDesc, @Query("performerID") String performerID,
-//        @Query("venueName") String venueName, @Query("venueAddress") String venueAddress);
         Map<String, String> map = new HashMap<>();
         if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
             map.put("venueID", mVenueModel.getVenueID());
@@ -120,6 +119,20 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
         map.put("venueAddress", etVenue.getText().toString());
         mPresenter.releaseShow(map);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.release_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.release_menu_add){
+            //todo
+            UIUtils.showBaseToast("add");
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

@@ -3,9 +3,11 @@ package com.bunny.groovy.api;
 import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.NextShowModel;
-import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
+import com.bunny.groovy.model.ShowHistoryModel;
+import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 
 import java.util.List;
@@ -17,10 +19,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
@@ -84,8 +83,9 @@ public interface ApiService {
 
 
     //Release Show: 发布演出-待验证演出
-    @GET("PerformerOverviewController/addPerformApply")
-    Observable<ResultResponse<Object>> releaseShow(@QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/addPerformApply")
+    Observable<ResultResponse<Object>> releaseShow(@FieldMap Map<String, String> map);
 
 
     //获取收藏演出厅记录
@@ -95,15 +95,26 @@ public interface ApiService {
 
     //获取演出记录
     @GET("PerformerMeController/getPerformerMeShowHistory")
-    Observable<ResultResponse<List<VenueModel>>> getHistoryList(@Query("performerID") String performerID);
+    Observable<ResultResponse<List<ShowHistoryModel>>> getHistoryList(@Query("performerID") String performerID);
 
 
     //登出
     @GET("FrontUserController/loginOut")
-    Observable<ResultResponse<Object>> loginOut(@Query("userID")String userId);
+    Observable<ResultResponse<Object>> loginOut(@Query("userID") String userId);
 
 
     //根据邮编获取经纬度
     @GET("https://maps.googleapis.com/maps/api/geocode/json")
     Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key") String apiKey);
+
+
+//    performerID
+//    longitude
+//    latitude
+//    distance
+//    performStartDate
+//    performEndDate
+    //获取表演机会列表-带条件
+    @GET("PerformerOverviewController/findPerformerOverviewOpportunityList")
+    Observable<ResultResponse<List<OpportunityModel>>> findOpportunityList(@QueryMap Map<String, String> map);
 }

@@ -2,8 +2,10 @@ package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.app.Activity;
 
+import com.bunny.groovy.adapter.ShowHistoryAdapter;
 import com.bunny.groovy.adapter.VenueListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
+import com.bunny.groovy.model.ShowHistoryModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ListPresenter;
 import com.bunny.groovy.view.IListPageView;
@@ -16,20 +18,20 @@ import java.util.List;
  * Author: Created by bayin on 2017/12/22.
  ****************************************/
 
-public class HistoryFragment extends BaseListFragment<ListPresenter, VenueListAdapter> implements IListPageView<List<VenueModel>> {
+public class HistoryFragment extends BaseListFragment<ListPresenter, ShowHistoryAdapter> implements IListPageView<List<ShowHistoryModel>> {
     @Override
     public Activity get() {
         return getActivity();
     }
 
     @Override
-    public void setView(List<VenueModel> o) {
+    public void setView(List<ShowHistoryModel> o) {
         setNormalView();
         if (mAdapter == null) {
-            mAdapter = new VenueListAdapter(o, "");
+            mAdapter = new ShowHistoryAdapter(o);
             mRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.refresh(o, "");
+            mAdapter.refresh(o);
         }
     }
 

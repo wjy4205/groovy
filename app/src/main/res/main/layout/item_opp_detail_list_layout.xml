@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:gravity="center"
+              android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/rlTimeline"
@@ -26,6 +27,7 @@
             android:background="@drawable/details_ok" />
 
         <TextView
+            android:id="@+id/tvBottomLine"
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
             android:layout_below="@id/tvDot"
@@ -37,29 +39,29 @@
         android:id="@+id/rlCenter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="6dp"
+        android:paddingBottom="20dp"
         android:paddingRight="10dp"
         android:paddingTop="6dp">
 
         <TextView
-            android:id="@+id/tvAcceptTime"
+            android:id="@+id/tvPerformTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2014/06/24 20:55:28"
+            tools:text="2014/06/24 20:55:28"
             android:textColor="@color/white"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/tvAcceptStation"
+            android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvAcceptTime"
+            android:layout_below="@id/tvPerformTime"
             android:layout_marginTop="5dp"
             android:text="MESSAGE"
             android:textColor="#999"
             android:textSize="12sp" />
         <TextView
-            android:id="@+id/item_favorite_tv_apply"
+            android:id="@+id/tv_apply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

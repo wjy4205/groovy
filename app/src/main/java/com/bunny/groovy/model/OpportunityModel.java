@@ -1,5 +1,8 @@
 package com.bunny.groovy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /****************************************
@@ -8,7 +11,7 @@ import java.util.List;
  * Author: Created by bayin on 2017/12/25.
  ****************************************/
 
-public class OpportunityModel {
+public class OpportunityModel implements Parcelable {
 
     /**
      * createDate : 2017-12-06 09:54
@@ -67,6 +70,47 @@ public class OpportunityModel {
     private String distance;
     private String scheduleList;
     private List<PerformerOpportunityBean> performerOpportunity;
+
+    protected OpportunityModel(Parcel in) {
+        createDate = in.readString();
+        venueID = in.readString();
+        venueName = in.readString();
+        headImg = in.readString();
+        venueAddress = in.readString();
+        phoneNumber = in.readString();
+        webSiteAddress = in.readString();
+        longitude = in.readString();
+        latitude = in.readString();
+        venueScore = in.readString();
+        venueTypeName = in.readString();
+        twitterAccount = in.readString();
+        facebookAccount = in.readString();
+        isHaveCharges = in.readString();
+        venueEmail = in.readString();
+        opportunityID = in.readString();
+        startDate = in.readString();
+        endDate = in.readString();
+        performDesc = in.readString();
+        opportunityState = in.readString();
+        applyID = in.readString();
+        operationDate = in.readString();
+        performDate = in.readString();
+        performTime = in.readString();
+        distance = in.readString();
+        scheduleList = in.readString();
+    }
+
+    public static final Creator<OpportunityModel> CREATOR = new Creator<OpportunityModel>() {
+        @Override
+        public OpportunityModel createFromParcel(Parcel in) {
+            return new OpportunityModel(in);
+        }
+
+        @Override
+        public OpportunityModel[] newArray(int size) {
+            return new OpportunityModel[size];
+        }
+    };
 
     public String getCreateDate() {
         return createDate;
@@ -282,6 +326,41 @@ public class OpportunityModel {
 
     public void setPerformerOpportunity(List<PerformerOpportunityBean> performerOpportunity) {
         this.performerOpportunity = performerOpportunity;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createDate);
+        dest.writeString(venueID);
+        dest.writeString(venueName);
+        dest.writeString(headImg);
+        dest.writeString(venueAddress);
+        dest.writeString(phoneNumber);
+        dest.writeString(webSiteAddress);
+        dest.writeString(longitude);
+        dest.writeString(latitude);
+        dest.writeString(venueScore);
+        dest.writeString(venueTypeName);
+        dest.writeString(twitterAccount);
+        dest.writeString(facebookAccount);
+        dest.writeString(isHaveCharges);
+        dest.writeString(venueEmail);
+        dest.writeString(opportunityID);
+        dest.writeString(startDate);
+        dest.writeString(endDate);
+        dest.writeString(performDesc);
+        dest.writeString(opportunityState);
+        dest.writeString(applyID);
+        dest.writeString(operationDate);
+        dest.writeString(performDate);
+        dest.writeString(performTime);
+        dest.writeString(distance);
+        dest.writeString(scheduleList);
     }
 
     public static class PerformerOpportunityBean {

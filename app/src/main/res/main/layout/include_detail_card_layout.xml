@@ -20,7 +20,7 @@
             android:gravity="bottom"
             android:orientation="horizontal">
 
-            <com.bunny.groovy.weidget.HeightLightTextView
+            <TextView
                 android:id="@+id/include_detail_tv_venueName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

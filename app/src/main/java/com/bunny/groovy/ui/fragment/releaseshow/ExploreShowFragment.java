@@ -5,33 +5,41 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.presenter.ExplorerOpportunityPresenter;
-import com.bunny.groovy.presenter.MapPresenter;
+import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
-import com.bunny.groovy.view.IMapView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.socks.library.KLog;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,22 +54,84 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/12/17.
  */
 
-public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresenter> implements OnMapReadyCallback, IExploreView, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresenter> implements
+        OnMapReadyCallback,
+        IExploreView,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
+    private static final int TRY_AGAIN_LOC = 999;
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private boolean isMapInit = false;
     private List<OpportunityModel> mOpportunityModelList = new ArrayList<>();
+    private OpportunityModel mCurrentBean;//当前选中的演出机会bean
     private List<Marker> mMarkerList = new ArrayList<>();
-    private String distance = "10000";
-
-    @Bind(R.id.et_search)
-    EditText etSearch;
+    private String distance = "200";//距离默认200km
+    private int count;
     private Location mLastLocation;
+    private boolean isMarkerShowing = false;
+
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case TRY_AGAIN_LOC:
+                    if (count < 2) {
+                        initCurrentLocation();
+                        count++;
+                    } else {
+                        Log.i("MyTag", "location not found");
+                    }
+                    break;
+            }
+        }
+    };
+
+    @Bind(R.id.map_fl_marker_layout)
+    FrameLayout mMarkerLayout;
+    @Bind(R.id.marker_tv_date)
+    TextView mTvDate;
+    @Bind(R.id.marker_iv_head)
+    ImageView mHeadImg;
+    @Bind(R.id.marker_tv_score)
+    TextView mTvScore;
+    @Bind(R.id.marker_tv_venue_name)
+    TextView mTvName;
+    @Bind(R.id.marker_tv_venue_address)
+    TextView mTvadd;
+    @Bind(R.id.marker_tv_time)
+    TextView mTvTime;
+    @Bind(R.id.marker_tv_distance)
+    TextView mTvDistance;
+
+    @OnClick(R.id.marker_tv_venue_detail)
+    public void venueDetail() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(OpportunityDetailFragment.KEY_OPPORTUNITY_BEAN,mCurrentBean);
+        OpportunityDetailFragment.launch(mActivity,bundle);
+    }
+
+    @OnClick(R.id.marker_iv_phone)
+    public void call() {
+        Utils.CallPhone(mActivity,mCurrentBean.getPhoneNumber());
+    }
+
+    @OnClick(R.id.marker_iv_email)
+    public void email() {
+        Utils.sendEmail(mActivity,mCurrentBean.getVenueEmail());
+    }
+
+    @OnClick(R.id.marker_tv_apply)
+    public void apply() {
+
+    }
 
     @OnClick(R.id.map_filter)
     public void mapFilter() {
-
+        // TODO: 2017/12/26
     }
 
     public static void launch(Activity from) {
@@ -81,6 +151,12 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     }
 
     @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        mMarkerLayout.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void loadData() {
 
     }
@@ -92,7 +168,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         supportMapFragment.getMapAsync(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
-                .enableAutoManage(getActivity(), this)
+                .enableAutoManage(mActivity, this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
@@ -101,39 +177,60 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         mGoogleApiClient.connect();
     }
 
+    /**
+     * 设置marker窗口的信息
+     *
+     * @param bean
+     */
+    private void setMarkerData(OpportunityModel bean) {
+        mCurrentBean = bean;
+        mTvDate.setText(bean.getPerformDate());
+        mTvName.setText(bean.getVenueName());
+        mTvadd.setText(bean.getVenueAddress());
+        mTvTime.setText(bean.getPerformTime());
+        mTvDistance.setText(bean.getDistance());
+        mTvScore.setText(bean.getVenueScore());
+    }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mGoogleMap = map;
-        boolean success = mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 mActivity, R.raw.map_style));
-        if (!success) {
-            Log.e("xxxx", "Style parsing failed.");
-        }
         //点击监听
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 OpportunityModel info = (OpportunityModel) marker.getTag();
                 if (info != null) {
-                    UIUtils.showBaseToast(info.getVenueName());
+                    if (isMarkerShowing)
+                    {
+                        mMarkerLayout.setVisibility(View.GONE);
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+                    }
+                    else {
+                        setMarkerData(info);
+                        mMarkerLayout.setVisibility(View.VISIBLE);
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
+                    }
+                    isMarkerShowing = !isMarkerShowing;
                     return true;
                 }
                 return false;
             }
         });
         //我的位置
-        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                if (mGoogleMap.isMyLocationEnabled()) {
-                    LatLng sydney = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+//            @Override
+//            public boolean onMyLocationButtonClick() {
+//                if (mGoogleMap.isMyLocationEnabled()) {
+//                    LatLng sydney = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+//                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -175,28 +272,27 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
      * 初始化当前位置
      */
     private void initCurrentLocation() {
+
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null && mGoogleMap != null) {
             if (!isMapInit) {
-                mGoogleMap.setMyLocationEnabled(true);
-                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-
                 LatLng sydney = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                 mGoogleMap.addMarker(new MarkerOptions().position(sydney)
-                        .title("Marker in ShangHai")
+                        .title("Your Location")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
                         .draggable(true));
 
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10));
 
                 KLog.a("当前位置：" + mLastLocation.getLatitude() + " -- " + mLastLocation.getLongitude());
                 isMapInit = true;
             }
+            //请求机会数据
+            requestAroundList();
         } else {
-            Toast.makeText(getActivity(), "no_location_detected", Toast.LENGTH_LONG).show();
+            mHandler.sendEmptyMessageDelayed(TRY_AGAIN_LOC, 2000);
         }
-        //请求机会数据
-        requestAroundList();
+
     }
 
     private void requestAroundList() {

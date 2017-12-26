@@ -109,7 +109,7 @@ public interface ApiService {
     Observable<GoogleMapLoc> getLocation(@Query("address") String address, @Query("key") String apiKey);
 
 
-//    performerID
+    //    performerID
 //    longitude
 //    latitude
 //    distance
@@ -125,7 +125,7 @@ public interface ApiService {
     Observable<ResultResponse<Object>> checkPerformerApply(@Query("performerID") String performerID,
                                                            @Query("applyID") String applyID);
 
-//   venueID
+    //   venueID
 //   performType
 //   performStartDate
 //   performEndDate
@@ -135,5 +135,17 @@ public interface ApiService {
     //申请演出机会
     @FormUrlEncoded
     @POST("PerformApplyController/addPerformOpportunityApply")
-    Observable<ResultResponse<Observable>> applyOpportunity(@FieldMap Map<String,String> map);
+    Observable<ResultResponse<Observable>> applyOpportunity(@FieldMap Map<String, String> map);
+
+    //获取演出机会申请列表
+    @GET("PerformerOverviewController/getPerformerOverviewOpportunityList")
+    Observable<ResultResponse<Object>> getApplyOpportunityList();
+
+    //获取邀请的列表
+    @GET("PerformerOverviewController/getPerformerOverviewInviteList")
+    Observable<ResultResponse<Object>> getInviteList();
+
+    //获取待验证演出申请列表
+    @GET("PerformerOverviewController/getPerformerOverviewApplyList")
+    Observable<ResultResponse<Object>> getReleaseShowList();
 }

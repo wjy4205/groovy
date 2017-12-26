@@ -19,8 +19,8 @@
 
         <Button
             android:id="@+id/item_style_grid_cb"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:background="@mipmap/btn_square"
             />
 
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:text="style"/>
     </LinearLayout>
 

@@ -27,8 +27,7 @@
             android:name=".ui.RoleChooseActivity"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".ui.SplashActivity"
-            android:launchMode="singleTask">
+            android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

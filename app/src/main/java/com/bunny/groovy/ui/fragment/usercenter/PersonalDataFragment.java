@@ -240,7 +240,8 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
     @Override
     public void setUserView(PerformerUserModel model) {
         mTvName.setText(model.getUserName());
-        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.head).into(mHeadView);
+        Glide.with(getActivity()).load(model.getHeadImg())
+                .placeholder(R.drawable.head).into(mHeadView);
         mEtArtistName.setText(model.getStageName());
         mEtZipcode.setText(model.getZipCode());
         mEtWebsite.setText(model.getWebSiteAddress());

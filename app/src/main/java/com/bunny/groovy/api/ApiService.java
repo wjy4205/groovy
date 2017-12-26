@@ -10,6 +10,7 @@ import com.bunny.groovy.model.ShowHistoryModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 
+import java.lang.annotation.Retention;
 import java.util.List;
 import java.util.Map;
 
@@ -119,4 +120,20 @@ public interface ApiService {
     Observable<ResultResponse<List<OpportunityModel>>> findOpportunityList(@QueryMap Map<String, String> map);
 
 
+    //检查表演者是否已经申请过这个机会
+    @GET("PerformerOverviewController/checkPerformerOpportunity")
+    Observable<ResultResponse<Object>> checkPerformerApply(@Query("performerID") String performerID,
+                                                           @Query("applyID") String applyID);
+
+//   venueID
+//   performType
+//   performStartDate
+//   performEndDate
+//   performDesc
+//   performerID
+//   opportunityID
+    //申请演出机会
+    @FormUrlEncoded
+    @POST("PerformApplyController/addPerformOpportunityApply")
+    Observable<ResultResponse<Observable>> applyOpportunity(@FieldMap Map<String,String> map);
 }

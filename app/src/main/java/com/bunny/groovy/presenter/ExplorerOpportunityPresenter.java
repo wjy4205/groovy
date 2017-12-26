@@ -36,4 +36,24 @@ public class ExplorerOpportunityPresenter extends BasePresenter<IExploreView> {
 
         });
     }
+
+
+    //检查该表演者是否已申请该演出机会
+    public void checkPerformerHasApply() {
+
+    }
+
+    public void applyOpportunity(Map<String, String> map) {
+        addSubscription(apiService.applyOpportunity(map), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                mView.applyResult(true, "");
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+                mView.applyResult(false, response.errorMsg);
+            }
+        });
+    }
 }

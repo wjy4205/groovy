@@ -24,6 +24,7 @@ import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.presenter.ExplorerOpportunityPresenter;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
 import com.google.android.gms.common.ConnectionResult;
@@ -110,23 +111,42 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     @OnClick(R.id.marker_tv_venue_detail)
     public void venueDetail() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(OpportunityDetailFragment.KEY_OPPORTUNITY_BEAN,mCurrentBean);
-        OpportunityDetailFragment.launch(mActivity,bundle);
+        bundle.putParcelable(OpportunityDetailFragment.KEY_OPPORTUNITY_BEAN, mCurrentBean);
+        OpportunityDetailFragment.launch(mActivity, bundle);
     }
 
     @OnClick(R.id.marker_iv_phone)
     public void call() {
-        Utils.CallPhone(mActivity,mCurrentBean.getPhoneNumber());
+        Utils.CallPhone(mActivity, mCurrentBean.getPhoneNumber());
     }
 
     @OnClick(R.id.marker_iv_email)
     public void email() {
-        Utils.sendEmail(mActivity,mCurrentBean.getVenueEmail());
+        Utils.sendEmail(mActivity, mCurrentBean.getVenueEmail());
     }
 
+    /**
+     * 申请机会
+     */
     @OnClick(R.id.marker_tv_apply)
     public void apply() {
-
+        //set params
+        //   venueID
+        //   performType
+        //   performStartDate
+        //   performEndDate
+        //   performDesc
+        //   performerID
+        //   opportunityID
+        HashMap<String, String> map = new HashMap<>();
+        map.put("venueID", mCurrentBean.getVenueID());
+        map.put("performType", AppCacheData.getPerformerUserModel().getPerformTypeName());
+        map.put("performStartDate", mCurrentBean.getStartDate());
+        map.put("performEndDate", mCurrentBean.getEndDate());
+        map.put("performDesc", mCurrentBean.getPerformDesc());
+        map.put("performerID", AppCacheData.getPerformerUserModel().getUserID());
+        map.put("opportunityID", mCurrentBean.getOpportunityID());
+        mPresenter.applyOpportunity(map);
     }
 
     @OnClick(R.id.map_filter)
@@ -203,12 +223,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
             public boolean onMarkerClick(Marker marker) {
                 OpportunityModel info = (OpportunityModel) marker.getTag();
                 if (info != null) {
-                    if (isMarkerShowing)
-                    {
+                    if (isMarkerShowing) {
                         mMarkerLayout.setVisibility(View.GONE);
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
-                    }
-                    else {
+                    } else {
                         setMarkerData(info);
                         mMarkerLayout.setVisibility(View.VISIBLE);
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
@@ -339,6 +357,15 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         } else {
             //列表显示
 
+        }
+    }
+
+    @Override
+    public void applyResult(boolean success, String msg) {
+        if (success) {
+            UIUtils.showBaseToast("申请成功！");
+        } else {
+            UIUtils.showBaseToast("申请失败:" + msg);
         }
     }
 }

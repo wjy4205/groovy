@@ -15,4 +15,5 @@ import java.util.List;
 public interface IExploreView {
     Activity get();
     void setListData(List<OpportunityModel> list);
+    void applyResult(boolean success,String msg);
 }

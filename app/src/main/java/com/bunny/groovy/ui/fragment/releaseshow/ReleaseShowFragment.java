@@ -35,7 +35,9 @@ import com.bunny.groovy.weidget.loopview.LoopView;
 import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -49,6 +51,8 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * 发布演出页面
@@ -69,6 +73,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private TextView mTvTimeTitle;
     private Date today = Calendar.getInstance().getTime();
     private VenueModel mVenueModel;
+    private Place mPlace;
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -114,6 +119,14 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             map.put("venueAddress", mVenueModel.getVenueAddress());
             map.put("venueLongitude", mVenueModel.getLongitude());
             map.put("venueLatitude", mVenueModel.getLatitude());
+        } else if (mPlace != null) {
+            map.put("venueName", mPlace.getName().toString());
+            map.put("venueAddress", mPlace.getAddress().toString());
+            map.put("venueLongitude", String.valueOf(mPlace.getLatLng().longitude));
+            map.put("venueLatitude", String.valueOf(mPlace.getLatLng().latitude));
+        } else {
+            UIUtils.showBaseToast("音乐厅选取失败，请重新选择");
+            return;
         }
         map.put("performType", etStyle.getText().toString());
         map.put("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
@@ -121,7 +134,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performDesc", etBio.getText().toString());
         map.put("performerID", AppCacheData.getPerformerUserModel().getUserID());
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
-        map.put("venueAddress", etVenue.getText().toString());
         mPresenter.releaseShow(map);
     }
 
@@ -220,10 +232,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             }
         });
     }
-
-//    private int currentYear = new Date().getYear();
-//    private int currentMonth = new Date().getMonth();
-//    private int currentDay = new Date().getDay();
 
     /**
      * 显示日期选择器
@@ -428,5 +436,17 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             }
         });
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                mPlace = PlacePicker.getPlace(data, mActivity);
+                etVenue.setText(mPlace.getName());
+            }
+        }
     }
 }

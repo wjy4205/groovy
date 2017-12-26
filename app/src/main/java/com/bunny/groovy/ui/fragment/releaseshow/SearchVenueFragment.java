@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.VenueListAdapter;
@@ -24,11 +25,16 @@ import com.bunny.groovy.presenter.SearchVenueListPresenter;
 import com.bunny.groovy.view.ISearchVenueList;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.socks.library.KLog;
 
 import java.util.List;
 
 import butterknife.Bind;
+
+import static android.app.Activity.RESULT_OK;
 
 /****************************************
  * 功能说明: 搜索音乐厅页面
@@ -98,20 +104,39 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
         inflater.inflate(R.menu.release_menu, menu);
     }
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    int PLACE_PICKER_REQUEST = 1;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(mActivity);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO:Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO:Handle the error.
-        }
+        search();
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 进入google自动搜索地址页面
+     */
+    public void search(){
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(builder.build(mActivity), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                //地点不为空，setData，finish自己
+                Place place = PlacePicker.getPlace(data, mActivity);
+                String toastMsg = String.format("Place: %s", place.getName());
+                KLog.a("Place:"+toastMsg);
+                mActivity.setResult(RESULT_OK,data);
+                mActivity.finish();
+            }
+        }
     }
 
     @Override

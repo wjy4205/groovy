@@ -14,12 +14,11 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.ui.fragment.MeFragment;
 import com.bunny.groovy.ui.fragment.OverviewFragment;
 import com.bunny.groovy.ui.fragment.ScheduleFragment;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.Utils;
+import com.bunny.groovy.weidget.BottomBarItem;
+import com.bunny.groovy.weidget.BottomBarLayout;
 import com.bunny.groovy.weidget.NoScrollViewPager;
-import com.chaychan.library.BottomBarItem;
-import com.chaychan.library.BottomBarLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 

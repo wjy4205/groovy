@@ -134,7 +134,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         if (TextUtils.isEmpty(model.getStarLevel()))
             tvScore.setText("0.0");
         else tvScore.setText(model.getStarLevel());
-        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.head).into(ivHeader);
+        Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
     }
 
     @Override
@@ -146,5 +146,12 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     public void refreshUI() {
         //获取用户数据
         mPresenter.requestUserData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFragmentVisible())
+            mPresenter.requestUserData();
     }
 }

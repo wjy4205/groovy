@@ -2,7 +2,7 @@ package com.bunny.groovy.view;
 
 import android.support.v4.app.FragmentActivity;
 
-import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.PerformerUserModel;
 
 /****************************************
@@ -12,7 +12,7 @@ import com.bunny.groovy.model.PerformerUserModel;
  ****************************************/
 
 public interface IOverView {
-    void initNextView(NextShowModel nextShowModel);
+    void initNextView(ShowModel showModel);
     void showEmptyNextShow();
     FragmentActivity get();
     void setView(PerformerUserModel userModel);

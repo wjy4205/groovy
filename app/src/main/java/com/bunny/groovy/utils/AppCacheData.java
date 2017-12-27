@@ -12,7 +12,7 @@ import java.util.Map;
  */
 
 public class AppCacheData {
-    private static PerformerUserModel userModel = new PerformerUserModel();
+    private static PerformerUserModel userModel;
 
     public static PerformerUserModel getPerformerUserModel() {
         return userModel;
@@ -26,7 +26,7 @@ public class AppCacheData {
      * 清空缓存表演者信息
      */
     public static void resetPerformer(){
-        userModel = new PerformerUserModel();
+        userModel = null;
     }
 
     private static Map<String, String> fileMap;

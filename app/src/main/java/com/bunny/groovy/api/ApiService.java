@@ -2,7 +2,7 @@ package com.bunny.groovy.api;
 
 import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.GoogleMapLoc;
-import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
@@ -10,7 +10,6 @@ import com.bunny.groovy.model.ShowHistoryModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 
-import java.lang.annotation.Retention;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -65,22 +63,23 @@ public interface ApiService {
 
 
     //获取表演者个人信息
-    @GET("PerformerMeController/getPerformerMeList")
-    Observable<ResultResponse<PerformerUserModel>> getPerformerInfo(@Query("performerID") String userID);
+    @POST("PerformerMeController/getPerformerMeList")
+    Observable<ResultResponse<PerformerUserModel>> getPerformerInfo();
 
 
     //获取表演者下一个演出
-    @GET("PerformerOverviewController/getNextScheduledShow")
-    Observable<ResultResponse<List<NextShowModel>>> getNextShow(@Query("performerID") String performerID);
+    @POST("PerformerOverviewController/getNextScheduledShow")
+    Observable<ResultResponse<List<ShowModel>>> getNextShow();
 
     //获取表演类型
-    @GET("PerformerBasicsController/getPerformTypeListNotLogin")
+    @POST("PerformerBasicsController/getPerformTypeListNotLogin")
     Observable<ResultResponse<List<StyleModel>>> getPerformStyle();
 
 
     //获取演出厅列表-关键字查询
-    @GET("PerformerOverviewController/getVenueListBykeyword")
-    Observable<ResultResponse<List<VenueModel>>> getVenueList(@Query("keyword") String keyword);
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/getVenueListBykeyword")
+    Observable<ResultResponse<List<VenueModel>>> getVenueList(@Field("keyword") String keyword);
 
 
     //Release Show: 发布演出-待验证演出
@@ -90,18 +89,19 @@ public interface ApiService {
 
 
     //获取收藏演出厅记录
-    @GET("PerformerMeController/getPerformerMeMyFavoriteV")
-    Observable<ResultResponse<List<FavoriteModel>>> getMyFavorite(@Query("performerID") String performerID);
+    @POST("PerformerMeController/getPerformerMeMyFavoriteV")
+    Observable<ResultResponse<List<FavoriteModel>>> getMyFavorite();
 
 
     //获取演出记录
-    @GET("PerformerMeController/getPerformerMeShowHistory")
-    Observable<ResultResponse<List<ShowHistoryModel>>> getHistoryList(@Query("performerID") String performerID);
+    @POST("PerformerMeController/getPerformerMeShowHistory")
+    Observable<ResultResponse<List<ShowHistoryModel>>> getHistoryList();
 
 
     //登出
-    @GET("FrontUserController/loginOut")
-    Observable<ResultResponse<Object>> loginOut(@Query("userID") String userId);
+    @FormUrlEncoded
+    @POST("FrontUserController/loginOut")
+    Observable<ResultResponse<Object>> loginOut(@Field("userID") String userId);
 
 
     //根据邮编获取经纬度
@@ -116,14 +116,15 @@ public interface ApiService {
 //    performStartDate
 //    performEndDate
     //获取表演机会列表-带条件
-    @GET("PerformerOverviewController/findPerformerOverviewOpportunityList")
-    Observable<ResultResponse<List<OpportunityModel>>> findOpportunityList(@QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/findPerformerOverviewOpportunityList")
+    Observable<ResultResponse<List<OpportunityModel>>> findOpportunityList(@FieldMap Map<String, String> map);
 
 
     //检查表演者是否已经申请过这个机会
-    @GET("PerformerOverviewController/checkPerformerOpportunity")
-    Observable<ResultResponse<Object>> checkPerformerApply(@Query("performerID") String performerID,
-                                                           @Query("applyID") String applyID);
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/checkPerformerOpportunity")
+    Observable<ResultResponse<Object>> checkPerformerApply(@Field("applyID") String applyID);
 
     //   venueID
 //   performType
@@ -138,14 +139,14 @@ public interface ApiService {
     Observable<ResultResponse<Observable>> applyOpportunity(@FieldMap Map<String, String> map);
 
     //获取演出机会申请列表
-    @GET("PerformerOverviewController/getPerformerOverviewOpportunityList")
-    Observable<ResultResponse<Object>> getApplyOpportunityList();
+    @POST("PerformerOverviewController/getPerformerOverviewOpportunityList")
+    Observable<ResultResponse<List<ShowModel>>> getApplyOpportunityList();
 
     //获取邀请的列表
-    @GET("PerformerOverviewController/getPerformerOverviewInviteList")
-    Observable<ResultResponse<Object>> getInviteList();
+    @POST("PerformerOverviewController/getPerformerOverviewInviteList")
+    Observable<ResultResponse<List<ShowModel>>> getInviteList();
 
     //获取待验证演出申请列表
-    @GET("PerformerOverviewController/getPerformerOverviewApplyList")
-    Observable<ResultResponse<Object>> getReleaseShowList();
+    @POST("PerformerOverviewController/getPerformerOverviewApplyList")
+    Observable<ResultResponse<List<ShowModel>>> getReleaseShowList();
 }

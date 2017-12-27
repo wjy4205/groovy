@@ -63,7 +63,7 @@
                     android:id="@+id/item_notification_tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CONFIRMED"
+                    android:text="@string/confirmed"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

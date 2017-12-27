@@ -30,4 +30,5 @@
     <string name="search">SEARCH</string>
     <string name="release">RELEASE</string>
     <string name="invite_you_for_a_show">has invite you for a show</string>
+    <string name="confirmed">CONFIRMED</string>
 </resources>

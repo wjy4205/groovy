@@ -11,7 +11,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
-import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.utils.Utils;
 
 import butterknife.Bind;
@@ -77,7 +77,7 @@ public class ShowDetailFragment extends BaseFragment {
         Utils.sendEmail(mActivity, model.getVenueEmail());
     }
 
-    private static NextShowModel model;
+    private static ShowModel model;
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
     public static void launch(Activity from, Bundle bundle) {

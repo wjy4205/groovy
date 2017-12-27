@@ -25,6 +25,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleAdapter;
 import com.bunny.groovy.base.BaseFragment;
@@ -241,7 +244,12 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
     public void setUserView(PerformerUserModel model) {
         mTvName.setText(model.getUserName());
         Glide.with(getActivity()).load(model.getHeadImg())
-                .placeholder(R.drawable.head).into(mHeadView);
+                .placeholder(R.drawable.head).into(new SimpleTarget<GlideDrawable>() {
+            @Override
+            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                mHeadView.setImageDrawable(resource.getCurrent());
+            }
+        });
         mEtArtistName.setText(model.getStageName());
         mEtZipcode.setText(model.getZipCode());
         mEtWebsite.setText(model.getWebSiteAddress());
@@ -288,7 +296,7 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
                 mMusic_file = data.getParcelableExtra("music_file");
                 initMusicService();
             }
-        } else if (requestCode == AppConstants.REQUESTCODE_SELECT_PIC && requestCode == RESULT_OK) {
+        } else if (requestCode == AppConstants.REQUESTCODE_SELECT_PIC && resultCode == RESULT_OK) {
             List<String> mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
             assert mResults != null;
             headImagePath = mResults.get(0);

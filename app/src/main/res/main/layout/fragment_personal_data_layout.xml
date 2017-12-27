@@ -22,7 +22,7 @@
                 android:id="@+id/personal_headview"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/head"
+                android:background="@drawable/icon_head_default"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
 
@@ -67,7 +67,7 @@
         <EditText
             android:id="@+id/personal_et_zipcode"
             style="@style/personal_data_input_text"
-            android:hint="ARTIST NAME"
+            android:hint="ZIP CODE"
             tools:text="HAHHAHA" />
 
         <TextView
@@ -79,7 +79,7 @@
         <EditText
             android:id="@+id/personal_et_website"
             style="@style/personal_data_input_text"
-            android:hint="ARTIST NAME"
+            android:hint="WEBSITE"
             tools:text="HAHHAHA" />
 
         <View

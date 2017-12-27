@@ -4,38 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:background="@drawable/shape_textarea_bg"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingBottom="8dp"-->
-        <!--android:paddingLeft="10dp"-->
-        <!--android:paddingRight="10dp"-->
-        <!--android:paddingTop="8dp">-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/icon_search"-->
-            <!--/>-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/et_search"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:background="@null"-->
-            <!--android:hint="Search"-->
-            <!--android:maxLength="400"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textColorHint="@color/common_grey"-->
-            <!--android:textSize="13sp"/>-->
-    <!--</LinearLayout>-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -17,4 +17,7 @@
     <color name="textAccent">#ff7887eb</color>
     <color name="light_purple">#66689c</color>
     <color name="trans">#00ffffff</color>
+
+    <color name="red">#ff0000</color>
+    <color name="selector_grey">#DDDDDD</color>
 </resources>

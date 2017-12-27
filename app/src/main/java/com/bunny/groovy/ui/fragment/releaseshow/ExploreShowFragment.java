@@ -29,7 +29,11 @@ import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -273,6 +277,19 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         KLog.a("Google Map --- onConnected:");
+//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+//                .getCurrentPlace(mGoogleApiClient, null);
+//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+//            @Override
+//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+//                    Log.i("xxxxx", String.format("Place '%s' has likelihood: %g",
+//                            placeLikelihood.getPlace().getName(),
+//                            placeLikelihood.getLikelihood()));
+//                }
+//                likelyPlaces.release();
+//            }
+//        });
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -315,7 +332,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
 
     private void requestAroundList() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("performerID", AppCacheData.getPerformerUserModel().getUserID());
         if (mLastLocation != null) {
             map.put("longitude", String.valueOf(mLastLocation.getLongitude()));
             map.put("latitude", String.valueOf(mLastLocation.getLatitude()));

@@ -30,13 +30,13 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <com.chaychan.library.BottomBarLayout
+    <com.bunny.groovy.weidget.BottomBarLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="#111111">
 
-        <com.chaychan.library.BottomBarItem
+        <com.bunny.groovy.weidget.BottomBarItem
             android:id="@+id/tab_overview"
             style="@style/tab_item_style"
             app:iconHeight="25dp"
@@ -50,7 +50,7 @@
             app:textColorSelected="#fff"
             app:touchDrawable="@drawable/selector_bottom_tab" />
 
-        <com.chaychan.library.BottomBarItem
+        <com.bunny.groovy.weidget.BottomBarItem
             style="@style/tab_item_style"
             android:id="@+id/tab_schedule"
             app:itemTextSize="8sp"
@@ -64,7 +64,7 @@
             app:iconWidth="20dp"
             app:itemText="@string/tab_schedule" />
 
-        <com.chaychan.library.BottomBarItem
+        <com.bunny.groovy.weidget.BottomBarItem
             android:id="@+id/tab_me"
             style="@style/tab_item_style"
             app:itemTextSize="8sp"
@@ -77,6 +77,6 @@
             app:iconSelected="@mipmap/tab_me_selected"
             app:iconWidth="20dp"
             app:itemText="@string/tab_user" />
-    </com.chaychan.library.BottomBarLayout>
+    </com.bunny.groovy.weidget.BottomBarLayout>
 
 </LinearLayout>

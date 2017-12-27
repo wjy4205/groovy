@@ -1,9 +1,7 @@
 package com.bunny.groovy.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
@@ -11,14 +9,10 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.UIUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.security.Permission;
-import java.security.Permissions;
 import java.util.List;
-import java.util.jar.Manifest;
 
 import butterknife.OnClick;
 import flyn.Eyes;

@@ -28,9 +28,9 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
     private long startRequestTime = 0;
     private long endRequestTime = 0;
 
-    public void requestPerformerInfo(String userID) {
+    public void requestPerformerInfo() {
         startRequestTime = SystemClock.currentThreadTimeMillis();
-        addSubscription(apiService.getPerformerInfo(userID), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+        addSubscription(apiService.getPerformerInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(final PerformerUserModel response) {
                 endRequestTime = SystemClock.currentThreadTimeMillis();

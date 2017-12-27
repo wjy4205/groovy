@@ -59,6 +59,8 @@
             android:theme="@style/Theme.AppCompat.Light"/>
         <activity android:name=".ui.setfile.MusicListActivity"/>
 
+        <activity android:name=".ui.MapsActivityCurrentPlace"/>
+
         <service android:name=".service.MusicService"/>
         <provider
             android:name="android.support.v4.content.FileProvider"

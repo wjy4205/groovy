@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class NextShowModel implements Parcelable {
+public class ShowModel implements Parcelable {
 
     /**
      * createDate : 2017-12-25 10:38
@@ -103,7 +103,7 @@ public class NextShowModel implements Parcelable {
     private String venueLatitude;
     private String scheduleList;
 
-    protected NextShowModel(Parcel in) {
+    protected ShowModel(Parcel in) {
         createDate = in.readString();
         venueID = in.readString();
         venueName = in.readString();
@@ -150,15 +150,15 @@ public class NextShowModel implements Parcelable {
         scheduleList = in.readString();
     }
 
-    public static final Creator<NextShowModel> CREATOR = new Creator<NextShowModel>() {
+    public static final Creator<ShowModel> CREATOR = new Creator<ShowModel>() {
         @Override
-        public NextShowModel createFromParcel(Parcel in) {
-            return new NextShowModel(in);
+        public ShowModel createFromParcel(Parcel in) {
+            return new ShowModel(in);
         }
 
         @Override
-        public NextShowModel[] newArray(int size) {
-            return new NextShowModel[size];
+        public ShowModel[] newArray(int size) {
+            return new ShowModel[size];
         }
     };
 

@@ -2,10 +2,9 @@ package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.model.NextShowModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IOverView;
 
@@ -23,10 +22,9 @@ public class OverviewPresenter extends BasePresenter<IOverView> {
     }
 
     public void requestNextShow() {
-        String userID = AppCacheData.getPerformerUserModel().getUserID();
-        addSubscription(apiService.getNextShow(userID), new SubscriberCallBack<List<NextShowModel>>(null) {
+        addSubscription(apiService.getNextShow(), new SubscriberCallBack<List<ShowModel>>(null) {
             @Override
-            protected void onSuccess(List<NextShowModel> response) {
+            protected void onSuccess(List<ShowModel> response) {
                 if (response != null && response.size() > 0) {
                     mView.initNextView(response.get(0));
                 } else {
@@ -51,7 +49,7 @@ public class OverviewPresenter extends BasePresenter<IOverView> {
      * 获取user数据
      */
     public void requestUserData() {
-        addSubscription(apiService.getPerformerInfo(AppCacheData.getPerformerUserModel().getUserID()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+        addSubscription(apiService.getPerformerInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
                 //缓存到本地

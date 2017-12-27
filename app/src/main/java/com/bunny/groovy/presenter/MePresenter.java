@@ -43,7 +43,7 @@ public class MePresenter extends BasePresenter<IMeView> {
      * 获取用户数据
      */
     public void requestUserData() {
-        addSubscription(apiService.getPerformerInfo(AppCacheData.getPerformerUserModel().getUserID()),
+        addSubscription(apiService.getPerformerInfo(),
                 new SubscriberCallBack<PerformerUserModel>(mView.get()) {
                     @Override
                     protected void onSuccess(PerformerUserModel response) {

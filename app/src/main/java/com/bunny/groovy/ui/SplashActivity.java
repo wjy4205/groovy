@@ -42,7 +42,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
         if (isLogin && !TextUtils.isEmpty(userID)) {
             //已登录
             //请求表演者资料
-            mPresenter.requestPerformerInfo(userID);
+            mPresenter.requestPerformerInfo();
         } else {
             //未登录
             new Handler().postDelayed(new Runnable() {

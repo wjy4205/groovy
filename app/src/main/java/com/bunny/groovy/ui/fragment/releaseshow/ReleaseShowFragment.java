@@ -132,7 +132,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
         map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performDesc", etBio.getText().toString());
-        map.put("performerID", AppCacheData.getPerformerUserModel().getUserID());
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
         mPresenter.releaseShow(map);
     }

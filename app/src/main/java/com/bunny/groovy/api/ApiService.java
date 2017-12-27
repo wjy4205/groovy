@@ -149,4 +149,10 @@ public interface ApiService {
     //获取待验证演出申请列表
     @POST("PerformerOverviewController/getPerformerOverviewApplyList")
     Observable<ResultResponse<List<ShowModel>>> getReleaseShowList();
+
+    //获取选中周期内的表演统计
+    @FormUrlEncoded
+    @POST("PerformerScheduleController/getPerformerScheduleList")
+    Observable<ResultResponse<List<Object>>> getScheduleList(@Field("performStartDate")String performStartDate,
+                                                             @Field("performEndDate")String performEndDate);
 }

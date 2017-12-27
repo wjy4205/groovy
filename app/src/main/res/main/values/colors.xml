@@ -4,13 +4,13 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#BDBDBD</color>
 
-    <color name="theme_bg">#242424</color>
+    <color name="theme_bg">#161616</color>
 
     <color name="tab_bg">#F3F5F4</color>
     <color name="common_grey">#8a8a8a</color>
 
     <color name="tab_click_bg">#111</color>
-    <color name="tab_common_bg">#222</color>
+    <color name="tab_common_bg">#232323</color>
 
     <color name="accentPurple">#ff7887eb</color>
 

@@ -101,13 +101,17 @@ public class DateUtils {
     }
 
 
+    public static String[] getWeekStartEndDate(){
+        String[] startEnd = new String[2];
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        System.out.println("今天周"+day);
+        int dd = calendar.get(Calendar.DATE);
+        System.out.println("今天"+dd+"号");
+        return startEnd;
+    }
+
     public static void main(String[] args) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH");
-        try {
-            Date date = format.parse("2016-12-15 12");
-            System.out.println(getHour(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        getWeekStartEndDate();
     }
 }

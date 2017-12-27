@@ -1,13 +1,16 @@
 package com.bunny.groovy.ui.fragment;
 
+import android.app.Activity;
 import android.view.View;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.presenter.SchedulePresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IOverView;
+import com.bunny.groovy.view.IScheduleView;
 import com.bunny.groovy.weidget.MoveLayout;
 
 import butterknife.Bind;
@@ -18,7 +21,7 @@ import butterknife.Bind;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class ScheduleFragment extends BaseFragment {
+public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements IScheduleView {
 
     @Bind(R.id.moveLayout)
     MoveLayout mMoveLayout;
@@ -31,8 +34,8 @@ public class ScheduleFragment extends BaseFragment {
     }
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected SchedulePresenter createPresenter() {
+        return new SchedulePresenter(this);
     }
 
     @Override
@@ -45,4 +48,8 @@ public class ScheduleFragment extends BaseFragment {
 
     }
 
+    @Override
+    public Activity get() {
+        return mActivity;
+    }
 }

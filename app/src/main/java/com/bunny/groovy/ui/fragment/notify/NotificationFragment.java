@@ -89,6 +89,7 @@ public class NotificationFragment extends BaseFragment {
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setCustomTabView(R.layout.custorm_tab_layout,R.id.tv_tab);
         slidingTabLayout.setSelectedIndicatorColors(getActivity().getResources().getColor(R.color.white));
         slidingTabLayout.setTitleTextColor(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
         slidingTabLayout.setTabStripWidth(UIUtils.getScreenWidth() / 3);

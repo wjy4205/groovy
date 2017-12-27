@@ -2,10 +2,13 @@ package com.bunny.groovy.ui.fragment.notify;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.NotifyListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
+import com.bunny.groovy.divider.HLineDecoration;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.presenter.ListPresenter;
 import com.bunny.groovy.view.IListPageView;
@@ -28,6 +31,7 @@ public class NotifyListFragment extends BaseListFragment<ListPresenter, NotifyLi
         super.initView(rootView);
         Bundle args = getArguments();
         mTYPE = args.getInt(KEY_TYPE);
+        mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, LinearLayoutManager.VERTICAL, R.drawable.shape_item_divider_line));
     }
 
     @Override

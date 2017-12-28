@@ -19,14 +19,14 @@ import java.util.List;
 
 public class DateUtils {
     private static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    private static String[] weeks = { "Sun.","Mon.", "Tues.", "Wed.", "Thur.", "Fri.", "Sat."};
+    public static String[] weeks = { "SUN","MON", "TUES", "WED", "THUR", "FRI", "SAT"};
     public static String getMonthEn(Date date) {
         return months[date.getMonth()];
     }
 
     public static String getDayOfWeek(Calendar calendar){
         int i = calendar.get(Calendar.DAY_OF_WEEK);
-        return weeks[i];
+        return weeks[i-1];
     }
 
     //获取小时

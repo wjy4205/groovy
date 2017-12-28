@@ -55,11 +55,8 @@
 
         <RelativeLayout
             android:id="@+id/schedule_rl_1"
-            style="@style/schedule_rl_style">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/bg_mon"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_mon">
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -79,18 +76,14 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="13dp"
             android:layout_height="10dp"
-            android:layout_weight="1"/>
+            />
 
         <RelativeLayout
             android:id="@+id/schedule_rl_2"
-            style="@style/schedule_rl_style">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/bg_tue"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_tue">
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -109,18 +102,14 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="13dp"
             android:layout_height="10dp"
-            android:layout_weight="1"/>
+            />
 
         <RelativeLayout
             android:id="@+id/schedule_rl_3"
-            style="@style/schedule_rl_style">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/bg_wed"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_wed">
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -139,18 +128,14 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="13dp"
             android:layout_height="10dp"
-            android:layout_weight="1"/>
+            />
 
         <RelativeLayout
             android:id="@+id/schedule_rl_4"
-            style="@style/schedule_rl_style">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/bg_thur"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_thur">
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -179,7 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/schedule_ll_first_line"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="13dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -190,12 +175,9 @@
 
         <RelativeLayout
             android:id="@+id/schedule_rl_5"
-            style="@style/schedule_rl_style">
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_fri">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/bg_fri"/>
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -214,18 +196,14 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="13dp"
             android:layout_height="10dp"
-            android:layout_weight="1"/>
+            />
 
         <RelativeLayout
             android:id="@+id/schedule_rl_6"
-            style="@style/schedule_rl_style">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/bg_sat"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_sat">
 
             <TextView
                 style="@style/schedule_week_tv_style"
@@ -244,18 +222,14 @@
         </RelativeLayout>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="13dp"
             android:layout_height="10dp"
-            android:layout_weight="1"/>
+            />
 
         <RelativeLayout
             android:id="@+id/schedule_rl_7"
-            style="@style/schedule_rl_style">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/bg_sun"/>
+            style="@style/schedule_rl_style"
+            android:background="@drawable/bg_sun">
 
             <TextView
                 style="@style/schedule_week_tv_style"

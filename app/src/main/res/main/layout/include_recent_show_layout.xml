@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center_vertical"
-              android:background="@color/black"
-              android:orientation="horizontal"
-              android:paddingLeft="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp">
 
     <ImageView
         android:id="@+id/nextshow_iv_head"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/venue_instead_pic"/>
+        android:src="@mipmap/venue_instead_pic" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginLeft="13dp"
+        android:layout_marginRight="8dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:orientation="horizontal">
@@ -36,23 +37,34 @@
                 android:id="@+id/nextshow_tv_performerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:ellipsize="end"
                 android:maxEms="11"
                 android:maxLines="1"
-                android:ellipsize="end"
+                android:textColor="@color/white"
                 android:textSize="13sp"
-                tools:text="The ShowThe ShowThe ShowThe ShowThe ShowThe Show"/>
+                tools:text="The ShowThe Show" />
 
             <TextView
                 android:id="@+id/nextshow_tv_performerStar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.1"
                 android:layout_marginLeft="16dp"
                 android:drawableLeft="@mipmap/list_star"
                 android:drawablePadding="4dp"
+                android:text="4.1"
                 android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/nextshow_tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="Verification"
+                android:textColor="@color/common_grey"
+                android:textSize="9sp"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <TextView
@@ -60,21 +72,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Rodl.Ino"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Rodl.Ino"
             android:textColor="@color/white"
-            android:textSize="11sp"/>
+            android:textSize="11sp" />
 
-        <TextView
-            android:id="@+id/nextshow_tv_time"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="Oct.10.Maony,pm 09:23Oct.10.Maony,pm 09:23Oct.10.Maony,pm 09:23Oct.10.Maony,pm 09:23Oct.10.Maony,pm 09:23"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="14sp"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nextshow_tv_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Oct 1st 3:00PM-4:PM"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/nextshow_iv_edit"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_dian" />
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

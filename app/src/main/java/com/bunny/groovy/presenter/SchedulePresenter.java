@@ -10,6 +10,7 @@ import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IScheduleView;
+import com.bunny.groovy.weidget.ProgressHUD;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.socks.library.KLog;
@@ -38,14 +39,24 @@ public class SchedulePresenter extends BasePresenter<IScheduleView> {
     private Gson mGson = new Gson();
 
     public void requestWeekList(String startDate, String endTime) {
+
+        //show progress
+        final ProgressHUD show = ProgressHUD.show(mView.get(), "", false, false, null);
         addSubscription(apiService.getScheduleList(startDate, endTime), new Subscriber<String>() {
             @Override
             public void onCompleted() {
+                if (show!=null && show.isShowing()) show.dismiss();
+            }
 
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (show!=null) show.show();
             }
 
             @Override
             public void onError(Throwable e) {
+                if (show!=null && show.isShowing()) show.dismiss();
                 UIUtils.showBaseToast(e.toString());
                 mView.setFailureView();
             }

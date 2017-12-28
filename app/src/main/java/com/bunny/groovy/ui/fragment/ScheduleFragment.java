@@ -2,10 +2,13 @@ package com.bunny.groovy.ui.fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.ScheduleAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
@@ -35,10 +38,15 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
     private ScheduleModel mScheduleModel;
     private Calendar todayCal = Calendar.getInstance();
     private ArrayList<TextView> mTextList;
-
+    private ScheduleAdapter mAdapter;
 
     @Bind(R.id.moveLayout)
     MoveLayout mMoveLayout;
+    @Bind(R.id.recyclerview)
+    RecyclerView mRcyvlerview;
+    @Bind(R.id.schedule_tv_empty)
+    View mEmptyView;
+
     @Bind(R.id.schedule_tv_time)
     TextView mTvTime;
     @Bind(R.id.schedule_tv_show_number_1)
@@ -64,6 +72,7 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         monDate = dates.get(0);
         sunDate = dates.get(1);
         mTvTime.setText(String.format(timeStr, generateTime(monDate, sunDate)));
+        mPresenter.requestWeekList(DateUtils.getFormatTime(monDate), DateUtils.getFormatTime(sunDate));
     }
 
     @OnClick(R.id.schedule_bt_next_week)
@@ -72,41 +81,55 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         monDate = dates.get(0);
         sunDate = dates.get(1);
         mTvTime.setText(String.format(timeStr, generateTime(monDate, sunDate)));
+        mPresenter.requestWeekList(DateUtils.getFormatTime(monDate), DateUtils.getFormatTime(sunDate));
     }
 
     @OnClick(R.id.schedule_rl_1)
     public void mondayList() {
-
+        setWeekListData(1);
     }
 
     @OnClick(R.id.schedule_rl_2)
     public void tuesdayList() {
-
+        setWeekListData(2);
     }
 
     @OnClick(R.id.schedule_rl_3)
     public void wensdayList() {
-
+        setWeekListData(3);
     }
 
     @OnClick(R.id.schedule_rl_4)
     public void thursdayList() {
-
+        setWeekListData(4);
     }
 
     @OnClick(R.id.schedule_rl_5)
     public void fridayList() {
-
+        setWeekListData(5);
     }
 
     @OnClick(R.id.schedule_rl_6)
     public void statdayList() {
-
+        setWeekListData(6);
     }
 
     @OnClick(R.id.schedule_rl_7)
     public void sundayList() {
+        setWeekListData(7);
+    }
 
+    private void setWeekListData(int i) {
+        mTvListTitle.setText(String.format(listTitleStr, DateUtils.weeks[i - 1]));
+        if (mScheduleModel.getShowModelList(String.valueOf(i)) != null && mScheduleModel.getShowModelList(String.valueOf(i)).size() > 0)
+        {
+            mAdapter.refresh(mScheduleModel.getShowModelList(String.valueOf(i)));
+            mRcyvlerview.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }else {
+            mRcyvlerview.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -180,7 +203,7 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
     @Override
     public void setSuccessView(ScheduleModel model) {
         mScheduleModel = model;
-        //设置星期几
+        //设置每天的数据
         for (int i = 1; i < 8; i++) {
             List<ShowModel> showModelList = mScheduleModel.getShowModelList(String.valueOf(i));
             if (showModelList != null) {
@@ -192,8 +215,30 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
             }
         }
         //title
-        mTvListTitle.setText(String.format(listTitleStr,DateUtils.getDayOfWeek(todayCal)));
-        //list
+        mTvListTitle.setText(String.format(listTitleStr, DateUtils.getDayOfWeek(todayCal)));
 
+        //list
+        int day = todayCal.get(Calendar.DAY_OF_WEEK);
+        List<ShowModel> showModelList;
+        if (day != 1) {//不是周日
+            showModelList = mScheduleModel.getShowModelList(String.valueOf(day - 1));
+        } else {//周日
+            showModelList = mScheduleModel.getShowModelList("7");
+        }
+
+        if (showModelList != null && showModelList.size() > 0) {
+            mRcyvlerview.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        } else {
+            mRcyvlerview.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        if (mAdapter == null) {
+            mAdapter = new ScheduleAdapter(showModelList);
+            mRcyvlerview.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+            mRcyvlerview.setAdapter(mAdapter);
+        } else {
+            mAdapter.refresh(showModelList);
+        }
     }
 }

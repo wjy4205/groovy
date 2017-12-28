@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/theme_bg"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/theme_bg"
+                android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/schedule_ll_time_control"
@@ -13,148 +13,277 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/schedule_bt_last_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:paddingRight="10dp"
             android:paddingTop="16dp"
-            android:src="@mipmap/icon_left" />
+            android:src="@mipmap/icon_left"/>
 
         <TextView
+            android:id="@+id/schedule_tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="WEEK:DEC 13-19"
             android:textColor="@color/white"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <ImageView
+            android:id="@+id/schedule_bt_next_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:paddingLeft="10dp"
             android:paddingTop="16dp"
-            android:src="@mipmap/icon_right" />
+            android:src="@mipmap/icon_right"/>
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/schedule_ll_first_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/schedule_ll_time_control"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:id="@+id/schedule_rl_1"
+            style="@style/schedule_rl_style">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_mon"/>
+
+            <TextView
+                style="@style/schedule_week_tv_style"
+                android:layout_centerHorizontal="true"
+                android:text="MON"/>
+
+            <TextView
+                android:id="@+id/schedule_tv_show_number_1"
+                style="@style/schedule_circle_tv_style"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_add"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:id="@+id/schedule_rl_2"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_tue"/>
+
+            <TextView
+                style="@style/schedule_week_tv_style"
+                android:layout_centerHorizontal="true"
+                android:text="TUE"/>
+
+            <TextView
+                android:id="@+id/schedule_tv_show_number_2"
+                style="@style/schedule_circle_tv_style"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_add"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:id="@+id/schedule_rl_3"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_wed"/>
+
+            <TextView
+                style="@style/schedule_week_tv_style"
+                android:layout_centerHorizontal="true"
+                android:text="WED"/>
+
+            <TextView
+                android:id="@+id/schedule_tv_show_number_3"
+                style="@style/schedule_circle_tv_style"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_add"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:id="@+id/schedule_rl_4"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_thur"/>
+
+            <TextView
+                style="@style/schedule_week_tv_style"
+                android:layout_centerHorizontal="true"
+                android:text="THUR"/>
+
+            <TextView
+                android:id="@+id/schedule_tv_show_number_4"
+                style="@style/schedule_circle_tv_style"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/icon_add"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/schedule_ll_time_control"
+        android:layout_below="@+id/schedule_ll_first_line"
+        android:layout_marginTop="14dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="2"/>
+
         <RelativeLayout
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/bg_mon">
+            android:id="@+id/schedule_rl_5"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_fri"/>
 
             <TextView
-                style="@style/common_white_text_style"
+                style="@style/schedule_week_tv_style"
                 android:layout_centerHorizontal="true"
-                android:text="MON" />
+                android:text="FRI"/>
 
             <TextView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/shape_circle_grey_solid_bg"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:id="@+id/schedule_tv_show_number_5"
+                style="@style/schedule_circle_tv_style"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/icon_add" />
+                android:src="@drawable/icon_add"/>
         </RelativeLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
         <RelativeLayout
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/bg_mon">
+            android:id="@+id/schedule_rl_6"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_sat"/>
 
             <TextView
-                style="@style/common_white_text_style"
+                style="@style/schedule_week_tv_style"
                 android:layout_centerHorizontal="true"
-                android:text="MON" />
+                android:text="SAT"/>
 
             <TextView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/shape_circle_grey_solid_bg"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:id="@+id/schedule_tv_show_number_6"
+                style="@style/schedule_circle_tv_style"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/icon_add" />
+                android:src="@drawable/icon_add"/>
         </RelativeLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
+
         <RelativeLayout
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/bg_mon">
+            android:id="@+id/schedule_rl_7"
+            style="@style/schedule_rl_style">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_sun"/>
 
             <TextView
-                style="@style/common_white_text_style"
+                style="@style/schedule_week_tv_style"
                 android:layout_centerHorizontal="true"
-                android:text="MON" />
+                android:text="SUN"/>
 
             <TextView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/shape_circle_grey_solid_bg"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:id="@+id/schedule_tv_show_number_7"
+                style="@style/schedule_circle_tv_style"/>
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/icon_add" />
+                android:src="@drawable/icon_add"/>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/bg_mon">
-
-            <TextView
-                style="@style/common_white_text_style"
-                android:layout_centerHorizontal="true"
-                android:text="MON" />
-
-            <TextView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/shape_circle_grey_solid_bg"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/icon_add" />
-        </RelativeLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_weight="2"/>
     </LinearLayout>
+
 
     <com.bunny.groovy.weidget.MoveLayout
         android:id="@+id/moveLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/black"
         android:orientation="vertical"
         >
@@ -168,7 +297,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/icon_shrink" />
+                android:src="@mipmap/icon_shrink"/>
         </FrameLayout>
 
         <TextView
@@ -180,11 +309,11 @@
             android:paddingTop="13dp"
             android:text="SHOW LIST ON MON"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/schedule_tv_empty"
@@ -195,12 +324,12 @@
                 android:paddingTop="10dp"
                 android:text="@string/next_show_default_info"
                 android:textColor="@color/common_grey"
-                android:textSize="13sp" />
+                android:textSize="13sp"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"/>
         </FrameLayout>
 
     </com.bunny.groovy.weidget.MoveLayout>

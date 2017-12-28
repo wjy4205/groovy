@@ -19,6 +19,7 @@ import com.bunny.groovy.model.OpportunityModel;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /****************************************
  * 功能说明:  演出机会详情页
@@ -54,7 +55,12 @@ public class OpportunityDetailFragment extends BaseFragment {
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
 
-
+    @OnClick(R.id.opp_detail_tv_apply)
+    public void apply() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ApplyOppFragment.KEY_OPP_BEAN, sParcelable);
+        ApplyOppFragment.launch(mActivity, bundle);
+    }
 
     public static void launch(Activity activity, Bundle bundle) {
         sParcelable = bundle.getParcelable(KEY_OPPORTUNITY_BEAN);
@@ -75,8 +81,8 @@ public class OpportunityDetailFragment extends BaseFragment {
 
     @Override
     protected void loadData() {
-        if (sParcelable!=null){
-            mTvTime.setText(sParcelable.getPerformDate()+" "+sParcelable.getPerformTime());
+        if (sParcelable != null) {
+            mTvTime.setText(sParcelable.getPerformDate() + " " + sParcelable.getPerformTime());
             mTvName.setText(sParcelable.getVenueName());
             mTvDesc.setText(sParcelable.getPerformDesc());
             mTvVenueName.setText(sParcelable.getVenueName());
@@ -86,12 +92,12 @@ public class OpportunityDetailFragment extends BaseFragment {
             Glide.with(mActivity).load(sParcelable.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
                     .into(mHead);
             List<OpportunityModel.PerformerOpportunityBean> OpportunityList = sParcelable.getPerformerOpportunity();
-            if (OpportunityList !=null && OpportunityList.size()>0){
+            if (OpportunityList != null && OpportunityList.size() > 0) {
                 //set adapter
                 mTvEmpty.setVisibility(View.GONE);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
                 mRecyclerView.setAdapter(new OpportunityAdapter(OpportunityList));
-            }else {
+            } else {
                 mTvEmpty.setVisibility(View.VISIBLE);
             }
         }

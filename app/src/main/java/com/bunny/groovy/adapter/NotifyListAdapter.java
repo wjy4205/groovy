@@ -63,6 +63,7 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         Glide.with(mContext).load(showModel.getHeadImg()).into(holder.ivHeader);
         holder.tvName.setText(showModel.getVenueName());
         //todo  处理状态
+        holder.tvStatus.setText(showModel.getPerformState());
         holder.tvScore.setText(showModel.getVenueScore());
         holder.tvCreateTime.setText(showModel.getCreateDate());
         holder.tvPerformDate.setText(showModel.getPerformDate()+" "+showModel.getPerformTime());

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -135,7 +136,7 @@ public interface ApiService {
 //   opportunityID
     //申请演出机会
     @FormUrlEncoded
-    @POST("PerformApplyController/addPerformOpportunityApply")
+    @POST("PerformerOverviewController/addPerformOpportunityApply")
     Observable<ResultResponse<Observable>> applyOpportunity(@FieldMap Map<String, String> map);
 
     //获取演出机会申请列表
@@ -153,6 +154,6 @@ public interface ApiService {
     //获取选中周期内的表演统计
     @FormUrlEncoded
     @POST("PerformerScheduleController/getPerformerScheduleList")
-    Observable<ResultResponse<List<Object>>> getScheduleList(@Field("performStartDate")String performStartDate,
-                                                             @Field("performEndDate")String performEndDate);
+    Observable<String> getScheduleList(@Field("performStartDate")String performStartDate,
+                                             @Field("performEndDate")String performEndDate);
 }

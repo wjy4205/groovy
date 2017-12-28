@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.bunny.groovy.model.MusicBean;
 import com.bunny.groovy.model.PerformerUserModel;
@@ -95,7 +96,16 @@ public class Utils {
         context.startActivity(data);
     }
 
-
+    public static void i(String tag, String msg) {  //信息太长,分段打印
+        int maxLogSize = 100;
+        System.out.println("----------------------too long log---------------------");
+        for(int i = 0; i <= msg.length() / maxLogSize; i++) {
+            int start = i * maxLogSize;
+            int end = (i+1) * maxLogSize;
+            end = end > msg.length() ? msg.length() : end;
+            Log.v(tag, msg.substring(start, end));
+        }
+    }
     /**
      * 扫描本地音频文件
      *

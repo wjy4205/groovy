@@ -6,8 +6,10 @@ import android.view.WindowManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /****************************************
  * 功能说明:  
@@ -16,6 +18,16 @@ import java.util.Date;
  ****************************************/
 
 public class DateUtils {
+    private static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    private static String[] weeks = { "Sun.","Mon.", "Tues.", "Wed.", "Thur.", "Fri.", "Sat."};
+    public static String getMonthEn(Date date) {
+        return months[date.getMonth()];
+    }
+
+    public static String getDayOfWeek(Calendar calendar){
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+        return weeks[i];
+    }
 
     //获取小时
     public static int getHour(Date date) {
@@ -93,6 +105,12 @@ public class DateUtils {
         return dateFormat.format(date);
     }
 
+    public static String getFormatTime(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+
     public static int getScreenWidth(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -101,15 +119,82 @@ public class DateUtils {
     }
 
 
-    public static String[] getWeekStartEndDate(){
-        String[] startEnd = new String[2];
+    private static List<Date> list = new ArrayList<>(2);
+
+    /**
+     * 获取本周，周一，周日的日期
+     *
+     * @return
+     */
+    public static List<Date> getWeekStartEndDate() {
+        list.clear();
         Calendar calendar = Calendar.getInstance();
+        System.out.println("今天是" + calendar.getTime());
+
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        System.out.println("今天周"+day);
-        int dd = calendar.get(Calendar.DATE);
-        System.out.println("今天"+dd+"号");
-        return startEnd;
+        if (day == 1) {//今天周日
+            //计算周一
+            calendar.add(Calendar.DATE, -6);
+            System.out.println("周一是" + calendar.get(Calendar.DATE) + "号");
+            list.add(0, calendar.getTime());
+            //周日
+            calendar.add(Calendar.DATE, 6);
+            System.out.println("周日是" + calendar.get(Calendar.DATE) + "号");
+            list.add(1, calendar.getTime());
+        } else {
+            //算出本周第一天日期
+            calendar.add(Calendar.DATE, 2 - day);
+            System.out.println("周一是" + calendar.get(Calendar.DATE) + "号");
+            list.add(0, calendar.getTime());
+            //计算周日
+            calendar.add(Calendar.DATE, 6);
+            System.out.println("周日是" + calendar.get(Calendar.DATE) + "号");
+            list.add(1, calendar.getTime());
+        }
+
+        return list;
     }
+
+    /**
+     * 获取下周一，周日的日期
+     *
+     * @param from
+     * @param end
+     * @return
+     */
+    public static List<Date> nextWeek(Date from, Date end) {
+        list.clear();
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(from);
+        instance.add(Calendar.DATE, 7);
+        list.add(0, instance.getTime());
+
+        instance.setTime(end);
+        instance.add(Calendar.DATE, 7);
+        list.add(1, instance.getTime());
+        return list;
+    }
+
+    /**
+     * 上一周时间
+     *
+     * @param from
+     * @param end
+     * @return
+     */
+    public static List<Date> lastWeek(Date from, Date end) {
+        list.clear();
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(from);
+        instance.add(Calendar.DATE, -7);
+        list.add(0, instance.getTime());
+
+        instance.setTime(end);
+        instance.add(Calendar.DATE, -7);
+        list.add(1, instance.getTime());
+        return list;
+    }
+
 
     public static void main(String[] args) {
         getWeekStartEndDate();

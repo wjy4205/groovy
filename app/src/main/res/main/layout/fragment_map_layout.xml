@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/opp_recyclerview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
+        android:id="@+id/map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
+        <!--地图view-->
         <FrameLayout
             android:id="@+id/map_container"
             android:layout_width="match_parent"
@@ -30,4 +37,4 @@
             <include layout="@layout/map_marker_info_window_layout"/>
         </FrameLayout>
     </RelativeLayout>
-</LinearLayout>
+</FrameLayout>

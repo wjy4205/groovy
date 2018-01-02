@@ -19,7 +19,8 @@ import java.util.List;
 
 public class DateUtils {
     private static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    public static String[] weeks = { "SUN","MON", "TUES", "WED", "THUR", "FRI", "SAT"};
+    public static String[] weeks = { "SUN","MON", "TUE", "WED", "THUR", "FRI", "SAT"};
+    public static String[] CN_weeks = { "MON", "TUE", "WED", "THUR", "FRI", "SAT","SUN"};
     public static String getMonthEn(Date date) {
         return months[date.getMonth()];
     }

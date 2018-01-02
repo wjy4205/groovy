@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,30 +11,33 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.NearByOppListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.divider.HLineDecoration;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.presenter.ExplorerOpportunityPresenter;
-import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.ui.fragment.apply.FilterFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,6 +56,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * 申请表演机会，地图
@@ -88,7 +94,9 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
                         initCurrentLocation();
                         count++;
                     } else {
-                        Log.i("MyTag", "location not found");
+                        //找不到
+                        UIUtils.showBaseToast("获取当前位置失败！请查看列表");
+                        requestAroundList();
                     }
                     break;
             }
@@ -111,6 +119,11 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     TextView mTvTime;
     @Bind(R.id.marker_tv_distance)
     TextView mTvDistance;
+    @Bind(R.id.opp_recyclerview)
+    RecyclerView mRecyclerView;
+    private NearByOppListAdapter mAdapter;
+    @Bind(R.id.map_layout)
+    RelativeLayout mapLayout;
 
     @OnClick(R.id.marker_tv_venue_detail)
     public void venueDetail() {
@@ -148,14 +161,13 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         map.put("performStartDate", mCurrentBean.getStartDate());
         map.put("performEndDate", mCurrentBean.getEndDate());
         map.put("performDesc", mCurrentBean.getPerformDesc());
-        map.put("performerID", AppCacheData.getPerformerUserModel().getUserID());
         map.put("opportunityID", mCurrentBean.getOpportunityID());
         mPresenter.applyOpportunity(map);
     }
 
     @OnClick(R.id.map_filter)
     public void mapFilter() {
-        // TODO: 2017/12/26
+        FilterFragment.launchForResult(mActivity, new Bundle(), 1);
     }
 
     public static void launch(Activity from) {
@@ -358,21 +370,34 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         mMarkerList.clear();
         mOpportunityModelList = list;
         //设置页面数据
+        //地图数据
+        LatLng loc;
+        for (int i = 0; i < list.size(); i++) {
+            OpportunityModel model = list.get(i);
+            loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
+                    .draggable(false)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+            marker.setTag(model);
+            mMarkerList.add(marker);
+        }
+        //列表数据
+        if (mAdapter == null) {
+            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
+            mAdapter.setPresenter(mPresenter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
+                    R.drawable.shape_item_divider_line));
+            mRecyclerView.setAdapter(mAdapter);
+        } else mAdapter.refresh(mOpportunityModelList);
         //判断是list / map
         if (showMap && mGoogleMap != null) {
-            LatLng loc;
-            for (int i = 0; i < list.size(); i++) {
-                OpportunityModel model = list.get(i);
-                loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
-                        .draggable(false)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
-                marker.setTag(model);
-                mMarkerList.add(marker);
-            }
+            mapLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
         } else {
             //列表显示
-
+            mapLayout.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -382,6 +407,80 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
             UIUtils.showBaseToast("申请成功！");
         } else {
             UIUtils.showBaseToast("申请失败:" + msg);
+        }
+    }
+
+    private Menu mMenu;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_explore_opp, menu);
+        mMenu = menu;
+        mMenu.findItem(R.id.explore_menu_list).setVisible(true);
+        mMenu.findItem(R.id.explore_menu_map).setVisible(false);
+        mMenu.findItem(R.id.explore_menu_filter).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.explore_menu_filter:
+                //过滤器
+                FilterFragment.launchForResult(mActivity, new Bundle(), 1);
+                return true;
+            case R.id.explore_menu_list:
+                //列表显示
+                showMap = false;
+                mMenu.findItem(R.id.explore_menu_filter).setVisible(true);
+                mMenu.findItem(R.id.explore_menu_map).setVisible(true);
+                mMenu.findItem(R.id.explore_menu_list).setVisible(false);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mapLayout.setVisibility(View.GONE);
+                return true;
+            case R.id.explore_menu_map:
+                //地图显示
+                showMap = true;
+                mMenu.findItem(R.id.explore_menu_list).setVisible(true);
+                mMenu.findItem(R.id.explore_menu_filter).setVisible(false);
+                mMenu.findItem(R.id.explore_menu_map).setVisible(false);
+                mRecyclerView.setVisibility(View.GONE);
+                mapLayout.setVisibility(View.VISIBLE);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            HashMap<String, String> map = new HashMap<>();
+            String dis = data.getStringExtra("distance");
+            if (TextUtils.isEmpty(dis)) {
+                map.put("distance", distance);
+            } else {
+                map.put("distance", dis);
+            }
+
+            String performStartDate = data.getStringExtra("performStartDate");
+            if (!TextUtils.isEmpty(performStartDate)) {
+                map.put("performStartDate", performStartDate);
+            }
+
+            if (mLastLocation != null) {
+                map.put("longitude", String.valueOf(mLastLocation.getLongitude()));
+                map.put("latitude", String.valueOf(mLastLocation.getLatitude()));
+            }
+            showMap = false;
+            mMenu.findItem(R.id.explore_menu_filter).setVisible(true);
+            mMenu.findItem(R.id.explore_menu_map).setVisible(true);
+            mMenu.findItem(R.id.explore_menu_list).setVisible(false);
+            mPresenter.requestOpportunityList(map);
         }
     }
 }

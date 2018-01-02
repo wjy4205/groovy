@@ -2,6 +2,7 @@ package com.bunny.groovy.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,25 +49,62 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
 
     @Override
     public void onBindViewHolder(NotyfyHolder holder, int position) {
+        ShowModel showModel = mList.get(position);
         switch (mTYPE) {
             case 0:
                 holder.llActionLayout.setVisibility(View.GONE);
+                String applyState = showModel.getApplyState();
+                if (!TextUtils.isEmpty(applyState))
+                    switch (applyState) {
+                        case "1"://同意
+                            holder.tvStatus.setText(R.string.confirmed);
+                            holder.tvMsg.setVisibility(View.VISIBLE);
+                            holder.tvMsg.setText(R.string.msg_confirm_application);
+                            break;
+                        case "2":
+                            holder.tvStatus.setText(R.string.rejected);
+                            holder.tvMsg.setVisibility(View.VISIBLE);
+                            holder.tvMsg.setText(R.string.msg_reject_application);
+                            break;
+                        case "0"://未处理
+                        default:
+                            holder.tvStatus.setText(R.string.verification);
+                            holder.tvMsg.setVisibility(View.GONE);
+                            break;
+                    }
                 break;
             case 1:
                 holder.llActionLayout.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 holder.llActionLayout.setVisibility(View.GONE);
+                String PerformState = showModel.getPerformState();
+                if (!TextUtils.isEmpty(PerformState))
+                    switch (PerformState) {
+                        case "1"://同意
+                            holder.tvStatus.setText(R.string.confirmed);
+                            holder.tvMsg.setVisibility(View.VISIBLE);
+                            holder.tvMsg.setText(R.string.msg_confirm_application);
+                            break;
+                        case "2":
+                            holder.tvStatus.setText(R.string.rejected);
+                            holder.tvMsg.setVisibility(View.VISIBLE);
+                            holder.tvMsg.setText(R.string.msg_reject_application);
+                            break;
+                        case "0"://未处理
+                        default:
+                            holder.tvStatus.setText(R.string.verification);
+                            holder.tvMsg.setVisibility(View.GONE);
+                            break;
+                    }
                 break;
         }
-        ShowModel showModel = mList.get(position);
-        Glide.with(mContext).load(showModel.getHeadImg()).into(holder.ivHeader);
+
+        Glide.with(mContext).load(showModel.getHeadImg()).error(R.mipmap.venue_instead_pic).into(holder.ivHeader);
         holder.tvName.setText(showModel.getVenueName());
-        //todo  处理状态
-        holder.tvStatus.setText(showModel.getPerformState());
         holder.tvScore.setText(showModel.getVenueScore());
         holder.tvCreateTime.setText(showModel.getCreateDate());
-        holder.tvPerformDate.setText(showModel.getPerformDate()+" "+showModel.getPerformTime());
+        holder.tvPerformDate.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
     }
 
     @Override

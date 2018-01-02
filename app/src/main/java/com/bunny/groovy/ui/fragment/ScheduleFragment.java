@@ -119,8 +119,12 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         setWeekListData(7);
     }
 
+    /**
+     * 周几的点击事件
+     * @param i 周几
+     */
     private void setWeekListData(int i) {
-        mTvListTitle.setText(String.format(listTitleStr, DateUtils.weeks[i - 1]));
+        mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_weeks[i - 1]));
         if (mScheduleModel.getShowModelList(String.valueOf(i)) != null && mScheduleModel.getShowModelList(String.valueOf(i)).size() > 0)
         {
             mAdapter.refresh(mScheduleModel.getShowModelList(String.valueOf(i)));

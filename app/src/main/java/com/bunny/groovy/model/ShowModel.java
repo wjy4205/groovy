@@ -102,6 +102,10 @@ public class ShowModel implements Parcelable {
     private String venueLongitude;
     private String venueLatitude;
     private String scheduleList;
+    private String handlerDate;
+    private String applyState;
+    private String opportunityState;
+    private String operationDate;
 
     protected ShowModel(Parcel in) {
         createDate = in.readString();
@@ -148,6 +152,10 @@ public class ShowModel implements Parcelable {
         venueLongitude = in.readString();
         venueLatitude = in.readString();
         scheduleList = in.readString();
+        handlerDate = in.readString();
+        applyState = in.readString();
+        opportunityState = in.readString();
+        operationDate = in.readString();
     }
 
     public static final Creator<ShowModel> CREATOR = new Creator<ShowModel>() {
@@ -514,6 +522,38 @@ public class ShowModel implements Parcelable {
         this.scheduleList = scheduleList;
     }
 
+    public String getHandlerDate() {
+        return handlerDate;
+    }
+
+    public void setHandlerDate(String handlerDate) {
+        this.handlerDate = handlerDate;
+    }
+
+    public String getApplyState() {
+        return applyState;
+    }
+
+    public void setApplyState(String applyState) {
+        this.applyState = applyState;
+    }
+
+    public String getOpportunityState() {
+        return opportunityState;
+    }
+
+    public void setOpportunityState(String opportunityState) {
+        this.opportunityState = opportunityState;
+    }
+
+    public String getOperationDate() {
+        return operationDate;
+    }
+
+    public void setOperationDate(String operationDate) {
+        this.operationDate = operationDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -565,5 +605,9 @@ public class ShowModel implements Parcelable {
         dest.writeString(venueLongitude);
         dest.writeString(venueLatitude);
         dest.writeString(scheduleList);
+        dest.writeString(handlerDate);
+        dest.writeString(applyState);
+        dest.writeString(opportunityState);
+        dest.writeString(operationDate);
     }
 }

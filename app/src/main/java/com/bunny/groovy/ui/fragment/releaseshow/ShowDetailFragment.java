@@ -66,6 +66,7 @@ public class ShowDetailFragment extends BaseFragment {
 
     @Bind(R.id.show_detail_tv_notify)
     TextView mTvNotify;
+    private static int type;
 
     @OnClick(R.id.show_detail_iv_phone)
     public void call() {
@@ -83,6 +84,7 @@ public class ShowDetailFragment extends BaseFragment {
     public static void launch(Activity from, Bundle bundle) {
         model = bundle.getParcelable(KEY_SHOW_BEAN);
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAIL");
+        type = bundle.getInt("type", -1);
         FragmentContainerActivity.launch(from, ShowDetailFragment.class, bundle);
     }
 
@@ -99,7 +101,6 @@ public class ShowDetailFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        mTvNotify.setVisibility(View.GONE);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
             mTvPerformerName.setText(model.getPerformerName());
@@ -107,7 +108,7 @@ public class ShowDetailFragment extends BaseFragment {
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
-            mTvDistance.setText(model.getDistance()+"km");
+            mTvDistance.setText(model.getDistance() + "km");
             mTvDesc.setText(model.getSignature());
             mTvVenueScore.setText(model.getVenueScore());
             mTvAddress.setText(model.getVenueAddress());
@@ -115,6 +116,37 @@ public class ShowDetailFragment extends BaseFragment {
             mTvEmail.setText(model.getWebSiteAddress());
             Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
                     .into(mHead);
+            switch (type) {
+                case 0://演出机会
+                    mTvNotify.setVisibility(View.VISIBLE);
+                    String applyState = model.getApplyState();
+                    if ("1".equals(applyState)) {
+                        mTvNotify.setText(R.string.confirmed);
+                    } else if ("2".equals(applyState)) {
+                        mTvNotify.setText(R.string.rejected);
+                    } else {
+                        mTvNotify.setText(R.string.verification);
+                    }
+                    break;
+                case 1://邀请
+                    mTvNotify.setVisibility(View.VISIBLE);
+                    mTvNotify.setText("INVITE");
+                    break;
+                case 2://release
+                    mTvNotify.setVisibility(View.VISIBLE);
+                    String performState = model.getPerformState();
+                    if ("1".equals(performState)) {
+                        mTvNotify.setText(R.string.confirmed);
+                    } else if ("2".equals(performState)) {
+                        mTvNotify.setText(R.string.rejected);
+                    } else {
+                        mTvNotify.setText(R.string.verification);
+                    }
+                    break;
+                default:
+                    mTvNotify.setVisibility(View.GONE);
+                    break;
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package com.bunny.groovy.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,8 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.ui.fragment.releaseshow.ShowDetailFragment;
+import com.bunny.groovy.utils.Utils;
 
 import java.util.List;
 
@@ -19,10 +24,10 @@ import java.util.List;
  * Created by Administrator on 2017/12/27.
  */
 
-public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.NotyfyHolder> {
+public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.NotyfyHolder> implements View.OnClickListener {
     private List<ShowModel> mList;
     private int mTYPE;
-    private Context mContext;
+    private Activity mContext;
     private String Status_OK = "CONFIRMED";
     private String Status_NO = "REJECTED";
 
@@ -41,7 +46,7 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
 
     @Override
     public NotyfyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        mContext = (Activity) parent.getContext();
         View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_notification_layout, null, false);
 
         return new NotyfyHolder(inflate);
@@ -105,6 +110,44 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         holder.tvScore.setText(showModel.getVenueScore());
         holder.tvCreateTime.setText(showModel.getCreateDate());
         holder.tvPerformDate.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
+        //onclick
+        holder.btDetails.setTag(position);
+        holder.btConfirm.setTag(position);
+        holder.btReject.setTag(position);
+        holder.btEmail.setTag(position);
+        holder.btPhone.setTag(position);
+
+        holder.btDetails.setOnClickListener(this);
+        holder.btConfirm.setOnClickListener(this);
+        holder.btReject.setOnClickListener(this);
+        holder.btEmail.setOnClickListener(this);
+        holder.btPhone.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = (int) v.getTag();
+        ShowModel showModel = mList.get(pos);
+        switch (v.getId()) {
+            case R.id.item_notification_tv_details://详情
+                Bundle bundle = new Bundle();
+                bundle.putInt("type",mTYPE);
+                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN,showModel);
+                ShowDetailFragment.launch(mContext,bundle);
+                break;
+            case R.id.item_notification_tv_confirm://同意
+                // TODO: 2018/1/3
+                break;
+            case R.id.item_notification_tv_reject://拒绝
+                // TODO: 2018/1/3
+                break;
+            case R.id.item_notification_iv_email://发邮箱
+                Utils.sendEmail(mContext,showModel.getVenueEmail());
+                break;
+            case R.id.item_notification_iv_phone://打电话
+                Utils.CallPhone(mContext,showModel.getPhoneNumber());
+                break;
+        }
     }
 
     @Override
@@ -112,6 +155,7 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         if (mList != null) return mList.size();
         return 0;
     }
+
 
     static class NotyfyHolder extends RecyclerView.ViewHolder {
 

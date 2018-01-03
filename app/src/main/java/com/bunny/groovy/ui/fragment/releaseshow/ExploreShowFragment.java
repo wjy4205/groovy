@@ -2,9 +2,12 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.Util;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.NearByOppListAdapter;
 import com.bunny.groovy.base.BaseFragment;
@@ -103,6 +107,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     private NearByOppListAdapter mAdapter;
     @Bind(R.id.map_layout)
     RelativeLayout mapLayout;
+    private LocationManager locationManager;
 
     @OnClick(R.id.marker_tv_venue_detail)
     public void venueDetail() {
@@ -128,7 +133,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     public void apply() {
         //跳转到申请页面
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ApplyOppFragment.KEY_OPP_BEAN,mCurrentBean);
+        bundle.putParcelable(ApplyOppFragment.KEY_OPP_BEAN, mCurrentBean);
         ApplyOppFragment.launch(mActivity, bundle);
     }
 
@@ -167,6 +172,15 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     public void initView(View rootView) {
         super.initView(rootView);
         mMarkerLayout.setVisibility(View.GONE);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //申请权限
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            initCurrentLocation();
+        }
     }
 
     @Override
@@ -176,18 +190,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
 
     @Override
     public void afterAttach() {
-        SupportMapFragment supportMapFragment = new SupportMapFragment();
-        getChildFragmentManager().beginTransaction().add(R.id.map_container, supportMapFragment, "map_fragment").commit();
-        supportMapFragment.getMapAsync(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
-                .enableAutoManage(mActivity, this)
-                .addConnectionCallbacks(this)
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .build();
-        mGoogleApiClient.connect();
+
     }
 
     /**
@@ -201,7 +205,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         mTvName.setText(bean.getVenueName());
         mTvadd.setText(bean.getVenueAddress());
         mTvTime.setText(bean.getPerformTime());
-        mTvDistance.setText(bean.getDistance()+"km");
+        mTvDistance.setText(bean.getDistance() + "km");
         mTvScore.setText(bean.getVenueScore());
     }
 
@@ -230,18 +234,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 return false;
             }
         });
-        //我的位置
-//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-//            @Override
-//            public boolean onMyLocationButtonClick() {
-//                if (mGoogleMap.isMyLocationEnabled()) {
-//                    LatLng sydney = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-//                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -265,58 +257,88 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        KLog.a("Google Map --- onConnected:");
-//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-//                .getCurrentPlace(mGoogleApiClient, null);
-//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-//            @Override
-//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//                    Log.i("xxxxx", String.format("Place '%s' has likelihood: %g",
-//                            placeLikelihood.getPlace().getName(),
-//                            placeLikelihood.getLikelihood()));
-//                }
-//                likelyPlaces.release();
-//            }
-//        });
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            //申请权限
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        } else {
-            initCurrentLocation();
-        }
+        updateLoc();
     }
 
-    /***
-     * 初始化当前位置
-     */
-    private void initCurrentLocation() {
+    LocationListener listener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            KLog.d("xxx", "获取位置" + location.getLatitude() + "   " + location.getLongitude());
+            mLastLocation = location;
+            updateLoc();
+        }
 
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null && mGoogleMap != null) {
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    /**
+     * 在地图上更新当前位置
+     */
+    private void updateLoc() {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location gpsLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location netLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (gpsLoc != null) mLastLocation = gpsLoc;
+        else if (netLoc != null) mLastLocation = netLoc;
+        if (mGoogleMap != null && mLastLocation != null) {
             if (!isMapInit) {
-                LatLng sydney = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                mGoogleMap.addMarker(new MarkerOptions().position(sydney)
+                LatLng myLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mGoogleMap.addMarker(new MarkerOptions().position(myLoc)
                         .title("Your Location")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
                         .draggable(true));
 
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 10));
 
                 KLog.a("当前位置：" + mLastLocation.getLatitude() + " -- " + mLastLocation.getLongitude());
                 isMapInit = true;
             }
             //请求机会数据
             requestAroundList();
-        } else {
-            UIUtils.showBaseToast("获取当前定位失败，请查看列表");
+        }
+    }
+
+
+    /***
+     * 初始化当前位置
+     */
+    private void initCurrentLocation() {
+        SupportMapFragment supportMapFragment = new SupportMapFragment();
+        getChildFragmentManager().beginTransaction().add(R.id.map_container, supportMapFragment, "map_fragment").commit();
+        supportMapFragment.getMapAsync(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
+                .enableAutoManage(mActivity, this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
+        mGoogleApiClient.connect();
+        locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
 
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, listener);
     }
 
     private void requestAroundList() {
@@ -464,5 +486,17 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
             mMenu.findItem(R.id.explore_menu_list).setVisible(false);
             mPresenter.requestOpportunityList(map);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (locationManager!=null) locationManager.removeUpdates(listener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (locationManager!=null) locationManager.removeUpdates(listener);
     }
 }

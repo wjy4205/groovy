@@ -69,6 +69,7 @@
                 />
 
             <ImageView
+                android:id="@+id/schedule_iv_add_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -95,6 +96,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -121,6 +123,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -147,6 +150,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -189,6 +193,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -215,6 +220,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -241,6 +247,7 @@
                 style="@style/schedule_circle_tv_style"/>
 
             <ImageView
+                android:id="@+id/schedule_iv_add_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

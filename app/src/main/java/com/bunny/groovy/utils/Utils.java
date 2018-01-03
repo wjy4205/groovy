@@ -3,6 +3,7 @@ package com.bunny.groovy.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -85,12 +86,13 @@ public class Utils {
 
     /**
      * 发送邮件
+     *
      * @param context
      * @param eamil
      */
-    public static void sendEmail(Context context,String eamil){
-        Intent data=new Intent(Intent.ACTION_SENDTO);
-        data.setData(Uri.parse("mailto:"+eamil));
+    public static void sendEmail(Context context, String eamil) {
+        Intent data = new Intent(Intent.ACTION_SENDTO);
+        data.setData(Uri.parse("mailto:" + eamil));
 //        data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
 //        data.putExtra(Intent.EXTRA_TEXT, "这是内容");
         context.startActivity(data);
@@ -99,13 +101,14 @@ public class Utils {
     public static void i(String tag, String msg) {  //信息太长,分段打印
         int maxLogSize = 100;
         System.out.println("----------------------too long log---------------------");
-        for(int i = 0; i <= msg.length() / maxLogSize; i++) {
+        for (int i = 0; i <= msg.length() / maxLogSize; i++) {
             int start = i * maxLogSize;
-            int end = (i+1) * maxLogSize;
+            int end = (i + 1) * maxLogSize;
             end = end > msg.length() ? msg.length() : end;
             Log.v(tag, msg.substring(start, end));
         }
     }
+
     /**
      * 扫描本地音频文件
      *
@@ -225,10 +228,31 @@ public class Utils {
 
     /**
      * 登出，清空缓存信息
+     *
      * @param context
      */
-    public static void clearLoginData(Context context){
+    public static void clearLoginData(Context context) {
         SharedPreferencesUtils.clearUserData(context);
         AppCacheData.resetPerformer();
+    }
+
+    /**
+     * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
+     *
+     * @param context
+     * @return true 表示开启
+     */
+    public static boolean isOPen(final Context context) {
+        LocationManager locationManager
+                = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (gps || network) {
+            return true;
+        }
+
+        return false;
     }
 }

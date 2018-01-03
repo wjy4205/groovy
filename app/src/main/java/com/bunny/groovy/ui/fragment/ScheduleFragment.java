@@ -13,11 +13,13 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.presenter.SchedulePresenter;
+import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IScheduleView;
 import com.bunny.groovy.weidget.MoveLayout;
 import com.bunny.groovy.weidget.datepick.DatePickerHelper;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -119,18 +121,65 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         setWeekListData(7);
     }
 
+    @OnClick(R.id.schedule_iv_add_1)
+    public void addShow_1() {
+        releaseShow(1);
+    }
+
+    @OnClick(R.id.schedule_iv_add_2)
+    public void addShow_2() {
+        releaseShow(2);
+    }
+
+    @OnClick(R.id.schedule_iv_add_3)
+    public void addShow_3() {
+        releaseShow(3);
+    }
+
+    @OnClick(R.id.schedule_iv_add_4)
+    public void addShow_4() {
+        releaseShow(4);
+    }
+
+    @OnClick(R.id.schedule_iv_add_5)
+    public void addShow_5() {
+        releaseShow(5);
+    }
+
+    @OnClick(R.id.schedule_iv_add_6)
+    public void addShow_6() {
+        releaseShow(6);
+    }
+
+    @OnClick(R.id.schedule_iv_add_7)
+    public void addShow_7() {
+        releaseShow(7);
+    }
+
+    /**
+     * 发布表演，指定日期
+     *
+     * @param i
+     */
+    private void releaseShow(int i) {
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(monDate);
+        instance.add(Calendar.DATE,i-1);
+        ReleaseShowFragment.launch(mActivity);
+    }
+
     /**
      * 周几的点击事件
+     *
      * @param i 周几
      */
     private void setWeekListData(int i) {
         mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_weeks[i - 1]));
-        if (mScheduleModel.getShowModelList(String.valueOf(i)) != null && mScheduleModel.getShowModelList(String.valueOf(i)).size() > 0)
-        {
+        if (mScheduleModel.getShowModelList(String.valueOf(i)) != null && mScheduleModel.getShowModelList(String.valueOf(i)).size() > 0) {
             mAdapter.refresh(mScheduleModel.getShowModelList(String.valueOf(i)));
             mRcyvlerview.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
-        }else {
+        } else {
             mRcyvlerview.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }

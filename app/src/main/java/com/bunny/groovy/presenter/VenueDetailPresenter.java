@@ -73,7 +73,7 @@ public class VenueDetailPresenter extends BasePresenter<IVenueView> {
      * @param venueID
      */
     public void cancleCollectionVenue(String venueID){
-        addSubscription(apiService.collectionVenue(venueID), new SubscriberCallBack(mView.get()) {
+        addSubscription(apiService.cancelCollectionVenue(venueID), new SubscriberCallBack(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;

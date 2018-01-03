@@ -45,18 +45,20 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     private VenueScheduleAdapter mAdapter;
+    private VenueModel venueModel;
 
     @OnClick(R.id.venue_detail_tv_apply)
     public void apply() {
-        // TODO: 2018/1/3
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ApplyVenueFragment.KEY_VENUE_BEAN, venueModel);
+        ApplyVenueFragment.launch(mActivity, bundle);
     }
 
     @OnClick(R.id.venue_detail_iv_fav)
     public void setFavourite() {
-        if (isFavorite){
+        if (isFavorite) {
             mPresenter.cancleCollectionVenue(venueID);
-        }else {
+        } else {
             mPresenter.collectionVenue(venueID);
         }
     }
@@ -74,7 +76,6 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-
     }
 
     @Override
@@ -84,6 +85,7 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
 
     @Override
     public void setView(VenueModel model) {
+        venueModel = model;
         mTvVenueName.setText(model.getVenueName());
         mTvScore.setText(model.getVenueScore());
         mTvTel.setText(model.getPhoneNumber());
@@ -110,11 +112,13 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     @Override
     public void cancleFavorite() {
         mIvFavourite.setImageResource(R.drawable.nav_collection);
+        isFavorite = false;
     }
 
     @Override
     public void favorite() {
         mIvFavourite.setImageResource(R.drawable.nav_collection_selected);
+        isFavorite = true;
     }
 
     @Override

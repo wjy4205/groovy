@@ -2,6 +2,8 @@ package com.bunny.groovy.ui.fragment.apply;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -12,11 +14,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ApplyVenuePresenter;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
@@ -52,6 +56,11 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
     private Date today = Calendar.getInstance().getTime();
     private String startTime = "";//开始时间
     private String endTime = "";//结束时间
+    private List<StyleModel> styleList;
+    private PopupWindow mTimePop;
+    private PopupWindow mPopupWindow;
+    private StyleGridAdapter mAdapter;
+
 
     public static void launch(Activity from, Bundle bundle) {
         sVenueBean = bundle.getParcelable(KEY_VENUE_BEAN);
@@ -66,8 +75,6 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
     @Bind(R.id.apply_et_bio)
     EditText etDesc;
 
-    private List<StyleModel> styleList;
-    private PopupWindow mTimePop;
 
     //弹出选择style窗口
     @OnClick(R.id.apply_et_style)
@@ -90,6 +97,13 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         if (mTimePop == null)
             initTimePop();
         mTimePop.showAtLocation(etTime, Gravity.CENTER, 0, 0);
+    }
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        etStyle.setFocusable(false);
+        etTime.setFocusable(false);
     }
 
     /**
@@ -289,11 +303,16 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         //   venueID
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("venueID", sVenueBean.getVenueID());
-        map.put("performStartDate", startTime);
-        map.put("performEndDate", endTime);
+        map.put("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
+        map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performType", etStyle.getText().toString());
         map.put("performDesc", etDesc.getText().toString());
+        map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
+        map.put("venueID", sVenueBean.getVenueID());
+        map.put("venueName", sVenueBean.getVenueName());
+        map.put("venueAddress", sVenueBean.getVenueAddress());
+        map.put("venueLongitude", sVenueBean.getLongitude());
+        map.put("venueLatitude", sVenueBean.getLatitude());
         mPresenter.applyVenue(map);
     }
 
@@ -304,6 +323,57 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
 
     @Override
     public void showStylePop(List<StyleModel> modelList) {
+        UIUtils.hideSoftInput(etStyle);
+        styleList = modelList;
+        if (mPopupWindow == null)
+            initStylePop(modelList);
+        mPopupWindow.showAtLocation(etStyle, Gravity.CENTER, 0, 0);
+    }
+
+
+    /**
+     * 关闭选择style窗口
+     */
+    private void closePop() {
+        if (mPopupWindow != null) mPopupWindow.dismiss();
+    }
+
+    private void initStylePop(List<StyleModel> modelList) {
+        mPopupWindow = new PopupWindow(getActivity());
+        View popview = LayoutInflater.from(getActivity()).inflate(R.layout.pop_style_grid_layout, null, false);
+        mPopupWindow.setContentView(popview);
+        mPopupWindow.setOutsideTouchable(false);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
+        RecyclerView recyclerview = (RecyclerView) popview.findViewById(R.id.recyclerview);
+        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mAdapter = new StyleGridAdapter(modelList, etStyle.getText().toString().trim());
+        recyclerview.setAdapter(mAdapter);
+        popview.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+            }
+        });
+        popview.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+                etStyle.setText(mAdapter.getSelectStyles());
+            }
+        });
+        // 按下android回退物理键 PopipWindow消失解决
+        popview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                    closePop();
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -319,6 +389,8 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
 
     @Override
     protected void loadData() {
-
+        //获取可选择的时间
+        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array_24);
+        mTimeClockList = Arrays.asList(timeClockArray);
     }
 }

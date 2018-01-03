@@ -71,7 +71,7 @@ public class OpportunityModel implements Parcelable {
     private String scheduleList;
     private List<PerformerOpportunityBean> performerOpportunity;
 
-    protected OpportunityModel(Parcel in) {
+    public OpportunityModel(Parcel in) {
         createDate = in.readString();
         venueID = in.readString();
         venueName = in.readString();

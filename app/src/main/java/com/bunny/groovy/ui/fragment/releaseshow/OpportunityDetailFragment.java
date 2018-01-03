@@ -15,6 +15,8 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.OpportunityModel;
+import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
+import com.bunny.groovy.ui.fragment.apply.VenueDetailFragment;
 
 import java.util.List;
 
@@ -62,6 +64,13 @@ public class OpportunityDetailFragment extends BaseFragment {
         ApplyOppFragment.launch(mActivity, bundle);
     }
 
+    @OnClick(R.id.opp_detail_include_venue_card)
+    public void venueDetail(){
+        Bundle bundle = new Bundle();
+        bundle.putString(VenueDetailFragment.KEY_VENUE_ID,sParcelable.getVenueID());
+        VenueDetailFragment.launch(mActivity,bundle);
+    }
+
     public static void launch(Activity activity, Bundle bundle) {
         sParcelable = bundle.getParcelable(KEY_OPPORTUNITY_BEAN);
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SHOW OPPORTUNITY");
@@ -86,6 +95,7 @@ public class OpportunityDetailFragment extends BaseFragment {
             mTvName.setText(sParcelable.getVenueName());
             mTvDesc.setText(sParcelable.getPerformDesc());
             mTvVenueName.setText(sParcelable.getVenueName());
+            mTvScore.setText(sParcelable.getVenueScore());
             mTvAddress.setText(sParcelable.getVenueAddress());
             mTvTel.setText(sParcelable.getPhoneNumber());
             mTvEmail.setText(sParcelable.getWebSiteAddress());

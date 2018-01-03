@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -29,9 +27,10 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.divider.HLineDecoration;
 import com.bunny.groovy.model.OpportunityModel;
-import com.bunny.groovy.presenter.ExplorerOpportunityPresenter;
+import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
+import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.FilterFragment;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
@@ -65,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/12/17.
  */
 
-public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresenter> implements
+public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> implements
         OnMapReadyCallback,
         IExploreView,
         GoogleApiClient.OnConnectionFailedListener,
@@ -82,26 +81,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     private int count;
     private Location mLastLocation;
     private boolean isMarkerShowing = false;
-
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case TRY_AGAIN_LOC:
-                    if (count < 2) {
-                        initCurrentLocation();
-                        count++;
-                    } else {
-                        //找不到
-                        UIUtils.showBaseToast("获取当前位置失败！请查看列表");
-                        requestAroundList();
-                    }
-                    break;
-            }
-        }
-    };
 
     @Bind(R.id.map_fl_marker_layout)
     FrameLayout mMarkerLayout;
@@ -147,27 +126,25 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
      */
     @OnClick(R.id.marker_tv_apply)
     public void apply() {
-        //set params
-        //   venueID
-        //   performType
-        //   performStartDate
-        //   performEndDate
-        //   performDesc
-        //   performerID
-        //   opportunityID
-        HashMap<String, String> map = new HashMap<>();
-        map.put("venueID", mCurrentBean.getVenueID());
-        map.put("performType", AppCacheData.getPerformerUserModel().getPerformTypeName());
-        map.put("performStartDate", mCurrentBean.getStartDate());
-        map.put("performEndDate", mCurrentBean.getEndDate());
-        map.put("performDesc", mCurrentBean.getPerformDesc());
-        map.put("opportunityID", mCurrentBean.getOpportunityID());
-        mPresenter.applyOpportunity(map);
+        //跳转到申请页面
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ApplyOppFragment.KEY_OPP_BEAN,mCurrentBean);
+        ApplyOppFragment.launch(mActivity, bundle);
     }
 
     @OnClick(R.id.map_filter)
+
     public void mapFilter() {
-        FilterFragment.launchForResult(mActivity, new Bundle(), 1);
+        filter();
+    }
+
+    /**
+     * 跳转到条件页面
+     */
+    private void filter() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(FilterFragment.KEY_DISTANCE, Integer.parseInt(distance));
+        FilterFragment.launchForResult(mActivity, bundle, 1);
     }
 
     public static void launch(Activity from) {
@@ -177,8 +154,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
     }
 
     @Override
-    protected ExplorerOpportunityPresenter createPresenter() {
-        return new ExplorerOpportunityPresenter(this);
+    protected ExplorerOpptnyPresenter createPresenter() {
+        return new ExplorerOpptnyPresenter(this);
     }
 
     @Override
@@ -224,7 +201,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         mTvName.setText(bean.getVenueName());
         mTvadd.setText(bean.getVenueAddress());
         mTvTime.setText(bean.getPerformTime());
-        mTvDistance.setText(bean.getDistance());
+        mTvDistance.setText(bean.getDistance()+"km");
         mTvScore.setText(bean.getVenueScore());
     }
 
@@ -337,7 +314,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
             //请求机会数据
             requestAroundList();
         } else {
-            mHandler.sendEmptyMessageDelayed(TRY_AGAIN_LOC, 2000);
+            UIUtils.showBaseToast("获取当前定位失败，请查看列表");
         }
 
     }
@@ -410,6 +387,11 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         }
     }
 
+    @Override
+    public void showStylePop(List<StyleModel> modelList) {
+
+    }
+
     private Menu mMenu;
 
     @Override
@@ -426,7 +408,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpportunityPresent
         switch (item.getItemId()) {
             case R.id.explore_menu_filter:
                 //过滤器
-                FilterFragment.launchForResult(mActivity, new Bundle(), 1);
+                filter();
                 return true;
             case R.id.explore_menu_list:
                 //列表显示

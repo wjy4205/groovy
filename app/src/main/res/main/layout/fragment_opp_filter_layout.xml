@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--演出机会筛选-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
               xmlns:tools="http://schemas.android.com/tools"
-              android:paddingTop="20dp"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:orientation="vertical"
               android:paddingLeft="16dp"
               android:paddingRight="16dp"
-              android:orientation="vertical">
+              android:paddingTop="20dp">
+
     <TextView
         style="@style/common_text_style"
         android:text="@string/distance"/>
@@ -15,37 +16,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <SeekBar
             android:id="@+id/filter_seekbar"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            />    
+            android:layout_weight="1"
+            />
+
         <TextView
             android:id="@+id/filter_tv_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:textSize="14sp"
-            tools:text="100km"
-            android:textColor="@color/white"/>
+            tools:text="100km"/>
     </LinearLayout>
+
     <TextView
         style="@style/common_text_style"
         android:text="SHOW STARTING TIME"/>
 
     <EditText
-         android:id="@+id/filter_et_start_time"
+        android:id="@+id/filter_et_start_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="CHOOSE"
+        android:textColor="@color/white"
         android:textColorHint="@color/common_grey"
-        android:textSize="13sp"
-
-        android:hint="CHOOSE" />
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/filter_tv_submit"
@@ -53,5 +57,5 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
-        android:text="@string/filter" />
+        android:text="@string/filter"/>
 </LinearLayout>

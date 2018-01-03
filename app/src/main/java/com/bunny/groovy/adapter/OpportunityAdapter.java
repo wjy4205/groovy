@@ -1,6 +1,7 @@
 package com.bunny.groovy.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.OpportunityModel;
+import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ import java.util.List;
 public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.MyHolder> {
 
     private List<OpportunityModel.PerformerOpportunityBean> mList;
-    private Context mContext;
+    private Activity mContext;
 
     public OpportunityAdapter(List<OpportunityModel.PerformerOpportunityBean> list) {
         mList = list;
@@ -29,26 +31,49 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        mContext = (Activity) parent.getContext();
         View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_opp_detail_list_layout, null, false);
         return new MyHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
-        if (position == 0){
+    public void onBindViewHolder(MyHolder holder, final int position) {
+        if (mList.size()==1){
             holder.mTvTopLine.setVisibility(View.INVISIBLE);
-            holder.mTvBottomLine.setVisibility(View.VISIBLE);
-        }else if (position==mList.size()-1){
-            holder.mTvTopLine.setVisibility(View.VISIBLE);
             holder.mTvBottomLine.setVisibility(View.INVISIBLE);
         }else {
-            holder.mTvTopLine.setVisibility(View.VISIBLE);
-            holder.mTvBottomLine.setVisibility(View.VISIBLE);
+            if (position == 0){
+                holder.mTvTopLine.setVisibility(View.INVISIBLE);
+                holder.mTvBottomLine.setVisibility(View.VISIBLE);
+            }else if (position==mList.size()-1){
+                holder.mTvTopLine.setVisibility(View.VISIBLE);
+                holder.mTvBottomLine.setVisibility(View.INVISIBLE);
+            }else {
+                holder.mTvTopLine.setVisibility(View.VISIBLE);
+                holder.mTvBottomLine.setVisibility(View.VISIBLE);
+            }
         }
-        OpportunityModel.PerformerOpportunityBean bean = mList.get(position);
+        final OpportunityModel.PerformerOpportunityBean bean = mList.get(position);
         holder.mTvPerformTime.setText(bean.getPerformDate()+" "+bean.getPerformTime());
         holder.mTvMessage.setText(bean.getPerformDesc());
+
+        holder.mTvApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                venueID
+//                performStartDate
+//                performEndDate
+//                opportunityID
+                Bundle bundle = new Bundle();
+                bundle.putString("venueID",bean.getVenueID());
+                bundle.putString("performStartDate",bean.getStartDate());
+                bundle.putString("performEndDate",bean.getEndDate());
+                bundle.putString("opportunityID",bean.getOpportunityID());
+                bundle.putString("performDate",bean.getPerformDate());
+                bundle.putString("performTime",bean.getPerformTime());
+                ApplyOppFragment.launch(mContext,bundle);
+            }
+        });
     }
 
     @Override

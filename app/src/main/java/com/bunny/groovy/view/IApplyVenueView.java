@@ -2,20 +2,17 @@ package com.bunny.groovy.view;
 
 import android.app.Activity;
 
-import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.StyleModel;
 
 import java.util.List;
 
 /****************************************
- * 功能说明:申请表演机会接口
+ * 功能说明:  申请演出厅接口
  *
- * Author: Created by bayin on 2017/12/25.
+ * Author: Created by bayin on 2018/1/3.
  ****************************************/
 
-public interface IExploreView {
+public interface IApplyVenueView {
     Activity get();
-    void setListData(List<OpportunityModel> list);
-    void applyResult(boolean success,String msg);
     void showStylePop(List<StyleModel> modelList);
 }

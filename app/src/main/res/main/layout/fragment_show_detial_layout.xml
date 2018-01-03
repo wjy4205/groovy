@@ -43,10 +43,9 @@
 
             <TextView
                 android:id="@+id/show_detail_tv_performer_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/show_detail_tv_center_tag"
-                android:layout_weight="1"
                 android:gravity="right"
                 android:text="AMEAL"
                 android:textColor="@color/white"
@@ -65,9 +64,8 @@
 
             <TextView
                 android:id="@+id/show_detail_tv_venue_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="The Xkkl"

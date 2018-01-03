@@ -100,13 +100,16 @@ public class FilterFragment extends BaseFragment {
         if (args != null) {
             int distance = args.getInt(KEY_DISTANCE, -1);
             if (distance > 0) {
-                mSeekBar.setProgress(distance);
-                mTvDistance.setText(distance * 10 + "km");
+                mSeekBar.setProgress(distance/10);
+                mTvDistance.setText(distance+ "km");
             }
             String time = args.getString(KEY_START_TIME);
             if (!TextUtils.isEmpty(time)) {
                 mEtStartTime.setText(time);
             }
+        }else {
+            mSeekBar.setProgress(20);
+            mTvDistance.setText("200km");
         }
 
     }
@@ -233,6 +236,7 @@ public class FilterFragment extends BaseFragment {
                 if (mSelectDate.getTime().before(today)) {
                     UIUtils.showBaseToast("选择日期小于今天");
                 } else {
+                    mEtStartTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()));
                     closeDatePop();
                 }
             }

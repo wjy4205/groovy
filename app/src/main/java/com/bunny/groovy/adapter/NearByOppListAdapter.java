@@ -13,12 +13,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.OpportunityModel;
-import com.bunny.groovy.presenter.ExplorerOpportunityPresenter;
+import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
+import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.OpportunityDetailFragment;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
 
 /****************************************
@@ -30,13 +29,13 @@ import java.util.List;
 public class NearByOppListAdapter extends RecyclerView.Adapter<NearByOppListAdapter.NearByHolder> implements View.OnClickListener {
     private List<OpportunityModel> mModelList;
     private Activity mContext;
-    private ExplorerOpportunityPresenter mPresenter;
+    private ExplorerOpptnyPresenter mPresenter;
 
     public NearByOppListAdapter(List<OpportunityModel> modelList) {
         mModelList = modelList;
     }
 
-    public void setPresenter(ExplorerOpportunityPresenter presenter) {
+    public void setPresenter(ExplorerOpptnyPresenter presenter) {
         mPresenter = presenter;
     }
 
@@ -100,16 +99,9 @@ public class NearByOppListAdapter extends RecyclerView.Adapter<NearByOppListAdap
                 break;
             case R.id.item_nearby_tv_apply:
                 //申请
-                if (mPresenter != null) {
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("venueID", model.getVenueID());
-                    map.put("performType", AppCacheData.getPerformerUserModel().getPerformTypeName());
-                    map.put("performStartDate", model.getStartDate());
-                    map.put("performEndDate", model.getEndDate());
-                    map.put("performDesc", model.getPerformDesc());
-                    map.put("opportunityID", model.getOpportunityID());
-                    mPresenter.applyOpportunity(map);
-                }
+                Bundle arg = new Bundle();
+                arg.putParcelable(ApplyOppFragment.KEY_OPP_BEAN, model);
+                ApplyOppFragment.launch(mContext, arg);
                 break;
             default:
                 //详情

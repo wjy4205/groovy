@@ -156,4 +156,21 @@ public interface ApiService {
     @POST("PerformerScheduleController/getPerformerScheduleList")
     Observable<String> getScheduleList(@Field("performStartDate")String performStartDate,
                                              @Field("performEndDate")String performEndDate);
+
+    //演出厅个人主页：获取演出厅详细信息
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/getVenueScheduleList")
+    Observable<ResultResponse<VenueModel>> getVenueDetail(@Field("venueID")String venueID);
+
+
+    //收藏演出厅
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/collectionVenue")
+    Observable<ResultResponse<Object>> collectionVenue(@Field("venueID")String venueID);
+
+    //取消收藏演出厅
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/cancelCollectionVenue")
+    Observable<ResultResponse<Object>> cancelCollectionVenue(@Field("venueID")String venueID);
+
 }

@@ -1,10 +1,7 @@
-package com.bunny.groovy.ui.fragment.releaseshow;
+package com.bunny.groovy.ui.fragment.apply;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -15,24 +12,18 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
-import com.bunny.groovy.presenter.ReleasePresenter;
-import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.presenter.ApplyVenuePresenter;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
-import com.bunny.groovy.view.ISetFileView;
+import com.bunny.groovy.view.IApplyVenueView;
 import com.bunny.groovy.weidget.datepick.DatePickerHelper;
 import com.bunny.groovy.weidget.loopview.LoopView;
 import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,111 +31,54 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
+/****************************************
+ * 功能说明:  申请演出厅表演页面
+ *
+ * Author: Created by bayin on 2018/1/3.
+ ****************************************/
 
-/**
- * 发布演出页面
- * Created by Administrator on 2017/12/16.
- */
+public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView {
 
-public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implements ISetFileView {
-
-    private PopupWindow mPopupWindow;
-    private StyleGridAdapter mAdatper;
-    private List<StyleModel> styleList;
-    private PopupWindow mTimePop;
+    public static String KEY_VENUE_BEAN = "KEY_VENUE_BEAN";
+    private static VenueModel sVenueBean;
+    private TextView mTvTimeTitle;
+    private List<String> mTimeClockList;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
+    private PopupWindow mDatePop;
+    private Date today = Calendar.getInstance().getTime();
     private String startTime = "";//开始时间
     private String endTime = "";//结束时间
-    private List<String> mTimeClockList;
-    private PopupWindow mDatePop;
-    private TextView mTvTimeTitle;
-    private Date today = Calendar.getInstance().getTime();
-    private VenueModel mVenueModel;
-    private Place mPlace;
 
-    public static void launch(Activity from) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "RELEASE SHOW");
-        FragmentContainerActivity.launch(from, ReleaseShowFragment.class, bundle);
+    public static void launch(Activity from, Bundle bundle) {
+        sVenueBean = bundle.getParcelable(KEY_VENUE_BEAN);
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "APPLY");
+        FragmentContainerActivity.launch(from, ApplyVenueFragment.class, bundle);
     }
 
-    @Bind(R.id.release_et_venue)
-    EditText etVenue;
-
-    @Bind(R.id.release_et_style)
-    EditText etStyle;
-
-    @Bind(R.id.release_et_time)
+    @Bind(R.id.apply_et_time)
     EditText etTime;
+    @Bind(R.id.apply_et_style)
+    EditText etStyle;
+    @Bind(R.id.apply_et_bio)
+    EditText etDesc;
 
-    @Bind(R.id.release_et_bio)
-    EditText etBio;
+    private List<StyleModel> styleList;
+    private PopupWindow mTimePop;
 
-    @OnClick(R.id.tv_release)
-    public void release() {
-        //判断空
-        if (UIUtils.isEdittextEmpty(etVenue)) {
-            UIUtils.showBaseToast("请选择音乐厅");
-            return;
-        }
-        if (UIUtils.isEdittextEmpty(etStyle)) {
-            UIUtils.showBaseToast("请选择演出类型");
-            return;
-        }
-        if (UIUtils.isEdittextEmpty(etTime)) {
-            UIUtils.showBaseToast("请选择演出时间");
-            return;
-        }
-        if (UIUtils.isEdittextEmpty(etBio)) {
-            UIUtils.showBaseToast("请填写演出介绍");
-            return;
-        }
-        Map<String, String> map = new HashMap<>();
-        if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
-            map.put("venueID", mVenueModel.getVenueID());
-            map.put("venueName", mVenueModel.getVenueName());
-            map.put("venueAddress", mVenueModel.getVenueAddress());
-            map.put("venueLongitude", mVenueModel.getLongitude());
-            map.put("venueLatitude", mVenueModel.getLatitude());
-        } else if (mPlace != null) {
-            map.put("venueName", mPlace.getName().toString());
-            map.put("venueAddress", mPlace.getAddress().toString());
-            map.put("venueLongitude", String.valueOf(mPlace.getLatLng().longitude));
-            map.put("venueLatitude", String.valueOf(mPlace.getLatLng().latitude));
-        } else {
-            UIUtils.showBaseToast("音乐厅选取失败，请重新选择");
-            return;
-        }
-        map.put("performType", etStyle.getText().toString());
-        map.put("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
-        map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
-        map.put("performDesc", etBio.getText().toString());
-        map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
-        mPresenter.releaseShow(map);
-    }
-
-    /**
-     * 跳转到搜索音乐厅界面
-     */
-    @OnClick(R.id.release_tv_search)
-    public void search() {
-        SearchVenueFragment.launchForResult(mActivity, new Bundle(), 1);
-    }
-
-    @OnClick(R.id.release_et_style)
-    public void showPop() {
+    //弹出选择style窗口
+    @OnClick(R.id.apply_et_style)
+    public void showStyle() {
         if (styleList == null || styleList.size() == 0)
             mPresenter.requestStyle();
         else showStylePop(styleList);
     }
 
-    @OnClick(R.id.release_et_time)
+    //弹出时间选择窗口
+    @OnClick(R.id.apply_et_time)
     public void selectTime() {
         showTimeChoosePop();
     }
@@ -155,14 +89,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private void showTimeChoosePop() {
         if (mTimePop == null)
             initTimePop();
-        mTimePop.showAtLocation(etBio, Gravity.CENTER, 0, 0);
-    }
-
-    /**
-     * 关闭时间点选择框
-     */
-    private void closeTimePop() {
-        if (mTimePop != null) mTimePop.dismiss();
+        mTimePop.showAtLocation(etTime, Gravity.CENTER, 0, 0);
     }
 
     /**
@@ -225,13 +152,22 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         });
     }
 
+
+    /**
+     * 关闭时间点选择框
+     */
+    private void closeTimePop() {
+        if (mTimePop != null) mTimePop.dismiss();
+    }
+
+
     /**
      * 显示日期选择器
      */
     private void showDatePop() {
         if (mDatePop == null)
             initDatePop();
-        mDatePop.showAtLocation(etBio, Gravity.CENTER, 0, 0);
+        mDatePop.showAtLocation(etTime, Gravity.CENTER, 0, 0);
     }
 
     /**
@@ -326,119 +262,63 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     }
 
 
-    /**
-     * 接收选择的演出厅
-     *
-     * @param model
-     */
-    @Subscribe
-    public void onChooseVenue(VenueModel model) {
-        mVenueModel = model;
-        if (model != null) etVenue.setText(model.getVenueName());
-    }
+    //申请
+    @OnClick(R.id.apply_tv_apply)
+    public void apply() {
+        //拦截判空
+        if (TextUtils.isEmpty(etDesc.getText().toString())) {
+            UIUtils.showBaseToast("Please input description.");
+            return;
+        }
 
+        if (TextUtils.isEmpty(etStyle.getText().toString())) {
+            UIUtils.showBaseToast("Please choose perform style.");
+            return;
+        }
 
-    @Override
-    protected ReleasePresenter createPresenter() {
-        return new ReleasePresenter(this);
-    }
+        //set params
+        //   performType
+        //   performStartDate
+        //   performEndDate
+        //   performDesc
+        //   venueName
+        //   venueAddress
+        //   performerName
+        //   venueLongitude
+        //   venueLatitude
+        //   venueID
 
-    @Override
-    protected int provideContentViewId() {
-        return R.layout.fragment_release_show_layout;
-    }
-
-    @Override
-    protected void loadData() {
-        //获取可选择的时间
-        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array_24);
-        mTimeClockList = Arrays.asList(timeClockArray);
-    }
-
-    @Override
-    public void initView(View rootView) {
-        super.initView(rootView);
-        //禁用编辑
-        etVenue.setFocusable(false);
-        etStyle.setFocusable(false);
-        etTime.setFocusable(false);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        registerEventBus(this);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("venueID", sVenueBean.getVenueID());
+        map.put("performStartDate", startTime);
+        map.put("performEndDate", endTime);
+        map.put("performType", etStyle.getText().toString());
+        map.put("performDesc", etDesc.getText().toString());
+        mPresenter.applyVenue(map);
     }
 
     @Override
     public Activity get() {
-        return getActivity();
+        return mActivity;
     }
 
     @Override
     public void showStylePop(List<StyleModel> modelList) {
-        UIUtils.hideSoftInput(etStyle);
-        styleList = modelList;
-        if (mPopupWindow == null)
-            initPopWindow(modelList);
-        mPopupWindow.showAtLocation(etBio, Gravity.CENTER, 0, 0);
-    }
-
-    /**
-     * 关闭选择style窗口
-     */
-    private void closePop() {
-        if (mPopupWindow != null) mPopupWindow.dismiss();
-    }
-
-    private void initPopWindow(List<StyleModel> modelList) {
-        mPopupWindow = new PopupWindow(getActivity());
-        View popview = LayoutInflater.from(getActivity()).inflate(R.layout.pop_style_grid_layout, null, false);
-        mPopupWindow.setContentView(popview);
-        mPopupWindow.setOutsideTouchable(false);
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
-        RecyclerView recyclerview = (RecyclerView) popview.findViewById(R.id.recyclerview);
-        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mAdatper = new StyleGridAdapter(modelList, etStyle.getText().toString().trim());
-        recyclerview.setAdapter(mAdatper);
-        popview.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closePop();
-            }
-        });
-        popview.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closePop();
-                etStyle.setText(mAdatper.getSelectStyles());
-            }
-        });
-        // 按下android回退物理键 PopipWindow消失解决
-        popview.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                    closePop();
-                    return true;
-                }
-                return false;
-            }
-        });
 
     }
-
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                mPlace = PlacePicker.getPlace(data, mActivity);
-                etVenue.setText(mPlace.getName());
-            }
-        }
+    protected ApplyVenuePresenter createPresenter() {
+        return new ApplyVenuePresenter(this);
+    }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.fragment_apply_opp_layout;
+    }
+
+    @Override
+    protected void loadData() {
+
     }
 }

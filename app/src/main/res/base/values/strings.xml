@@ -38,4 +38,6 @@
     <string name="msg_confirm_application">has confirmed your application</string>
     <string name="msg_reject_application">has rejected your application</string>
     <string name="msg_waiting">waiting\.\.\.</string>
+    <string name="available_time_interval">Available Time Interval</string>
+    <string name="cover_charge">Cover Charge</string>
 </resources>

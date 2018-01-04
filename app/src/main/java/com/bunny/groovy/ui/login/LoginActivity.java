@@ -37,6 +37,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Bind(R.id.login_et_password)
     XEditText etPassword;
 
+    @OnClick(R.id.actionbar_iv_back)
+    public void back() {
+        finish();
+    }
+
     @OnClick(R.id.tv_sign_up)
     void signUp() {
         startActivityForResult(new Intent(this, SignUpActivity.class), 2);
@@ -114,7 +119,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         super.onActivityResult(requestCode, resultCode, data);
         //设置资料结束，结束本页面,跳转至首页
         if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
-           launchMainPage();
+            launchMainPage();
         }
     }
 }

@@ -115,9 +115,10 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     public void initNextView(ShowModel showModel) {
         model = showModel;
         nextShowLayout.setVisibility(View.VISIBLE);
-        Glide.with(this).load(showModel.getPheadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic).into(ivHead);
+        Glide.with(this).load(showModel.getHeadImg())
+                .placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic).into(ivHead);
         tvName.setText(showModel.getVenueName());
-        tvStar.setText(showModel.getPvenueScore());
+        tvStar.setText(showModel.getVenueScore());
         tvPerformType.setText(showModel.getPerformType());
         tvTime.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
     }

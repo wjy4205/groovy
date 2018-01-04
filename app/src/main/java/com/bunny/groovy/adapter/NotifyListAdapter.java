@@ -91,7 +91,7 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
                 String invitationState = showModel.getInvitationState();
                 if (!TextUtils.isEmpty(invitationState)) {
                     holder.tvMsg.setVisibility(View.VISIBLE);
-                    holder.tvMsg.setText(R.string.msg_invite_you);
+                    holder.tvMsg.setText(R.string.invite_you_for_a_show);
                     switch (invitationState) {
                         case "1"://同意
                             holder.llActionLayout.setVisibility(View.GONE);

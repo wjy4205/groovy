@@ -34,7 +34,7 @@
     <string name="verification">VERIFICATION</string>
     <string name="distance">DISTANCE</string>
     <string name="filter">FILTER</string>
-    <string name="invite_you_for_a_show">has invite you for a show</string>
+    <string name="invite_you_for_a_show">has invited you for a show</string>
     <string name="msg_confirm_application">has confirmed your application</string>
     <string name="msg_reject_application">has rejected your application</string>
     <string name="msg_invite_you">has invited you for a show</string>

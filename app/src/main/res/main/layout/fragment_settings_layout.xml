@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="NOTIFICATIONS"
             android:textColor="@color/white"
-            android:textSize="15sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <Switch
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_centerVertical="true"
             android:text="DISCOVER"
             android:textColor="@color/white"
-            android:textSize="15sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <Switch
             android:layout_width="wrap_content"

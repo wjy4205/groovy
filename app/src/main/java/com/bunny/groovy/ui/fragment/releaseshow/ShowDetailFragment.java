@@ -83,7 +83,7 @@ public class ShowDetailFragment extends BaseFragment {
 
     public static void launch(Activity from, Bundle bundle) {
         model = bundle.getParcelable(KEY_SHOW_BEAN);
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAIL");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
         type = bundle.getInt("type", -1);
         FragmentContainerActivity.launch(from, ShowDetailFragment.class, bundle);
     }
@@ -130,7 +130,14 @@ public class ShowDetailFragment extends BaseFragment {
                     break;
                 case 1://邀请
                     mTvNotify.setVisibility(View.VISIBLE);
-                    mTvNotify.setText("INVITE");
+                    String invitationState = model.getInvitationState();
+                    if ("1".equals(invitationState)) {
+                        mTvNotify.setText(R.string.confirmed);
+                    } else if ("2".equals(invitationState)) {
+                        mTvNotify.setText(R.string.rejected);
+                    } else {
+                        mTvNotify.setText(R.string.verification);
+                    }
                     break;
                 case 2://release
                     mTvNotify.setVisibility(View.VISIBLE);

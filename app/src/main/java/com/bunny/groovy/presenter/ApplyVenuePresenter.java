@@ -72,4 +72,30 @@ public class ApplyVenuePresenter extends BasePresenter<IApplyVenueView> {
             }
         });
     }
+
+    /**
+     *  确认邀请
+     * @param inviteID
+     * @param performDesc
+     * @param performStyle
+     */
+    public void confirmInvite(String inviteID,String performDesc,String performStyle){
+        addSubscription(apiService.agreePerformerInvite(inviteID, performStyle, performDesc), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("确认成功");
+                mView.get().finish();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
 }

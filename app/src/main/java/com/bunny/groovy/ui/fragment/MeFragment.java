@@ -93,10 +93,10 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         mFragments.add(new HistoryFragment());
         mViewPager.setAdapter(new UserCenterAdapter(mFragments, titleArray, getActivity().getSupportFragmentManager()));
         pagerTabStrip.setDistributeEvenly(true);
+        pagerTabStrip.setCustomTabView(R.layout.custorm_tab_layout,R.id.tv_tab);
         pagerTabStrip.setSelectedIndicatorColors(getActivity().getResources().getColor(R.color.white));
         pagerTabStrip.setTitleTextColor(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
         pagerTabStrip.setTabStripWidth(UIUtils.getScreenWidth() / 2);
-        pagerTabStrip.setSelectedIndicatorColors(getActivity().getResources().getColor(R.color.white));
         pagerTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

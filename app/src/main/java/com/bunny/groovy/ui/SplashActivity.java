@@ -49,7 +49,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                 @Override
                 public void run() {
                     RoleChooseActivity.launch(SplashActivity.this);
-                    finish();
                 }
             }, 2000);
         }
@@ -63,6 +62,5 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
     @Override
     public void requestFailed() {
         RoleChooseActivity.launch(this);
-        finish();
     }
 }

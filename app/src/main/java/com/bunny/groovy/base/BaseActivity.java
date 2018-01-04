@@ -138,15 +138,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     @Override
     public void onBackPressed() {
-        if (mCurrentActivity instanceof RoleChooseActivity
-                || mCurrentActivity instanceof MainActivity) {
-            //如果是主页面
-            if (System.currentTimeMillis() - mPreTime > 2000) {// 两次点击间隔大于2秒
-//                UIUtils.showToast("再按一次，退出应用");
-                mPreTime = System.currentTimeMillis();
-                return;
-            }
-        }
+//        if (mCurrentActivity instanceof RoleChooseActivity
+//                || mCurrentActivity instanceof MainActivity) {
+//            //如果是主页面
+//            if (System.currentTimeMillis() - mPreTime > 2000) {// 两次点击间隔大于2秒
+////                UIUtils.showToast("再按一次，退出应用");
+//                mPreTime = System.currentTimeMillis();
+//                return;
+//            }
+//        }
         super.onBackPressed();// finish()
     }
 

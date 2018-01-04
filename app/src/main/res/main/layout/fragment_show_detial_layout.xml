@@ -2,9 +2,10 @@
 
 <!--演出机会详情 从地图上点进去的-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/theme_bg">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:background="@color/theme_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:paddingTop="10dp"
             android:text="VERIFICATION"
             android:textColor="@color/white"
-            android:textSize="13sp" />
+            android:textSize="@dimen/text_size_common" />
 
 
         <TextView
@@ -33,7 +34,7 @@
             android:gravity="center"
             android:text="Oct 1st"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="@dimen/text_size_common" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                 android:gravity="right"
                 android:text="AMEAL"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_big" />
 
             <TextView
                 android:id="@+id/show_detail_tv_center_tag"
@@ -70,13 +71,15 @@
                 android:maxLines="1"
                 android:text="The Xkkl"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_big" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="27dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -94,7 +97,7 @@
                     android:id="@+id/show_detail_tv_style"
                     style="@style/common_white_text_style"
                     android:layout_marginTop="4dp"
-                    android:text="Rock" />
+                    tools:text="RockRock" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,9 +155,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="Booking Contact :"
+            android:text="BOOKING CONTACT :"
             android:textColor="@color/textAccent"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_size_small" />
 
         <LinearLayout
             android:layout_width="match_parent"

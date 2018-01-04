@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:text="Monday.Jun 08.2017"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
     </LinearLayout>
 
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:text="STARTING FROM"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <View
             android:layout_width="40dp"
@@ -59,7 +59,7 @@
             android:gravity="center"
             android:text="ENDING BY"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
     </LinearLayout>
 
     <FrameLayout
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:text="CANCEL"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_small"/>
 
         <TextView
             android:id="@+id/pop_confirm"
@@ -129,6 +129,6 @@
             android:layout_marginLeft="30dp"
             android:text="CONFIRM"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_small"/>
     </LinearLayout>
 </LinearLayout>

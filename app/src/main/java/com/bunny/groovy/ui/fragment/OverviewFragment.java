@@ -3,6 +3,8 @@ package com.bunny.groovy.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.bunny.groovy.ui.fragment.notify.NotificationFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ExploreShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ShowDetailFragment;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
@@ -42,6 +45,9 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     TextView tvPerformType;
     @Bind(R.id.nextshow_tv_time)
     TextView tvTime;
+    @Bind(R.id.overview_fl_pan)
+    FrameLayout flPan;
+
     private ShowModel model;
 
     @OnClick(R.id.nextshow_layout)
@@ -64,7 +70,6 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @OnClick(R.id.overview_tv_explore_show)
     void exploreShow() {
         ExploreShowFragment.launch(getActivity());
-//        startActivity(new Intent(mActivity, MapsActivityCurrentPlace.class));
     }
 
     @Override
@@ -75,6 +80,16 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Override
     protected int provideContentViewId() {
         return R.layout.fragment_overview_layout;
+    }
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        int screenWidth = UIUtils.getScreenWidth();
+        ViewGroup.LayoutParams params = flPan.getLayoutParams();
+        params.width = (int) (screenWidth*0.9);
+        params.height = (int) (screenWidth*0.9);
+        flPan.setLayoutParams(params);
     }
 
     @Override

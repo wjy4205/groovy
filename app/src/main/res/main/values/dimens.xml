@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--普通字体-->
+    <dimen name="text_size_common">@dimen/x13</dimen>
+    <!--小号字体-->
+    <dimen name="text_size_small">@dimen/x11</dimen>
+    <!--大号字体-->
+    <dimen name="text_size_big">@dimen/x16</dimen>
+    <!--标题字号-->
+    <dimen name="title_size">@dimen/x18</dimen>
+</resources>

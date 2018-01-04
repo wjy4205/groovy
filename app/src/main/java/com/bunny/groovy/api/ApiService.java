@@ -173,4 +173,15 @@ public interface ApiService {
     @POST("PerformerBasicsController/cancelCollectionVenue")
     Observable<ResultResponse<Object>> cancelCollectionVenue(@Field("venueID")String venueID);
 
+
+    //Notification：Invite-同意邀请
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/agreePerformerOverviewInvite")
+    Observable<ResultResponse<Object>> agreePerformerInvite(@Field("inviteID")String inviteID,
+                                                            @Field("performType")String performType,@Field("performDesc")String performDesc);
+
+    //Notification：Invite-拒绝邀请
+    @FormUrlEncoded
+    @POST("PerformerOverviewController/refusePerformerOverviewInvite")
+    Observable<ResultResponse<Object>> rejectPerformInvite(@Field("inviteID")String inviteID);
 }

@@ -35,7 +35,11 @@ public class NotifyListFragment extends BaseListFragment<ListPresenter, NotifyLi
     }
 
     @Override
-    protected void loadData() {
+    protected void loadData() {}
+
+    @Override
+    public void onResume() {
+        super.onResume();
         switch (mTYPE) {
             case 0:
                 mPresenter.getOpportunityList();

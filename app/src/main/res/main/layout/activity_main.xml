@@ -20,7 +20,7 @@
             android:typeface="sans"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_big"
             />
     </RelativeLayout>
 
@@ -44,7 +44,7 @@
             app:iconSelected="@mipmap/tab_overview_selected"
             app:iconWidth="25dp"
             app:itemText="@string/tab_home"
-            app:itemTextSize="8sp"
+            app:itemTextSize="@dimen/text_size_small"
             app:openTouchBg="true"
             app:textColorNormal="@color/common_grey"
             app:textColorSelected="#fff"
@@ -53,7 +53,7 @@
         <com.bunny.groovy.weidget.BottomBarItem
             style="@style/tab_item_style"
             android:id="@+id/tab_schedule"
-            app:itemTextSize="8sp"
+            app:itemTextSize="@dimen/text_size_small"
             app:openTouchBg="true"
             app:textColorNormal="@color/common_grey"
             app:textColorSelected="#fff"
@@ -67,7 +67,7 @@
         <com.bunny.groovy.weidget.BottomBarItem
             android:id="@+id/tab_me"
             style="@style/tab_item_style"
-            app:itemTextSize="8sp"
+            app:itemTextSize="@dimen/text_size_small"
             app:openTouchBg="true"
             app:textColorNormal="@color/common_grey"
             app:textColorSelected="#fff"

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
+import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.login.LoginActivity;
@@ -46,7 +47,13 @@ public class RoleChooseActivity extends BaseActivity {
     }
 
     public static void launch(Context activity) {
-        activity.startActivity(new Intent(activity, RoleChooseActivity.class));
+        Intent intent = new Intent(BaseApp.getContext(), RoleChooseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        BaseApp.getContext().startActivity(intent);
+        for (int i = 0; i < mActivities.size(); i++) {
+            if (!(mActivities.get(i) instanceof RoleChooseActivity))
+                mActivities.get(i).finish();
+        }
     }
 
     @Override

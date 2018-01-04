@@ -227,8 +227,14 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
 
             if (!TextUtils.isEmpty(headImagePath))
                 ma.put("imgfile", headImagePath);
+//            else {
+//                ma.put("imgfile", model.getHeadImg());
+//            }
             if (mMusic_file != null)
                 ma.put("music", mMusic_file.getMusicPath());
+//            else {
+//                ma.put("music", model.getMusicFile());
+//            }
             //3.检查zipcode是否正确
             mPresenter.searchLocation(mEtZipcode.getText().toString(), ma);
         }

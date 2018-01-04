@@ -14,7 +14,7 @@
         android:gravity="center"
         android:text="PM 2:30"
         android:textColor="@color/common_grey"
-        android:textSize="9sp"/>
+        android:textSize="@dimen/x8"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
             android:id="@+id/item_notification_iv_header"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/head"/>
 
         <LinearLayout
@@ -49,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:text="The Gooota"
                     android:textColor="@color/white"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/text_size_common"/>
 
                 <TextView
                     android:id="@+id/item_notification_tv_score"
@@ -61,7 +62,7 @@
                     android:drawablePadding="4dp"
                     android:text="2.0"
                     android:textColor="@color/white"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/text_size_small"/>
 
                 <TextView
                     android:id="@+id/item_notification_tv_status"
@@ -69,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:text="CONFIRMED"
                     android:textColor="@color/white"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/text_size_small"/>
             </LinearLayout>
 
             <TextView
@@ -81,7 +82,7 @@
                 android:maxLines="1"
                 android:text="@string/invite_you_for_a_show"
                 android:textColor="@color/common_grey"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_small"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                     android:layout_centerVertical="true"
                     android:text="Booking Contact"
                     android:textColor="@color/textAccent"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/text_size_common"/>
 
                 <ImageView
                     android:id="@+id/item_notification_iv_phone"
@@ -127,7 +128,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_common"
                     tools:text="Oct 2st 1:10PM-3:20PM"/>
 
                 <TextView
@@ -143,7 +144,7 @@
                     android:paddingTop="2dp"
                     android:text="DETAILS"
                     android:textColor="@color/textAccent"
-                    android:textSize="11sp"/>
+                    android:textSize="@dimen/text_size_small"/>
             </RelativeLayout>
 
 
@@ -164,7 +165,7 @@
                     android:gravity="center_vertical"
                     android:text="REJECT"
                     android:textColor="@color/textAccent"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_size_big"/>
 
                 <TextView
                     android:id="@+id/item_notification_tv_confirm"
@@ -175,7 +176,7 @@
                     android:gravity="center_vertical"
                     android:text="CONFIRM"
                     android:textColor="@color/textAccent"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_size_big"/>
             </LinearLayout>
 
 

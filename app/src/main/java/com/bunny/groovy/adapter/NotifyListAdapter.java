@@ -1,7 +1,6 @@
 package com.bunny.groovy.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,13 +11,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.bunny.groovy.R;
+import com.bunny.groovy.api.ApiRetrofit;
+import com.bunny.groovy.api.ApiService;
+import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.ui.fragment.apply.ConfirmInviteFragment;
+import com.bunny.groovy.ui.fragment.notify.InviteDetailsFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ShowDetailFragment;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
+import com.socks.library.KLog;
 
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -79,7 +88,26 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
                     }
                 break;
             case 1:
-                holder.llActionLayout.setVisibility(View.VISIBLE);
+                String invitationState = showModel.getInvitationState();
+                if (!TextUtils.isEmpty(invitationState)) {
+                    holder.tvMsg.setVisibility(View.VISIBLE);
+                    holder.tvMsg.setText(R.string.msg_invite_you);
+                    switch (invitationState) {
+                        case "1"://同意
+                            holder.llActionLayout.setVisibility(View.GONE);
+                            holder.tvStatus.setText(R.string.confirmed);
+                            break;
+                        case "2"://拒绝
+                            holder.llActionLayout.setVisibility(View.GONE);
+                            holder.tvStatus.setText(R.string.rejected);
+                            break;
+                        case "0"://未处理
+                        default:
+                            holder.llActionLayout.setVisibility(View.VISIBLE);
+                            holder.tvStatus.setText("");
+                            break;
+                    }
+                }
                 break;
             case 2:
                 holder.llActionLayout.setVisibility(View.GONE);
@@ -131,23 +159,71 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         switch (v.getId()) {
             case R.id.item_notification_tv_details://详情
                 Bundle bundle = new Bundle();
-                bundle.putInt("type",mTYPE);
-                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN,showModel);
-                ShowDetailFragment.launch(mContext,bundle);
+                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, showModel);
+                if (mTYPE == 1) {
+                    InviteDetailsFragment.launch(mContext, bundle);
+                } else {
+                    bundle.putInt("type", mTYPE);
+                    ShowDetailFragment.launch(mContext, bundle);
+                }
+
                 break;
             case R.id.item_notification_tv_confirm://同意
-                // TODO: 2018/1/3
+                Bundle arg = new Bundle();
+                arg.putParcelable(ConfirmInviteFragment.KEY_VENUE_BEAN, showModel);
+                ConfirmInviteFragment.launch(mContext, arg);
                 break;
             case R.id.item_notification_tv_reject://拒绝
-                // TODO: 2018/1/3
+                rejectInvite(showModel.getInviteID(), pos);
                 break;
             case R.id.item_notification_iv_email://发邮箱
-                Utils.sendEmail(mContext,showModel.getVenueEmail());
+                Utils.sendEmail(mContext, showModel.getVenueEmail());
                 break;
             case R.id.item_notification_iv_phone://打电话
-                Utils.CallPhone(mContext,showModel.getPhoneNumber());
+                Utils.CallPhone(mContext, showModel.getPhoneNumber());
                 break;
         }
+    }
+
+    /**
+     * 拒绝邀请
+     *
+     * @param inviteID
+     */
+    private void rejectInvite(String inviteID, final int position) {
+        ApiService apiService = ApiRetrofit.getInstance().getApiService();
+        apiService.rejectPerformInvite(inviteID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResultResponse<Object>>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        UIUtils.showBaseToast(e.toString());
+                        KLog.d(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(ResultResponse<Object> response) {
+                        if (response.success) {
+                            UIUtils.showBaseToast("确认成功！");
+                            mList.get(position).setInvitationState("2");
+                            notifyItemChanged(position);
+                        } else {
+                            UIUtils.showBaseToast("确认失败！请重试");
+                        }
+                    }
+                });
     }
 
     @Override

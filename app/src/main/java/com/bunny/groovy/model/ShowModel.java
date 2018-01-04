@@ -106,6 +106,9 @@ public class ShowModel implements Parcelable {
     private String applyState;
     private String opportunityState;
     private String operationDate;
+    private String inviteID;//邀请id
+    private String invitationDesc;// 邀请描述
+    private String invitationState;//状态（0-未处理，1-同意，2-拒绝）
 
     protected ShowModel(Parcel in) {
         createDate = in.readString();
@@ -156,6 +159,9 @@ public class ShowModel implements Parcelable {
         applyState = in.readString();
         opportunityState = in.readString();
         operationDate = in.readString();
+        inviteID = in.readString();
+        invitationDesc = in.readString();
+        invitationState = in.readString();
     }
 
     public static final Creator<ShowModel> CREATOR = new Creator<ShowModel>() {
@@ -554,6 +560,30 @@ public class ShowModel implements Parcelable {
         this.operationDate = operationDate;
     }
 
+    public String getInviteID() {
+        return inviteID;
+    }
+
+    public void setInviteID(String inviteID) {
+        this.inviteID = inviteID;
+    }
+
+    public String getInvitationDesc() {
+        return invitationDesc;
+    }
+
+    public void setInvitationDesc(String invitationDesc) {
+        this.invitationDesc = invitationDesc;
+    }
+
+    public String getInvitationState() {
+        return invitationState;
+    }
+
+    public void setInvitationState(String invitationState) {
+        this.invitationState = invitationState;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -609,5 +639,8 @@ public class ShowModel implements Parcelable {
         dest.writeString(applyState);
         dest.writeString(opportunityState);
         dest.writeString(operationDate);
+        dest.writeString(invitationDesc);
+        dest.writeString(invitationState);
+        dest.writeString(inviteID);
     }
 }

@@ -1,6 +1,5 @@
 package com.bunny.groovy.presenter;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
 import com.bunny.groovy.api.ApiConstants;
@@ -11,9 +10,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.ui.MainActivity;
-import com.bunny.groovy.ui.setfile.SetFile2Activity;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.weidget.ProgressHUD;
@@ -83,7 +80,7 @@ public class MePresenter extends BasePresenter<IMeView> {
      * @param fileMap
      */
     public void updatePerformerData(Map<String, String> fileMap) {
-        fileMap.put("userID", AppCacheData.getPerformerUserModel().getUserID());
+        fileMap.put("userID",AppCacheData.getPerformerUserModel().getUserID());
         //头像图片
         String imagePath = fileMap.get("imgfile");
         //音频文件
@@ -102,25 +99,25 @@ public class MePresenter extends BasePresenter<IMeView> {
         if (!TextUtils.isEmpty(imagePath)) {
             File img = new File(imagePath);
             if (img.isFile()) {
-                builder.addFormDataPart("imgfile", img.getName(), RequestBody.create(MediaType.parse("image/*"), img));
+                builder.addFormDataPart("imgfile", img.getName(), RequestBody.create(MultipartBody.FORM, img));
             }
         } else {
-            builder.addFormDataPart("imgfile", "image.jpg", RequestBody.create(MediaType.parse("image/*"), ""));
+            builder.addFormDataPart("imgfile", "image.jpg", RequestBody.create(MultipartBody.FORM, ""));
         }
 
         if (!TextUtils.isEmpty(musicPath)) {
             File music = new File(musicPath);
             if (music.isFile()) {
-                builder.addFormDataPart("music", music.getName(), RequestBody.create(MediaType.parse("*/*"), music));
+                builder.addFormDataPart("music", music.getName(), RequestBody.create(MultipartBody.FORM, music));
             }
         } else {
-            builder.addFormDataPart("music", "music.mp3", RequestBody.create(MediaType.parse("*/*"), ""));
+            builder.addFormDataPart("music", "music.mp3", RequestBody.create(MultipartBody.FORM, ""));
         }
 
 
         RequestBody build = builder.build();
 
-        addSubscription(apiService.updatePerformerInfo(build), new SubscriberCallBack<Object>(mView.get()) {
+        addSubscription(apiService.updateUserProfile(build), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;

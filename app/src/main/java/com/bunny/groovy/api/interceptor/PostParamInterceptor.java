@@ -11,6 +11,7 @@ import com.bunny.groovy.utils.Utils;
 import java.io.IOException;
 
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -28,23 +29,14 @@ public class PostParamInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        Request.Builder requestBuilder = request.newBuilder();
         //添加统一参数
-        RequestBody formBody;
         String userID = (String) SharedPreferencesUtils.getUserParam(BaseApp.getContext(), AppConstants.KEY_USERID, "");
         if (!TextUtils.isEmpty(userID)) {
-            System.out.println("performerID:" + userID);
-            formBody = new FormBody.Builder()
-                    .add("performerID", userID)
-                    .build();
-            String postBodyString = bodyToString(request.body());
-            postBodyString += ((postBodyString.length() > 0) ? "&" : "") + bodyToString(formBody);
-            request = requestBuilder
-                    .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"),
-                            postBodyString))
-                    .build();
+            HttpUrl.Builder builder = request.url().newBuilder();
+            HttpUrl url = builder.addQueryParameter("performerID", userID).build();
+            Request build = request.newBuilder().url(url).build();
+            return chain.proceed(build);
         }
-
         return chain.proceed(request);
     }
 

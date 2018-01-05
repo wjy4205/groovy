@@ -56,6 +56,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
                 RoleChooseActivity.launch(mContext);
             } else {
                 UIUtils.showBaseToast(response.errorMsg);
+                System.out.print("onError错误！"+response.errorMsg);
                 onFailure(response);
             }
         }
@@ -71,6 +72,7 @@ public abstract class SubscriberCallBack<T> extends Subscriber<ResultResponse<T>
         if (mProgressHUD != null && mProgressHUD.isShowing()) mProgressHUD.dismiss();
         UIUtils.showToast("网络出错啦！");
         e.printStackTrace();
+        System.out.print("onError错误！"+e.toString());
 //        onError();
     }
 

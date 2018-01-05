@@ -18,6 +18,7 @@ public class HeaderInterceptor implements Interceptor {
         builder.addHeader("Cache-Control", "max-age=0");
         builder.addHeader("Upgrade-Insecure-Requests", "1");
         builder.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+
         return chain.proceed(builder.build());
     }
 }

@@ -95,12 +95,12 @@ public interface ApiService {
 
     //获取收藏演出厅记录
     @POST("PerformerMeController/getPerformerMeMyFavoriteV")
-    Observable<ResultResponse<List<FavoriteModel>>> getMyFavorite();
+    Observable<ResultResponse<List<VenueModel>>> getMyFavorite();
 
 
     //获取演出记录
     @POST("PerformerMeController/getPerformerMeShowHistory")
-    Observable<ResultResponse<List<ShowHistoryModel>>> getHistoryList();
+    Observable<ResultResponse<List<ShowModel>>> getHistoryList();
 
 
     //登出

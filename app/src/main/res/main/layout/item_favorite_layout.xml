@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:background="@color/black"
-              android:gravity="center_vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="@color/black"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/item_favorite_iv_header"
         android:layout_width="70dp"
@@ -30,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_common"
                 android:text="The Gooota"/>
 
             <TextView
@@ -38,22 +39,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_small"
                 android:layout_marginLeft="16dp"
                 android:drawableLeft="@mipmap/list_star"
                 android:drawablePadding="4dp"
                 android:text="2.0"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/item_favorite_tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/common_grey"
-            android:textSize="12sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_gravity="center_vertical"
-            android:text="The GoootaThe GoootaThe GoootaTheGoootaTheGoootaThe Gooota"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textAccent"
                 android:layout_centerVertical="true"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_small"
                 android:text="Booking Contact"/>
 
             <ImageView
@@ -92,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/textAccent"
-                android:textSize="11sp"
+                android:textSize="@dimen/text_size_small"
                 android:background="@drawable/shape_double_corner_rect_bg"
                 android:layout_centerVertical="true"
                 android:paddingLeft="8dp"
@@ -102,5 +94,16 @@
                 android:text="APPLY"/>
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/item_favorite_tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="The GoootaThe GoootaThe GoootaTheGoootaTheGoootaThe Gooota"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/text_size_small" />
     </FrameLayout>
 </LinearLayout>

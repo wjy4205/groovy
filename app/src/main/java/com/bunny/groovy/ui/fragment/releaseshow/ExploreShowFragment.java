@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.NearByOppListAdapter;
 import com.bunny.groovy.base.BaseFragment;
@@ -209,6 +210,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         mTvTime.setText(bean.getPerformTime());
         mTvDistance.setText(bean.getDistance() + "km");
         mTvScore.setText(bean.getVenueScore());
+        Glide.with(mActivity).load(bean.getHeadImg()).error(R.mipmap.venue_instead_pic).into(mHeadImg);
     }
 
     @Override

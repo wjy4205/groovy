@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.bunny.groovy.adapter.FavoriteListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.model.FavoriteModel;
+import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ListPresenter;
 import com.bunny.groovy.view.IListPageView;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/21.
  */
 
-public class FavoriteFragment extends BaseListFragment<ListPresenter, FavoriteListAdapter> implements IListPageView<List<FavoriteModel>> {
+public class FavoriteFragment extends BaseListFragment<ListPresenter, FavoriteListAdapter> implements IListPageView<List<VenueModel>> {
 
     @Override
     public Activity get() {
@@ -23,7 +24,7 @@ public class FavoriteFragment extends BaseListFragment<ListPresenter, FavoriteLi
     }
 
     @Override
-    public void setView(List<FavoriteModel> o) {
+    public void setView(List<VenueModel> o) {
         setNormalView();
         if (mAdapter == null) {
             mAdapter = new FavoriteListAdapter(o);

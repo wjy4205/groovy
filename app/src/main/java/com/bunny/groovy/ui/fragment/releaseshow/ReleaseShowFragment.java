@@ -62,6 +62,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private String startTime = "";//开始时间
     private String endTime = "";//结束时间
     private List<String> mTimeClockList;
+    private List<String> mRealTimeClockList;
     private PopupWindow mDatePop;
     private TextView mTvTimeTitle;
     private Date today = Calendar.getInstance().getTime();
@@ -210,8 +211,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
                 } else {
                     closeTimePop();
                     //设置开始结束时间
-                    startTime = mTimeClockList.get(loopviewFromTime.getSelectedItem());
-                    endTime = mTimeClockList.get(loopviewEndTime.getSelectedItem());
+                    startTime = mRealTimeClockList.get(loopviewFromTime.getSelectedItem());
+                    endTime = mRealTimeClockList.get(loopviewEndTime.getSelectedItem());
                     etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
                 }
             }
@@ -350,9 +351,12 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
 
     @Override
     protected void loadData() {
-        //获取可选择的时间
-        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array_24);
+        //获取展示的时间
+        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array);
         mTimeClockList = Arrays.asList(timeClockArray);
+        //获取真正传递的时间
+        String[] real = mActivity.getResources().getStringArray(R.array.time_clock_array_24);
+        mRealTimeClockList = Arrays.asList(real);
     }
 
     @Override

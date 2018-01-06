@@ -109,7 +109,7 @@ public class ShowDetailFragment extends BaseFragment {
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
             mTvDistance.setText(model.getDistance() + "km");
-            mTvDesc.setText(model.getSignature());
+            mTvDesc.setText(model.getPerformDesc());
             mTvVenueScore.setText(model.getVenueScore());
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getPhoneNumber());

@@ -1,6 +1,7 @@
 package com.bunny.groovy.adapter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.VenueModel;
+import com.bunny.groovy.ui.fragment.apply.ApplyVenueFragment;
+import com.bunny.groovy.ui.fragment.apply.VenueDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.HeightLightTextView;
@@ -28,10 +31,10 @@ import java.util.List;
  ****************************************/
 
 public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapter.VenueHolder> implements View.OnClickListener {
-    private List<FavoriteModel> mModelList;
+    private List<VenueModel> mModelList;
     private Activity mContext;
 
-    public FavoriteListAdapter(List<FavoriteModel> modelList) {
+    public FavoriteListAdapter(List<VenueModel> modelList) {
         mModelList = modelList;
     }
 
@@ -44,7 +47,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
 
     @Override
     public void onBindViewHolder(VenueHolder holder, int position) {
-        FavoriteModel model = mModelList.get(position);
+        VenueModel model = mModelList.get(position);
         if (!TextUtils.isEmpty(model.getHeadImg())) {
             Glide.with(mContext).load(model.getHeadImg())
                     .placeholder(R.mipmap.icon_load_pic)
@@ -60,7 +63,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
         holder.itemView.setTag(position);//详情
         holder.mBtPhone.setTag(position);//打电话
         holder.mBtEmail.setTag(position);//发送邮件
-        holder.mBtApply.setText(position);//申请
+        holder.mBtApply.setTag(position);//申请
 
         holder.itemView.setOnClickListener(this);
         holder.mBtPhone.setOnClickListener(this);
@@ -75,7 +78,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
         return 0;
     }
 
-    public void refresh(List<FavoriteModel> list) {
+    public void refresh(List<VenueModel> list) {
         this.mModelList = list;
         notifyDataSetChanged();
     }
@@ -91,10 +94,14 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
                 Utils.sendEmail(mContext,mModelList.get(pos).getVenueEmail());
                 break;
             case R.id.item_favorite_tv_apply:
-                //todo 申请
+                Bundle arg = new Bundle();
+                arg.putParcelable(ApplyVenueFragment.KEY_VENUE_BEAN,mModelList.get(pos));
+                ApplyVenueFragment.launch(mContext,arg);
                 break;
             default:
-                //todo 详情
+                Bundle bundle = new Bundle();
+                bundle.putString(VenueDetailFragment.KEY_VENUE_ID,mModelList.get(pos).getVenueID());
+                VenueDetailFragment.launch(mContext,bundle);
                 break;
         }
     }

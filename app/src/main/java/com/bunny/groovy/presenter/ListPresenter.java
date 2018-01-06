@@ -52,9 +52,9 @@ public class ListPresenter extends BasePresenter<IListPageView> {
      */
     public void getHistoryList() {
         addSubscription(apiService.getHistoryList(),
-                new SubscriberCallBack<List<ShowHistoryModel>>(mView.get()) {
+                new SubscriberCallBack<List<ShowModel>>(mView.get()) {
                     @Override
-                    protected void onSuccess(List<ShowHistoryModel> response) {
+                    protected void onSuccess(List<ShowModel> response) {
                         if (response != null && response.size() > 0)
                             mView.setView(response);
                         else mView.setNodata();

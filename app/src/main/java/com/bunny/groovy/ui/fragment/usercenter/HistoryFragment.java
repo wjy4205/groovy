@@ -6,6 +6,7 @@ import com.bunny.groovy.adapter.ShowHistoryAdapter;
 import com.bunny.groovy.adapter.VenueListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.model.ShowHistoryModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ListPresenter;
 import com.bunny.groovy.view.IListPageView;
@@ -18,14 +19,14 @@ import java.util.List;
  * Author: Created by bayin on 2017/12/22.
  ****************************************/
 
-public class HistoryFragment extends BaseListFragment<ListPresenter, ShowHistoryAdapter> implements IListPageView<List<ShowHistoryModel>> {
+public class HistoryFragment extends BaseListFragment<ListPresenter, ShowHistoryAdapter> implements IListPageView<List<ShowModel>> {
     @Override
     public Activity get() {
         return getActivity();
     }
 
     @Override
-    public void setView(List<ShowHistoryModel> o) {
+    public void setView(List<ShowModel> o) {
         setNormalView();
         if (mAdapter == null) {
             mAdapter = new ShowHistoryAdapter(o);

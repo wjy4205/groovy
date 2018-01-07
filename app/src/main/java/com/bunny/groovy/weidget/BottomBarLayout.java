@@ -6,7 +6,10 @@ import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.yan.inflaterauto.AutoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +80,13 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
         mItemViews.get(mCurrentItem).setStatus(true);//设置选中项
         mViewPager.setOnPageChangeListener(this);
+    }
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        LinearLayout.LayoutParams vlp = super.generateLayoutParams(attrs);
+        AutoUtils.autoLayout(vlp,getContext(),attrs);
+        return vlp;
     }
 
     @Override

@@ -13,31 +13,19 @@
         android:layout_marginRight="60dp"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/shape_blue_circle_solid_bg"
-            android:text="1"
-            android:gravity="center"
-            android:textColor="@color/white"/>
+            style="@style/circle_bg_text_selected"
+            android:text="1" />
         <View style="@style/tranverse_line"
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/shape_circle_stroke_bg"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:text="2"/>
+            style="@style/circle_bg_text"
+            android:text="2" />
         <View style="@style/tranverse_line"
             android:layout_weight="1"/>
         <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/shape_circle_stroke_bg"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:text="3"/>
+            style="@style/circle_bg_text"
+            android:text="3" />
     </LinearLayout>
 
     <TextView

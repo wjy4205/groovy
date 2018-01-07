@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--普通字体-->
-    <dimen name="text_size_common">@dimen/x13</dimen>
+    <dimen name="text_size_common">26px</dimen>
     <!--小号字体-->
-    <dimen name="text_size_small">@dimen/x11</dimen>
+    <dimen name="text_size_small">20px</dimen>
     <!--大号字体-->
-    <dimen name="text_size_big">@dimen/x16</dimen>
+    <dimen name="text_size_big">32px</dimen>
     <!--标题字号-->
-    <dimen name="title_size">@dimen/x18</dimen>
+    <dimen name="title_size">38px</dimen>
 </resources>

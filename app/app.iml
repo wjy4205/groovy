@@ -97,13 +97,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 25 Platform (1)" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="runner-0.5" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="espresso-idling-resource-2.2.2" level="project" />
-    <orderEntry type="library" exported="" name="BottomBarLayout-1.0.4" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.3" level="project" />
     <orderEntry type="library" exported="" name="transition-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="animated-webp-0.10.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-places-10.2.6" level="project" />
@@ -114,52 +110,43 @@
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="exposed-instrumentation-api-publish-0.5" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="javax.annotation-api-1.2" level="project" />
     <orderEntry type="library" exported="" name="adapter-rxjava-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="library-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-10.2.6" level="project" />
     <orderEntry type="library" exported="" name="animated-base-0.10.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-10.2.6" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="javawriter-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="SlideCloseLib-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="webpsupport-0.10.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-compat-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-0.10.0" level="project" />
+    <orderEntry type="library" exported="" name="inflaterauto-annotation-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="fresco-0.10.0" level="project" />
     <orderEntry type="library" exported="" name="drawee-0.10.0" level="project" />
     <orderEntry type="library" exported="" name="sinch-android-verification-1.5.0-" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.3" level="project" />
     <orderEntry type="library" exported="" name="design-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-10.2.6" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jsr305-1.3.9" level="project" />
     <orderEntry type="library" exported="" name="library-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="library-1.2.1" level="project" />
     <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.3.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="espresso-core-2.2.2" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-base-0.10.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="rules-0.5" level="project" />
     <orderEntry type="library" exported="" name="okio-1.13.0" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.1.5" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="inflaterauto-2.0.17" level="project" />
     <orderEntry type="library" exported="" name="eventbus-3.0.0" level="project" />
     <orderEntry type="library" exported="" name="circleimageview-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.8.1" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="logging-interceptor-3.8.1" level="project" />
     <orderEntry type="library" exported="" name="animated-gif-0.10.0" level="project" />
@@ -168,6 +155,8 @@
     <orderEntry type="module" module-name="statusbar-lib" exported="" />
     <orderEntry type="module" module-name="xedittext" exported="" />
     <orderEntry type="module" module-name="selectpic_lib" exported="" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.1.4" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.1.3" level="project" />
   </component>

@@ -85,11 +85,11 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        int screenWidth = UIUtils.getScreenWidth();
-        ViewGroup.LayoutParams params = flPan.getLayoutParams();
-        params.width = (int) (screenWidth*0.9);
-        params.height = (int) (screenWidth*0.9);
-        flPan.setLayoutParams(params);
+//        int screenWidth = UIUtils.getScreenWidth();
+//        ViewGroup.LayoutParams params = flPan.getLayoutParams();
+//        params.width = (int) (screenWidth*0.9);
+//        params.height = (int) (screenWidth*0.9);
+//        flPan.setLayoutParams(params);
     }
 
     @Override

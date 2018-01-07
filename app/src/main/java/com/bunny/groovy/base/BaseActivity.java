@@ -1,6 +1,7 @@
 package com.bunny.groovy.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.ui.RoleChooseActivity;
 import com.bunny.groovy.weidget.SlidingLayout;
+import com.yan.inflaterauto.InflaterAuto;
 import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.multiple_images_selector.SelectorSettings;
 
@@ -70,6 +72,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         initListener();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        //替换Inflater
+        super.attachBaseContext(InflaterAuto.wrap(base));
+    }
 
     public boolean enableSlideClose() {
         return true;

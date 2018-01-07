@@ -7,7 +7,11 @@ import android.os.Looper;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.bunny.groovy.utils.InfAutoInflaterConvert;
+import com.bunny.groovy.utils.InflaterConvert;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.yan.inflaterauto.AutoBaseOn;
+import com.yan.inflaterauto.InflaterAuto;
 
 public class BaseApp extends MultiDexApplication{
 
@@ -19,9 +23,8 @@ public class BaseApp extends MultiDexApplication{
     private static Handler mHandler;//主线程Handler
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-//        MultiDex.install(this);
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(InflaterAuto.wrap(newBase));
     }
 
     @Override
@@ -34,6 +37,18 @@ public class BaseApp extends MultiDexApplication{
         mMainThreadId = android.os.Process.myTid();
         mHandler = new Handler();
 
+        /*
+         * 以下可以写在任何地方，只要在生成View之前
+         */
+        InflaterAuto.init(new InflaterAuto.Builder()
+                .width(720)
+                .height(1280)
+                .baseOnDirection(AutoBaseOn.Both)// 宽度根据宽度比例缩放，长度根据长度比例缩放
+                // 由 com.yan.inflaterautotest.InflaterConvert 编译生成，自动添加前缀InfAuto
+                // 你也可以添加你自己的实现AutoConvert的类，替换任何一种view成为你想替换的view
+                .inflaterConvert(new InfAutoInflaterConvert())
+                .build()
+        );
     }
 
     /**

@@ -9,7 +9,7 @@
         android:id="@+id/main_rl_titlebar"
         android:layout_width="match_parent"
         android:background="#000"
-        android:layout_height="48dp">
+        android:layout_height="90px">
         <TextView
             android:id="@+id/main_tv_title"
             android:layout_width="wrap_content"
@@ -26,14 +26,15 @@
 
     <com.bunny.groovy.weidget.NoScrollViewPager
         android:id="@+id/vp_content"
-        android:layout_width="match_parent"
+        android:layout_width="720px"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
 
     <com.bunny.groovy.weidget.BottomBarLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="100px"
         android:background="#111111">
 
         <com.bunny.groovy.weidget.BottomBarItem

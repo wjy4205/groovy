@@ -22,9 +22,9 @@ import java.util.ArrayList;
 public class MusicService extends Service {
 
     private MediaPlayer mPlayer;
-    private ArrayList<MusicBean> musicPathLists;
     private String musicPath;
     private int currentPos;
+    public static String MUSIC_EXTRA = "music_path";
 
     public interface CallBack {
         boolean isPlayerMusic();
@@ -117,13 +117,7 @@ public class MusicService extends Service {
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-//                    currentPos++;
-//                    if (currentPos >= musicPathLists.size()) {
-//                        currentPos = 0;
-//                    }
                     initMusic();
-//                  playerMusic();
-//                    mp.stop();
                     EventBus.getDefault().post("end");
                 }
             });
@@ -162,6 +156,23 @@ public class MusicService extends Service {
                 mPlayer.stop();
             }
             mPlayer.release();
+        }
+    }
+
+    public void setMusicResource(String musicPath){
+        mPlayer.reset();
+        try {
+            mPlayer.setDataSource(musicPath);
+            mPlayer.prepare();
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    initMusic();
+                    EventBus.getDefault().post("end");
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

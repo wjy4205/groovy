@@ -147,9 +147,9 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
         if (callBack != null) {
             boolean isPlay = callBack.isPlayerMusic();
             if (isPlay) {
-                mIvPlay.setBackgroundResource(R.mipmap.login_stop);
+                mIvPlay.setImageResource(R.mipmap.login_stop);
             } else {
-                mIvPlay.setBackgroundResource(R.mipmap.login_play);
+                mIvPlay.setImageResource(R.mipmap.login_play);
             }
         }
     }
@@ -324,5 +324,23 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
         intent.putExtra("music_path", mMusic_file.getMusicPath());
         getActivity().startService(intent);
         getActivity().bindService(intent, conn, Service.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (callBack != null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            mIvPlay.setBackgroundResource(R.mipmap.login_play);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (callBack != null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            mIvPlay.setBackgroundResource(R.mipmap.login_play);
+        }
     }
 }

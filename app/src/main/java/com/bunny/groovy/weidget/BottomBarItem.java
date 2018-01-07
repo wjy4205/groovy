@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.utils.UIUtils;
+import com.yan.inflaterauto.AutoUtils;
 
 
 /**
@@ -135,9 +137,9 @@ public class BottomBarItem extends LinearLayout {
             mImageView.setLayoutParams(imageLayoutParams);
         }
 
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);//设置底部文字字体大小
-        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX,mUnreadTextSize);//设置未读数的字体大小
-        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX,mMsgTextSize);//设置提示文字的字体大小
+//        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mTextSize);//设置底部文字字体大小
+//        mTvUnread.setTextSize(TypedValue.COMPLEX_UNIT_PX,mUnreadTextSize);//设置未读数的字体大小
+//        mTvMsg.setTextSize(TypedValue.COMPLEX_UNIT_PX,mMsgTextSize);//设置提示文字的字体大小
 
         mTextView.setTextColor(mTextColorNormal);//设置底部文字字体颜色
         mTextView.setText(mText);//设置标签文字
@@ -153,7 +155,12 @@ public class BottomBarItem extends LinearLayout {
 
         addView(view);
     }
-
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        LinearLayout.LayoutParams vlp = super.generateLayoutParams(attrs);
+        AutoUtils.autoLayout(vlp,getContext(),attrs);
+        return vlp;
+    }
     public ImageView getImageView() {
         return mImageView;
     }

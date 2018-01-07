@@ -35,19 +35,21 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:gravity="bottom"
-            android:textColor="@color/accentPurple"
             android:layout_marginLeft="65dp"
-            android:text="*"/>
+            android:gravity="bottom"
+            android:text="*"
+            android:textColor="@color/accentPurple"
+            android:textSize="12sp" />
+
         <TextView
+            style="@style/remark_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/remark_text_style"
-            android:text="@string/required"/>
+            android:text="@string/required" />
     </LinearLayout>
 
 
@@ -61,6 +63,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingLeft="80px"
+        android:paddingRight="80px"
         android:text="By signing up,I agree with terms of the services"
-        android:textColor="@color/common_grey" />
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/text_size_common" />
 </LinearLayout>

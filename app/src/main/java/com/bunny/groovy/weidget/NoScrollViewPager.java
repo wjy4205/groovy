@@ -4,6 +4,10 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
+import com.yan.inflaterauto.AutoUtils;
 
 /**
  * 自定义一个不能左右滑动的ViewPager
@@ -19,11 +23,12 @@ public class NoScrollViewPager extends ViewPager {
 		super(context);
 	}
 
+
 	@Override
 	public boolean onTouchEvent(MotionEvent arg0) {
 		return false;
 	}
-	
+
 	/**
 	 * 不拦截事件
 	 */
@@ -35,5 +40,13 @@ public class NoScrollViewPager extends ViewPager {
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		return super.dispatchTouchEvent(ev);
+	}
+
+
+	@Override
+	public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
+		ViewGroup.LayoutParams vlp = super.generateLayoutParams(attrs);
+		AutoUtils.autoLayout(vlp, getContext(), attrs);
+		return vlp;
 	}
 }

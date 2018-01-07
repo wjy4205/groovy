@@ -74,7 +74,7 @@
             android:layout_centerVertical="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Rodl.Ino"
+            tools:text="Rodl.Ino"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small" />
 
@@ -92,7 +92,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Oct 1st 3:00PM-4:PM"
+                tools:text="Oct 1st 3:00PM-4:PM"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_common" />
 

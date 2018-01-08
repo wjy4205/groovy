@@ -29,6 +29,7 @@ import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.view.IOverView;
@@ -79,6 +80,9 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
 
     private MusicService.CallBack callBack;
 
+    private boolean isHaveMusicFile = false;//用户是否上传了音乐文件
+
+
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -90,6 +94,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
             callBack = null;
         }
     };
+    private PerformerUserModel mModel;
 
     @OnClick(R.id.user_center_tv_settings)
     public void setttings() {
@@ -101,14 +106,32 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         PersonalDataFragment.launch(getActivity());
     }
 
+    private MusicBox.MusicPlayCallback mMusicPlayCallback = new MusicBox.MusicPlayCallback() {
+        @Override
+        public void playMusic() {
+            mePlayButton.setImageResource(R.drawable.login_stop);
+        }
+
+        @Override
+        public void stopPlay() {
+            mePlayButton.setImageResource(R.drawable.login_play);
+        }
+
+        @Override
+        public void musicEnd() {
+            mePlayButton.setImageResource(R.drawable.login_play);
+        }
+
+    };
+
     @OnClick(R.id.me_play_music)
     public void playMusic() {
-        handleMusic();
-    }
-
-    @Subscribe
-    public void onMusicEnd(String event) {
-        mePlayButton.setBackgroundResource(R.mipmap.login_play);
+        if (isHaveMusicFile) {
+            MusicBox.getInstance().setMusicPlayCallback(mMusicPlayCallback);
+            MusicBox.getInstance().playOnLineMusic(mModel.getMusicFile(), mActivity);
+        } else {
+            UIUtils.showBaseToast("Please upload music.");
+        }
     }
 
     /**
@@ -125,11 +148,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         }
     }
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        EventBus.getDefault().register(this);
-    }
+
 
     @Override
     protected MePresenter createPresenter() {
@@ -186,20 +205,23 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
      */
     @Override
     public void setUserView(PerformerUserModel model) {
-        tvName.setText(model.getUserName());
+        mModel = model;
+        tvName.setText(mModel.getUserName());
         tvStyle.setText(model.getPerformTypeName());
         if (TextUtils.isEmpty(model.getStarLevel()))
             tvScore.setText("0.0");
         else tvScore.setText(model.getStarLevel());
         Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
         //prepare music
-        if (!TextUtils.isEmpty(model.getMusicFile())) {
-            Intent intent = new Intent();
-            intent.setClass(mActivity, MusicService.class);
-            intent.putExtra(MusicService.MUSIC_EXTRA, model.getMusicFile());
-            mActivity.startService(intent);
-            mActivity.bindService(intent, conn, Service.BIND_AUTO_CREATE);
-        }
+        isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
+//        if (!TextUtils.isEmpty(model.getMusicFile())) {
+//            isHaveMusicFile = true;
+//            Intent intent = new Intent();
+//            intent.setClass(mActivity, MusicService.class);
+//            intent.putExtra(MusicService.MUSIC_EXTRA, model.getMusicFile());
+//            mActivity.startService(intent);
+//            mActivity.bindService(intent, conn, Service.BIND_AUTO_CREATE);
+//        }else isHaveMusicFile = false;
     }
 
     @Override

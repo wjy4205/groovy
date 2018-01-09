@@ -1,30 +1,21 @@
 package com.bunny.groovy.presenter;
 
-import android.widget.Toast;
-
-import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IScheduleView;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.socks.library.KLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**

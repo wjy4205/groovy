@@ -29,6 +29,7 @@ import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.view.IOverView;
@@ -77,19 +78,10 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
 
     private String[] titleArray = new String[]{"MY FAVORITE", "SHOW HISTORY"};
 
-    private MusicService.CallBack callBack;
 
-    private ServiceConnection conn = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            callBack = (MusicService.MyBinder) service;
-        }
+    private boolean isHaveMusicFile = false;//用户是否上传了音乐文件
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            callBack = null;
-        }
-    };
+    private PerformerUserModel mModel;
 
     @OnClick(R.id.user_center_tv_settings)
     public void setttings() {
@@ -101,35 +93,35 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         PersonalDataFragment.launch(getActivity());
     }
 
+    private MusicBox.MusicPlayCallback mMusicPlayCallback = new MusicBox.MusicPlayCallback() {
+        @Override
+        public void playMusic() {
+            mePlayButton.setImageResource(R.drawable.login_stop);
+        }
+
+        @Override
+        public void stopPlay() {
+            mePlayButton.setImageResource(R.drawable.login_play);
+        }
+
+        @Override
+        public void musicEnd() {
+            mePlayButton.setImageResource(R.drawable.login_play);
+        }
+
+    };
+
     @OnClick(R.id.me_play_music)
     public void playMusic() {
-        handleMusic();
-    }
-
-    @Subscribe
-    public void onMusicEnd(String event) {
-        mePlayButton.setBackgroundResource(R.mipmap.login_play);
-    }
-
-    /**
-     * 控制音乐播放
-     */
-    private void handleMusic() {
-        if (callBack != null) {
-            boolean isPlay = callBack.isPlayerMusic();
-            if (isPlay) {
-                mePlayButton.setImageResource(R.mipmap.login_stop);
-            } else {
-                mePlayButton.setImageResource(R.mipmap.login_play);
-            }
+        if (isHaveMusicFile) {
+            MusicBox.getInstance().setMusicPlayCallback(mMusicPlayCallback);
+            MusicBox.getInstance().playOnLineMusic(mModel.getMusicFile(), mActivity);
+        } else {
+            UIUtils.showBaseToast("Please upload music.");
         }
     }
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        EventBus.getDefault().register(this);
-    }
+
 
     @Override
     protected MePresenter createPresenter() {
@@ -186,20 +178,15 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
      */
     @Override
     public void setUserView(PerformerUserModel model) {
-        tvName.setText(model.getUserName());
+        mModel = model;
+        tvName.setText(mModel.getUserName());
         tvStyle.setText(model.getPerformTypeName());
         if (TextUtils.isEmpty(model.getStarLevel()))
             tvScore.setText("0.0");
         else tvScore.setText(model.getStarLevel());
         Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
-        //prepare music
-        if (!TextUtils.isEmpty(model.getMusicFile())) {
-            Intent intent = new Intent();
-            intent.setClass(mActivity, MusicService.class);
-            intent.putExtra(MusicService.MUSIC_EXTRA, model.getMusicFile());
-            mActivity.startService(intent);
-            mActivity.bindService(intent, conn, Service.BIND_AUTO_CREATE);
-        }
+        //prepare music state
+        isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
     }
 
     @Override
@@ -216,7 +203,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     @Override
     public void onResume() {
         super.onResume();
-        if (!isFragmentVisible())
+        if (!isFirstEnter())
             mPresenter.requestUserData();
     }
 
@@ -224,18 +211,12 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     @Override
     public void onPause() {
         super.onPause();
-        if (callBack != null && callBack.isPlaying()) {
-            callBack.isPlayerMusic();
-            mePlayButton.setBackgroundResource(R.mipmap.login_play);
-        }
+        MusicBox.getInstance().relasePlayer();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (callBack != null && callBack.isPlaying()) {
-            callBack.isPlayerMusic();
-            mePlayButton.setBackgroundResource(R.mipmap.login_play);
-        }
+        MusicBox.getInstance().relasePlayer();
     }
 }

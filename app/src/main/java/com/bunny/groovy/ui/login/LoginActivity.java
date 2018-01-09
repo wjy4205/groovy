@@ -18,6 +18,13 @@ import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ILoginView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.socks.library.KLog;
 import com.xw.repo.XEditText;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,10 +39,12 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
+    private static final int RC_SIGN_IN = 123;
     @Bind(R.id.login_et_account)
     XEditText etPhoneOrEmail;
     @Bind(R.id.login_et_password)
     XEditText etPassword;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @OnClick(R.id.actionbar_iv_back)
     public void back() {
@@ -76,6 +85,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @OnClick(R.id.tv_forget_password)
     void forgetPassword() {
 
+    }
+
+    @OnClick(R.id.iv_login_google)
+    public void googleLogin() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     public static void launch(Context activity) {
@@ -120,6 +142,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         //设置资料结束，结束本页面,跳转至首页
         if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
             launchMainPage();
+        }else if (requestCode == RC_SIGN_IN){
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+//            updateUI(account);
+            KLog.d(account.toString());
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            KLog.w("signInResult:failed code=" + e.getStatusCode());
+//            updateUI(null);
         }
     }
 }

@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
         bottomBarLayout.setOnItemSelectedListener(new BottomBarLayout.OnItemSelectedListener() {
             @Override
             public void onItemSelected(BottomBarItem bottomBarItem, int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         setTitleVisible(View.VISIBLE);
                         mFragments.get(0).refreshUI();

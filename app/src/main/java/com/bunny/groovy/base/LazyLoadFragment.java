@@ -57,6 +57,12 @@ public abstract class LazyLoadFragment extends Fragment {
         }
     }
 
+    /**
+     * @return 是否第一次进入
+     */
+    public boolean isFirstEnter(){
+        return isFirstEnter;
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

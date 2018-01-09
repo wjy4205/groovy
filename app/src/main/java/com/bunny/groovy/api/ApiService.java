@@ -16,6 +16,7 @@ import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -26,6 +27,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -158,40 +161,48 @@ public interface ApiService {
     //获取选中周期内的表演统计
     @FormUrlEncoded
     @POST("PerformerScheduleController/getPerformerScheduleList")
-    Observable<String> getScheduleList(@Field("performStartDate")String performStartDate,
-                                             @Field("performEndDate")String performEndDate);
+    Observable<String> getScheduleList(@Field("performStartDate") String performStartDate,
+                                       @Field("performEndDate") String performEndDate);
 
     //演出厅个人主页：获取演出厅详细信息
     @FormUrlEncoded
     @POST("PerformerBasicsController/getVenueScheduleList")
-    Observable<ResultResponse<VenueModel>> getVenueDetail(@Field("venueID")String venueID);
+    Observable<ResultResponse<VenueModel>> getVenueDetail(@Field("venueID") String venueID);
 
 
     //收藏演出厅
     @FormUrlEncoded
     @POST("PerformerBasicsController/collectionVenue")
-    Observable<ResultResponse<Object>> collectionVenue(@Field("venueID")String venueID);
+    Observable<ResultResponse<Object>> collectionVenue(@Field("venueID") String venueID);
 
     //取消收藏演出厅
     @FormUrlEncoded
     @POST("PerformerBasicsController/cancelCollectionVenue")
-    Observable<ResultResponse<Object>> cancelCollectionVenue(@Field("venueID")String venueID);
+    Observable<ResultResponse<Object>> cancelCollectionVenue(@Field("venueID") String venueID);
 
 
     //Notification：Invite-同意邀请
     @FormUrlEncoded
     @POST("PerformerOverviewController/agreePerformerOverviewInvite")
-    Observable<ResultResponse<Object>> agreePerformerInvite(@Field("inviteID")String inviteID,
-                                                            @Field("performType")String performType,@Field("performDesc")String performDesc);
+    Observable<ResultResponse<Object>> agreePerformerInvite(@Field("inviteID") String inviteID,
+                                                            @Field("performType") String performType, @Field("performDesc") String performDesc);
 
     //Notification：Invite-拒绝邀请
     @FormUrlEncoded
     @POST("PerformerOverviewController/refusePerformerOverviewInvite")
-    Observable<ResultResponse<Object>> rejectPerformInvite(@Field("inviteID")String inviteID);
+    Observable<ResultResponse<Object>> rejectPerformInvite(@Field("inviteID") String inviteID);
 
 
     //修改用户信息
     @POST("PerformerMeController/updatePerformerMeInfo")
     Observable<ResultResponse<Object>> updateUserProfile(@Body RequestBody body);
 
+
+    //下载音乐文件
+    @GET
+    Observable<ResponseBody> downLoadMusic(@Url String url);
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadMusicAsync(@Url String url);
 }

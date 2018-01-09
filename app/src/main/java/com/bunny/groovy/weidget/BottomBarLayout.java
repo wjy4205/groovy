@@ -98,9 +98,9 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
     public void onPageSelected(int position) {
         resetState();
         mItemViews.get(position).setStatus(true);
-        if (onItemSelectedListener != null){
-            onItemSelectedListener.onItemSelected(getBottomItem(position),position);
-        }
+//        if (onItemSelectedListener != null){
+//            onItemSelectedListener.onItemSelected(getBottomItem(position),position);
+//        }
         mCurrentItem = position;//记录当前位置
     }
 
@@ -119,8 +119,9 @@ public class BottomBarLayout extends LinearLayout implements ViewPager.OnPageCha
 
         @Override
         public void onClick(View v) {
+            if (currentIndex==mCurrentItem) return;
             //回调点击的位置
-            if (onItemSelectedListener != null && currentIndex == mCurrentItem) {
+            if (onItemSelectedListener != null) {
                 onItemSelectedListener.onItemSelected(getBottomItem(currentIndex),currentIndex);
             }
 

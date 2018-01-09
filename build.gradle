@@ -31,6 +31,6 @@ ext {
     minSdkVersion = 16
     targetSdkVersion = 25
     supportVersion = "25.3.1"
-    googleServiceVersion = "11.6.0"
-//    googleServiceVersion = "10.2.6"
+//    googleServiceVersion = "11.6.0"
+    googleServiceVersion = "10.2.6"
 }

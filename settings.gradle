@@ -1,1 +1,1 @@
-include ':app', ':statusbar-lib', ':xedittext', ':selectpic_lib', ':maplibs'
+include ':app', ':statusbar-lib', ':xedittext', ':selectpic_lib'

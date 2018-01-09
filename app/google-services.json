@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "993191185037",
+    "project_id": "groovy-d6678"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993191185037:android:12ce555221f9ae9a",
+        "android_client_info": {
+          "package_name": "com.bunny.groovy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993191185037-501li1unbts00k3pdqh3qcbtroha6eog.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "993191185037-k956c0ggitkfsog683b3770o0arn03lp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bunny.groovy",
+            "certificate_hash": "127b63f9d58d33ed1b80d8de7a383a6a6c141b79"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr5YArTB0ph2Y-Jh5x-IvyqSyMOSIUZs0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

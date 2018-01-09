@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -74,10 +74,13 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile project(':selectpic_lib')
     //map
-    compile 'com.google.android.gms:play-services-location:10.2.6'
-    compile 'com.google.android.gms:play-services-plus:10.2.6'
-    compile 'com.google.android.gms:play-services-maps:10.2.6'
-    compile 'com.google.android.gms:play-services-places:10.2.6'
+    compile "com.google.android.gms:play-services-location:${rootProject.ext.googleServiceVersion}"
+    compile "com.google.android.gms:play-services-plus:${rootProject.ext.googleServiceVersion}"
+    compile "com.google.android.gms:play-services-maps:${rootProject.ext.googleServiceVersion}"
+    compile "com.google.android.gms:play-services-places:${rootProject.ext.googleServiceVersion}"
+    //google +
+//    compile "com.google.android.gms:play-services-auth:${rootProject.ext.googleServiceVersion}"
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.android.support:multidex:1.0.1'
     //switch button
     compile 'com.kyleduo.switchbutton:library:2.0.0'

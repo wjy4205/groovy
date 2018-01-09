@@ -200,6 +200,9 @@ public interface ApiService {
 
     //下载音乐文件
     @GET
-    @Streaming
     Observable<ResponseBody> downLoadMusic(@Url String url);
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadMusicAsync(@Url String url);
 }

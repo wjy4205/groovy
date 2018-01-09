@@ -2,6 +2,7 @@ package com.bunny.groovy.utils;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +18,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,7 +34,7 @@ import rx.schedulers.Schedulers;
 
 public class MusicBox {
     private static final String TAG = MusicBox.class.getSimpleName();
-    private static String music_path = Environment.getExternalStorageDirectory() + "/groovy/music";
+    private static String music_path = Environment.getExternalStorageDirectory() + "/groovy";
     private static MediaPlayer sPlayer;
     private static MusicPlayCallback callback;
 
@@ -39,7 +43,7 @@ public class MusicBox {
 
     private static MusicBox mInstance = new MusicBox();
 
-    public static MusicBox getInstance(){
+    public static MusicBox getInstance() {
         return mInstance;
     }
 
@@ -49,7 +53,18 @@ public class MusicBox {
         void stopPlay();
 
         void musicEnd();
+    }
 
+    /**
+     * 释放player
+     */
+    public void relasePlayer() {
+        if (sPlayer != null) {
+            sPlayer.stop();
+            sPlayer.release();
+            sPlayer = null;
+        }
+        if (callback!=null) callback.stopPlay();
     }
 
     public void setMusicPlayCallback(MusicPlayCallback l) {
@@ -64,13 +79,14 @@ public class MusicBox {
     public void playMusic(String path) {
         if (sPlayer == null)
             prepareMusicPlayer(path);
-
-        if (sPlayer.isPlaying()) {//暂停
-            sPlayer.pause();
-            if (callback != null) callback.stopPlay();
-        } else {//播放
-            sPlayer.start();
-            if (callback != null) callback.playMusic();
+        else {
+            if (sPlayer.isPlaying()) {//暂停
+                sPlayer.pause();
+                if (callback != null) callback.stopPlay();
+            } else {//播放
+                sPlayer.start();
+                if (callback != null) callback.playMusic();
+            }
         }
     }
 
@@ -84,6 +100,14 @@ public class MusicBox {
         sPlayer.reset();
         try {
             sPlayer.setDataSource(path);
+            sPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    sPlayer.start();
+                    if (callback != null) callback.playMusic();
+                }
+            });
+            sPlayer.prepareAsync();
             sPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -102,65 +126,77 @@ public class MusicBox {
      *
      * @param url 音乐url
      */
-    public void playOnLineMusic(String url,Context context) {
+    public void playOnLineMusic(String url, Context context) {
         if (TextUtils.isEmpty(url)) {
             UIUtils.showBaseToast("音乐URL为空");
         } else {
             //播放音乐
-            executeMusicUrl(url,context);
+            executeMusicUrl(url, context);
         }
     }
 
     /**
-     *
      * @param url
      * @param context
      */
-    private void executeMusicUrl(final String url, Context context) {
+    private void executeMusicUrl(final String url, final Context context) {
         KLog.d("音乐路径:" + music_path);
 
-        File file = new File(music_path + File.separator + getMusicFileName(url));
+        final File file = new File(music_path + File.separator + getMusicFileName(url));
 
-        if (file.exists()) {
+        if (file.exists() && file.length() > 200) {
 
             //播放本地音乐
             playMusic(file.getPath());
 
         } else {
 
-            final ApiRetrofit instance = ApiRetrofit.getInstance();
-
             final ProgressHUD progressHUD = ProgressHUD.show(context, "缓冲音乐...", true, false, null);
 
-            //下载缓存到本地，在播放
-            Observable<ResponseBody> observable = instance.getApiService().downLoadMusic(url);
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ResponseBody>() {
+            ApiRetrofit.getInstance().getApiService().downloadMusicAsync(url)
+                    .enqueue(new Callback<ResponseBody>() {
                         @Override
-                        public void onStart() {
-                            //show progress
-                            progressHUD.show();
+                        public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
+                                Log.d(TAG, "server contacted and has file");
+
+                                new AsyncTask<Void, Void, Void>() {
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        boolean writtenToDisk = writeResponseBodyToDisk2(response.body(), getMusicFileName(url));
+                                        if (writtenToDisk) {
+                                            File file1 = new File(music_path + File.separator + getMusicFileName(url));
+                                            KLog.d("写入成功, 文件长度", file1.length());
+                                        } else {
+                                            UIUtils.showBaseToast("下载失败");
+                                        }
+                                        Log.d(TAG, "file download was a success? " + writtenToDisk);
+                                        return null;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Void aVoid) {
+                                        super.onPostExecute(aVoid);
+                                        if (progressHUD != null && progressHUD.isShowing())
+                                            progressHUD.dismiss();
+                                        playMusic(music_path + File.separator + getMusicFileName(url));
+                                    }
+
+                                    @Override
+                                    protected void onPreExecute() {
+                                        super.onPreExecute();
+                                        if (progressHUD != null && !progressHUD.isShowing())
+                                            progressHUD.show();
+                                    }
+                                }.execute();
+                            } else {
+                                Log.d(TAG, "server contact failed");
+                            }
                         }
 
                         @Override
-                        public void onCompleted() {
-                            if (progressHUD != null && progressHUD.isShowing())
-                                progressHUD.dismiss();
-                        }
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if (progressHUD != null && progressHUD.isShowing())
-                                progressHUD.dismiss();
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-                            File musicFile = writeResponseBodyToDisk(responseBody, getMusicFileName(url));
-                            if (musicFile != null)
-                                playMusic(musicFile.getPath());
                         }
                     });
         }
@@ -176,8 +212,79 @@ public class MusicBox {
 
     private File writeResponseBodyToDisk(ResponseBody body, String fileName) {
         try {
-            // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File(music_path + File.separator + fileName);
+            File filePath = new File(music_path);
+            if (!filePath.exists())
+                filePath.mkdir();
+            File futureStudioIconFile = new File(music_path, fileName);
+            if (!futureStudioIconFile.exists()) futureStudioIconFile.createNewFile();
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+                byte[] bytes = body.bytes();
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return futureStudioIconFile;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * @param url 音乐地址
+     * @return 缓存的音乐名称
+     */
+    private String getMusicFileName(String url) {
+        String[] split = url.split("/");
+        if (split.length > 0) {
+            return split[split.length - 1];
+        }
+        return "";
+    }
+
+    private boolean writeResponseBodyToDisk2(ResponseBody body, String fileName) {
+        try {
+            File filePath = new File(music_path);
+            if (!filePath.exists())
+                filePath.mkdir();
+            File futureStudioIconFile = new File(music_path, fileName);
+            if (!futureStudioIconFile.exists()) futureStudioIconFile.createNewFile();
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -207,9 +314,9 @@ public class MusicBox {
 
                 outputStream.flush();
 
-                return futureStudioIconFile;
+                return true;
             } catch (IOException e) {
-                return null;
+                return false;
             } finally {
                 if (inputStream != null) {
                     inputStream.close();
@@ -220,19 +327,7 @@ public class MusicBox {
                 }
             }
         } catch (IOException e) {
-            return null;
+            return false;
         }
-    }
-
-    /**
-     * @param url 音乐地址
-     * @return 缓存的音乐名称
-     */
-    private String getMusicFileName(String url) {
-        String[] split = url.split("/");
-        if (split.length > 0) {
-            return split[split.length - 1];
-        }
-        return "";
     }
 }

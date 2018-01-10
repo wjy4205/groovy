@@ -49,7 +49,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/tell_us_about_your_music"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <FrameLayout
             android:layout_width="100dp"
@@ -79,7 +79,7 @@
             android:layout_marginTop="8dp"
             android:text="within 5M"
             android:textColor="@color/common_grey"
-            android:textSize="11sp"/>
+            android:textSize="@dimen/text_size_small"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
             android:layout_gravity="center_horizontal"
             android:text="UPLOAD SAMPLE TRACK"
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
 
         <com.xw.repo.XEditText
@@ -142,7 +142,7 @@
                 android:text="(0/400)"
                 android:paddingBottom="3dp"
                 android:textColor="@color/common_grey"
-                android:textSize="10sp"/>
+                android:textSize="@dimen/text_size_small"/>
         </LinearLayout>
 
         <TextView

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200px"
+        android:src="@drawable/icon_wallet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20px"
+        android:text="@string/balance"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/text_size_common"/>
+
+    <TextView
+        android:id="@+id/wallet_tv_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30px"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title_size"
+        tools:text="$10"/>
+
+    <TextView
+        android:id="@+id/wallet_tv_recharge"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="50px"
+        android:text="RECHARGE"/>
+
+    <TextView
+        android:id="@+id/wallet_tv_withdraw"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="40px"
+        android:text="WITHDRAW"/>
+
+    <TextView
+        android:id="@+id/wallet_tv_bind_paypal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40px"
+        android:text="BIND PAYPAL"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_big"/>
+</LinearLayout>

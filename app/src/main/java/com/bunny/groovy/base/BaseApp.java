@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.bunny.groovy.utils.InfAutoInflaterConvert;
-import com.bunny.groovy.utils.InflaterConvert;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.yan.inflaterauto.AutoBaseOn;
 import com.yan.inflaterauto.InflaterAuto;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100px"
+        android:orientation="vertical"
+        android:paddingLeft="100px"
+        android:paddingRight="100px">
+
+        <!--<TextView-->
+            <!--style="@style/common_text_style"-->
+            <!--android:text="@string/true_name"-->
+            <!--android:textSize="@dimen/text_size_small"/>-->
+
+        <!--<com.xw.repo.XEditText-->
+            <!--android:id="@+id/bind_paypal_et_name"-->
+            <!--style="@style/edittext_match_patent_style"-->
+            <!--android:hint="@string/true_name"-->
+            <!--app:x_disableEmoji="true"/>-->
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginTop="50px"
+            android:text="@string/paypal"
+            android:textSize="@dimen/text_size_small"/>
+
+        <com.xw.repo.XEditText
+            android:id="@+id/bind_paypal_et_account"
+            style="@style/edittext_match_patent_style"
+            android:hint="PAYPAL ACCOUNT"
+            app:x_disableEmoji="true"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/bind_paypal_tv_bind"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="80px"
+        android:text="BIND"/>
+
+</LinearLayout>

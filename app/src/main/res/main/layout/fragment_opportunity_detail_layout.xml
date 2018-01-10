@@ -25,14 +25,14 @@
                 android:layout_height="wrap_content"
                 android:text="Oct 1st 5:30PM-6:30PM"
                 android:textColor="@color/white"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_big"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" \@ "
                 android:textColor="@color/white"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/text_size_big"/>
 
             <TextView
                 android:id="@+id/opp_detail_tv_name"
@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="@dimen/text_size_big"
                 tools:text="The XXX"/>
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="VENUE GIVE MUSICIAN A MESSAGE"
             android:textColor="@color/white"
-            android:textSize="11sp"/>
+            android:textSize="@dimen/text_size_small"/>
 
 
         <TextView
@@ -64,7 +64,7 @@
             android:gravity="center"
             android:text="Booking Contact :"
             android:textColor="@color/textAccent"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,7 +108,7 @@
             android:paddingLeft="16dp"
             android:text="MORE OPPORTUNITIES"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/title_size"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
                 android:gravity="center"
                 android:text="暂无数据"
                 android:textColor="@color/common_grey"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size_common"
                 android:visibility="gone"/>
 
             <android.support.v7.widget.RecyclerView
@@ -145,6 +145,6 @@
             android:paddingTop="10dp"
             android:text="APPLY"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/title_size"/>
     </LinearLayout>
 </ScrollView>

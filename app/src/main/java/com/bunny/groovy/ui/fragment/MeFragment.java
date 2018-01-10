@@ -29,6 +29,7 @@ import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.ui.fragment.wallet.WalletFragment;
 import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
@@ -121,6 +122,10 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         }
     }
 
+    @OnClick(R.id.me_tv_wallet)
+    public void wallet(){
+        WalletFragment.launch(mActivity);
+    }
 
 
     @Override

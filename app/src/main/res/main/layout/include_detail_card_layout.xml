@@ -47,7 +47,7 @@
             android:id="@+id/include_detail_tv_venueAddress"
             style="@style/common_text_style"
             android:layout_marginTop="8dp"
-            android:text="Net 999 st"/>
+            tools:text="Net 999 st"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
             android:id="@+id/include_detail_tv_tel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15088889999"
+            tools:text="15088889999"
             android:drawablePadding="10dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/textAccent"
@@ -113,7 +113,7 @@
             android:id="@+id/include_detail_tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="www.abc.com"
+            tools:text="www.abc.com"
             android:layout_marginTop="8dp"
             android:drawablePadding="10dp"
             android:textColor="@color/textAccent"
@@ -122,7 +122,7 @@
 
     <ImageView
         android:id="@+id/include_detail_iv_head"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="300px"
+        android:layout_height="300px"
         android:src="@mipmap/venue_instead_pic"/>
 </LinearLayout>

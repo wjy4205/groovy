@@ -13,6 +13,6 @@
         android:textColor="@color/white"
         android:singleLine="true"
         android:text="公告"
-        android:textSize="@dimen/x14" />
+        android:textSize="29px" />
 
 </RelativeLayout>

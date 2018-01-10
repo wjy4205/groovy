@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="@dimen/text_size_big"
                 android:paddingLeft="16dp"
                 android:text="@string/available_time_interval"/>
             <android.support.v7.widget.RecyclerView

@@ -1,19 +1,16 @@
 package com.bunny.groovy.api;
 
-import com.bunny.groovy.model.FavoriteModel;
 import com.bunny.groovy.model.GoogleMapLoc;
-import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.model.ShowHistoryModel;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,11 +19,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -205,4 +199,24 @@ public interface ApiService {
     @Streaming
     @GET
     Call<ResponseBody> downloadMusicAsync(@Url String url);
+
+    //（获取token）Paypal
+    @POST("PaypalController/getToken")
+    Observable<ResultResponse> getPayPalToken(@Field("userID") String userID);
+
+    //Wallet：绑定Paypal
+    @FormUrlEncoded
+    @POST("VenueMeController/bindPaypal")
+    Observable<ResultResponse<String>> bindPaypal(@Field("userID") String userID, @Field("paypalAccount") String paypalAccount);
+
+    //Wallet：充值）Paypal
+    @FormUrlEncoded
+    @POST("PaypalController/userRecharge")
+    Observable<ResultResponse<String>> paypalRecharge(@Field("userID") String userID, @Field("amount") String amount,
+                                                      @Field("payment_method_nonce") String desc);
+
+    //Wallet：提现申请）
+    @FormUrlEncoded
+    @POST("PerformerMeController/getWithdrawals")
+    Observable<ResultResponse<String>> getWithdrawals(@Field("balance") String balance);
 }

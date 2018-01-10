@@ -15,7 +15,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="10dp"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_common"
         tools:text="Rock"/>
 
     <CheckBox

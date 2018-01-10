@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#40000000"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="10dp">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="#40000000"
+              android:orientation="vertical"
+              android:paddingLeft="16dp"
+              android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/item_music_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="music.mp3"
+        tools:text="music.mp3"
+        android:textSize="@dimen/text_size_common"
         android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/item_music_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3.5M"
+        tools:text="3.5M"
         android:textColor="#aaa"
-        android:textSize="11sp" />
+        android:textSize="@dimen/text_size_small" />
 
     <View
         android:layout_width="match_parent"

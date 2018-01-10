@@ -44,7 +44,7 @@
             android:maxLines="1"
             android:text="NAME"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_common" />
 
         <TextView
             style="@style/common_text_style"
@@ -112,7 +112,7 @@
                 android:layout_alignParentRight="true"
                 android:text="REPLACE"
                 android:textColor="@color/accentPurple"
-                android:textSize="13sp" />
+                android:textSize="@dimen/text_size_common" />
         </RelativeLayout>
 
         <TextView
@@ -157,7 +157,7 @@
                 android:maxLength="400"
                 android:textColor="@color/white"
                 android:textColorHint="@color/common_grey"
-                android:textSize="13sp" />
+                android:textSize="@dimen/text_size_common" />
 
             <TextView
                 android:id="@+id/tv_count"
@@ -167,7 +167,7 @@
                 android:paddingBottom="3dp"
                 android:text="(0/400)"
                 android:textColor="@color/common_grey"
-                android:textSize="10sp" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <View

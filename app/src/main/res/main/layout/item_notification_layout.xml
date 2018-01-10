@@ -14,7 +14,7 @@
         android:gravity="center"
         android:text="PM 2:30"
         android:textColor="@color/common_grey"
-        android:textSize="@dimen/x8"/>
+        android:textSize="@dimen/text_size_small"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/item_notification_iv_header"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="160px"
+            android:layout_height="160px"
             android:scaleType="centerCrop"
             android:src="@drawable/head"/>
 

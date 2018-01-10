@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/item_nearby_iv_header"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="160px"
+        android:layout_height="160px"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="160px"
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="10dp"
@@ -25,8 +25,9 @@
         android:gravity="center_vertical"
         >
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -37,29 +38,31 @@
                 android:layout_height="wrap_content"
                 android:text="The Gooota"
                 android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_common"/>
 
             <TextView
                 android:id="@+id/item_nearby_tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@+id/item_nearby_tv_name"
+                android:layout_marginLeft="30px"
                 android:drawableLeft="@mipmap/list_star"
                 android:drawablePadding="4dp"
-                android:text="2.0"
+                tools:text="2.0"
+                android:gravity="center_vertical"
                 android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_small"/>
 
             <TextView
                 android:id="@+id/item_nearby_tv_distance"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textSize="@dimen/text_size_common"
                 tools:text="100km"/>
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/item_nearby_tv_address"
@@ -69,8 +72,9 @@
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
             android:maxLines="1"
+            android:gravity="center_vertical"
             android:textColor="@color/common_grey"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_size_small"
             tools:text="The Gooota The Gooota The "/>
 
         <RelativeLayout
@@ -87,7 +91,7 @@
                 android:layout_centerVertical="true"
                 android:text="Booking Contact"
                 android:textColor="@color/textAccent"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/text_size_common"/>
 
             <ImageView
                 android:id="@+id/item_nearby_iv_phone"
@@ -121,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_size_common"
                 tools:text="Oct 2st 1:10PM-3:20PM"/>
 
             <TextView
@@ -135,7 +139,7 @@
                 android:gravity="center"
                 android:text="APPLY"
                 android:textColor="@color/textAccent"
-                android:textSize="11sp"/>
+                android:textSize="@dimen/text_size_common"/>
         </RelativeLayout>
 
     </LinearLayout>

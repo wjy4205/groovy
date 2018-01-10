@@ -12,6 +12,7 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.weidget.ProgressHUD;
 
@@ -45,6 +46,7 @@ public class MePresenter extends BasePresenter<IMeView> {
                     @Override
                     protected void onSuccess(PerformerUserModel response) {
                         mView.setUserView(response);
+                        Utils.initLoginData(mView.get(),response);
                     }
 
                     @Override

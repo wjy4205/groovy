@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_common"
         tools:text="number not be null."/>
 </LinearLayout>

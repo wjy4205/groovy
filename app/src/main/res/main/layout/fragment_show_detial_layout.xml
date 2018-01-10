@@ -61,7 +61,7 @@
                 android:layout_marginRight="10dp"
                 android:text="\@"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_big" />
 
             <TextView
                 android:id="@+id/show_detail_tv_venue_name"
@@ -146,7 +146,7 @@
             android:gravity="center"
             android:text="VENUE GIVE MUSICIAN A MESSAGE"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="@dimen/text_size_small" />
 
 
         <TextView

@@ -49,16 +49,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.HisHol
     public void onBindViewHolder(HisHolder holder, int position) {
         final ShowModel bean = mList.get(position);
         String performState = bean.getPerformState();
+        holder.tvStatus.setVisibility(View.VISIBLE);
         switch (performState) {
             case "0"://待验证
-                holder.tvStatus.setVisibility(View.VISIBLE);
                 holder.tvStatus.setText("Verification");
                 break;
             case "1"://已发布
-                holder.tvStatus.setVisibility(View.GONE);
+                holder.tvStatus.setText("Confirmed");
                 break;
             case "2"://已取消
-                holder.tvStatus.setVisibility(View.GONE);
+                holder.tvStatus.setText("Rejected");
                 break;
         }
         Glide.with(mContext).load(bean.getHeadImg())

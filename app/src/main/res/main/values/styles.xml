@@ -64,6 +64,15 @@
         <item name="android:textColorHint">@color/common_grey</item>
     </style>
 
+    <style name="edittext_match_patent_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:textColor">@color/common_grey</item>
+        <item name="android:textColorHint">@color/common_grey</item>
+    </style>
+
+
     <!--横向分割线-->
     <style name="tranverse_line">
         <item name="android:layout_width">match_parent</item>
@@ -158,7 +167,7 @@
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/x14</item>
+        <item name="android:textSize">@dimen/text_size_common</item>
     </style>
 
     <style name="schedule_rl_style">
@@ -182,16 +191,16 @@
     </style>
 
     <style name="circle_bg_text">
-        <item name="android:layout_width">@dimen/x20</item>
-        <item name="android:layout_height">@dimen/x20</item>
+        <item name="android:layout_width">40px</item>
+        <item name="android:layout_height">40px</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_common</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/shape_circle_stroke_bg</item>
     </style>
     <style name="circle_bg_text_selected">
-        <item name="android:layout_width">@dimen/x25</item>
-        <item name="android:layout_height">@dimen/x25</item>
+        <item name="android:layout_width">50px</item>
+        <item name="android:layout_height">50px</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/shape_blue_circle_solid_bg</item>
         <item name="android:textSize">@dimen/text_size_common</item>

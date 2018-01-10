@@ -50,20 +50,21 @@
             android:layout_marginLeft="16dp">
             <ImageView
                 android:id="@+id/marker_iv_head"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="130px"
+                android:layout_height="130px"
                 android:src="@drawable/head"/>
 
             <FrameLayout
                 android:orientation="vertical"
                 android:gravity="center_vertical"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="130px"
                 android:layout_weight="1"
                 android:paddingLeft="10dp">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/marker_tv_venue_name"
@@ -107,9 +108,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/textAccent"
-                        android:layout_centerVertical="true"
                         android:textSize="@dimen/text_size_small"
-                        android:text="Booking Contact"/>
+                        android:text="Booking Contact"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
 
                     <ImageView
                         android:id="@+id/marker_iv_phone"

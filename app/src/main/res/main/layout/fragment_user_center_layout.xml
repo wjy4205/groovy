@@ -118,6 +118,7 @@
         android:paddingTop="38dp">
 
         <TextView
+            android:id="@+id/me_tv_wallet"
             style="@style/me_icon_text"
             android:drawableTop="@mipmap/me_wallet"
             android:text="Wallet" />

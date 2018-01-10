@@ -81,5 +81,5 @@
         android:paddingTop="10dp"
         android:text="LOG OUT"
         android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/title_size"/>
 </LinearLayout>

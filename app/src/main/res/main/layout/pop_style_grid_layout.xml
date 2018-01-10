@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:text="MAX 2"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <TextView
             android:id="@+id/pop_cancel"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="CANCEL"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
 
         <TextView
             android:id="@+id/pop_confirm"
@@ -42,6 +42,6 @@
             android:layout_marginLeft="30dp"
             android:text="CONFIRM"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/text_size_common"/>
     </LinearLayout>
 </LinearLayout>

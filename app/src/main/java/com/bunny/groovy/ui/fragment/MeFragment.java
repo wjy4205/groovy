@@ -25,6 +25,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.MePresenter;
 import com.bunny.groovy.service.MusicService;
+import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
@@ -123,8 +124,13 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     }
 
     @OnClick(R.id.me_tv_wallet)
-    public void wallet(){
+    public void wallet() {
         WalletFragment.launch(mActivity);
+    }
+
+    @OnClick(R.id.me_tv_spotlight)
+    public void spotlight() {
+        SpotlightFragment.launch(mActivity);
     }
 
 

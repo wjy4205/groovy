@@ -3,6 +3,9 @@ package com.bunny.groovy.ui.fragment.wallet;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +13,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
 
@@ -22,7 +26,7 @@ import butterknife.OnClick;
  * Author: Created by bayin on 2018/1/10.
  ****************************************/
 
-public class WalletFragment extends BaseFragment {
+public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPayPalView {
 
 
     @Bind(R.id.wallet_tv_balance)
@@ -43,8 +47,8 @@ public class WalletFragment extends BaseFragment {
     }
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected PayPalPresenter createPresenter() {
+        return new PayPalPresenter(this);
     }
 
     @Override
@@ -54,7 +58,15 @@ public class WalletFragment extends BaseFragment {
 
     @Override
     protected void loadData() {
-        mWalletTvBalance.setText(String.format(dollarTag, AppCacheData.getPerformerUserModel().getBalance()));
+        mPresenter.updateUserData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isFirstEnter()) {
+            loadData();
+        }
     }
 
     @OnClick({R.id.wallet_tv_recharge, R.id.wallet_tv_withdraw, R.id.wallet_tv_bind_paypal})
@@ -86,5 +98,27 @@ public class WalletFragment extends BaseFragment {
                 BindPaypalFragment.launch(mActivity);
                 break;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.wallet_list_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: 2018/1/11
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Activity get() {
+        return mActivity;
+    }
+
+    @Override
+    public void setView(PerformerUserModel userModel) {
+        mWalletTvBalance.setText(String.format(dollarTag,userModel.getBalance()));
     }
 }

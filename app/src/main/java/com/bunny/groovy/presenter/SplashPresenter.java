@@ -7,12 +7,16 @@ import android.text.TextUtils;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISplashView;
+
+import javax.microedition.khronos.opengles.GL;
 
 /****************************************
  * 功能说明: 欢迎页的控制器
@@ -52,6 +56,18 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
                             mView.get().finish();
                         }
                     }, 3000 - (delta / 1000));
+                //获取全局参数
+                addSubscription(apiService.getGlobalParam(), new SubscriberCallBack<GlobalModel>(null) {
+                    @Override
+                    protected void onSuccess(GlobalModel response) {
+                        AppCacheData.setGlobalModel(response);
+                    }
+
+                    @Override
+                    protected void onFailure(ResultResponse response) {
+
+                    }
+                });
             }
 
             @Override

@@ -16,6 +16,7 @@ import com.bunny.groovy.utils.SharedPreferencesUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
+import com.socks.library.KLog;
 
 /****************************************
  * 功能说明:  登录控制器
@@ -42,7 +43,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //判断资料是否完善
                             if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class),AppConstants.REQUESTCODE_SETFILE);
+                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                             } else {
                                 //进入主页
                                 mView.launchMainPage();
@@ -59,5 +60,31 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         return true;
                     }
                 });
+    }
+
+    /**
+     * 检查是否绑定该id
+     *
+     * @param uid
+     */
+    public void googleLogin(String uid) {
+        addSubscription(apiService.checkUidNotLogin("0", uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+            @Override
+            protected void onSuccess(PerformerUserModel response) {
+                if (response!=null){
+                    KLog.d(response.getGoogleUID());
+                }
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
     }
 }

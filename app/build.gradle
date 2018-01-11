@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
 android {
+
+    signingConfigs {
+        release {
+            keyAlias 'groovy'
+            keyPassword 'groovy'
+            storePassword 'groovy'
+            storeFile file('D:/AppKey/groovy.jks')
+        }
+    }
+
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
@@ -16,6 +27,9 @@ android {
             minifyEnabled false
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 
@@ -88,5 +102,14 @@ dependencies {
     //适配
     compile 'com.yan:inflaterauto:2.0.17'
     annotationProcessor 'com.yan:inflaterauto-compiler:2.0.17'
+    //paypal
+    compile 'com.braintreepayments.api:drop-in:3.+'
+    //facebook
+//    compile(name: 'facebook-login', ext: 'aar')
+//    compile(name: 'facebook-core', ext: 'aar')
+//    compile(name: 'facebook', ext: 'aar')
+//    compile(name: 'account-kit-sdk-4.29.0', ext: 'aar')
+    compile 'com.facebook.android:facebook-login:[4,5)'
+
+
 }
-//apply plugin: 'com.google.gms.google-services'

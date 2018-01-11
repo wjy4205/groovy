@@ -1,5 +1,7 @@
 package com.bunny.groovy.utils;
 
+import java.util.Stack;
+
 /****************************************
  * 功能说明:  app常量类
  *
@@ -46,5 +48,8 @@ public class AppConstants {
 
     public final static String EVENT_LOGIN_SUCCESS = "logout_success";//eventbus 用户退出标志
     public final static String EVENT_LOGIN_OUT = "logout";//eventbus 用户退出标志
+
+    public final static String Pay_Style_paypal = "0";//余额支付方式
+    public final static String Pay_Style_balance = "1";//PayPal支付方式
 
 }

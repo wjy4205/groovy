@@ -1,5 +1,6 @@
 package com.bunny.groovy.utils;
 
+import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class AppCacheData {
     private static PerformerUserModel userModel;
+    private static GlobalModel sGlobalModel;
 
     public static PerformerUserModel getPerformerUserModel() {
         return userModel;
@@ -20,6 +22,14 @@ public class AppCacheData {
 
     public static void setPerformerUserModel(PerformerUserModel performerUserModel) {
         userModel = performerUserModel;
+    }
+
+    public static GlobalModel getGlobalModel() {
+        return sGlobalModel;
+    }
+
+    public static void setGlobalModel(GlobalModel globalModel) {
+        sGlobalModel = globalModel;
     }
 
     /**

@@ -26,10 +26,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.0"
+    compileSdkVersion = 26
+    buildToolsVersion = "26.0.0"
     minSdkVersion = 16
-    targetSdkVersion = 25
+    targetSdkVersion = 26
     supportVersion = "25.3.1"
 //    googleServiceVersion = "11.6.0"
     googleServiceVersion = "10.2.6"

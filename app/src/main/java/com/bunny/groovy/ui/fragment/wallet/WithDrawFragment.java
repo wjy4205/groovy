@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.wallet;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.UIUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +33,7 @@ public class WithDrawFragment extends BaseFragment<PayPalPresenter> implements I
     EditText mRechargeEtBalance;
     @Bind(R.id.tv_recharge)
     TextView mTvWithDraw;
+    private String mBalance;
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -41,13 +45,19 @@ public class WithDrawFragment extends BaseFragment<PayPalPresenter> implements I
     public void initView(View rootView) {
         super.initView(rootView);
         mRechargeTvPaypalValue.setText(AppCacheData.getPerformerUserModel().getPaypalAccount());
-        mRechargeTvPaypalMax.setText("The max is $" + AppCacheData.getPerformerUserModel().getBalance());
+        mBalance = AppCacheData.getPerformerUserModel().getBalance();
+        mRechargeTvPaypalMax.setText("The max is $" + mBalance);
         mTvWithDraw.setText("WITHDRAW");
     }
 
     @Override
     public Activity get() {
         return mActivity;
+    }
+
+    @Override
+    public void setView(PerformerUserModel userModel) {
+
     }
 
     @Override
@@ -73,5 +83,14 @@ public class WithDrawFragment extends BaseFragment<PayPalPresenter> implements I
 
     @OnClick(R.id.tv_recharge)
     public void onViewClicked() {
+        String withdraw = mRechargeEtBalance.getText().toString();
+        if (TextUtils.isEmpty(withdraw)) {
+            UIUtils.showBaseToast("Please input withdraw money.");
+            return;
+        } else if ((Double.parseDouble(withdraw) > Double.parseDouble(mBalance))) {
+            UIUtils.showBaseToast("Can not more than max balance.");
+            return;
+        }
+        mPresenter.withDraw(withdraw);
     }
 }

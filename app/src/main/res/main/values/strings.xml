@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Groovy</string>
     <string name="next_show_default_info">Recruit, invite, or discover musicians \n from the Bookings menu or click \n the "+ icon" to manually release \na performance.</string>
+
+    <string name="facebook_app_id">165245214086701</string>
+    <string name="fb_login_protocol_scheme">fb165245214086701</string>
+
+
     <string-array name="time_clock_array">
         <item>00:00 AM</item>
         <item>00:30 AM</item>

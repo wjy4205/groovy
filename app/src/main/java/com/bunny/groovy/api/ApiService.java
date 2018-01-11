@@ -1,5 +1,6 @@
 package com.bunny.groovy.api;
 
+import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
@@ -200,10 +201,6 @@ public interface ApiService {
     @GET
     Call<ResponseBody> downloadMusicAsync(@Url String url);
 
-    //（获取token）Paypal
-    @POST("PaypalController/getToken")
-    Observable<ResultResponse> getPayPalToken(@Field("userID") String userID);
-
     //Wallet：绑定Paypal
     @FormUrlEncoded
     @POST("VenueMeController/bindPaypal")
@@ -219,4 +216,37 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("PerformerMeController/getWithdrawals")
     Observable<ResultResponse<String>> getWithdrawals(@Field("balance") String balance);
+
+
+    //获取PayPal 的token
+    @FormUrlEncoded
+    @POST("PaypalController/getToken")
+    Observable<ResultResponse<String>> getPaypalToken(@Field("userID") String userID);
+
+
+    //推广
+    //@Field("userID") String userID, @Field("num") String num,
+    //@Field("amount") String amount, @Field("payMethod") String payMethod,
+    //@Field("payment_method_nonce") String nouce
+    //支付方式（0-paypal 1-余额）
+    @FormUrlEncoded
+    @POST("PaypalController/buySpotlight")
+    Observable<ResultResponse<String>> buySpotlight(@FieldMap Map<String, String> map);
+
+
+    //获取配置参数
+    @POST("PaypalController/getGlobalParam")
+    Observable<ResultResponse<GlobalModel>> getGlobalParam();
+
+
+    /**
+     * google登录
+     **/
+    //判断第三方ID是否已经绑定到账户
+    @FormUrlEncoded
+    @POST("FrontUserController/checkUidNotLogin")
+    Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType")String loginType,@Field("uid")String uid,
+                                                        @Field("userZone")String userZone);
+
+
 }

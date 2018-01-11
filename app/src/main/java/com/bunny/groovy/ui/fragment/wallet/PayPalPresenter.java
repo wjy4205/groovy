@@ -36,8 +36,8 @@ public class PayPalPresenter extends BasePresenter<IPayPalView> {
 
                     @Override
                     protected void onSuccess(Object response) {
-                        //更新user数据
-                        updateUserData();
+                        UIUtils.showBaseToast("Bind success.");
+                        mView.get().finish();
                     }
 
                     @Override
@@ -47,6 +47,21 @@ public class PayPalPresenter extends BasePresenter<IPayPalView> {
                 });
     }
 
+
+    public void withDraw(String amount) {
+        addSubscription(apiService.getWithdrawals(amount), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("提现成功");
+                mView.get().finish();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
 
 
     /**
@@ -59,8 +74,7 @@ public class PayPalPresenter extends BasePresenter<IPayPalView> {
                     protected void onSuccess(PerformerUserModel response) {
                         //缓存到本地
                         Utils.initLoginData(mView.get(), response);
-                        UIUtils.showBaseToast("Bind Success!");
-                        mView.get().finish();
+                        mView.setView(response);
                     }
 
                     @Override

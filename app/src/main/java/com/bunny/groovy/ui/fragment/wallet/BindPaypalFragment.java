@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.utils.UIUtils;
 import com.xw.repo.XEditText;
 
@@ -71,5 +72,10 @@ public class BindPaypalFragment extends BaseFragment<PayPalPresenter> implements
     @Override
     public Activity get() {
         return mActivity;
+    }
+
+    @Override
+    public void setView(PerformerUserModel userModel) {
+
     }
 }

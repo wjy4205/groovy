@@ -17,6 +17,7 @@ import com.bunny.groovy.ui.setfile.SetFile3Activity;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -142,7 +143,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         //设置资料结束，结束本页面,跳转至首页
         if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
             launchMainPage();
-        }else if (requestCode == RC_SIGN_IN){
+        } else if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -153,15 +154,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
             KLog.d(account.toString());
+            mPresenter.googleLogin(account.getId());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            syso("异常：" + e.getMessage());
             KLog.w("signInResult:failed code=" + e.getStatusCode());
 //            updateUI(null);
         }
+    }
+
+    private void syso(String tag) {
+        System.out.println(tag);
     }
 }

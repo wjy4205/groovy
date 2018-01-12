@@ -29,10 +29,25 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
         mPresenter.logout();
     }
 
-    public static void launch(Activity from){
+    @OnClick(R.id.settings_tv_feedback)
+    public void feedback() {
+        FeedbackFragment.launch(mActivity);
+    }
+
+    @OnClick(R.id.settings_tv_about)
+    public void about() {
+        AboutusFragment.launch(mActivity);
+    }
+
+    @OnClick(R.id.settings_tv_safe)
+    public void safe(){
+        SafeFragment.launch(mActivity);
+    }
+
+    public static void launch(Activity from) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE,"SETTINGS");
-        FragmentContainerActivity.launch(from,SettingsFragment.class,bundle);
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SETTINGS");
+        FragmentContainerActivity.launch(from, SettingsFragment.class, bundle);
     }
 
     @Override

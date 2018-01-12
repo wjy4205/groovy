@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <com.xw.repo.XEditText
+        android:id="@+id/checkcode_et_code"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="40dp"
+        android:hint="@string/verification_code"
+        app:x_disableEmoji="true" />
+
+
+    <TextView
+        android:id="@+id/checkcode_tv_finish"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="FINISH" />
+
+</LinearLayout>

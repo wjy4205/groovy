@@ -245,8 +245,29 @@ public interface ApiService {
     //判断第三方ID是否已经绑定到账户
     @FormUrlEncoded
     @POST("FrontUserController/checkUidNotLogin")
-    Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType")String loginType,@Field("uid")String uid,
-                                                        @Field("userZone")String userZone);
+    Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType") String loginType, @Field("uid") String uid,
+                                                                    @Field("userZone") String userZone);
 
 
+    //反馈
+    @FormUrlEncoded
+    @POST("PerformerMeController/addFeedbackList")
+    Observable<ResultResponse<Object>> addFeedback(@Field("content") String content, @Field("deviceType") String deviceType);
+
+
+    //发送邮箱验证码
+    @FormUrlEncoded
+    @POST("VenueMeController/sendEmailCode")
+    Observable<ResultResponse<Object>> sendEmailCode(@Field("userID") String userID, @Field("email") String email);
+
+    //Setting：绑定手机号
+    @FormUrlEncoded
+    @POST("VenueMeController/bindPhone")
+    Observable<ResultResponse<Object>> bindPhone(@Field("userID") String userID, @Field("telephone") String telephone);
+
+
+    //Setting：绑定邮箱）
+    @FormUrlEncoded
+    @POST("VenueMeController/bindEmail")
+    Observable<ResultResponse<Object>> bindEmail(@Field("userID") String userID, @Field("email") String email, @Field("checkCode") String checkCode);
 }

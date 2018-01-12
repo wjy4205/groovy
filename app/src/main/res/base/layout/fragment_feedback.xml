@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/feedback_tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="400px"
+        android:layout_marginLeft="32px"
+        android:layout_marginRight="32px"
+        android:layout_marginTop="32px"
+        android:background="@drawable/shape_textarea_bg"
+        android:gravity="top"
+        android:hint="PLEASE INPUT YOUR FEEDBACK INFORMATION"
+        android:lineSpacingExtra="3dp"
+        android:lines="4"
+        android:maxLength="400"
+        android:padding="32px"
+        android:textColor="@color/white"
+        android:textColorHint="@color/common_grey"
+        android:textSize="@dimen/text_size_common"/>
+
+
+    <TextView
+        android:id="@+id/feedback_tv_submit"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="SUBMIT"/>
+</LinearLayout>

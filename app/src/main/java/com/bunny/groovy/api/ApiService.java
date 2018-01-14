@@ -248,6 +248,20 @@ public interface ApiService {
     Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType") String loginType, @Field("uid") String uid,
                                                                     @Field("userZone") String userZone);
 
+    //第三方登陆
+    @FormUrlEncoded
+    @POST
+    Observable<ResultResponse<PerformerUserModel>> socialAccountLogin(@Field("loginType") String loginType,
+                                                                      @Field("uid") String uid,
+                                                                      @Field("userName") String userName,
+                                                                      @Field("userAccount") String userAccount,
+                                                                      @Field("userType") String userType,
+                                                                      @Field("userZone") String userZone);
+
+    //检查第三方的邮箱验证码
+    @FormUrlEncoded
+    @POST
+    Observable<ResultResponse<String>> checkSocialEmailCode(@Field("chekCode")String code);
 
     //反馈
     @FormUrlEncoded

@@ -3,7 +3,6 @@ package com.bunny.groovy.ui.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.bunny.groovy.R;
@@ -12,12 +11,9 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.LoginPresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
-import com.bunny.groovy.ui.setfile.SetFile2Activity;
-import com.bunny.groovy.ui.setfile.SetFile3Activity;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,8 +23,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.socks.library.KLog;
 import com.xw.repo.XEditText;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -138,11 +132,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     }
 
     @Override
-    public void setupProfile() {
-
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //设置资料结束，结束本页面,跳转至首页
@@ -156,19 +145,22 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         }
     }
 
+    /**
+     * loginType
+     * userName
+     */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-//            updateUI(account);
             KLog.d(account.toString());
-            mPresenter.googleLogin(account.getId());
+            //检查是否绑定了账户
+            mPresenter.checkHadBindUid("0", account.getId(),account.getDisplayName());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             syso("异常：" + e.getMessage());
             KLog.w("signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
         }
     }
 

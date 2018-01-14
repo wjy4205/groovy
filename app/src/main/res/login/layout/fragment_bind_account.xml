@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:orientation="vertical">
+    <!--<item name="android:layout_width">match_parent</item>-->
+    <!--<item name="android:layout_height">wrap_content</item>-->
+    <!--<item name="android:layout_marginLeft">110px</item>-->
+    <!--<item name="android:layout_marginRight">110px</item>-->
+    <!--<item name="android:layout_marginTop">10dp</item>-->
+    <!--<item name="android:textSize">@dimen/text_size_common</item>-->
+    <!--<item name="android:textColor">@color/white</item>-->
+    <!--<item name="android:maxLines">1</item>-->
+    <!--<item name="android:textColorHint">@color/common_grey</item>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="150px"
+        android:paddingLeft="110px"
+        android:paddingRight="110px">
+
+        <com.xw.repo.XEditText
+            android:id="@+id/bind_account_et_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="@string/email_phone"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/common_grey"
+            android:textSize="@dimen/text_size_common"
+            app:x_disableEmoji="true" />
+
+        <TextView
+            android:id="@+id/bind_account_tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_circle_blue_stroke_bg"
+            android:paddingLeft="15px"
+            android:paddingRight="15px"
+            android:text="SEND"
+            android:textColor="@color/textAccent"
+            android:textSize="@dimen/text_size_common" />
+    </RelativeLayout>
+
+    <View
+        style="@style/tranverse_line"
+        android:layout_marginLeft="110px"
+        android:layout_marginRight="110px" />
+
+
+    <com.xw.repo.XEditText
+        android:id="@+id/bind_account_et_code"
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="50px"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="IDENTIFYING CODE"
+        android:maxLines="1"
+        android:paddingLeft="110px"
+        android:paddingRight="110px"
+        android:textColor="@color/white"
+        android:textColorHint="@color/common_grey"
+        android:textSize="@dimen/text_size_common"
+        app:x_disableEmoji="true" />
+
+    <View
+        style="@style/tranverse_line"
+        android:layout_marginLeft="110px"
+        android:layout_marginRight="110px" />
+
+    <TextView
+        android:id="@+id/bind_account_tv_ok"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="80px"
+        android:text="OK" />
+</LinearLayout>

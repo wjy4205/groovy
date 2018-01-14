@@ -1,6 +1,7 @@
 package com.bunny.groovy.presenter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.bunny.groovy.R;
@@ -9,6 +10,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.login.BindAccountFragment;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
@@ -65,20 +67,29 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     /**
      * 检查是否绑定该id
      *
-     * @param uid
+     * @param loginType 类型
+     * @param uid       账户
      */
-    public void googleLogin(String uid) {
-        addSubscription(apiService.checkUidNotLogin("0", uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+    public void checkHadBindUid(final String loginType, final String uid, final String username) {
+        addSubscription(apiService.checkUidNotLogin(loginType, uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
-                if (response!=null){
+                //已经绑定，直接登录
+                if (response != null) {
                     KLog.d(response.getGoogleUID());
+                    Utils.initLoginData(mView.get(), response);
+                    socialLogin(loginType, uid, username, response.getUserEmail());
                 }
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
-
+                //未绑定任何账户，跳转到绑定账户页面
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                bundle.putString("logintype", loginType);
+                bundle.putString("uid", uid);
+                BindAccountFragment.launch(mView.get(), bundle);
             }
 
             @Override
@@ -87,4 +98,60 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             }
         });
     }
+
+    //验证code
+    public void checkEmailCode(String code, final String uid, final String username, final String logintype,
+                               final String useraccount) {
+        addSubscription(apiService.checkSocialEmailCode(code), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
+            protected void onSuccess(Object response) {
+                //第三方登录
+                socialLogin(logintype, uid, username, useraccount);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+        });
+    }
+
+
+    /**
+     * loginType
+     * uid
+     * userName
+     * userAccount
+     * userType
+     * userZone
+     */
+    public void socialLogin(String logintype, String uid, String username, String useraccount) {
+        addSubscription(apiService.socialAccountLogin(logintype, uid, username,
+                useraccount, "1", Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+            @Override
+            protected void onSuccess(PerformerUserModel response) {
+                //登录，判断是否完善了资料
+                if (response == null || TextUtils.isEmpty(response.getStageName()) ||
+                        TextUtils.isEmpty(response.getZipCode())) {
+                    //未完善资料
+                    mView.launchToSetFile();
+                } else {
+                    mView.launchMainPage();
+                }
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
+
+
 }

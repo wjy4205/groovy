@@ -20,7 +20,4 @@ public interface ILoginView {
     void launchMainPage();
 
     void launchToSetFile();
-
-    //google 未绑定账号
-    void setupProfile();
 }

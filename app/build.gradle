@@ -6,7 +6,7 @@ android {
             keyAlias 'groovy'
             keyPassword 'groovy'
             storePassword 'groovy'
-            storeFile file('D:/AppKey/groovy.jks')
+            storeFile file('D:/WorkCode/partJob/groovy/groovy.jks')
         }
     }
 
@@ -92,7 +92,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.google.android.gms:play-services-places:11.6.0'
     //google +
-//    compile "com.google.android.gms:play-services-auth:${rootProject.ext.googleServiceVersion}"
+    //    compile "com.google.android.gms:play-services-auth:${rootProject.ext.googleServiceVersion}"
     compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.android.support:multidex:1.0.1'
     //switch button
@@ -105,11 +105,9 @@ dependencies {
     //paypal
     compile 'com.braintreepayments.api:drop-in:3.+'
     //facebook
-//    compile(name: 'facebook-login', ext: 'aar')
-//    compile(name: 'facebook-core', ext: 'aar')
-//    compile(name: 'facebook', ext: 'aar')
-//    compile(name: 'account-kit-sdk-4.29.0', ext: 'aar')
+    //    compile(name: 'facebook-login', ext: 'aar')
+    //    compile(name: 'facebook-core', ext: 'aar')
+    //    compile(name: 'facebook', ext: 'aar')
+    //    compile(name: 'account-kit-sdk-4.29.0', ext: 'aar')
     compile 'com.facebook.android:facebook-login:[4,5)'
-
-
 }

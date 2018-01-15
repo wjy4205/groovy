@@ -103,12 +103,15 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.wallet_list_menu,menu);
+        inflater.inflate(R.menu.wallet_list_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: 2018/1/11
+        if (item.getItemId() == R.id.wallet_list) {
+            WalletListFragment.launch(mActivity);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -119,6 +122,6 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
 
     @Override
     public void setView(PerformerUserModel userModel) {
-        mWalletTvBalance.setText(String.format(dollarTag,userModel.getBalance()));
+        mWalletTvBalance.setText(String.format(dollarTag, userModel.getBalance()));
     }
 }

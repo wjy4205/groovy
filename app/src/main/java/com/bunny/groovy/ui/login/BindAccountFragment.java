@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.api.VerifyEvent;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.PerformerUserModel;
@@ -15,8 +16,12 @@ import com.bunny.groovy.presenter.LoginPresenter;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.PatternUtils;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ILoginView;
 import com.xw.repo.XEditText;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -39,15 +44,32 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
 
     @OnClick({R.id.bind_account_tv_ok, R.id.bind_account_tv_send})
     public void onViewClick(View view) {
+        UIUtils.hideSoftInput(view);
+        String account = etAccount.getTrimmedString();
         switch (view.getId()) {
             case R.id.bind_account_tv_ok:
-                String account = etAccount.getTrimmedString();
                 String code = etCode.getTrimmedString();
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(code)) {
-                    mPresenter.checkEmailCode(code, uid, username, logintype, account);
+                    if (PatternUtils.isValidEmail(account))//邮箱账户
+                        mPresenter.checkEmailCode(code, uid, username, logintype, account);
+                    else if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
+                        //手机账户
+                        VerifyEvent.verifyCode(code);
+                    } else {
+                        //非法账户
+                        UIUtils.showBaseToast("invalid account.");
+                    }
                 }
                 break;
             case R.id.bind_account_tv_send:
+                //判断是手机还是邮箱
+                if (PatternUtils.isValidEmail(account)) {
+                    //发送邮件
+                    mPresenter.socialSendEmailCode(account);
+                } else if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
+                    //发送手机验证码
+                    VerifyEvent.initSinch(mActivity, account);
+                }
                 break;
         }
     }
@@ -64,6 +86,28 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
         super.initView(rootView);
         if (mActivity instanceof FragmentContainerActivity)
             ((FragmentContainerActivity) mActivity).getToolBar().setVisibility(View.GONE);
+
+        registerEventBus(this);
+    }
+
+    /**
+     * 验证码结果回调
+     *
+     * @param result 结果
+     */
+    @Subscribe
+    public void onVerifyEvent(String result) {
+        switch (result) {
+            case AppConstants.Code_Verify_Correct:
+                mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString());
+                break;
+            case AppConstants.Code_Verify_Invalid:
+                UIUtils.showBaseToast("验证码不正确");
+                break;
+            case AppConstants.Code_Send_ServerError:
+                UIUtils.showBaseToast("服务器出错");
+                break;
+        }
     }
 
     @Override

@@ -15,6 +15,12 @@ import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ILoginView;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,6 +29,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.socks.library.KLog;
 import com.xw.repo.XEditText;
+
+import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -40,6 +48,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Bind(R.id.login_et_password)
     XEditText etPassword;
     private GoogleSignInClient mGoogleSignInClient;
+    private CallbackManager callbackManager;
 
     @OnClick(R.id.actionbar_iv_back)
     public void back() {
@@ -95,8 +104,42 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    @OnClick(R.id.iv_login_facebook)
+    public void facebookLogin() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+    }
+
     public static void launch(Context activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                        KLog.a("facebook success :" + loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                        exception.printStackTrace();
+                        KLog.a("facebook onError :" + exception.toString());
+                    }
+                });
     }
 
     @Override
@@ -133,6 +176,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //facebook登录回调
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
         super.onActivityResult(requestCode, resultCode, data);
         //设置资料结束，结束本页面,跳转至首页
         if (requestCode == AppConstants.REQUESTCODE_SETFILE && resultCode == AppConstants.ACTIVITY_FINISH) {
@@ -155,7 +201,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             // Signed in successfully, show authenticated UI.
             KLog.d(account.toString());
             //检查是否绑定了账户
-            mPresenter.checkHadBindUid("0", account.getId(),account.getDisplayName());
+            mPresenter.checkHadBindUid("0", account.getId(), account.getDisplayName());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

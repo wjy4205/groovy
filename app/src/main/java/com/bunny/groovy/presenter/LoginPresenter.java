@@ -99,6 +99,30 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         });
     }
 
+    /**
+     * 发送邮件验证码
+     *
+     * @param email
+     */
+    public void socialSendEmailCode(String email){
+        addSubscription(apiService.socialSendEmailCode(email), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("Send Success.");
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
+
     //验证code
     public void checkEmailCode(String code, final String uid, final String username, final String logintype,
                                final String useraccount) {
@@ -133,7 +157,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void socialLogin(String logintype, String uid, String username, String useraccount) {
         addSubscription(apiService.socialAccountLogin(logintype, uid, username,
-                useraccount, "1", Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+                useraccount, "1", Utils.getTimeZone(),"12345678"), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
             @Override
             protected void onSuccess(PerformerUserModel response) {
                 //登录，判断是否完善了资料
@@ -142,6 +171,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     //未完善资料
                     mView.launchToSetFile();
                 } else {
+                    Utils.initLoginData(mView.get(),response);
                     mView.launchMainPage();
                 }
             }

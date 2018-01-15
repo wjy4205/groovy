@@ -89,7 +89,7 @@
             android:id="@+id/iv_login_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="50px"
             android:src="@mipmap/login_facebook" />
 
     </LinearLayout>

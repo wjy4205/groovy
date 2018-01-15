@@ -2,8 +2,8 @@
     <string name="app_name">Groovy</string>
     <string name="next_show_default_info">Recruit, invite, or discover musicians \n from the Bookings menu or click \n the "+ icon" to manually release \na performance.</string>
 
-    <string name="facebook_app_id">165245214086701</string>
-    <string name="fb_login_protocol_scheme">fb165245214086701</string>
+    <string name="facebook_app_id">1824124224267047</string>
+    <string name="fb_login_protocol_scheme">fb1824124224267047</string>
 
 
     <string-array name="time_clock_array">
@@ -31,8 +31,8 @@
         <item>10:30 AM</item>
         <item>11:00 AM</item>
         <item>11:30 AM</item>
-        <item>12:00 AM</item>
-        <item>12:30 AM</item>
+        <item>12:00 PM</item>
+        <item>12:30 PM</item>
         <item>01:00 PM</item>
         <item>01:30 PM</item>
         <item>02:00 PM</item>

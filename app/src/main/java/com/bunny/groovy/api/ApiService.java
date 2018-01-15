@@ -8,6 +8,7 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
+import com.bunny.groovy.model.WalletBean;
 
 import java.util.List;
 import java.util.Map;
@@ -217,6 +218,10 @@ public interface ApiService {
     @POST("PerformerMeController/getWithdrawals")
     Observable<ResultResponse<String>> getWithdrawals(@Field("balance") String balance);
 
+    //交易记录
+    @POST("PerformerMeController/getWalletList")
+    Observable<ResultResponse<List<WalletBean>>> getWalletList();
+
 
     //获取PayPal 的token
     @FormUrlEncoded
@@ -250,18 +255,24 @@ public interface ApiService {
 
     //第三方登陆
     @FormUrlEncoded
-    @POST
+    @POST("FrontUserController/checkAccountNotLogin")
     Observable<ResultResponse<PerformerUserModel>> socialAccountLogin(@Field("loginType") String loginType,
                                                                       @Field("uid") String uid,
                                                                       @Field("userName") String userName,
                                                                       @Field("userAccount") String userAccount,
                                                                       @Field("userType") String userType,
-                                                                      @Field("userZone") String userZone);
+                                                                      @Field("userZone") String userZone,
+                                                                      @Field("userPwd") String pwd);
+
+    //第三方登陆：发送邮箱验证码
+    @FormUrlEncoded
+    @POST("FrontUserController/sendLoginEmailCodeNotLogin")
+    Observable<ResultResponse<Object>> socialSendEmailCode(@Field("email") String email);
 
     //检查第三方的邮箱验证码
     @FormUrlEncoded
-    @POST
-    Observable<ResultResponse<String>> checkSocialEmailCode(@Field("chekCode")String code);
+    @POST("FrontUserController/chekLoginEmailCodeNotLogin")
+    Observable<ResultResponse<String>> checkSocialEmailCode(@Field("chekCode") String code);
 
     //反馈
     @FormUrlEncoded

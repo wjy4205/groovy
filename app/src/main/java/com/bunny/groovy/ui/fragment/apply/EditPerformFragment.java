@@ -17,6 +17,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ApplyVenuePresenter;
@@ -40,15 +41,15 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /****************************************
- * 功能说明:  申请演出厅表演页面
+ * 功能说明:  编辑表演信息
  *
  * Author: Created by bayin on 2018/1/3.
  ****************************************/
 
-public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView {
+public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView {
 
     public static String KEY_VENUE_BEAN = "KEY_VENUE_BEAN";
-    private static VenueModel sVenueBean;
+    private static ShowModel sVenueBean;
     private TextView mTvTimeTitle;
     private List<String> mTimeClockList,mRealTimeList;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
@@ -64,20 +65,20 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
 
     public static void launch(Activity from, Bundle bundle) {
         sVenueBean = bundle.getParcelable(KEY_VENUE_BEAN);
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "APPLY");
-        FragmentContainerActivity.launch(from, ApplyVenueFragment.class, bundle);
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "EDIT");
+        FragmentContainerActivity.launch(from, EditPerformFragment.class, bundle);
     }
 
-    @Bind(R.id.apply_et_time)
+    @Bind(R.id.edit_et_time)
     EditText etTime;
-    @Bind(R.id.apply_et_style)
+    @Bind(R.id.edit_et_style)
     EditText etStyle;
-    @Bind(R.id.apply_et_bio)
+    @Bind(R.id.edit_et_bio)
     EditText etDesc;
 
 
     //弹出选择style窗口
-    @OnClick(R.id.apply_et_style)
+    @OnClick(R.id.edit_et_style)
     public void showStyle() {
         UIUtils.hideSoftInput(etStyle);
         if (styleList == null || styleList.size() == 0)
@@ -86,7 +87,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
     }
 
     //弹出时间选择窗口
-    @OnClick(R.id.apply_et_time)
+    @OnClick(R.id.edit_et_time)
     public void selectTime() {
         UIUtils.hideSoftInput(etStyle);
         showTimeChoosePop();
@@ -106,6 +107,12 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         super.initView(rootView);
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
+        //set data
+        if (sVenueBean!=null){
+            etDesc.setText(sVenueBean.getPerformDesc());
+            etStyle.setText(sVenueBean.getPerformType());
+            etTime.setText(sVenueBean.getPerformDate()+" "+sVenueBean.getPerformTime());
+        }
     }
 
     /**
@@ -279,7 +286,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
 
 
     //申请
-    @OnClick(R.id.apply_tv_apply)
+    @OnClick(R.id.edit_tv_confirm)
     public void apply() {
         UIUtils.hideSoftInput(etStyle);
         //拦截判空
@@ -310,13 +317,8 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performType", etStyle.getText().toString());
         map.put("performDesc", etDesc.getText().toString());
-        map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
-        map.put("venueID", sVenueBean.getVenueID());
-        map.put("venueName", sVenueBean.getVenueName());
-        map.put("venueAddress", sVenueBean.getVenueAddress());
-        map.put("venueLongitude", sVenueBean.getLongitude());
-        map.put("venueLatitude", sVenueBean.getLatitude());
-        mPresenter.applyVenue(map);
+        map.put("performID", sVenueBean.getPerformID());
+        mPresenter.editPerform(map);
     }
 
     @Override
@@ -387,7 +389,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
 
     @Override
     protected int provideContentViewId() {
-        return R.layout.fragment_apply_opp_layout;
+        return R.layout.fragment_edit_perform_layout;
     }
 
     @Override

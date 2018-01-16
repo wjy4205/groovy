@@ -98,4 +98,26 @@ public class ApplyVenuePresenter extends BasePresenter<IApplyVenueView> {
             }
         });
     }
+
+
+    public void editPerform(Map<String, String> fieldMap) {
+        addSubscription(apiService.updatePerform(fieldMap), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("修改成功！");
+                mView.get().finish();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
+
 }

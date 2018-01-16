@@ -103,7 +103,7 @@ public class ShowDetailFragment extends BaseFragment {
         super.initView(rootView);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
-            mTvPerformerName.setText(model.getPerformerName());
+            mTvPerformerName.setText(model.getStageName());
             mTvVenueName_1.setText(model.getVenueName());
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());

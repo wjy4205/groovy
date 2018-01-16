@@ -6,7 +6,7 @@ android {
             keyAlias 'groovy'
             keyPassword 'groovy'
             storePassword 'groovy'
-            storeFile file('D:/WorkCode/partJob/groovy/groovy.jks')
+            storeFile file('D:/AppKey/groovy.jks')
         }
     }
 
@@ -105,9 +105,7 @@ dependencies {
     //paypal
     compile 'com.braintreepayments.api:drop-in:3.+'
     //facebook
-    //    compile(name: 'facebook-login', ext: 'aar')
-    //    compile(name: 'facebook-core', ext: 'aar')
-    //    compile(name: 'facebook', ext: 'aar')
-    //    compile(name: 'account-kit-sdk-4.29.0', ext: 'aar')
     compile 'com.facebook.android:facebook-login:[4,5)'
+    //switchbutton
+    compile 'com.kyleduo.switchbutton:library:2.0.0'
 }

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.bunny.groovy.R;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.MainActivity;
@@ -42,6 +43,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         //缓存到本地
                         Utils.initLoginData(mView.get(), response);
                         if (response != null) {
+                            //获取全局参数
+                            getGlobParam();
                             //判断资料是否完善
                             if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
@@ -64,6 +67,21 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 });
     }
 
+    public void getGlobParam() {
+        //获取全局参数
+        addSubscription(apiService.getGlobalParam(), new SubscriberCallBack<GlobalModel>(null) {
+            @Override
+            protected void onSuccess(GlobalModel response) {
+                AppCacheData.setGlobalModel(response);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
+
     /**
      * 检查是否绑定该id
      *
@@ -78,7 +96,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 if (response != null) {
                     KLog.d(response.getGoogleUID());
                     Utils.initLoginData(mView.get(), response);
-                    socialLogin(loginType, uid, username, response.getUserEmail());
+                    socialLogin(loginType, uid, username, response.getPhoneNumber());
                 }
             }
 
@@ -104,7 +122,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      *
      * @param email
      */
-    public void socialSendEmailCode(String email){
+    public void socialSendEmailCode(String email) {
         addSubscription(apiService.socialSendEmailCode(email), new SubscriberCallBack(mView.get()) {
             @Override
             protected void onSuccess(Object response) {
@@ -157,7 +175,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      */
     public void socialLogin(String logintype, String uid, String username, String useraccount) {
         addSubscription(apiService.socialAccountLogin(logintype, uid, username,
-                useraccount, "1", Utils.getTimeZone(),"12345678"), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+                useraccount, "1", Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -166,12 +184,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             @Override
             protected void onSuccess(PerformerUserModel response) {
                 //登录，判断是否完善了资料
+                Utils.initLoginData(mView.get(), response);
                 if (response == null || TextUtils.isEmpty(response.getStageName()) ||
                         TextUtils.isEmpty(response.getZipCode())) {
                     //未完善资料
                     mView.launchToSetFile();
                 } else {
-                    Utils.initLoginData(mView.get(),response);
                     mView.launchMainPage();
                 }
             }

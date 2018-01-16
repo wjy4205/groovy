@@ -66,8 +66,8 @@ public class MoveLayout extends LinearLayout {
         return true;
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return !isAtTop;
-    }
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        return !isAtTop;
+//    }
 }

@@ -261,8 +261,7 @@ public interface ApiService {
                                                                       @Field("userName") String userName,
                                                                       @Field("userAccount") String userAccount,
                                                                       @Field("userType") String userType,
-                                                                      @Field("userZone") String userZone,
-                                                                      @Field("userPwd") String pwd);
+                                                                      @Field("userZone") String userZone);
 
     //第三方登陆：发送邮箱验证码
     @FormUrlEncoded
@@ -295,4 +294,17 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueMeController/bindEmail")
     Observable<ResultResponse<Object>> bindEmail(@Field("userID") String userID, @Field("email") String email, @Field("checkCode") String checkCode);
+
+
+    //编辑演出
+
+    /*
+     * @Field("performStartDate") String performStartDate,
+     @Field("performEndDate") String performEndDate,
+     @Field("performDesc") String performDesc,
+     @Field("performType") String performType
+     */
+    @FormUrlEncoded
+    @POST("VenueBookingsController/updatePerform")
+    Observable<ResultResponse<Object>> updatePerform(@FieldMap Map<String, String> map);
 }

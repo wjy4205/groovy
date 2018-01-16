@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/black"
               android:orientation="vertical">
 
@@ -36,12 +37,11 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_common"/>
 
-        <Switch
+        <com.kyleduo.switchbutton.SwitchButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            />
+            app:kswBackColor="@color/select_grey_puple_color"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -59,13 +59,12 @@
             android:text="DISCOVER"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_common"/>
-
-        <Switch
+        <com.kyleduo.switchbutton.SwitchButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            />
+            app:kswBackColor="@color/select_grey_puple_color"
+            app:kswFadeBack="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <View

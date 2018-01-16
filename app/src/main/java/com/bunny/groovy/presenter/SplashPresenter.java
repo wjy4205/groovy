@@ -57,17 +57,7 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
                         }
                     }, 3000 - (delta / 1000));
                 //获取全局参数
-                addSubscription(apiService.getGlobalParam(), new SubscriberCallBack<GlobalModel>(null) {
-                    @Override
-                    protected void onSuccess(GlobalModel response) {
-                        AppCacheData.setGlobalModel(response);
-                    }
-
-                    @Override
-                    protected void onFailure(ResultResponse response) {
-
-                    }
-                });
+                getGlobParam();
             }
 
             @Override
@@ -79,6 +69,22 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
             public void onError(Throwable e) {
                 super.onError(e);
                 mView.requestFailed();
+            }
+        });
+    }
+
+
+    public void getGlobParam() {
+        //获取全局参数
+        addSubscription(apiService.getGlobalParam(), new SubscriberCallBack<GlobalModel>(null) {
+            @Override
+            protected void onSuccess(GlobalModel response) {
+                AppCacheData.setGlobalModel(response);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
             }
         });
     }

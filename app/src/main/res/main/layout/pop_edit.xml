@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_grey_bg"
+              android:orientation="vertical"
+              android:paddingBottom="20px"
+              android:paddingLeft="30px"
+              android:paddingRight="30px"
+              android:paddingTop="20px">
+
+    <LinearLayout
+        android:id="@+id/edit_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/schedule_share"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:text="Share"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_common"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_spotlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="40px"
+        android:layout_marginTop="40px"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/schedule_spotlight"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:text="Spotlight"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_common"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/eidt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/schedule_edit"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_common"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,10 @@
 package com.bunny.groovy.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -107,6 +110,32 @@ public class Utils {
             end = end > msg.length() ? msg.length() : end;
             Log.v(tag, msg.substring(start, end));
         }
+    }
+
+    public static void openFacebook(Activity activity, String url) {
+        Intent intent;
+        try {
+            activity.getPackageManager().getPackageInfo("com.facebook.katana", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/"+url));
+        } catch (Exception e) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"+url));
+        }
+
+        activity.startActivity(intent);
+    }
+
+    public static void openTwitter(Activity activity, String userid) {
+        Intent intent = null;
+        try {
+            // get the Twitter app if possible
+            activity.getPackageManager().getPackageInfo("com.twitter.android", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=" + userid));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (Exception e) {
+            // no Twitter app, revert to browser
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/" + userid));
+        }
+        activity.startActivity(intent);
     }
 
     /**

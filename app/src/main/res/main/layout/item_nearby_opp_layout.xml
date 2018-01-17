@@ -16,9 +16,8 @@
         android:src="@drawable/head"/>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="160px"
-        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -36,7 +35,10 @@
                 android:id="@+id/item_nearby_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="The Gooota"
+                tools:text="The Gooota The Gooota The Gooota The Gooota"
+                android:maxEms="8"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_common"/>
 
@@ -44,10 +46,11 @@
                 android:id="@+id/item_nearby_tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30px"
+                android:layout_marginLeft="20px"
                 android:drawableLeft="@mipmap/list_star"
                 android:drawablePadding="4dp"
                 tools:text="2.0"
+                android:maxLines="1"
                 android:gravity="center_vertical"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_small"/>
@@ -60,15 +63,15 @@
                 android:textColor="@color/white"
                 android:layout_weight="1"
                 android:gravity="right"
+                android:maxLines="1"
                 android:textSize="@dimen/text_size_common"
-                tools:text="100km"/>
+                tools:text="750.66km"/>
         </LinearLayout>
 
         <TextView
             android:id="@+id/item_nearby_tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
             android:maxLines="1"
@@ -77,18 +80,17 @@
             android:textSize="@dimen/text_size_small"
             tools:text="The Gooota The Gooota The "/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
             >
 
             <TextView
                 android:id="@+id/item_nearby_tv_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:text="Booking Contact"
                 android:textColor="@color/textAccent"
                 android:textSize="@dimen/text_size_common"/>
@@ -98,21 +100,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/item_nearby_tv_contact"
+                android:layout_marginLeft="20px"
                 android:src="@mipmap/list_phone"/>
 
             <ImageView
                 android:id="@+id/item_nearby_iv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/item_nearby_iv_phone"
+                android:layout_marginLeft="20px"
                 android:src="@mipmap/list_email"/>
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

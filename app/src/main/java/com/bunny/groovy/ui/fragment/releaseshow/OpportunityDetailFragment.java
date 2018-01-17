@@ -17,6 +17,7 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.VenueDetailFragment;
+import com.bunny.groovy.utils.Utils;
 
 import java.util.List;
 
@@ -69,6 +70,25 @@ public class OpportunityDetailFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString(VenueDetailFragment.KEY_VENUE_ID,sParcelable.getVenueID());
         VenueDetailFragment.launch(mActivity,bundle);
+    }
+
+    @OnClick({R.id.opp_detail_iv_phone,R.id.include_detail_tv_tel})
+    public void call() {
+        Utils.CallPhone(mActivity, sParcelable.getPhoneNumber());
+    }
+    @OnClick(R.id.opp_detail_iv_email)
+    public void email() {
+        Utils.sendEmail(mActivity, sParcelable.getVenueEmail());
+    }
+
+    @OnClick(R.id.facebook_page)
+    public void facebook(){
+        Utils.openFacebook(mActivity,sParcelable.getFacebookAccount());
+    }
+
+    @OnClick(R.id.twitter_page)
+    public void twitter(){
+        Utils.openTwitter(mActivity,sParcelable.getTwitterAccount());
     }
 
     public static void launch(Activity activity, Bundle bundle) {

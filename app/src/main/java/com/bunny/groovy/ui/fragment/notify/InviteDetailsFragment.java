@@ -71,9 +71,19 @@ public class InviteDetailsFragment extends BaseFragment {
     @Bind(R.id.include_detail_iv_head)
     ImageView mHead;
 
-    @OnClick(R.id.invite_iv_phone)
+    @OnClick({R.id.invite_iv_phone,R.id.include_detail_tv_tel})
     public void call() {
         Utils.CallPhone(mActivity, sModel.getPhoneNumber());
+    }
+
+    @OnClick(R.id.facebook_page)
+    public void facebook(){
+        Utils.openFacebook(mActivity,sModel.getFacebookAccount());
+    }
+
+    @OnClick(R.id.twitter_page)
+    public void twitter(){
+        Utils.openTwitter(mActivity,sModel.getTwitterAccount());
     }
 
     @OnClick(R.id.invite_iv_email)

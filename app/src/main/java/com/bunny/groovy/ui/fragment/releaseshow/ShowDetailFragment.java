@@ -77,6 +77,15 @@ public class ShowDetailFragment extends BaseFragment {
     public void email() {
         Utils.sendEmail(mActivity, model.getVenueEmail());
     }
+    @OnClick(R.id.facebook_page)
+    public void facebook(){
+        Utils.openFacebook(mActivity,model.getFacebookAccount());
+    }
+
+    @OnClick(R.id.twitter_page)
+    public void twitter(){
+        Utils.openTwitter(mActivity,model.getTwitterAccount());
+    }
 
     private static ShowModel model;
     public static String KEY_SHOW_BEAN = "key_show_bean";

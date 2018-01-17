@@ -15,6 +15,7 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.VenueDetailPresenter;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IVenueView;
 
 import butterknife.Bind;
@@ -52,6 +53,21 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
         Bundle bundle = new Bundle();
         bundle.putParcelable(ApplyVenueFragment.KEY_VENUE_BEAN, venueModel);
         ApplyVenueFragment.launch(mActivity, bundle);
+    }
+
+    @OnClick(R.id.include_detail_tv_tel)
+    public void call() {
+        Utils.CallPhone(mActivity, venueModel.getPhoneNumber());
+    }
+
+    @OnClick(R.id.facebook_page)
+    public void facebook(){
+        Utils.openFacebook(mActivity,venueModel.getFacebookAccount());
+    }
+
+    @OnClick(R.id.twitter_page)
+    public void twitter(){
+        Utils.openTwitter(mActivity,venueModel.getTwitterAccount());
     }
 
     @OnClick(R.id.venue_detail_iv_fav)

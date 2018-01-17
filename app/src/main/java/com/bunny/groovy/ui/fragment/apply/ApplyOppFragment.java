@@ -44,12 +44,21 @@ public class ApplyOppFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
 
     public static void launch(Activity from, Bundle bundle) {
         oppBean = bundle.getParcelable(KEY_OPP_BEAN);
-        sVenueID = bundle.getString("venueID");
-        performStartDate = bundle.getString("performStartDate");
-        performEndDate = bundle.getString("performEndDate");
-        opportunityID = bundle.getString("opportunityID");
-        performDate = bundle.getString("performDate");
-        performTime = bundle.getString("performTime");
+        if (oppBean != null) {
+            sVenueID = oppBean.getVenueID();
+            performStartDate = oppBean.getStartDate();
+            performEndDate = oppBean.getEndDate();
+            opportunityID = oppBean.getOpportunityID();
+            performDate = oppBean.getPerformDate();
+            performTime = oppBean.getPerformTime();
+        } else {
+            sVenueID = bundle.getString("venueID");
+            performStartDate = bundle.getString("performStartDate");
+            performEndDate = bundle.getString("performEndDate");
+            opportunityID = bundle.getString("opportunityID");
+            performDate = bundle.getString("performDate");
+            performTime = bundle.getString("performTime");
+        }
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "APPLY");
         FragmentContainerActivity.launch(from, ApplyOppFragment.class, bundle);
     }
@@ -90,17 +99,17 @@ public class ApplyOppFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
         //   performerID
         //   opportunityID
         HashMap<String, String> map = new HashMap<>();
-        if (oppBean != null) {
-            map.put("venueID", oppBean.getVenueID());
-            map.put("performStartDate", oppBean.getStartDate());
-            map.put("performEndDate", oppBean.getEndDate());
-            map.put("opportunityID", oppBean.getOpportunityID());
-        } else {
-            map.put("venueID", sVenueID);
-            map.put("performStartDate", performStartDate);
-            map.put("performEndDate", performEndDate);
-            map.put("opportunityID", opportunityID);
-        }
+//        if (oppBean != null) {
+//            map.put("venueID", oppBean.getVenueID());
+//            map.put("performStartDate", oppBean.getStartDate());
+//            map.put("performEndDate", oppBean.getEndDate());
+//            map.put("opportunityID", oppBean.getOpportunityID());
+//        } else {
+        map.put("venueID", sVenueID);
+        map.put("performStartDate", performStartDate);
+        map.put("performEndDate", performEndDate);
+        map.put("opportunityID", opportunityID);
+//        }
         map.put("performType", etStyle.getText().toString());
         map.put("performDesc", etDesc.getText().toString());
         mPresenter.applyOpportunity(map);
@@ -111,12 +120,7 @@ public class ApplyOppFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
         super.initView(rootView);
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
-
-        if (oppBean != null) {
-            etTime.setText(oppBean.getPerformDate() + " " + oppBean.getPerformTime());
-        } else {
-            etTime.setText(performDate + " " + performTime);
-        }
+        etTime.setText(performDate + " " + performTime);
     }
 
     @Override

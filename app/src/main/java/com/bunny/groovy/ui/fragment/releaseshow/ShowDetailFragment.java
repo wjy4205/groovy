@@ -68,7 +68,7 @@ public class ShowDetailFragment extends BaseFragment {
     TextView mTvNotify;
     private static int type;
 
-    @OnClick({R.id.invite_iv_phone,R.id.include_detail_tv_tel})
+    @OnClick({R.id.show_detail_iv_phone, R.id.include_detail_tv_tel})
     public void call() {
         Utils.CallPhone(mActivity, model.getPhoneNumber());
     }
@@ -77,14 +77,15 @@ public class ShowDetailFragment extends BaseFragment {
     public void email() {
         Utils.sendEmail(mActivity, model.getVenueEmail());
     }
+
     @OnClick(R.id.facebook_page)
-    public void facebook(){
-        Utils.openFacebook(mActivity,model.getFacebookAccount());
+    public void facebook() {
+        Utils.openFacebook(mActivity, model.getFacebookAccount());
     }
 
     @OnClick(R.id.twitter_page)
-    public void twitter(){
-        Utils.openTwitter(mActivity,model.getTwitterAccount());
+    public void twitter() {
+        Utils.openTwitter(mActivity, model.getTwitterAccount());
     }
 
     private static ShowModel model;

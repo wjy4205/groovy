@@ -2,6 +2,8 @@ package com.bunny.groovy.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -98,6 +100,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.HisHol
                 popupWindow.setContentView(inflate);
                 popupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
                 popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 popupWindow.setOutsideTouchable(true);
                 popupWindow.setTouchable(true);
                 popupWindow.setFocusable(true);
@@ -112,13 +115,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.HisHol
                     }
                 });
 
-                inflate.findViewById(R.id.edit_share).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //todo 分享
-                        popupWindow.dismiss();
-                    }
-                });
 
                 inflate.findViewById(R.id.edit_spotlight).setOnClickListener(new View.OnClickListener() {
                     @Override

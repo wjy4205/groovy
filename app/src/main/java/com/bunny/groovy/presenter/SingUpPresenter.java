@@ -1,7 +1,7 @@
 package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
-import com.bunny.groovy.api.VerifyEvent;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.MyVerificationListener;
@@ -9,7 +9,6 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISingUpView;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.sinch.verification.Config;
@@ -20,8 +19,6 @@ import com.sinch.verification.VerificationListener;
 import com.socks.library.KLog;
 
 import org.greenrobot.eventbus.EventBus;
-
-import rx.Subscriber;
 
 /**
  * 注册控制器

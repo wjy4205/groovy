@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/black"
               android:orientation="vertical">
 
@@ -37,11 +37,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_common"/>
 
-        <com.kyleduo.switchbutton.SwitchButton
+        <com.suke.widget.SwitchButton
+            android:id="@+id/sb_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:kswBackColor="@color/select_grey_puple_color"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+
+            app:sb_checked_color="@color/accentPurple"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -59,12 +61,13 @@
             android:text="DISCOVER"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_common"/>
-        <com.kyleduo.switchbutton.SwitchButton
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/settings_sb_discover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:kswBackColor="@color/select_grey_puple_color"
-            app:kswFadeBack="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            app:sb_checked_color="@color/accentPurple"/>
     </RelativeLayout>
 
     <View

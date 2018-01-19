@@ -2,13 +2,12 @@ package com.bunny.groovy.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.api.VerifyEvent;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.PerformerUserModel;
@@ -76,11 +75,6 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
                 }
                 break;
             case R.id.bind_account_tv_send:
-                //判断是手机还是邮箱
-//                if (PatternUtils.isValidEmail(account)) {
-//                    //发送邮件
-//                    mPresenter.socialSendEmailCode(account);
-//                } else
                 if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
                     //发送手机验证码
                     if (mSendProgress != null && !mSendProgress.isShowing()) mSendProgress.show();

@@ -11,6 +11,7 @@ import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.Utils;
@@ -48,7 +49,8 @@ public class SplashPresenter extends BasePresenter<ISplashView> {
                             //判断资料是否完善
                             if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-                                mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
+                                LoginActivity.launch(mView.get());
+//                                mView.get().startActivity(new Intent(mView.get(), SetFile1Activity.class));
                             } else {
                                 //进入主页
                                 MainActivity.launch(mView.get());

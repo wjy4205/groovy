@@ -68,7 +68,7 @@ public class ShowDetailFragment extends BaseFragment {
     TextView mTvNotify;
     private static int type;
 
-    @OnClick(R.id.show_detail_iv_phone)
+    @OnClick({R.id.invite_iv_phone,R.id.include_detail_tv_tel})
     public void call() {
         Utils.CallPhone(mActivity, model.getPhoneNumber());
     }
@@ -112,7 +112,7 @@ public class ShowDetailFragment extends BaseFragment {
         super.initView(rootView);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
-            mTvPerformerName.setText(model.getStageName());
+            mTvPerformerName.setText(model.getPerformerName());
             mTvVenueName_1.setText(model.getVenueName());
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());

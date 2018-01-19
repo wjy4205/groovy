@@ -89,14 +89,28 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param uid       账户
      */
     public void checkHadBindUid(final String loginType, final String uid, final String username) {
-        addSubscription(apiService.checkUidNotLogin(loginType, uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+        addSubscription(apiService.checkUidNotLogin(loginType, "1", uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
                 //已经绑定，直接登录
                 if (response != null) {
-                    KLog.d(response.getGoogleUID());
-                    Utils.initLoginData(mView.get(), response);
-                    socialLogin(loginType, uid, username, response.getPhoneNumber());
+                    //获取全局参数
+                    getGlobParam();
+                    //判断资料是否完善
+                    if (TextUtils.isEmpty(response.getZipCode())) {
+                        //需要完善信息
+                        mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                    } else {
+                        //进入主页
+                        MainActivity.launch(mView.get());
+                    }
+                } else {
+                    //未绑定任何账户，跳转到绑定账户页面
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", username);
+                    bundle.putString("logintype", loginType);
+                    bundle.putString("uid", uid);
+                    BindAccountFragment.launch(mView.get(), bundle);
                 }
             }
 
@@ -140,30 +154,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             }
         });
     }
-
-    //验证code
-    public void checkEmailCode(String code, final String uid, final String username, final String logintype,
-                               final String useraccount) {
-        addSubscription(apiService.checkSocialEmailCode(code), new SubscriberCallBack(mView.get()) {
-            @Override
-            protected boolean isShowProgress() {
-                return true;
-            }
-
-            @Override
-            protected void onSuccess(Object response) {
-                //第三方登录
-                socialLogin(logintype, uid, username, useraccount);
-            }
-
-            @Override
-            protected void onFailure(ResultResponse response) {
-
-            }
-
-        });
-    }
-
 
     /**
      * loginType

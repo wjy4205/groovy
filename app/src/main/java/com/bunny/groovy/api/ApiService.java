@@ -250,7 +250,9 @@ public interface ApiService {
     //判断第三方ID是否已经绑定到账户
     @FormUrlEncoded
     @POST("FrontUserController/checkUidNotLogin")
-    Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType") String loginType, @Field("uid") String uid,
+    Observable<ResultResponse<PerformerUserModel>> checkUidNotLogin(@Field("loginType") String loginType,
+                                                                    @Field("userType") String userType,
+                                                                    @Field("uid") String uid,
                                                                     @Field("userZone") String userZone);
 
     //第三方登陆
@@ -307,4 +309,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueBookingsController/updatePerform")
     Observable<ResultResponse<Object>> updatePerform(@FieldMap Map<String, String> map);
+
+    //修改是否屏蔽搜索
+    @FormUrlEncoded
+    @POST("PerformerMeController/updateMaskedSearch")
+    Observable<ResultResponse<Object>> updateDiscover(@Field("state") String state);
 }

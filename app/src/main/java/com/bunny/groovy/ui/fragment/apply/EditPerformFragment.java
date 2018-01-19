@@ -51,7 +51,7 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
     public static String KEY_VENUE_BEAN = "KEY_VENUE_BEAN";
     private static ShowModel sVenueBean;
     private TextView mTvTimeTitle;
-    private List<String> mTimeClockList,mRealTimeList;
+    private List<String> mTimeClockList, mRealTimeList;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
     private PopupWindow mDatePop;
     private Date today = Calendar.getInstance().getTime();
@@ -108,10 +108,14 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
         //set data
-        if (sVenueBean!=null){
+        if (sVenueBean != null) {
             etDesc.setText(sVenueBean.getPerformDesc());
             etStyle.setText(sVenueBean.getPerformType());
-            etTime.setText(sVenueBean.getPerformDate()+" "+sVenueBean.getPerformTime());
+            etTime.setText(sVenueBean.getPerformDate() + " " + sVenueBean.getPerformTime());
+            //设置传过来的时间
+            mSelectDate.setTime(new Date(sVenueBean.getPerformStartDate()));
+            startTime = DateUtils.getDateHour(sVenueBean.getPerformStartDate());
+            endTime = DateUtils.getDateHour(sVenueBean.getPerformEndDate());
         }
     }
 

@@ -1,9 +1,8 @@
-package com.bunny.groovy.api;
+package com.bunny.groovy.listener;
 
 import android.app.Activity;
 
 import com.bunny.groovy.base.BaseApp;
-import com.bunny.groovy.listener.MyVerificationListener;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.weidget.ProgressHUD;
@@ -30,19 +29,14 @@ public class VerifyEvent {
      * @param phone
      */
     public static void initSinch(Activity activity, String phone) {
-        ProgressHUD show = ProgressHUD.show(activity, "发送验证码...", true, true, null);
-        show.show();
-        if (mVerification == null) {
-            Config config = SinchVerification.config().applicationKey(AppConstants.SINCH_APPKEY).context(BaseApp.getContext()).build();
-            sListener = new MyVerificationListener();
-            String defaultRegion = PhoneNumberUtils.getDefaultCountryIso(BaseApp.getContext());
-            KLog.d("地区", defaultRegion);
-            String phoneNumberInE164 = PhoneNumberUtils.formatNumberToE164(phone, defaultRegion);
-            KLog.d("格式化的号码", phoneNumberInE164);
-            mVerification = SinchVerification.createSmsVerification(config, phoneNumberInE164, sListener);
-        }
+        Config config = SinchVerification.config().applicationKey(AppConstants.SINCH_APPKEY).context(BaseApp.getContext()).build();
+        sListener = new MyVerificationListener();
+        String defaultRegion = PhoneNumberUtils.getDefaultCountryIso(BaseApp.getContext());
+        KLog.d("地区", defaultRegion);
+        String phoneNumberInE164 = PhoneNumberUtils.formatNumberToE164(phone, defaultRegion);
+        KLog.d("格式化的号码", phoneNumberInE164);
+        mVerification = SinchVerification.createSmsVerification(config, phoneNumberInE164, sListener);
         mVerification.initiate();
-        show.dismiss();
     }
 
     /**

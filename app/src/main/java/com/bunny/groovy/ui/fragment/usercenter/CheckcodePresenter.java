@@ -1,7 +1,7 @@
 package com.bunny.groovy.ui.fragment.usercenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
-import com.bunny.groovy.api.VerifyEvent;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.utils.AppCacheData;

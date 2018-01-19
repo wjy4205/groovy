@@ -169,6 +169,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         MainActivity.launch(this);
     }
 
+    /**
+     * 跳转到设置资料页面
+     */
     @Override
     public void launchToSetFile() {
         startActivityForResult(new Intent(this, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);

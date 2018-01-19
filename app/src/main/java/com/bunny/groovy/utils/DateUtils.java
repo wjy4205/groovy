@@ -1,8 +1,11 @@
 package com.bunny.groovy.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+
+import com.socks.library.KLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,15 +22,16 @@ import java.util.List;
 
 public class DateUtils {
     private static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    public static String[] weeks = { "SUN","MON", "TUE", "WED", "THUR", "FRI", "SAT"};
-    public static String[] CN_weeks = { "MON", "TUE", "WED", "THUR", "FRI", "SAT","SUN"};
+    public static String[] weeks = {"SUN", "MON", "TUE", "WED", "THUR", "FRI", "SAT"};
+    public static String[] CN_weeks = {"MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"};
+
     public static String getMonthEn(Date date) {
         return months[date.getMonth()];
     }
 
-    public static String getDayOfWeek(Calendar calendar){
+    public static String getDayOfWeek(Calendar calendar) {
         int i = calendar.get(Calendar.DAY_OF_WEEK);
-        return weeks[i-1];
+        return weeks[i - 1];
     }
 
     //获取小时
@@ -194,6 +198,19 @@ public class DateUtils {
         instance.add(Calendar.DATE, -7);
         list.add(1, instance.getTime());
         return list;
+    }
+
+
+    //获取日期的小时时间
+    public static String getDateHour(String date) {
+        if (!TextUtils.isEmpty(date)) {
+            Date res = new Date(date);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            String format = dateFormat.format(res);
+            KLog.a("从日期获取时间：" + format);
+            return format;
+        }
+        return "0:00";
     }
 
 

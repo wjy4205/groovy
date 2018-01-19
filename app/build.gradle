@@ -107,5 +107,5 @@ dependencies {
     //facebook
     compile 'com.facebook.android:facebook-login:[4,5)'
     //switchbutton
-    compile 'com.kyleduo.switchbutton:library:2.0.0'
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
 }

@@ -50,7 +50,7 @@ public class AboutusFragment extends BaseFragment {
     public void initView(View rootView) {
         super.initView(rootView);
         mAboutusTvPhone.setText(AppCacheData.getGlobalModel().getServicePhone());
-        mAboutusTvEmail.setText(AppCacheData.getGlobalModel().getReportPhone());
+        mAboutusTvEmail.setText(AppCacheData.getGlobalModel().getServiceEmail());
     }
 
     @Override

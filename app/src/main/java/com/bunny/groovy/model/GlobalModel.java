@@ -29,6 +29,11 @@ public class GlobalModel {
     private String performIcon;
     private String opportunityIcon;
     private String rewardRate;
+    /**
+     * serviceEmail : 593909628@qq.com
+     */
+
+    private String serviceEmail;
 
     public String getCreateDate() {
         return createDate;
@@ -100,5 +105,13 @@ public class GlobalModel {
 
     public void setRewardRate(String rewardRate) {
         this.rewardRate = rewardRate;
+    }
+
+    public String getServiceEmail() {
+        return serviceEmail;
+    }
+
+    public void setServiceEmail(String serviceEmail) {
+        this.serviceEmail = serviceEmail;
     }
 }

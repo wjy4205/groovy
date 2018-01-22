@@ -31,8 +31,10 @@ import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.ui.fragment.wallet.WalletFragment;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMeView;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.SlidingTabLayout;
@@ -121,6 +123,24 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         } else {
             UIUtils.showBaseToast("Please upload music.");
         }
+    }
+
+    @OnClick(R.id.me_tv_facebook)
+    public void facebook() {
+        if (!TextUtils.isEmpty(AppCacheData.getPerformerUserModel().getFacebookAccount()))
+            Utils.openFacebook(mActivity, AppCacheData.getPerformerUserModel().getFacebookAccount());
+    }
+
+    @OnClick(R.id.me_tv_cloud)
+    public void cloud() {
+        if (!TextUtils.isEmpty(AppCacheData.getPerformerUserModel().getSoundcloudAccount()))
+            Utils.openSoundCloud(mActivity, AppCacheData.getPerformerUserModel().getSoundcloudAccount());
+    }
+
+    @OnClick(R.id.me_tv_twitter)
+    public void twitter() {
+        if (!TextUtils.isEmpty(AppCacheData.getPerformerUserModel().getTwitterAccount()))
+            Utils.openTwitter(mActivity, AppCacheData.getPerformerUserModel().getTwitterAccount());
     }
 
     @OnClick(R.id.me_tv_wallet)

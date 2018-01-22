@@ -116,9 +116,9 @@ public class Utils {
         Intent intent;
         try {
             activity.getPackageManager().getPackageInfo("com.facebook.katana", 0);
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/"+url));
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/" + url));
         } catch (Exception e) {
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"+url));
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/" + url));
         }
 
         activity.startActivity(intent);
@@ -135,6 +135,13 @@ public class Utils {
             // no Twitter app, revert to browser
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/" + userid));
         }
+        activity.startActivity(intent);
+    }
+
+    public static void openSoundCloud(Activity activity, String account) {
+//        https://soundcloud.com/connect?client_id=[个人账号]
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://soundcloud.com/connect?client_id="
+                + account + "&redirect_uri=scplayer://fugafuga.com&display=popup&response_type=token"));
         activity.startActivity(intent);
     }
 

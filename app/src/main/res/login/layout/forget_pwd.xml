@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:orientation="vertical"
+    android:paddingTop="120px">
+
+    <com.xw.repo.XEditText
+        android:id="@+id/forget_et_account"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="40dp"
+        android:hint="@string/email_phone"
+        app:x_disableEmoji="true" />
+
+
+    <TextView
+        android:id="@+id/forget_tv_next"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="@string/next" />
+
+    <TextView
+        android:id="@+id/forget_tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_have_no_account"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30px"
+        android:text="LOGIN"
+        android:textColor="@color/white" />
+</LinearLayout>

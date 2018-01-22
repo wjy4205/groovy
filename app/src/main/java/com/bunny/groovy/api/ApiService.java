@@ -12,6 +12,7 @@ import com.bunny.groovy.model.WalletBean;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -314,4 +315,26 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("PerformerMeController/updateMaskedSearch")
     Observable<ResultResponse<Object>> updateDiscover(@Field("state") String state);
+
+
+    //忘记密码发送验证码
+    @FormUrlEncoded
+    @POST("FrontUserController/sendEmailCodeNotLogin")
+    Observable<ResultResponse<Object>> forgetPwdSendCode(@Field("email") String email);
+
+
+    //忘记密码-检查邮箱验证码
+    @FormUrlEncoded
+    @POST("FrontUserController/chekForgetPwdEmailCodeNotLogin")
+    Observable<ResultResponse<Object>> checkMailCode(@Field("chekCode") String chekCode);
+
+
+    //忘记密码-新密码保存
+    @FormUrlEncoded
+    @POST("FrontUserController/updatePasswordNotLogin")
+    Observable<ResultResponse<Object>> updatePwd(@Field("userAccount") String userAccount,
+                                                 @Field("accountType") String accountType,//账户类型（0-手机号 1-邮箱）
+                                                 @Field("newPassword") String newPassword);
+
+
 }

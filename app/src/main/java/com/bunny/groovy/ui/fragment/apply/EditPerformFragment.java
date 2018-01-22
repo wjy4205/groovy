@@ -113,7 +113,8 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
             etStyle.setText(sVenueBean.getPerformType());
             etTime.setText(sVenueBean.getPerformDate() + " " + sVenueBean.getPerformTime());
             //设置传过来的时间
-            mSelectDate.setTime(new Date(sVenueBean.getPerformStartDate()));
+
+            mSelectDate.setTime(DateUtils.getDate(sVenueBean.getPerformStartDate()));
             startTime = DateUtils.getDateHour(sVenueBean.getPerformStartDate());
             endTime = DateUtils.getDateHour(sVenueBean.getPerformEndDate());
         }

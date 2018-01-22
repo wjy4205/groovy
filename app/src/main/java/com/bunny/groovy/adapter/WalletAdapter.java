@@ -37,23 +37,27 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletHold
             // 交易类型（0-提现 1-充值 3-打赏支出 4-打赏收入 5-推广包购买支出）
             case "0":
                 holder.tvType.setText("WITHDRAWS");
+                holder.tvAmount.setText("-"+walletBean.getCost());
                 break;
             case "1":
                 holder.tvType.setText("RECHARGE");
+                holder.tvAmount.setText("+"+walletBean.getCost());
                 break;
             case "3":
                 holder.tvType.setText("REWARD@"+walletBean.getRewardBindID());
+                holder.tvAmount.setText("-"+walletBean.getCost());
                 break;
             case "4":
                 holder.tvType.setText("RECEIVE REWARD");
+                holder.tvAmount.setText("+"+walletBean.getCost());
                 break;
             case "5":
                 holder.tvType.setText("SPOTLIGHT");
+                holder.tvAmount.setText("-"+walletBean.getCost());
                 break;
         }
 
         holder.tvTime.setText(walletBean.getDealDate());
-        holder.tvAmount.setText(walletBean.getCost());
     }
 
     public void refresh(List<WalletBean> list){

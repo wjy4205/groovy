@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="60dp">
+
+    <com.xw.repo.XEditText
+        android:id="@+id/confirm_pwd_et_code"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="40dp"
+        android:hint="@string/verification_code"
+        app:x_disableEmoji="true" />
+
+    <com.xw.repo.XEditText
+        android:id="@+id/confirm_pwd_et_password_1"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="10dp"
+        android:hint="NEW PASSWORD"
+        app:x_disableEmoji="true"
+        app:x_importantWord="true" />
+
+    <com.xw.repo.XEditText
+        android:id="@+id/confirm_pwd_et_password_2"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="10dp"
+        android:hint="NEW PASSWORD" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:gravity="bottom"
+            android:text="*"
+            android:textColor="@color/accentPurple"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            style="@style/remark_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/required" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/confirm_pwd_tv_submit"
+        style="@style/role_selected_text_style"
+        android:layout_marginTop="30dp"
+        android:text="CONFIRM" />
+
+    <TextView
+        android:id="@+id/confirm_pwd_tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_have_no_account"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30px"
+        android:text="LOGIN"
+        android:textColor="@color/white" />
+</LinearLayout>

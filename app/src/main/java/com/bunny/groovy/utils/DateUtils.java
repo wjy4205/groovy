@@ -204,13 +204,22 @@ public class DateUtils {
     //获取日期的小时时间
     public static String getDateHour(String date) {
         if (!TextUtils.isEmpty(date)) {
-            Date res = new Date(date);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            String format = dateFormat.format(res);
-            KLog.a("从日期获取时间：" + format);
-            return format;
+            String[] split = date.split(" ");
+            if (split.length > 0)
+                return split[1];
         }
         return "0:00";
+    }
+
+    public static Date getDate(String timeStr) {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            return format.parse(timeStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
 

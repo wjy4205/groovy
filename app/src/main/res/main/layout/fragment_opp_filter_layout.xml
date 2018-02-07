@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_common"
-            tools:text="100km"/>
+            tools:text="0mi"/>
     </LinearLayout>
 
     <TextView

@@ -101,15 +101,15 @@ public class FilterFragment extends BaseFragment {
             int distance = args.getInt(KEY_DISTANCE, -1);
             if (distance > 0) {
                 mSeekBar.setProgress(distance/10);
-                mTvDistance.setText(distance+ "km");
+                mTvDistance.setText(distance+ "mi");
             }
             String time = args.getString(KEY_START_TIME);
             if (!TextUtils.isEmpty(time)) {
                 mEtStartTime.setText(time);
             }
         }else {
-            mSeekBar.setProgress(20);
-            mTvDistance.setText("200km");
+            mSeekBar.setProgress(50);
+            mTvDistance.setText("500mi");
         }
 
     }
@@ -128,7 +128,7 @@ public class FilterFragment extends BaseFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distance = String.valueOf(progress * 10);
-                mTvDistance.setText(distance + "km");
+                mTvDistance.setText(distance + "mi");
             }
 
             @Override

@@ -14,10 +14,20 @@
         android:src="@drawable/login_logo"/>
 
     <TextView
+        android:id="@+id/aboutus_tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80px"
+        android:layout_marginTop="20px"
+        android:text="version"
+        android:textColor="@color/common_grey"
+        android:textSize="@dimen/text_size_small"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50px"
         android:text="CALL-PHONE NUMBER"
         android:textColor="@color/common_grey"
         android:textSize="@dimen/text_size_big"/>

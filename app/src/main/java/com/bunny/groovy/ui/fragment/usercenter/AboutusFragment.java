@@ -1,6 +1,9 @@
 package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,8 @@ public class AboutusFragment extends BaseFragment {
     TextView mAboutusTvPhone;
     @Bind(R.id.aboutus_tv_email)
     TextView mAboutusTvEmail;
+    @Bind(R.id.aboutus_tv_version)
+    TextView tvVersion;
 
 
     public static void launch(Activity from) {
@@ -51,6 +56,20 @@ public class AboutusFragment extends BaseFragment {
         super.initView(rootView);
         mAboutusTvPhone.setText(AppCacheData.getGlobalModel().getServicePhone());
         mAboutusTvEmail.setText(AppCacheData.getGlobalModel().getServiceEmail());
+        tvVersion.setText("V " + getLocalVersionName(getActivity()));
+    }
+
+    public String getLocalVersionName(Context ctx) {
+        String localVersion = "";
+        try {
+            PackageInfo packageInfo = ctx.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(ctx.getPackageName(), 0);
+            localVersion = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return localVersion;
     }
 
     @Override

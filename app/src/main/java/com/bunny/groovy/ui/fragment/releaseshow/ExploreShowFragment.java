@@ -332,6 +332,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     public void onMapReady(GoogleMap map) {
         mGoogleMap = map;
+        mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 mActivity, R.raw.map_style));
 
@@ -355,7 +356,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 return false;
             }
         });
-//        updateLoc();
         //设置当前位置
         updateCurrentLocation();
     }

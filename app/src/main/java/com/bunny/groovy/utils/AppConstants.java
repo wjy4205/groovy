@@ -17,6 +17,9 @@ public class AppConstants {
     public static String USER_TYPE_MUSICIAN = "1";//用户类型 表演者
     public static String USER_TYPE_SHOWER = "2";//用户类型 演出厅
 
+    public static String KEY_USER_TYPE = "key_user_type";
+    public static String USER_TYPE;//用户类型
+
     public static int ACTIVITY_FINISH = -100;//activity结束标志
 
     public static String GMT_FORMAT = "GMT%s";//格林尼治时间标志

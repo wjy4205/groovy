@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,6 +67,16 @@ public class ShowDetailFragment extends BaseFragment {
 
     @Bind(R.id.show_detail_tv_notify)
     TextView mTvNotify;
+
+    @Bind(R.id.include_detail_tv_21plus)
+    TextView tv21Plus;
+    @Bind(R.id.include_detail_tv_Alcohol)
+    TextView tvAlcohol;
+    @Bind(R.id.include_detail_tv_food)
+    TextView tvFood;
+    @Bind(R.id.include_detail_tv_Cover_Charge)
+    TextView tvCoverCharge;
+
     private static int type;
 
     @OnClick({R.id.show_detail_iv_phone, R.id.include_detail_tv_tel})
@@ -163,6 +174,32 @@ public class ShowDetailFragment extends BaseFragment {
                 default:
                     mTvNotify.setVisibility(View.GONE);
                     break;
+            }
+
+            //设置演出厅提供服务
+            String venueTypeName = model.getVenueTypeName();
+            try {
+                if (!TextUtils.isEmpty(venueTypeName)) {
+                    String[] mapSplit = venueTypeName.split(",");
+                    if (mapSplit.length > 0) {
+                        for (int i = 0; i < mapSplit.length; i++) {
+                            String[] split = mapSplit[i].split(" ");
+                            if (split[1].contains("21")) {
+                                tv21Plus.setEnabled(split[0].contains("Serves"));
+                                continue;
+                            }
+                            if (split[1].contains("Food")) {
+                                tvFood.setEnabled(split[0].contains("Serves"));
+                                continue;
+                            }
+                            if (split[1].contains("Alcohol")) {
+                                tvAlcohol.setEnabled(split[0].contains("Serves"));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

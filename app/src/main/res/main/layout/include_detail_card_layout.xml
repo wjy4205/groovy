@@ -74,27 +74,33 @@
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
             <TextView
+                android:id="@+id/include_detail_tv_21plus"
                 style="@style/common_text_style"
-                android:drawableLeft="@drawable/icon_yes"
+                android:drawableLeft="@drawable/selector_type_yes_no_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
+                android:layout_marginRight="8px"
                 android:text="21+"/>
             <TextView
+                android:id="@+id/include_detail_tv_food"
                 style="@style/common_text_style"
-                android:drawableLeft="@drawable/icon_yes"
+                android:drawableLeft="@drawable/selector_type_yes_no_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
+                android:layout_marginRight="8px"
                 android:text="Food"/>
             <TextView
+                android:id="@+id/include_detail_tv_Alcohol"
                 style="@style/common_text_style"
-                android:drawableLeft="@drawable/icon_yes"
+                android:drawableLeft="@drawable/selector_type_yes_no_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:text="Alcohol"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/include_detail_tv_Cover_Charge"
             style="@style/common_text_style"
-            android:drawableLeft="@drawable/icon_no"
+            android:drawableLeft="@drawable/selector_type_yes_no_icon"
             android:drawablePadding="5dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"

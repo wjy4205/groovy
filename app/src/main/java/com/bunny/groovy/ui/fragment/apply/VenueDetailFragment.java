@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,9 @@ import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.VenueDetailPresenter;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IVenueView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -45,6 +50,17 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     ImageView mHead;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
+
+    @Bind(R.id.include_detail_tv_21plus)
+    TextView tv21Plus;
+    @Bind(R.id.include_detail_tv_Alcohol)
+    TextView tvAlcohol;
+    @Bind(R.id.include_detail_tv_food)
+    TextView tvFood;
+    @Bind(R.id.include_detail_tv_Cover_Charge)
+    TextView tvCoverCharge;
+
+
     private VenueScheduleAdapter mAdapter;
     private VenueModel venueModel;
 
@@ -61,13 +77,13 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     }
 
     @OnClick(R.id.facebook_page)
-    public void facebook(){
-        Utils.openFacebook(mActivity,venueModel.getFacebookAccount());
+    public void facebook() {
+        Utils.openFacebook(mActivity, venueModel.getFacebookAccount());
     }
 
     @OnClick(R.id.twitter_page)
-    public void twitter(){
-        Utils.openTwitter(mActivity,venueModel.getTwitterAccount());
+    public void twitter() {
+        Utils.openTwitter(mActivity, venueModel.getTwitterAccount());
     }
 
     @OnClick(R.id.venue_detail_iv_fav)
@@ -114,6 +130,32 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
             isFavorite = false;
             mIvFavourite.setImageResource(R.drawable.nav_collection);
         }
+        //设置演出厅提供服务
+        String venueTypeName = model.getVenueTypeName();
+        try {
+            if (!TextUtils.isEmpty(venueTypeName)) {
+                String[] mapSplit = venueTypeName.split(",");
+                if (mapSplit.length > 0) {
+                    for (int i = 0; i < mapSplit.length; i++) {
+                        String[] split = mapSplit[i].split(" ");
+                        if (split[1].contains("21")) {
+                            tv21Plus.setEnabled(split[0].contains("Serves"));
+                            continue;
+                        }
+                        if (split[1].contains("Food")) {
+                            tvFood.setEnabled(split[0].contains("Serves"));
+                            continue;
+                        }
+                        if (split[1].contains("Alcohol")) {
+                            tvAlcohol.setEnabled(split[0].contains("Serves"));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Glide.with(mActivity).load(model.getHeadImg()).error(R.mipmap.venue_instead_pic).into(mHead);
         //set list
         if (mAdapter == null) {

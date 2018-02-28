@@ -51,17 +51,16 @@ public class FilterFragment extends BaseFragment {
     public static String KEY_DISTANCE = "key_distance";
     public static String KEY_START_TIME = "key_start_time";
     public static String KEY_END_TIME = "key_end_time";
-    private PopupWindow mTimePop;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
-    private List<String> mTimeClockList;
     private PopupWindow mDatePop;
     private Date today = Calendar.getInstance().getTime();
     private String distance;
+    private String value_date;
 
 
     public static void launchForResult(Activity from, Bundle bundle, int requestCode) {
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "OPPORTUNITY FILTERS");
-        FragmentContainerActivity.launchForResult(from, FilterFragment.class, bundle,requestCode);
+        FragmentContainerActivity.launchForResult(from, FilterFragment.class, bundle, requestCode);
     }
 
     @OnClick(R.id.filter_et_start_time)
@@ -74,9 +73,9 @@ public class FilterFragment extends BaseFragment {
     public void submit() {
         //提交过滤条件
         Intent intent = new Intent();
-        intent.putExtra("distance",distance);
-        intent.putExtra("performStartDate",DateUtils.getFormatTime(mSelectDate.getTime()));
-        mActivity.setResult(Activity.RESULT_OK,intent);
+        intent.putExtra("distance", distance);
+        intent.putExtra("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime()));
+        mActivity.setResult(Activity.RESULT_OK, intent);
         mActivity.finish();
     }
 
@@ -100,16 +99,19 @@ public class FilterFragment extends BaseFragment {
         if (args != null) {
             int distance = args.getInt(KEY_DISTANCE, -1);
             if (distance > 0) {
-                mSeekBar.setProgress(distance/10);
-                mTvDistance.setText(distance+ "mi");
+                mSeekBar.setProgress(distance / 10);
+                mTvDistance.setText(distance + "mi");
             }
-            String time = args.getString(KEY_START_TIME);
-            if (!TextUtils.isEmpty(time)) {
-                mEtStartTime.setText(time);
-            }
-        }else {
+//            String time = args.getString(KEY_START_TIME);
+//            if (!TextUtils.isEmpty(time)) {
+//                mEtStartTime.setText(time);
+//            }else {
+//                mEtStartTime.setText(DateUtils.getFormatTime(new Date()));
+//            }
+        } else {
             mSeekBar.setProgress(50);
             mTvDistance.setText("500mi");
+            mEtStartTime.setText(DateUtils.getFormatTime(new Date()));
         }
 
     }

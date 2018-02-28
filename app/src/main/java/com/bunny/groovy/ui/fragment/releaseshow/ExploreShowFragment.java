@@ -96,7 +96,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     private List<OpportunityModel> mOpportunityModelList = new ArrayList<>();
     private OpportunityModel mCurrentBean;//当前选中的演出机会bean
     private List<Marker> mMarkerList = new ArrayList<>();
-    private String distance = "500";//距离默认200mi
+    private String distance = "500";//距离默认500mi
+    private String performDate;//表演时间
     private Location mLastLocation;
     private boolean isMarkerShowing = false;
 
@@ -180,7 +181,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     private void filter() {
         Bundle bundle = new Bundle();
         bundle.putInt(FilterFragment.KEY_DISTANCE, Integer.parseInt(distance));
-
+        bundle.putString(FilterFragment.KEY_START_TIME, performDate);
         FilterFragment.launchForResult(mActivity, bundle, FILTER_REQUEST_CODE);
     }
 
@@ -307,7 +308,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
      * 停止位置更新监听
      */
     private void stopLocationUpdates() {
-        mLocationClient.removeLocationUpdates(locationCallback);
+        if (mLastLocation != null)
+            mLocationClient.removeLocationUpdates(locationCallback);
     }
 
 
@@ -530,13 +532,14 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
             String dis = data.getStringExtra("distance");
             if (TextUtils.isEmpty(dis)) {
                 map.put("distance", distance);
-                distance = dis;
             } else {
+                distance = dis;
                 map.put("distance", dis);
             }
 
             String performStartDate = data.getStringExtra("performStartDate");
             if (!TextUtils.isEmpty(performStartDate)) {
+                performDate = performStartDate;
                 map.put("performStartDate", performStartDate);
             }
 

@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.presenter.ListPresenter;
-import com.github.nukc.stateview.StateView;
 
 import org.greenrobot.eventbus.EventBus;
 

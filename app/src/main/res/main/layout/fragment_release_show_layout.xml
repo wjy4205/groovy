@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="26dp">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="26dp">
 
     <TextView
         style="@style/common_text_style"
-        android:text="@string/role_venue" />
+        android:text="@string/role_venue"/>
 
     <LinearLayout style="@style/input_text_parent">
 
         <EditText
             android:id="@+id/release_et_venue"
             style="@style/common_input_text"
-            android:hint="@string/search" />
+            android:hint="@string/search"/>
 
         <TextView
             android:id="@+id/release_tv_search"
@@ -25,13 +25,18 @@
             android:layout_height="wrap_content"
             android:text="@string/search"
             android:textColor="@color/accentPurple"
-            android:textSize="@dimen/text_size_common" />
+            android:textSize="@dimen/text_size_common"/>
     </LinearLayout>
+
+    <include
+        android:id="@+id/release_include_venue"
+        layout="@layout/include_venue_brife_info_layout"
+        android:visibility="gone"/>
 
     <TextView
         style="@style/common_text_style"
         android:layout_marginTop="10dp"
-        android:text="SHOW GENRE" />
+        android:text="SHOW GENRE"/>
 
     <LinearLayout style="@style/input_text_parent">
 
@@ -44,21 +49,21 @@
     <TextView
         style="@style/common_text_style"
         android:layout_marginTop="10dp"
-        android:text="TIME" />
+        android:text="TIME"/>
 
     <LinearLayout style="@style/input_text_parent">
 
         <EditText
             android:id="@+id/release_et_time"
             style="@style/common_input_text"
-            android:hint="CHOOSE" />
+            android:hint="CHOOSE"/>
 
     </LinearLayout>
 
     <TextView
         style="@style/common_text_style"
         android:layout_marginTop="10dp"
-        android:text="SHOW DESCRIPTION" />
+        android:text="SHOW DESCRIPTION"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,7 +87,59 @@
             android:maxLength="400"
             android:textColor="@color/white"
             android:textColorHint="@color/common_grey"
-            android:textSize="@dimen/text_size_common" />
+            android:textSize="@dimen/text_size_common"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/release_ll_spotlight"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/release_tv_spotlight"
+            style="@style/common_text_style"
+            android:text="Spotlight This Show"
+            android:textColor="@color/accentPurple"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16px"
+            android:src="@drawable/icon_problem"/>
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="20px"
+            android:text="(Credits:"/>
+
+        <TextView
+            android:id="@+id/release_tv_money"
+            style="@style/common_text_style"
+            android:text="0"
+            android:textColor="@color/accentPurple"/>
+
+        <TextView
+            style="@style/common_text_style"
+            android:text=")"/>
+
+
+        <TextView
+            android:id="@+id/release_tv_get_credits"
+            style="@style/common_text_style"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Get Credits"
+            android:textColor="@color/accentPurple"/>
+        <CheckBox
+            android:id="@+id/release_checkbox_use_spotlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:button="@drawable/selector_square_checkbox_btn"/>
     </LinearLayout>
 
     <TextView
@@ -91,5 +148,5 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="30dp"
-        android:text="@string/release" />
+        android:text="@string/release"/>
 </LinearLayout>

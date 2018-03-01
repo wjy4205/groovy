@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,15 @@ public class OpportunityDetailFragment extends BaseFragment {
     ImageView mHead;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
+
+    @Bind(R.id.include_detail_tv_21plus)
+    TextView tv21Plus;
+    @Bind(R.id.include_detail_tv_Alcohol)
+    TextView tvAlcohol;
+    @Bind(R.id.include_detail_tv_food)
+    TextView tvFood;
+    @Bind(R.id.include_detail_tv_Cover_Charge)
+    TextView tvCoverCharge;
 
     @OnClick(R.id.opp_detail_tv_apply)
     public void apply() {
@@ -121,6 +131,18 @@ public class OpportunityDetailFragment extends BaseFragment {
             mTvEmail.setText(sParcelable.getWebSiteAddress());
             Glide.with(mActivity).load(sParcelable.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
                     .into(mHead);
+            //设置演出厅提供服务
+            String venueTypeName = sParcelable.getVenueTypeName();
+            if (!TextUtils.isEmpty(venueTypeName)) {
+                tv21Plus.setEnabled(!venueTypeName.contains("21"));
+                tvFood.setEnabled(venueTypeName.contains("Food"));
+                tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
+            } else {
+                tv21Plus.setEnabled(true);
+                tvFood.setEnabled(false);
+                tvAlcohol.setEnabled(false);
+            }
+
             List<OpportunityModel.PerformerOpportunityBean> OpportunityList = sParcelable.getPerformerOpportunity();
             if (OpportunityList != null && OpportunityList.size() > 0) {
                 //set adapter

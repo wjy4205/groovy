@@ -93,8 +93,12 @@
     <style name="common_text_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/select_grey_puple_color</item>
+        <item name="android:textColor">@color/common_grey</item>
         <item name="android:textSize">@dimen/text_size_common</item>
+    </style>
+
+    <style name="grey_highlight_text" parent="common_text_style">
+        <item name="android:textColor">@color/select_grey_puple_color</item>
     </style>
 
     <style name="common_white_text_style">

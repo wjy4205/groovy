@@ -32,8 +32,7 @@ public class ExplorerOpptnyPresenter extends BasePresenter<IExploreView> {
 
             @Override
             protected void onSuccess(List<OpportunityModel> response) {
-                if (response != null && response.size() > 0)
-                    mView.setListData(response);
+                mView.setListData(response);
             }
 
             @Override

@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.notify;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,19 +72,28 @@ public class InviteDetailsFragment extends BaseFragment {
     @Bind(R.id.include_detail_iv_head)
     ImageView mHead;
 
-    @OnClick({R.id.invite_iv_phone,R.id.include_detail_tv_tel})
+    @Bind(R.id.include_detail_tv_21plus)
+    TextView tv21Plus;
+    @Bind(R.id.include_detail_tv_Alcohol)
+    TextView tvAlcohol;
+    @Bind(R.id.include_detail_tv_food)
+    TextView tvFood;
+    @Bind(R.id.include_detail_tv_Cover_Charge)
+    TextView tvCoverCharge;
+
+    @OnClick({R.id.invite_iv_phone, R.id.include_detail_tv_tel})
     public void call() {
         Utils.CallPhone(mActivity, sModel.getPhoneNumber());
     }
 
     @OnClick(R.id.facebook_page)
-    public void facebook(){
-        Utils.openFacebook(mActivity,sModel.getFacebookAccount());
+    public void facebook() {
+        Utils.openFacebook(mActivity, sModel.getFacebookAccount());
     }
 
     @OnClick(R.id.twitter_page)
-    public void twitter(){
-        Utils.openTwitter(mActivity,sModel.getTwitterAccount());
+    public void twitter() {
+        Utils.openTwitter(mActivity, sModel.getTwitterAccount());
     }
 
     @OnClick(R.id.invite_iv_email)
@@ -129,8 +139,8 @@ public class InviteDetailsFragment extends BaseFragment {
     @OnClick(R.id.invite_tv_confirm)
     public void confirm() {//同意
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ConfirmInviteFragment.KEY_VENUE_BEAN,sModel);
-        ConfirmInviteFragment.launch(mActivity,bundle);
+        bundle.putParcelable(ConfirmInviteFragment.KEY_VENUE_BEAN, sModel);
+        ConfirmInviteFragment.launch(mActivity, bundle);
     }
 
     @Override
@@ -156,6 +166,18 @@ public class InviteDetailsFragment extends BaseFragment {
             } else {
                 llAction.setVisibility(View.VISIBLE);
                 mTvNotify.setVisibility(View.GONE);
+            }
+
+            //设置演出厅提供服务
+            String venueTypeName = sModel.getVenueTypeName();
+            if (!TextUtils.isEmpty(venueTypeName)) {
+                tv21Plus.setEnabled(!venueTypeName.contains("21"));
+                tvFood.setEnabled(venueTypeName.contains("Food"));
+                tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
+            } else {
+                tv21Plus.setEnabled(true);
+                tvFood.setEnabled(false);
+                tvAlcohol.setEnabled(false);
             }
         }
     }

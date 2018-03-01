@@ -132,29 +132,16 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
         }
         //设置演出厅提供服务
         String venueTypeName = model.getVenueTypeName();
-        try {
-            if (!TextUtils.isEmpty(venueTypeName)) {
-                String[] mapSplit = venueTypeName.split(",");
-                if (mapSplit.length > 0) {
-                    for (int i = 0; i < mapSplit.length; i++) {
-                        String[] split = mapSplit[i].split(" ");
-                        if (split[1].contains("21")) {
-                            tv21Plus.setEnabled(split[0].contains("Serves"));
-                            continue;
-                        }
-                        if (split[1].contains("Food")) {
-                            tvFood.setEnabled(split[0].contains("Serves"));
-                            continue;
-                        }
-                        if (split[1].contains("Alcohol")) {
-                            tvAlcohol.setEnabled(split[0].contains("Serves"));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!TextUtils.isEmpty(venueTypeName)) {
+            tv21Plus.setEnabled(!venueTypeName.contains("21"));
+            tvFood.setEnabled(venueTypeName.contains("Food"));
+            tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
+        } else {
+            tv21Plus.setEnabled(true);
+            tvFood.setEnabled(false);
+            tvAlcohol.setEnabled(false);
         }
+
 
         Glide.with(mActivity).load(model.getHeadImg()).error(R.mipmap.venue_instead_pic).into(mHead);
         //set list

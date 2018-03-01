@@ -10,10 +10,13 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
@@ -21,6 +24,7 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
+import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
@@ -44,6 +48,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -87,6 +92,44 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Bind(R.id.release_et_bio)
     EditText etBio;
 
+    @Bind(R.id.release_include_venue)
+    View venueInfoLayout;
+
+    @Bind(R.id.venue_info_headimg)
+    CircleImageView venueHeadImg;
+
+    @Bind(R.id.venue_info_tv_name)
+    TextView tvVenueName;
+
+    @Bind(R.id.venue_info_tv_address)
+    TextView tvVenueAddress;
+
+    @Bind(R.id.venue_info_tv_score)
+    TextView tvVenueScore;
+
+    @Bind(R.id.venue_info_tv_phone)
+    TextView tvVenuePhone;
+
+    @Bind(R.id.release_ll_spotlight)
+    View llSpotLight;
+
+    @Bind(R.id.release_tv_money)
+    TextView tvSpotLightMoney;
+
+    @Bind(R.id.release_checkbox_use_spotlight)
+    CheckBox cbUseSpotlight;
+
+    @OnClick(R.id.release_tv_spotlight)
+    public void spotLight() {
+
+    }
+
+    @OnClick(R.id.release_tv_get_credits)
+    public void getCredits() {
+        SpotlightFragment.launch(get());
+    }
+
+
     @OnClick(R.id.tv_release)
     public void release() {
         //判断空
@@ -127,6 +170,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performDesc", etBio.getText().toString());
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
+        if (cbUseSpotlight.isChecked()){
+            map.put("isOpportunity","1");
+        }else map.put("isOpportunity","0");
         mPresenter.releaseShow(map);
     }
 
@@ -335,7 +381,19 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Subscribe
     public void onChooseVenue(VenueModel model) {
         mVenueModel = model;
-        if (model != null) etVenue.setText(model.getVenueName());
+        if (model != null) {
+            etVenue.setText(model.getVenueName());
+            venueInfoLayout.setVisibility(View.VISIBLE);
+            llSpotLight.setVisibility(View.VISIBLE);
+            Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
+            tvVenueName.setText(model.getVenueName());
+            tvVenueScore.setText(model.getVenueScore());
+            tvVenueAddress.setText(model.getVenueAddress());
+            tvVenuePhone.setText(model.getPhoneNumber());
+        } else {
+            venueInfoLayout.setVisibility(View.GONE);
+            llSpotLight.setVisibility(View.GONE);
+        }
     }
 
 
@@ -366,6 +424,16 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         etVenue.setFocusable(false);
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
+        //spotlight
+        if (Integer.parseInt(AppCacheData.getPerformerUserModel().getPackageCount()) > 0) {
+            tvSpotLightMoney.setVisibility(View.GONE);
+            cbUseSpotlight.setVisibility(View.VISIBLE);
+            cbUseSpotlight.setChecked(true);
+        } else {
+            tvSpotLightMoney.setVisibility(View.VISIBLE);
+            tvSpotLightMoney.setText(AppCacheData.getPerformerUserModel().getPackageCount());
+            cbUseSpotlight.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -72,9 +72,10 @@ public class FilterFragment extends BaseFragment {
     @OnClick(R.id.filter_tv_submit)
     public void submit() {
         //提交过滤条件
+        distance = String.valueOf(mSeekBar.getProgress() * 10);
         Intent intent = new Intent();
         intent.putExtra("distance", distance);
-        intent.putExtra("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime()));
+        intent.putExtra("performStartDate", DateUtils.getFormatTimeHHMM(mSelectDate.getTime()));
         mActivity.setResult(Activity.RESULT_OK, intent);
         mActivity.finish();
     }
@@ -94,7 +95,7 @@ public class FilterFragment extends BaseFragment {
     public void initView(View rootView) {
         super.initView(rootView);
         mEtStartTime.setFocusable(false);
-
+        mSelectDate = Calendar.getInstance();
         Bundle args = getArguments();
         if (args != null) {
             int distance = args.getInt(KEY_DISTANCE, -1);

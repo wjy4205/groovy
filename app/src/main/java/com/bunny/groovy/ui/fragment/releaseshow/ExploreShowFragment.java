@@ -2,12 +2,10 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,8 +34,6 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
 import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.FilterFragment;
-import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.LocationUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
@@ -124,6 +119,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     RelativeLayout mapLayout;
     @Bind(R.id.map_et_search)
     TextView etSearch;
+    @Bind(R.id.map_search_bar)
+    View mapSearchBar;
 
     private LocationManager locationManager;
     private FusedLocationProviderClient mLocationClient;
@@ -302,6 +299,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         }
 
         mLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+        if (mGoogleMap != null)
+            mGoogleMap.setMyLocationEnabled(true);
     }
 
     /**
@@ -329,9 +328,15 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         Glide.with(mActivity).load(bean.getHeadImg()).error(R.mipmap.venue_instead_pic).into(mHeadImg);
     }
 
+    private int lastMarkerSelected = -2;//上一个显示的marker index
+
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
+        if (ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mGoogleMap.setMyLocationEnabled(true);
+        }
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 mActivity, R.raw.map_style));
 
@@ -340,18 +345,34 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
             @Override
             public boolean onMarkerClick(Marker marker) {
                 OpportunityModel info = (OpportunityModel) marker.getTag();
-                if (info != null) {
-                    if (isMarkerShowing) {
-                        mMarkerLayout.setVisibility(View.GONE);
-                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
-                    } else {
+                int clickedIndex = mMarkerList.indexOf(marker);
+                if (lastMarkerSelected == clickedIndex) {
+                    //点击的是当前marker
+                    if (info != null) {
+                        if (isMarkerShowing) {
+                            mMarkerLayout.setVisibility(View.GONE);
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+                        } else {
+                            setMarkerData(info);
+                            mMarkerLayout.setVisibility(View.VISIBLE);
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
+                        }
+                        isMarkerShowing = !isMarkerShowing;
+                    }
+                } else {
+                    //点击的是其他marker
+                    if (info != null) {
                         setMarkerData(info);
                         mMarkerLayout.setVisibility(View.VISIBLE);
+                        isMarkerShowing = true;
+                        //把上个marker的icon设置小图标
+                        if (lastMarkerSelected >= 0)
+                            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+                        //设置当前点击的marker大图片
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
                     }
-                    isMarkerShowing = !isMarkerShowing;
-                    return true;
                 }
+                lastMarkerSelected = clickedIndex;
                 return false;
             }
         });
@@ -423,16 +444,20 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         }
         //设置当前位置
         resetMap();
-        //设置marker
-        LatLng loc;
-        for (int i = 0; i < list.size(); i++) {
-            OpportunityModel model = list.get(i);
-            loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
-                    .draggable(false)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
-            marker.setTag(model);
-            mMarkerList.add(marker);
+        if (list!=null){
+            //设置marker
+            isMarkerShowing = false;
+            mMarkerLayout.setVisibility(View.GONE);
+            LatLng loc;
+            for (int i = 0; i < list.size(); i++) {
+                OpportunityModel model = list.get(i);
+                loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
+                        .draggable(false)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+                marker.setTag(model);
+                mMarkerList.add(marker);
+            }
         }
         //列表数据
         if (mAdapter == null) {
@@ -443,7 +468,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                     R.drawable.shape_item_divider_line));
             mRecyclerView.setAdapter(mAdapter);
         } else mAdapter.refresh(mOpportunityModelList);
-
     }
 
     /**
@@ -505,6 +529,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 mMenu.findItem(R.id.explore_menu_list).setVisible(false);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mapLayout.setVisibility(View.GONE);
+                mapSearchBar.setVisibility(View.GONE);
                 return true;
             case R.id.explore_menu_map:
                 //地图显示
@@ -514,6 +539,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 mMenu.findItem(R.id.explore_menu_map).setVisible(false);
                 mRecyclerView.setVisibility(View.GONE);
                 mapLayout.setVisibility(View.VISIBLE);
+                mapSearchBar.setVisibility(View.VISIBLE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -530,12 +556,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         if (requestCode == FILTER_REQUEST_CODE && resultCode == RESULT_OK) {
             HashMap<String, String> map = new HashMap<>();
             String dis = data.getStringExtra("distance");
-            if (TextUtils.isEmpty(dis)) {
-                map.put("distance", distance);
-            } else {
+            if (!TextUtils.isEmpty(dis)) {
                 distance = dis;
-                map.put("distance", dis);
             }
+            map.put("distance", distance);
 
             String performStartDate = data.getStringExtra("performStartDate");
             if (!TextUtils.isEmpty(performStartDate)) {
@@ -564,99 +588,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         }
     }
 
-
-//    private Location getBestLocation(LocationManager locationManager) {
-//        Location result;
-//        if (locationManager != null) {
-//            if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                    && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                return null;
-//            }
-//            result = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            if (result != null) {
-//                return result;
-//            } else {
-//                result = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                return result;
-//            }
-//        }
-//        return null;
-//    }
-//    LocationListener listener = new LocationListener() {
-//        @Override
-//        public void onLocationChanged(Location location) {
-//            KLog.d("xxx", "获取位置" + location.getLatitude() + "   " + location.getLongitude());
-//            mLastLocation = location;
-//            updateLoc();
-//            if (locationManager != null) locationManager.removeUpdates(this);
-//        }
-//
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//            KLog.d("xxx", "onProviderEnabled -- provider=" + provider);
-//            updateLoc();
-//            if (locationManager != null) locationManager.removeUpdates(this);
-//        }
-//
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String provider) {
-//        }
-//    };
-
-    /**
-     * ***********************弃用**********************
-     * 在地图上更新当前位置
-     */
-//    private void updateLoc() {
-//        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
-//        mLastLocation = getBestLocation(locationManager);
-//        if (mLastLocation == null || mLastLocation.getLongitude() == 0 || mLastLocation.getLatitude() == 0) {
-//            String latitude = AppCacheData.getPerformerUserModel().getLatitude();
-//            String longitude = AppCacheData.getPerformerUserModel().getLongitude();
-//            mLastLocation = new Location(LocationManager.GPS_PROVIDER);
-//            mLastLocation.setLatitude(Double.parseDouble(latitude));
-//            mLastLocation.setLongitude(Double.parseDouble(longitude));
-//        }
-//        if (mLastLocation != null) {
-//            KLog.a("当前位置：" + mLastLocation.getLatitude() + " -- " + mLastLocation.getLongitude());
-//            if (mGoogleMap != null) {
-//                mGoogleMap.clear();
-//                LatLng myLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-//                mGoogleMap.addMarker(new MarkerOptions().position(myLoc)
-//                        .title("Your Location")
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
-//                        .draggable(true));
-//
-//                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
-//            }
-//        }
-//    }
-
-    /***
-     * *******************弃用**********************
-     *
-     * 初始化位置监听服务
-     */
-//    private void initLocationListener() {
-//        //判断是否打开位置服务
-//        LocationUtils.checkLocationServiceEnable(mActivity);
-//
-//        locationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
-//
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10, listener);
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 10, listener);
-//    }
     @Override
     public void onPause() {
         super.onPause();
@@ -666,7 +597,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (locationManager != null) locationManager.removeUpdates(listener);
     }
 
 

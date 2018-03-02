@@ -147,6 +147,7 @@ public class MainActivity extends BaseActivity {
      */
     public static void launch(Context activity) {
         Intent intent = new Intent(activity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         for (Activity ac :
                 mActivities) {

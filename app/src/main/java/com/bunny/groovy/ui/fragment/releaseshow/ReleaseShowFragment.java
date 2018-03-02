@@ -11,8 +11,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -73,6 +73,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private Date today = Calendar.getInstance().getTime();
     private VenueModel mVenueModel;
     private Place mPlace;
+    private int mType;
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -118,6 +119,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
 
     @Bind(R.id.release_checkbox_use_spotlight)
     CheckBox cbUseSpotlight;
+
+    @Bind(R.id.release_name)
+    TextView mReleaseName;
 
     @OnClick(R.id.release_tv_spotlight)
     public void spotLight() {
@@ -170,9 +174,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performDesc", etBio.getText().toString());
         map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
-        if (cbUseSpotlight.isChecked()){
-            map.put("isOpportunity","1");
-        }else map.put("isOpportunity","0");
+        if (cbUseSpotlight.isChecked()) {
+            map.put("isOpportunity", "1");
+        } else map.put("isOpportunity", "0");
         mPresenter.releaseShow(map);
     }
 
@@ -420,6 +424,12 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        mType = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
+        //演出厅
+        if(mType == 2){
+            mReleaseName.setText("SELECT MUSICIAN");
+            etVenue.setHint("Fill in musician name or search");
+        }
         //禁用编辑
         etVenue.setFocusable(false);
         etStyle.setFocusable(false);
@@ -439,6 +449,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Override
     public void initListener() {
         super.initListener();
+        etBio.setCursorVisible(false);
+        etBio.setFocusable(false);
+        etBio.setFocusableInTouchMode(false);
         registerEventBus(this);
     }
 
@@ -453,7 +466,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         styleList = modelList;
         if (mPopupWindow == null)
             initPopWindow(modelList);
-        mPopupWindow.showAtLocation(etBio, Gravity.CENTER, 0, 0);
+        mPopupWindow.showAtLocation(etBio, Gravity.CENTER, 0, UIUtils.dip2Px(15));
     }
 
     /**
@@ -471,6 +484,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         mPopupWindow.setTouchable(true);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
+        mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         RecyclerView recyclerview = (RecyclerView) popview.findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mAdatper = new StyleGridAdapter(modelList, etStyle.getText().toString().trim());

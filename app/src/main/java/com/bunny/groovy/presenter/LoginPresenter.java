@@ -46,13 +46,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //获取全局参数
                             getGlobParam();
                             //判断资料是否完善
-                            if (TextUtils.isEmpty(response.getZipCode())) {
+//                            if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
-                            } else {
+//                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+//                            } else {
                                 //进入主页
                                 mView.launchMainPage();
-                            }
+//                            }
                         }
                     }
 
@@ -175,13 +175,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             protected void onSuccess(PerformerUserModel response) {
                 //登录，判断是否完善了资料
                 Utils.initLoginData(mView.get(), response);
-                if (response == null || TextUtils.isEmpty(response.getStageName()) ||
-                        TextUtils.isEmpty(response.getZipCode())) {
-                    //未完善资料
-                    mView.launchToSetFile();
-                } else {
+//                if (response == null || TextUtils.isEmpty(response.getStageName()) ||
+//                        TextUtils.isEmpty(response.getZipCode())) {
+//                    //未完善资料
+//                    mView.launchToSetFile();
+//                } else {
                     mView.launchMainPage();
-                }
+//                }
             }
 
             @Override

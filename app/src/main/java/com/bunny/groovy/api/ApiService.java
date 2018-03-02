@@ -346,4 +346,10 @@ public interface ApiService {
                                            @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
                                            @Field("facebookAccount") String facebookAccount, @Field("imgfile") String imgfile,
                                            @Field("placeID") String placeID, @Field("venueScore") String venueScore);
+
+    //获取下一场演出信息，包含演出详情
+    @POST("VenueBookingsController/getNextPerformInfo")
+    Observable<ResultResponse<ShowModel>> getNextPerformInfo(
+            @Query("venueID") String venueID
+    );
 }

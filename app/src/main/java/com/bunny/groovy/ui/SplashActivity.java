@@ -39,11 +39,11 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
         super.initData();
         boolean isLogin = (boolean) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_LOGIN, false);
         String userID = (String) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_USERID, "");
-        if (isLogin && !TextUtils.isEmpty(userID)) {
-            //已登录
-            //请求表演者资料
-            mPresenter.requestPerformerInfo();
-        } else {
+//        if (isLogin && !TextUtils.isEmpty(userID)) {
+//            //已登录
+//            //请求表演者资料
+//            mPresenter.requestPerformerInfo();
+//        } else {
             //未登录
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -51,7 +51,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                     RoleChooseActivity.launch(SplashActivity.this);
                 }
             }, 2000);
-        }
+//        }
     }
 
     @Override

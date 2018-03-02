@@ -10,6 +10,7 @@ import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.LoginPresenter;
 import com.bunny.groovy.ui.MainActivity;
+import com.bunny.groovy.ui.VenueMainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
@@ -188,7 +189,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 MainActivity.launch(this);
                 break;
             case AppConstants.USER_TYPE_VENUE:
-                //todo VENUE首页
+                VenueMainActivity.start(this);
                 break;
         }
 

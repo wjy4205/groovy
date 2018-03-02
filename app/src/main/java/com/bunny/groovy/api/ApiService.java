@@ -336,5 +336,14 @@ public interface ApiService {
                                                  @Field("accountType") String accountType,//账户类型（0-手机号 1-邮箱）
                                                  @Field("newPassword") String newPassword);
 
-
+    //演出厅用户注册
+    @FormUrlEncoded
+    @POST("FrontUserController/venueFrontUserRegister")
+    Observable<ResultResponse<Object>> venueRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
+                                           @Field("telephone") String phone, @Field("userEmail") String email,@Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
+                                           @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
+                                           @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
+                                           @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
+                                           @Field("facebookAccount") String facebookAccount, @Field("imgfile") String imgfile,
+                                           @Field("placeID") String placeID, @Field("venueScore") String venueScore);
 }

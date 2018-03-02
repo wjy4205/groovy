@@ -64,6 +64,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 break;
             case AppConstants.USER_TYPE_VENUE:
                 //todo VENUE注册
+                startActivityForResult(new Intent(this, VenueRegister1Activity.class), 2);
                 break;
         }
     }

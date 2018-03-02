@@ -169,4 +169,25 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         });
     }
 
+    public void register_venue(String userName, String userPwd, String telephone, String userEmail,
+                               String checkCode, String venueTypeName, String venueAddress, String phoneNumber,
+                               String webSiteAddress, String longitude, String latitude, String twitterAccount,
+                               String facebookAccount, String imgfile, String placeID, String venueScore) {
+
+        addSubscription(apiService.venueRegister(userName, userPwd, telephone, userEmail,
+                checkCode, venueTypeName, venueAddress, phoneNumber,
+                webSiteAddress, longitude, latitude, twitterAccount,
+                facebookAccount,imgfile,placeID,venueScore), new SubscriberCallBack<ResultResponse>(mView.get()) {
+            @Override
+            protected void onSuccess(ResultResponse response) {
+                UIUtils.showBaseToast("注册成功！");
+                mView.registerSuccess();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+            }
+        });
+    }
+
 }

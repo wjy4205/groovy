@@ -43,6 +43,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
     private static final int RC_SIGN_IN = 123;
+    private int mUserType;
     @Bind(R.id.login_et_account)
     XEditText etPhoneOrEmail;
     @Bind(R.id.login_et_password)
@@ -57,7 +58,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.tv_sign_up)
     void signUp() {
-        startActivityForResult(new Intent(this, SignUpActivity.class), 2);
+        switch (mUserType) {
+            case AppConstants.USER_TYPE_MUSICIAN:
+                startActivityForResult(new Intent(this, SignUpActivity.class), 2);
+                break;
+            case AppConstants.USER_TYPE_VENUE:
+                //todo VENUE注册
+                break;
+        }
     }
 
     @OnClick(R.id.tv_musician_login)
@@ -83,7 +91,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         }
 
         //通过验证,登录
-        mPresenter.login(etPhoneOrEmail.getTrimmedString(), etPassword.getTrimmedString());
+        mPresenter.login(etPhoneOrEmail.getTrimmedString(), etPassword.getTrimmedString(), mUserType);
     }
 
     @OnClick(R.id.tv_forget_password)
@@ -113,6 +121,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     public static void launch(Context activity) {
         activity.startActivity(new Intent(activity, LoginActivity.class));
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        mUserType = getIntent().getIntExtra("type", AppConstants.USER_TYPE_NORMAL);
     }
 
     @Override
@@ -168,7 +182,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void launchMainPage() {
         //登录成功，进入主页，结束登录页面
-        MainActivity.launch(this);
+        switch (mUserType) {
+            case AppConstants.USER_TYPE_MUSICIAN:
+                MainActivity.launch(this);
+                break;
+            case AppConstants.USER_TYPE_VENUE:
+                //todo VENUE首页
+                break;
+        }
+
     }
 
     /**

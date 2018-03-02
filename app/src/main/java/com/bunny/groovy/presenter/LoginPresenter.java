@@ -32,8 +32,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         super(view);
     }
 
-    public void login(String account, String password) {
-        addSubscription(apiService.performerLogin(account, password, AppConstants.USER_TYPE_MUSICIAN, Utils.getTimeZone()),
+    public void login(String account, String password,int type) {
+        addSubscription(apiService.performerLogin(account, password, String.valueOf(type), Utils.getTimeZone()),
                 new SubscriberCallBack<PerformerUserModel>(mView.get()) {
                     /**
                      * @param response

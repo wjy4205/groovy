@@ -13,9 +13,9 @@ public class AppConstants {
     public static int ACCOUNT_TYPE_PHONE = 1;//账号类型：手机号
     public static int ACCOUNT_TYPE_EMAIL = 2;//账号类型：邮箱
 
-    public static String USER_TYPE_NORMAL = "0";//用户类型 普通用户
-    public static String USER_TYPE_MUSICIAN = "1";//用户类型 表演者
-    public static String USER_TYPE_SHOWER = "2";//用户类型 演出厅
+    public final static int USER_TYPE_NORMAL = 0;//用户类型 普通用户
+    public final static int USER_TYPE_MUSICIAN = 1;//用户类型 表演者
+    public final static int USER_TYPE_VENUE = 2;//用户类型 演出厅
 
     public static String KEY_USER_TYPE = "key_user_type";
     public static String USER_TYPE;//用户类型

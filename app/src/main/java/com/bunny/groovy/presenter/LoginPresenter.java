@@ -44,23 +44,23 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //获取全局参数
                             getGlobParam();
                             //判断资料是否完善
-//                            if (TextUtils.isEmpty(response.getZipCode())) {
+                            int userType = Utils.parseInt(response.getUserType());
+                            if (userType == AppConstants.USER_TYPE_MUSICIAN
+                                    && TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-//                                switch (type) {
+//                                switch (userType) {
 //                                    case AppConstants.USER_TYPE_NORMAL:
 //                                        break;
 //                                    case AppConstants.USER_TYPE_MUSICIAN:
-//                                        mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
 //                                        break;
 //                                    case AppConstants.USER_TYPE_VENUE:
 //                                        //TODO 完善资料
 //                                        break;
-//                                }
-
-//                            } else {
+                            } else {
                                 //进入主页
                                 mView.launchMainPage();
-//                            }
+                            }
                         }
                     }
 
@@ -188,7 +188,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 //                    //未完善资料
 //                    mView.launchToSetFile();
 //                } else {
-                    mView.launchMainPage();
+                mView.launchMainPage();
 //                }
             }
 

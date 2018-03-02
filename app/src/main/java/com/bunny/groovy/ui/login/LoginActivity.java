@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.bunny.groovy.BuildConfig;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.manager.LoginBlock;
@@ -63,7 +64,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 startActivityForResult(new Intent(this, SignUpActivity.class), 2);
                 break;
             case AppConstants.USER_TYPE_VENUE:
-                //todo VENUE注册
                 startActivityForResult(new Intent(this, VenueRegister1Activity.class), 2);
                 break;
         }
@@ -128,6 +128,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     public void initData() {
         super.initData();
         mUserType = getIntent().getIntExtra("type", AppConstants.USER_TYPE_NORMAL);
+        //just for test
+        if(BuildConfig.DEBUG){
+            switch (mUserType){
+                case AppConstants.USER_TYPE_MUSICIAN:
+                    etPhoneOrEmail.setText("13564521320");
+                    break;
+                case AppConstants.USER_TYPE_VENUE:
+                    etPhoneOrEmail.setText("13761434342");
+//                    etPhoneOrEmail.setText("13476027261");
+            }
+            etPassword.setText("123456789");
+        }
+
     }
 
     @Override

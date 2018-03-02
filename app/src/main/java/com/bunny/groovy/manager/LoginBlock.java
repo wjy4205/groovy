@@ -8,6 +8,7 @@ import com.bunny.groovy.ui.VenueMainActivity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.SharedPreferencesUtils;
+import com.bunny.groovy.utils.Utils;
 import com.google.gson.Gson;
 
 /**
@@ -59,7 +60,7 @@ public class LoginBlock {
     }
 
     public void handleCheckSuccess(String type){
-        int userType = Integer.parseInt(type);
+        int userType = Utils.parseInt(type);
         switch (userType) {
             case AppConstants.USER_TYPE_NORMAL:
                 break;

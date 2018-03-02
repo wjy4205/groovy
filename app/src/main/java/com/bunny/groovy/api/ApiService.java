@@ -336,6 +336,10 @@ public interface ApiService {
                                                  @Field("accountType") String accountType,//账户类型（0-手机号 1-邮箱）
                                                  @Field("newPassword") String newPassword);
 
+    //获取表演者个人信息
+    @POST("VenueMeController/getVenueDetailInfo")
+    Observable<ResultResponse<PerformerUserModel>> getVenueDetailInfo();
+
     //演出厅用户注册
     @FormUrlEncoded
     @POST("FrontUserController/venueFrontUserRegister")

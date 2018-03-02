@@ -5,6 +5,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
 
 /****************************************
@@ -46,7 +47,7 @@ public class VenueOverviewPresenter extends BasePresenter<IOverView> {
      * 获取user数据
      */
     public void requestUserData() {
-        addSubscription(apiService.getPerformerInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+        addSubscription(apiService.getVenueDetailInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;

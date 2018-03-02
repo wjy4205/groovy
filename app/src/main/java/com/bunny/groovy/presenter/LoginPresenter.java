@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.bunny.groovy.R;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.GlobalModel;
@@ -15,7 +14,6 @@ import com.bunny.groovy.ui.login.BindAccountFragment;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.SharedPreferencesUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
@@ -32,7 +30,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         super(view);
     }
 
-    public void login(String account, String password,int type) {
+    public void login(String account, String password, final int type) {
         addSubscription(apiService.performerLogin(account, password, String.valueOf(type), Utils.getTimeZone()),
                 new SubscriberCallBack<PerformerUserModel>(mView.get()) {
                     /**
@@ -48,7 +46,17 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //判断资料是否完善
 //                            if (TextUtils.isEmpty(response.getZipCode())) {
                                 //需要完善信息
-//                                mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+//                                switch (type) {
+//                                    case AppConstants.USER_TYPE_NORMAL:
+//                                        break;
+//                                    case AppConstants.USER_TYPE_MUSICIAN:
+//                                        mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+//                                        break;
+//                                    case AppConstants.USER_TYPE_VENUE:
+//                                        //TODO 完善资料
+//                                        break;
+//                                }
+
 //                            } else {
                                 //进入主页
                                 mView.launchMainPage();

@@ -7,10 +7,9 @@ import android.text.TextUtils;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
+import com.bunny.groovy.manager.LoginBlock;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.LoginPresenter;
-import com.bunny.groovy.ui.MainActivity;
-import com.bunny.groovy.ui.VenueMainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
@@ -121,8 +120,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
-    public static void launch(Context activity) {
-        activity.startActivity(new Intent(activity, LoginActivity.class));
+    public static void launch(Context activity, int type) {
+        activity.startActivity(new Intent(activity, LoginActivity.class).putExtra("type", type));
     }
 
     @Override
@@ -183,16 +182,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void launchMainPage() {
-        //登录成功，进入主页，结束登录页面
-        switch (mUserType) {
-            case AppConstants.USER_TYPE_MUSICIAN:
-                MainActivity.launch(this);
-                break;
-            case AppConstants.USER_TYPE_VENUE:
-                VenueMainActivity.start(this);
-                break;
-        }
-
+        LoginBlock.getInstance().handleCheckSuccess(String.valueOf(mUserType));
     }
 
     /**

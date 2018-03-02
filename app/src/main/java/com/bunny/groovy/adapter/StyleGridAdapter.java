@@ -30,7 +30,7 @@ public class StyleGridAdapter extends RecyclerView.Adapter<StyleGridAdapter.Styl
     private Context mContext;
     private String selectedStyle;
     private final RelativeLayout.LayoutParams params;
-    private int count = 0;
+    private int mCount = 0;
 
     public StyleGridAdapter(List<StyleModel> dataList, String selected) {
         this.dataList = dataList;
@@ -68,12 +68,12 @@ public class StyleGridAdapter extends RecyclerView.Adapter<StyleGridAdapter.Styl
                     dataList.get(position).setChecked(false);
                 }
                 else {
-                    count = 0;
+                    mCount = 0;
                     for (StyleModel model :
                             dataList) {
-                        if (model.isChecked()) count++;
+                        if (model.isChecked()) mCount++;
                     }
-                    if (count>=2) {
+                    if (mCount >=2) {
                         UIUtils.showBaseToast("最多选两个");
                         return;
                     }

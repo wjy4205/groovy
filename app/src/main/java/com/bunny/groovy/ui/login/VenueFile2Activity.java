@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by mysty on 2018/2/26.
  */
 
-public class VenueFill2Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
+public class VenueFile2Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
 
     @OnClick(R.id.tv_go)
     void go() {

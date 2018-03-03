@@ -62,12 +62,10 @@
         app:x_importantWord="true"
         app:x_disableEmoji="true" />
 
-    <com.xw.repo.XEditText
+    <TextView
         android:id="@+id/et_venue_address"
         style="@style/base_edit_text_style"
-        android:hint="@string/venue_register_address"
-        app:x_importantWord="true"
-        app:x_disableEmoji="true" />
+        android:hint="@string/venue_register_address"/>
     <TextView
         android:id="@+id/tv_venue_protocol"
         android:layout_width="match_parent"

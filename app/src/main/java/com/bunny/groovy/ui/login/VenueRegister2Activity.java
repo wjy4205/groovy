@@ -1,22 +1,16 @@
 package com.bunny.groovy.ui.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.VerifyEvent;
-import com.bunny.groovy.presenter.SingUpPresenter;
+import com.bunny.groovy.presenter.VenueRegisterPresenter;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
@@ -25,6 +19,7 @@ import com.xw.repo.XEditText;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.ref.WeakReference;
 import java.net.URLEncoder;
 
 import butterknife.Bind;
@@ -34,7 +29,7 @@ import butterknife.OnClick;
  * Created by mysty on 2018/2/26.
  */
 
-public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implements ISingUpView {
+public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter> implements ISingUpView {
 
     public static String KEY_ACCOUNT = "key_account";
     private String mAccount;
@@ -48,6 +43,12 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
     private String mAddress;
     public static String KEY_HEAD_URL = "key_head_url";
     private String mHeadUrl;
+    public static String KEY_LONGITUDE = "key_longitude";
+    private String mLongitude;
+    public static String KEY_LATITUDE = "key_latitude";
+    private String mLatitude;
+    public static String KEY_PLACE_ID = "key_place_id";
+    private String mPlaceId;
     @Bind(R.id.et_venue_code)
     XEditText mEditCode;
     @Bind(R.id.et_venue_booking_phone)
@@ -60,18 +61,14 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
     XEditText mVenuePhone;
     @Bind(R.id.et_venue_website)
     XEditText mVenueWebsite;
-
+    @Bind(R.id.et_venue_facebook)
+    XEditText mVenueFacebook;
+    @Bind(R.id.et_venue_twitter)
+    XEditText mVenueTwitter;
     private CheckBox[] checkBoxs = new CheckBox[3];
     private PopupWindow popupWindow;
 
-
-    public static void start(Context outerContext, int userType) {
-        Intent intent = new Intent(outerContext, VenueRegister2Activity.class);
-        intent.putExtra(VenueRegister2Activity.KEY_ACCOUNT, "18068833520");
-        intent.putExtra(VenueRegister2Activity.KEY_TYPE, userType);
-        intent.putExtra(VenueRegister2Activity.KEY_PASSWORD, "123456789");
-        outerContext.startActivity(intent);
-    }
+    private WeakReference<Activity> mWeakReference = new WeakReference<Activity>(this);
 
     @Override
     public void initView() {
@@ -84,6 +81,9 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
             mPublicName = intent.getStringExtra(KEY_PUBLIC_NAME);
             mAddress = intent.getStringExtra(KEY_ADDRESS);
             mHeadUrl = intent.getStringExtra(KEY_HEAD_URL);
+            mLongitude = intent.getStringExtra(KEY_LONGITUDE);
+            mLatitude = intent.getStringExtra(KEY_LATITUDE);
+            mPlaceId = intent.getStringExtra(KEY_PLACE_ID);
         } else finish();
 
         //set view
@@ -133,8 +133,8 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
     }
 
     @Override
-    protected SingUpPresenter createPresenter() {
-        return new SingUpPresenter(this);
+    protected  VenueRegisterPresenter createPresenter() {
+        return new VenueRegisterPresenter(this);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
 
     @Override
     public Activity get() {
-        return getCurrentActivity();
+        return mWeakReference.get();
     }
 
     /**
@@ -162,9 +162,10 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
      */
     @Override
     public void registerSuccess() {
-//        setResult(AppConstants.ACTIVITY_FINISH);
-//        finish();
-        startActivity(new Intent(this, LoginActivity.class));
+        setResult(AppConstants.ACTIVITY_FINISH);
+        finish();
+        //完善资料
+        startActivity(new Intent(this, VenueFile1Activity.class));
     }
 
     @Override
@@ -181,57 +182,8 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
     @OnClick(R.id.et_venue_service)
     void selectStyle() {
         UIUtils.hideSoftInput(mVenueService);
-        showPopWindow(this, mVenueService.getTrimmedString());
     }
 
-    private void showPopWindow(Context context, String selectType) {
-        if (popupWindow == null) {
-            popupWindow = new PopupWindow(context);
-            View view = LayoutInflater.from(context).inflate(R.layout.venue_pop_service_type, null, false);
-            TypedArray array = getResources().obtainTypedArray(R.array.venue_service_type);
-            for (int i = 0; i < array.length(); i++) {
-                checkBoxs[i] = view.findViewById(array.getResourceId(i, 0));
-            }
-            array.recycle();
-            popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(110));
-            popupWindow.setBackgroundDrawable(new BitmapDrawable());
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setFocusable(true);
-            popupWindow.setContentView(view);
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    StringBuilder stringBuffer = new StringBuilder();
-                    for (CheckBox checkBox : checkBoxs) {
-                        if (checkBox.isChecked())
-                            stringBuffer.append(checkBox.getText().toString()).append(",");
-                    }
-                    String substring = "";
-                    if (stringBuffer.length() >= 1) {
-                        substring = stringBuffer.substring(0, stringBuffer.length() - 1);
-                    }
-                    mVenueService.setText(substring);
-                }
-            });
-            popupWindow.update();
-        } else {
-            String[] split = selectType.split(",");
-            for (int i = 0; i < checkBoxs.length; i++) {
-                for (int j = 0; j < split.length; j++) {
-                    if (split[j].equals(checkBoxs[i].getText().toString())) {
-                        checkBoxs[i].setChecked(true);
-                    }
-                }
-            }
-        }
-        if (popupWindow.isShowing()) {
-            popupWindow.dismiss();
-            mVenueService.setText(selectType);
-        } else {
-            popupWindow.showAsDropDown(mVenueService);
-        }
-    }
 
     /**
      * 验证码结果回调
@@ -242,10 +194,10 @@ public class VenueRegister2Activity extends BaseActivity<SingUpPresenter> implem
     public void onVerifyEvent(String result) {
         switch (result) {
             case AppConstants.Code_Verify_Correct:
-                mPresenter.register_venue(mAccount, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
+                mPresenter.registerVenue(mAccount, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
                         mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
-                        mVenueWebsite.getTrimmedString(), "经度", "纬度", "twitterAccount", "facebookAccount",
-                        mHeadUrl, "placeID", "venueScore");
+                        mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString(), mVenueFacebook.getTrimmedString(),
+                        mHeadUrl);
                 break;
             case AppConstants.Code_Verify_Invalid:
                 UIUtils.showBaseToast("验证码不正确");

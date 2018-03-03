@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by mysty on 2018/2/26.
  */
 
-public class VenueFill1Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
+public class VenueFile1Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
 
     @Bind(R.id.venue_info_website)
     XEditText mWebsite;

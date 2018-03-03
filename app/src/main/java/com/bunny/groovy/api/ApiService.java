@@ -349,16 +349,18 @@ public interface ApiService {
     @POST("VenueMeController/getVenueDetailInfo")
     Observable<ResultResponse<PerformerUserModel>> getVenueDetailInfo();
 
-    //演出厅用户注册
-    @FormUrlEncoded
+    //    @FormUrlEncoded
+//    @POST("FrontUserController/venueFrontUserRegister")
+//    Observable<ResultResponse<Object>> venueRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
+//                                           @Field("telephone") String phone, @Field("userEmail") String email,@Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
+//                                           @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
+//                                           @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
+//                                           @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
+//                                           @Field("facebookAccount") String facebookAccount,
+//                                           @Field("placeID") String placeID);
+
     @POST("FrontUserController/venueFrontUserRegister")
-    Observable<ResultResponse<Object>> venueRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
-                                                     @Field("telephone") String phone, @Field("userEmail") String email, @Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
-                                                     @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
-                                                     @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
-                                                     @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
-                                                     @Field("facebookAccount") String facebookAccount, @Field("imgfile") String imgfile,
-                                                     @Field("placeID") String placeID, @Field("venueScore") String venueScore);
+    Observable<ResultResponse<Object>> venueRegister(@Body RequestBody body);
 
     //获取下一场演出信息，包含演出详情
     @POST("VenueBookingsController/getNextPerformInfo")

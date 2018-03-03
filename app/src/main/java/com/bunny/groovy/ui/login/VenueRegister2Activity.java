@@ -1,11 +1,17 @@
 package com.bunny.groovy.ui.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.widget.CheckBox;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
@@ -65,8 +71,8 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     XEditText mVenueFacebook;
     @Bind(R.id.et_venue_twitter)
     XEditText mVenueTwitter;
-    private CheckBox[] checkBoxs = new CheckBox[3];
     private PopupWindow popupWindow;
+    private RadioGroup mRadioGroup;
 
     private WeakReference<Activity> mWeakReference = new WeakReference<Activity>(this);
 
@@ -96,6 +102,11 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             mEditPhone.setFocusable(false);
             mEditPhone.setTextColor(Color.GRAY);
         }
+    }
+
+    @OnClick(R.id.et_venue_service)
+    void selectService() {
+        Log.i("wjy", "click service");
     }
 
     @OnClick(R.id.bt_sign_up)
@@ -129,11 +140,10 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             }
             mPresenter.checkEmailCode(mEditCode.getTrimmedString(), URLEncoder.encode(mAccount));
         }
-
     }
 
     @Override
-    protected  VenueRegisterPresenter createPresenter() {
+    protected VenueRegisterPresenter createPresenter() {
         return new VenueRegisterPresenter(this);
     }
 
@@ -182,6 +192,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     @OnClick(R.id.et_venue_service)
     void selectStyle() {
         UIUtils.hideSoftInput(mVenueService);
+        showPopWindow(this,mVenueService);
     }
 
 
@@ -207,5 +218,60 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
                 UIUtils.showBaseToast("服务器出错");
                 break;
         }
+    }
+
+    private void initPopWindow(Context context, String value) {
+        if (popupWindow == null) {
+            popupWindow = new PopupWindow(context);
+            View inflate = LayoutInflater.from(context).inflate(R.layout.pop_venue_service_choose_layout, null, false);
+            mRadioGroup = inflate.findViewById(R.id.venue_service_group);
+            mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    popupWindow.dismiss();
+                }
+            });
+            RadioButton radioButton1 = inflate.findViewById(R.id.service_choose_1);
+            RadioButton radioButton2 = inflate.findViewById(R.id.service_choose_2);
+            RadioButton radioButton3 = inflate.findViewById(R.id.service_choose_3);
+            if(!TextUtils.isEmpty(value)){
+                if(TextUtils.equals(radioButton1.getText().toString(),value)){
+                    radioButton1.setChecked(true);
+                }else if(TextUtils.equals(radioButton2.getText().toString(),value)){
+                    radioButton2.setChecked(true);
+                }else if(TextUtils.equals(radioButton3.getText().toString(),value)){
+                    radioButton3.setChecked(true);
+                }
+            }
+            popupWindow.setContentView(inflate);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(130));
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    int checkId = mRadioGroup.getCheckedRadioButtonId();
+                    switch (checkId) {
+                        case R.id.service_choose_1:
+                            mVenueService.setText("Exclude 21+");
+                            break;
+                        case R.id.service_choose_2:
+                            mVenueService.setText("Serves Food");
+                            break;
+                        case R.id.service_choose_3:
+                            mVenueService.setText("Serves Alcohol");
+                            break;
+                        default:
+                            mVenueService.setText("");
+                    }
+                }
+            });
+        }
+    }
+
+    public void showPopWindow(Context context, View view) {
+        UIUtils.hideSoftInput(mVenueService);
+        initPopWindow(context, mVenueService.getTrimmedString());
+        if (popupWindow.isShowing()) popupWindow.dismiss();
+        else popupWindow.showAsDropDown(mVenueService);
     }
 }

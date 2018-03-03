@@ -26,6 +26,7 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
+import com.bunny.groovy.ui.fragment.spotlight.SpotlightInfoFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
@@ -127,7 +128,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
 
     @OnClick(R.id.release_tv_spotlight)
     public void spotLight() {
-
+        SpotlightInfoFragment.launch(get());
     }
 
     @OnClick(R.id.release_tv_get_credits)

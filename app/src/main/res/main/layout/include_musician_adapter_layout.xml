@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="10dp">
+    android:paddingLeft="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/venue_info_headimg"
+        android:id="@+id/iv_musician_head_pic"
         android:layout_width="140px"
         android:layout_height="140px"
-        android:layout_marginBottom="6dp"
-        android:layout_marginTop="6dp"
-        android:src="@mipmap/venue_instead_pic" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -31,30 +32,28 @@
             android:gravity="bottom"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/venue_info_tv_name"
+            <com.bunny.groovy.weidget.HeightLightTextView
+                android:id="@+id/musician_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxEms="11"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_common"
-                tools:text="The ShowThe Show" />
+                android:textSize="@dimen/text_size_common"/>
 
             <TextView
-                android:id="@+id/venue_info_tv_score"
+                android:id="@+id/musician_tv_performerStar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:drawableLeft="@mipmap/list_star"
                 android:drawablePadding="4dp"
-                android:text="4.1"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_small" />
 
             <TextView
-                android:id="@+id/nextshow_tv_status"
+                android:id="@+id/musician_tv_status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -66,15 +65,14 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/venue_info_tv_address"
+            android:id="@+id/musician_tv_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_small"
-            tools:text="Rodl.Ino" />
+            android:textSize="@dimen/text_size_common" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -83,15 +81,24 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/venue_info_tv_phone"
+                android:id="@+id/musician_tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:ellipsize="end"
+                android:layout_centerVertical="true"
                 android:maxLines="1"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_common"
-                tools:text="13322221111" />
+                android:textColor="@color/accentPurple"
+                android:textSize="@dimen/text_size_common" />
+
+            <ImageView
+                android:id="@+id/nextshow_iv_edit"
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="60px"
+                android:scaleType="center"
+                android:layout_height="40px"
+                android:src="@drawable/icon_dian" />
         </RelativeLayout>
 
     </RelativeLayout>

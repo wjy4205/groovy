@@ -21,6 +21,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.ReleasePresenter;
@@ -72,6 +73,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private TextView mTvTimeTitle;
     private Date today = Calendar.getInstance().getTime();
     private VenueModel mVenueModel;
+    private PerformerUserModel mPerformerModel;
     private Place mPlace;
     private int mType;
 
@@ -156,8 +158,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         Map<String, String> map = new HashMap<>();
         //mType-2:演出厅发布演出
         if(mType == 2){
-            if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
-                map.put("performerID", mVenueModel.getVenueID());
+            if (mPerformerModel != null && !TextUtils.isEmpty(mPerformerModel.getUserID())) {
+                map.put("performerID", mPerformerModel.getUserID());
             }
             map.put("performerName", etVenue.getText().toString());
             map.put("venueName", AppCacheData.getPerformerUserModel().getUserName());
@@ -197,7 +199,11 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
      */
     @OnClick(R.id.release_tv_search)
     public void search() {
-        SearchVenueFragment.launchForResult(mActivity, new Bundle(), 1);
+        if(mType == 2){
+            SearchMusicianFragment.launchForResult(mActivity, new Bundle(), 1);
+        }else{
+            SearchVenueFragment.launchForResult(mActivity, new Bundle(), 1);
+        }
     }
 
     @OnClick(R.id.release_et_style)
@@ -405,6 +411,29 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             tvVenueName.setText(model.getVenueName());
             tvVenueScore.setText(model.getVenueScore());
             tvVenueAddress.setText(model.getVenueAddress());
+            tvVenuePhone.setText(model.getPhoneNumber());
+        } else {
+            venueInfoLayout.setVisibility(View.GONE);
+            llSpotLight.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 接收选择的演出厅
+     *
+     * @param model
+     */
+    @Subscribe
+    public void onChooseMusician(PerformerUserModel model) {
+        mPerformerModel = model;
+        if (model != null) {
+            etVenue.setText(model.getUserName());
+            venueInfoLayout.setVisibility(View.VISIBLE);
+            llSpotLight.setVisibility(View.VISIBLE);
+            Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
+            tvVenueName.setText(model.getUserName());
+            tvVenueScore.setText(model.getStarLevel());
+            tvVenueAddress.setText(model.getPerformTypeName());
             tvVenuePhone.setText(model.getPhoneNumber());
         } else {
             venueInfoLayout.setVisibility(View.GONE);

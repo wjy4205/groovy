@@ -85,6 +85,11 @@ public interface ApiService {
     @POST("PerformerOverviewController/getVenueListBykeyword")
     Observable<ResultResponse<List<VenueModel>>> getVenueList(@Field("keyword") String keyword);
 
+    //获取表演者列表-关键字查询
+    @FormUrlEncoded
+    @POST("VenueBookingsController/getPerformerList")
+    Observable<ResultResponse<List<PerformerUserModel>>> getPerformerList(@Field("keyword") String keyword);
+
 
     //Release Show: 发布演出-待验证演出
     @FormUrlEncoded

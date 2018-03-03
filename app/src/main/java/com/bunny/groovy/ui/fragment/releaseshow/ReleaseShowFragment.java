@@ -138,7 +138,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     public void release() {
         //判断空
         if (UIUtils.isEdittextEmpty(etVenue)) {
-            UIUtils.showBaseToast("请选择音乐厅");
+            UIUtils.showBaseToast(mType == 2 ? "请选择表演者" : "请选择音乐厅");
             return;
         }
         if (UIUtils.isEdittextEmpty(etStyle)) {
@@ -154,30 +154,42 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             return;
         }
         Map<String, String> map = new HashMap<>();
-        if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
-            map.put("venueID", mVenueModel.getVenueID());
-            map.put("venueName", mVenueModel.getVenueName());
-            map.put("venueAddress", mVenueModel.getVenueAddress());
-            map.put("venueLongitude", mVenueModel.getLongitude());
-            map.put("venueLatitude", mVenueModel.getLatitude());
-        } else if (mPlace != null) {
-            map.put("venueName", mPlace.getName().toString());
-            map.put("venueAddress", mPlace.getAddress().toString());
-            map.put("venueLongitude", String.valueOf(mPlace.getLatLng().longitude));
-            map.put("venueLatitude", String.valueOf(mPlace.getLatLng().latitude));
-        } else {
-            UIUtils.showBaseToast("音乐厅选取失败，请重新选择");
-            return;
+        //mType-2:演出厅发布演出
+        if(mType == 2){
+            if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
+                map.put("performerID", mVenueModel.getVenueID());
+            }
+            map.put("performerName", etVenue.getText().toString());
+            map.put("venueName", AppCacheData.getPerformerUserModel().getUserName());
+            map.put("venueLongitude", AppCacheData.getPerformerUserModel().getLongitude());
+            map.put("venueLatitude", AppCacheData.getPerformerUserModel().getLatitude());
+            map.put("venueAddress", AppCacheData.getPerformerUserModel().getVenueAddress());
+        }else{
+            if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
+                map.put("venueID", mVenueModel.getVenueID());
+                map.put("venueName", mVenueModel.getVenueName());
+                map.put("venueAddress", mVenueModel.getVenueAddress());
+                map.put("venueLongitude", mVenueModel.getLongitude());
+                map.put("venueLatitude", mVenueModel.getLatitude());
+            } else if (mPlace != null) {
+                map.put("venueName", mPlace.getName().toString());
+                map.put("venueAddress", mPlace.getAddress().toString());
+                map.put("venueLongitude", String.valueOf(mPlace.getLatLng().longitude));
+                map.put("venueLatitude", String.valueOf(mPlace.getLatLng().latitude));
+            } else {
+                UIUtils.showBaseToast("音乐厅选取失败，请重新选择");
+                return;
+            }
+            map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
         }
         map.put("performType", etStyle.getText().toString());
         map.put("performStartDate", DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
         map.put("performEndDate", DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
         map.put("performDesc", etBio.getText().toString());
-        map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
         if (cbUseSpotlight.isChecked()) {
             map.put("isOpportunity", "1");
         } else map.put("isOpportunity", "0");
-        mPresenter.releaseShow(map);
+        mPresenter.releaseShow(map, mType);
     }
 
     /**
@@ -429,9 +441,10 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         if(mType == 2){
             mReleaseName.setText("SELECT MUSICIAN");
             etVenue.setHint("Fill in musician name or search");
+        }else{
+            etVenue.setFocusable(false);
         }
         //禁用编辑
-        etVenue.setFocusable(false);
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
         //spotlight
@@ -449,9 +462,6 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Override
     public void initListener() {
         super.initListener();
-        etBio.setCursorVisible(false);
-        etBio.setFocusable(false);
-        etBio.setFocusableInTouchMode(false);
         registerEventBus(this);
     }
 

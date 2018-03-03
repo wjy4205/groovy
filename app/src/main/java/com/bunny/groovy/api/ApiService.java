@@ -12,7 +12,6 @@ import com.bunny.groovy.model.WalletBean;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -91,6 +90,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("PerformerOverviewController/addPerformApply")
     Observable<ResultResponse<Object>> releaseShow(@FieldMap Map<String, String> map);
+
+    //Release Show: （演出厅用户）发布演出
+    @FormUrlEncoded
+    @POST("VenueBookingsController/addPerform")
+    Observable<ResultResponse<Object>> releaseVenueShow(@FieldMap Map<String, String> map);
 
 
     //获取收藏演出厅记录
@@ -344,12 +348,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("FrontUserController/venueFrontUserRegister")
     Observable<ResultResponse<Object>> venueRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
-                                           @Field("telephone") String phone, @Field("userEmail") String email,@Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
-                                           @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
-                                           @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
-                                           @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
-                                           @Field("facebookAccount") String facebookAccount, @Field("imgfile") String imgfile,
-                                           @Field("placeID") String placeID, @Field("venueScore") String venueScore);
+                                                     @Field("telephone") String phone, @Field("userEmail") String email, @Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
+                                                     @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
+                                                     @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
+                                                     @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
+                                                     @Field("facebookAccount") String facebookAccount, @Field("imgfile") String imgfile,
+                                                     @Field("placeID") String placeID, @Field("venueScore") String venueScore);
 
     //获取下一场演出信息，包含演出详情
     @POST("VenueBookingsController/getNextPerformInfo")

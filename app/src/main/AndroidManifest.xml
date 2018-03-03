@@ -54,8 +54,8 @@
         <activity android:name=".ui.login.ConfirmPwdActivity" />
         <activity android:name=".ui.login.VenueRegister1Activity" />
         <activity android:name=".ui.login.VenueRegister2Activity" />
-        <activity android:name=".ui.login.VenueFill1Activity" />
-        <activity android:name=".ui.login.VenueFill2Activity" />
+        <activity android:name=".ui.login.VenueFile1Activity" />
+        <activity android:name=".ui.login.VenueFile2Activity" />
 
         <activity
             android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"

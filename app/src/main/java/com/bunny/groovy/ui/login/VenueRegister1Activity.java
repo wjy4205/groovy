@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
@@ -17,6 +18,10 @@ import com.bunny.groovy.presenter.SingUpPresenter;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.xw.repo.XEditText;
 import com.zfdang.multiple_images_selector.SelectorSettings;
 
@@ -35,6 +40,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implements ISingUpView {
 
+    private final static int PLACE_PICKER_REQUEST = 1;
+    private String mLongitude, mLatitude, mPlaceId;
+
     @Bind(R.id.iv_venue_head_pic)
     CircleImageView mHeadPic;
     @Bind(R.id.et_venue_phone_or_email)
@@ -46,7 +54,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     @Bind(R.id.et_venue_public_name)
     XEditText mPublicName;
     @Bind(R.id.et_venue_address)
-    XEditText mAddress;
+    TextView mAddress;
     @Bind(R.id.tv_venue_protocol)
     TextView mAddressText;
 
@@ -119,8 +127,11 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         intent.putExtra(VenueRegister2Activity.KEY_TYPE, mAccountType);
         intent.putExtra(VenueRegister2Activity.KEY_PASSWORD, mPassword.getTrimmedString());
         intent.putExtra(VenueRegister2Activity.KEY_PUBLIC_NAME, mPublicName.getTrimmedString());
-        intent.putExtra(VenueRegister2Activity.KEY_ADDRESS, mAddress.getTrimmedString());
+        intent.putExtra(VenueRegister2Activity.KEY_ADDRESS, mAddress.getText().toString().trim());
         intent.putExtra(VenueRegister2Activity.KEY_HEAD_URL, headImagePath);
+        intent.putExtra(VenueRegister2Activity.KEY_LONGITUDE, mLongitude);
+        intent.putExtra(VenueRegister2Activity.KEY_LATITUDE, mLatitude);
+        intent.putExtra(VenueRegister2Activity.KEY_PLACE_ID, mPlaceId);
         intent.setClass(this, VenueRegister2Activity.class);
         startActivityForResult(intent, 2);
     }
@@ -131,7 +142,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         String pwd = mPassword.getTrimmedString();
         String pwdAgain = mPasswordAgain.getTrimmedString();
         String publicName = mPublicName.getTrimmedString();
-        String address = mAddress.getTrimmedString();
+        String address = mAddress.getText().toString().trim();
         if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
             UIUtils.showBaseToast("请输入密码");
         } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
@@ -153,6 +164,19 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         }
     }
 
+    @OnClick(R.id.et_venue_address)
+    void chooseAddress() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            UIUtils.showBaseToast("GooglePlay services not available!");
+
+        }
+    }
     //登陆
     @OnClick(R.id.tv_signup_login)
     void login() {
@@ -189,6 +213,16 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
             setResult(AppConstants.ACTIVITY_FINISH);
             finish();
+        }else if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                mAddress.setText(place.getAddress());
+                mLongitude = String.valueOf(place.getLatLng().longitude);
+                mLatitude = String.valueOf(place.getLatLng().latitude);
+                mPlaceId = String.valueOf(place.getId());
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

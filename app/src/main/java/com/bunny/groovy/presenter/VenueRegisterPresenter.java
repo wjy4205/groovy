@@ -1,20 +1,14 @@
 package com.bunny.groovy.presenter;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
-import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.MainActivity;
-import com.bunny.groovy.ui.setfile.SetFile2Activity;
-import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.ui.VenueMainActivity;
 import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
-import com.bunny.groovy.weidget.ProgressHUD;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -60,20 +54,14 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
         });
     }
 
-    public void requestStyle() {
-    }
-
     /**
      * 上次用户资料
      *
      * @param fileMap
      */
-    public void updateUserInfo(Map<String, String> fileMap) {
-        fileMap.put("userID", AppCacheData.getPerformerUserModel().getUserID());
+    public void updateVenueInfo(Map<String, String> fileMap) {
         //头像图片
         String imagePath = fileMap.get("imgfile");
-        //音频文件
-        String musicPath = fileMap.get("music");
         //构建body
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         Set<Map.Entry<String, String>> entries = fileMap.entrySet();
@@ -90,23 +78,11 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
             if (img.isFile()) {
                 builder.addFormDataPart("imgfile", img.getName(), RequestBody.create(MediaType.parse("image/*"), img));
             }
-        } else {
-            builder.addFormDataPart("imgfile", "image.jpg", RequestBody.create(MediaType.parse("image/*"), ""));
         }
-
-        if (!TextUtils.isEmpty(musicPath)) {
-            File music = new File(musicPath);
-            if (music.isFile()) {
-                builder.addFormDataPart("music", music.getName(), RequestBody.create(MediaType.parse("*/*"), music));
-            }
-        } else {
-            builder.addFormDataPart("music", "music.mp3", RequestBody.create(MediaType.parse("*/*"), ""));
-        }
-
 
         RequestBody build = builder.build();
 
-        addSubscription(apiService.updatePerformerInfo(build), new SubscriberCallBack<Object>(mView.get()) {
+        addSubscription(apiService.updatePerformerInfoFirstLogin(build), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -114,7 +90,7 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
 
             @Override
             protected void onSuccess(Object response) {
-                MainActivity.launch(mView.get());
+                VenueMainActivity.start(mView.get());
                 mView.get().setResult(AppConstants.ACTIVITY_FINISH);
                 mView.get().finish();
             }
@@ -145,21 +121,6 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
         fileMap.put("twitterAccount",twitterAccount);
         fileMap.put("facebookAccount",facebookAccount);
         fileMap.put("placeID",placeID);
-//        addSubscription(apiService.venueRegister(userName, userPwd, telephone, userEmail,
-//                checkCode, venueTypeName, venueAddress, phoneNumber,
-//                webSiteAddress, mLongitude, mLatitude, twitterAccount,
-//                facebookAccount,mPlaceId), new SubscriberCallBack<ResultResponse>(mView.get()) {
-//            @Override
-//            protected void onSuccess(ResultResponse response) {
-//                UIUtils.showBaseToast("注册成功！");
-//                mView.registerSuccess();
-//            }
-//
-//            @Override
-//            protected void onFailure(ResultResponse response) {
-//            }
-//        });
-
         //构建body
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         Set<Map.Entry<String, String>> entries = fileMap.entrySet();

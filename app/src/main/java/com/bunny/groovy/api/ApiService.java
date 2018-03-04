@@ -349,18 +349,13 @@ public interface ApiService {
     @POST("VenueMeController/getVenueDetailInfo")
     Observable<ResultResponse<PerformerUserModel>> getVenueDetailInfo();
 
-    //    @FormUrlEncoded
-//    @POST("FrontUserController/venueFrontUserRegister")
-//    Observable<ResultResponse<Object>> venueRegister(@Field("userName") String userName, @Field("userPwd") String userPwd,
-//                                           @Field("telephone") String phone, @Field("userEmail") String email,@Field("checkCode") String checkCode, @Field("venueTypeName") String venueTypeName,
-//                                           @Field("venueAddress") String address, @Field("phoneNumber") String phoneNumber,
-//                                           @Field("webSiteAddress") String webSiteAddress, @Field("longitude") String longitude,
-//                                           @Field("latitude") String latitude, @Field("twitterAccount") String twitterAccount,
-//                                           @Field("facebookAccount") String facebookAccount,
-//                                           @Field("placeID") String placeID);
-
+    //注册：演出厅用户注册
     @POST("FrontUserController/venueFrontUserRegister")
     Observable<ResultResponse<Object>> venueRegister(@Body RequestBody body);
+
+    //演出厅：第三方登陆后首次登陆完善表演者信息
+    @POST("FrontUserController/updatePerformerInfoFirstLogin")
+    Observable<ResultResponse<Object>> updatePerformerInfoFirstLogin(@Body RequestBody body);
 
     //获取下一场演出信息，包含演出详情
     @POST("VenueBookingsController/getNextPerformInfo")
@@ -369,7 +364,6 @@ public interface ApiService {
     );
 
     //发布演出机会
-    @FormUrlEncoded
     @POST("VenueBookingsController/addPerformOpportunity")
     Observable<ResultResponse<Object>> addPerformOpportunity(@Field("startDate") String startDate,
                                                              @Field("endDate") String endDate,

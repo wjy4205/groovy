@@ -203,7 +203,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
      */
     @Override
     public void launchToSetFile() {
-        startActivityForResult(new Intent(this, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+        switch (mUserType){
+            case AppConstants.USER_TYPE_MUSICIAN:
+                startActivityForResult(new Intent(this, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                break;
+            case AppConstants.USER_TYPE_VENUE:
+                startActivityForResult(new Intent(this, VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+        }
+
     }
 
     @Override
@@ -233,7 +240,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             // Signed in successfully, show authenticated UI.
             KLog.d(account.toString());
             //检查是否绑定了账户
-            mPresenter.checkHadBindUid("0", account.getId(), account.getDisplayName());
+            mPresenter.checkHadBindUid("0", account.getId(), account.getDisplayName(),String.valueOf(mUserType));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

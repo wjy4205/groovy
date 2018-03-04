@@ -17,7 +17,6 @@ import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
-import com.socks.library.KLog;
 
 /****************************************
  * 功能说明:  登录控制器
@@ -96,8 +95,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * @param loginType 类型
      * @param uid       账户
      */
-    public void checkHadBindUid(final String loginType, final String uid, final String username) {
-        addSubscription(apiService.checkUidNotLogin(loginType, "1", uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+    public void checkHadBindUid(final String loginType, final String uid, final String username, final String userType) {
+        addSubscription(apiService.checkUidNotLogin(loginType, userType, uid, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
                 //已经绑定，直接登录
@@ -118,6 +117,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     bundle.putString("username", username);
                     bundle.putString("logintype", loginType);
                     bundle.putString("uid", uid);
+                    bundle.putString("userType", userType);
                     BindAccountFragment.launch(mView.get(), bundle);
                 }
             }
@@ -129,6 +129,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 bundle.putString("username", username);
                 bundle.putString("logintype", loginType);
                 bundle.putString("uid", uid);
+                bundle.putString("userType", userType);
                 BindAccountFragment.launch(mView.get(), bundle);
             }
 
@@ -171,9 +172,9 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * userType
      * userZone
      */
-    public void socialLogin(String logintype, String uid, String username, String useraccount) {
+    public void socialLogin(String logintype, String uid, String username, String useraccount, final String userType) {
         addSubscription(apiService.socialAccountLogin(logintype, uid, username,
-                useraccount, "1", Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+                useraccount, userType, Utils.getTimeZone()), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -183,13 +184,23 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             protected void onSuccess(PerformerUserModel response) {
                 //登录，判断是否完善了资料
                 Utils.initLoginData(mView.get(), response);
-//                if (response == null || TextUtils.isEmpty(response.getStageName()) ||
-//                        TextUtils.isEmpty(response.getZipCode())) {
-//                    //未完善资料
-//                    mView.launchToSetFile();
-//                } else {
+                switch (Utils.parseInt(userType)) {
+                    case AppConstants.USER_TYPE_VENUE:
+                        if (response == null || TextUtils.isEmpty(response.getStageName()) ||
+                                TextUtils.isEmpty(response.getVenueTypeName())) {
+                            mView.launchToSetFile();
+                            return;
+                        }
+                        break;
+                    case AppConstants.USER_TYPE_MUSICIAN:
+                        if (response == null || TextUtils.isEmpty(response.getVenueAddress()) ||
+                                TextUtils.isEmpty(response.getUserType())) {
+                            mView.launchToSetFile();
+                            return;
+                        }
+                        break;
+                }
                 mView.launchMainPage();
-//                }
             }
 
             @Override

@@ -4,10 +4,9 @@ import android.app.Activity;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
-import com.bunny.groovy.model.StyleModel;
-import com.bunny.groovy.presenter.SetFilePresenter;
+import com.bunny.groovy.presenter.VenueRegisterPresenter;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.view.ISetFileView;
+import com.bunny.groovy.view.ISingUpView;
 import com.xw.repo.XEditText;
 
 import java.util.List;
@@ -19,14 +18,14 @@ import butterknife.OnClick;
  * Created by mysty on 2018/2/26.
  */
 
-public class VenueFile2Activity extends BaseActivity<SetFilePresenter> implements ISetFileView {
+public class VenueFile2Activity extends BaseActivity<VenueRegisterPresenter> implements ISingUpView {
 
     @OnClick(R.id.tv_go)
     void go() {
         AppCacheData.getFileMap().put("facebookAccount", etFaceBook.getTrimmedString());
         AppCacheData.getFileMap().put("twitterAccount", etTwitter.getTrimmedString());
 
-        mPresenter.updateUserInfo(AppCacheData.getFileMap());
+        mPresenter.updateVenueInfo(AppCacheData.getFileMap());
     }
 
     @Bind(R.id.et_facebook)
@@ -35,18 +34,28 @@ public class VenueFile2Activity extends BaseActivity<SetFilePresenter> implement
     XEditText etTwitter;
 
     @Override
+    public void showCheckResult(boolean invalid, int accountType, String msg) {
+
+    }
+
+    @Override
+    public void nextStep() {
+
+    }
+
+    @Override
     public Activity get() {
         return getCurrentActivity();
     }
 
     @Override
-    public void showStylePop(List<StyleModel> modelList) {
+    public void registerSuccess() {
 
     }
 
     @Override
-    protected SetFilePresenter createPresenter() {
-        return new SetFilePresenter(this);
+    protected VenueRegisterPresenter createPresenter() {
+        return new VenueRegisterPresenter(this);
     }
 
     @Override

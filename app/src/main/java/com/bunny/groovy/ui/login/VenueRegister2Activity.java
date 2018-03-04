@@ -107,7 +107,8 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
 
     @OnClick(R.id.et_venue_service)
     void selectService() {
-        Log.i("wjy", "click service");
+        UIUtils.hideSoftInput(mVenueService);
+        showPopWindow(this,mVenueService);
     }
 
     @OnClick(R.id.bt_sign_up)
@@ -189,12 +190,6 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
 
     }
 
-
-    @OnClick(R.id.et_venue_service)
-    void selectStyle() {
-        UIUtils.hideSoftInput(mVenueService);
-        showPopWindow(this,mVenueService);
-    }
 
 
     /**

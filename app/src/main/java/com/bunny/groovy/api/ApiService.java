@@ -7,7 +7,10 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.model.VenueApplyModel;
 import com.bunny.groovy.model.VenueModel;
+import com.bunny.groovy.model.VenueInViteModel;
+import com.bunny.groovy.model.VenueOpportunityModel;
 import com.bunny.groovy.model.WalletBean;
 
 import java.util.List;
@@ -156,13 +159,25 @@ public interface ApiService {
     @POST("PerformerOverviewController/getPerformerOverviewOpportunityList")
     Observable<ResultResponse<List<ShowModel>>> getApplyOpportunityList();
 
+    //演出厅-获取演出机会申请列表
+    @POST("VenueBookingsController/getVenuePerformOpportunityList")
+    Observable<ResultResponse<List<VenueOpportunityModel>>> getVenueApplyOpportunityList();
+
     //获取邀请的列表
     @POST("PerformerOverviewController/getPerformerOverviewInviteList")
     Observable<ResultResponse<List<ShowModel>>> getInviteList();
 
+    //演出厅-获取邀请的列表
+    @POST("VenueBookingsController/getVenuePerformInviteList")
+    Observable<ResultResponse<List<VenueInViteModel>>> getVenueInviteList();
+
     //获取待验证演出申请列表
     @POST("PerformerOverviewController/getPerformerOverviewApplyList")
     Observable<ResultResponse<List<ShowModel>>> getReleaseShowList();
+
+    //获取待验证演出申请列表
+    @POST("VenueBookingsController/getVenuePerformApplyList")
+    Observable<ResultResponse<List<VenueApplyModel>>> getVenueReleaseShowList();
 
     //获取选中周期内的表演统计
     @FormUrlEncoded
@@ -197,6 +212,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("PerformerOverviewController/refusePerformerOverviewInvite")
     Observable<ResultResponse<Object>> rejectPerformInvite(@Field("inviteID") String inviteID);
+
+    //Notification：演出厅用户--Invite-拒绝邀请
+    @FormUrlEncoded
+    @POST("VenueBookingsController/refusePerformApply")
+    Observable<ResultResponse<Object>> refusePerformApply(@Field("performID") String performID);
+
+    //Notification：演出厅用户--Invite-同意邀请
+    @FormUrlEncoded
+    @POST("VenueBookingsController/agreePerformApply")
+    Observable<ResultResponse<Object>> agreePerformApply(@Field("performID") String performID);
 
 
     //修改用户信息

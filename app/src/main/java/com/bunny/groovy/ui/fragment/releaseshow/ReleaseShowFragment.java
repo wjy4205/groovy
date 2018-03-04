@@ -158,16 +158,17 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         }
         Map<String, String> map = new HashMap<>();
         //mType-2:演出厅发布演出
-        if(mType == 2){
+        if (mType == 2) {
             if (mPerformerModel != null && !TextUtils.isEmpty(mPerformerModel.getUserID())) {
                 map.put("performerID", mPerformerModel.getUserID());
             }
             map.put("performerName", etVenue.getText().toString());
-            map.put("venueName", AppCacheData.getPerformerUserModel().getUserName());
-            map.put("venueLongitude", AppCacheData.getPerformerUserModel().getLongitude());
-            map.put("venueLatitude", AppCacheData.getPerformerUserModel().getLatitude());
-            map.put("venueAddress", AppCacheData.getPerformerUserModel().getVenueAddress());
-        }else{
+            PerformerUserModel performerModel = AppCacheData.getPerformerUserModel();
+            map.put("venueName", performerModel.getUserName());
+            map.put("venueLongitude", performerModel.getLongitude());
+            map.put("venueLatitude", performerModel.getLatitude());
+            map.put("venueAddress", performerModel.getVenueAddress());
+        } else {
             if (mVenueModel != null && !TextUtils.isEmpty(mVenueModel.getVenueID()) && !TextUtils.isEmpty(mVenueModel.getVenueName())) {
                 map.put("venueID", mVenueModel.getVenueID());
                 map.put("venueName", mVenueModel.getVenueName());
@@ -200,9 +201,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
      */
     @OnClick(R.id.release_tv_search)
     public void search() {
-        if(mType == 2){
+        if (mType == 2) {
             SearchMusicianFragment.launchForResult(mActivity, new Bundle(), 1);
-        }else{
+        } else {
             SearchVenueFragment.launchForResult(mActivity, new Bundle(), 1);
         }
     }
@@ -468,10 +469,10 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         super.initView(rootView);
         mType = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
         //演出厅
-        if(mType == 2){
+        if (mType == 2) {
             mReleaseName.setText("SELECT MUSICIAN");
             etVenue.setHint("Fill in musician name or search");
-        }else{
+        } else {
             etVenue.setFocusable(false);
         }
         //禁用编辑

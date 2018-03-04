@@ -1,11 +1,14 @@
 package com.bunny.groovy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /****************************************
  * 功能说明:  演出厅用户的Notification中的Invite-获取邀请列表及详情信息的model
  * 具体的按实际返回数据为准，缺的后续再加
  ****************************************/
 
-public class VenueInViteModel {
+public class VenueInViteModel implements Parcelable {
 
 
     /**
@@ -73,6 +76,53 @@ public class VenueInViteModel {
     private String starLevel;
     private String performDate;
     private String performTime;
+
+
+    protected VenueInViteModel(Parcel in) {
+        createDate = in.readString();
+        inviteID = in.readString();
+        venueID = in.readString();
+        performStartDate = in.readString();
+        performEndDate = in.readString();
+        performType = in.readString();
+        performDesc = in.readString();
+        performerID = in.readString();
+        invitationState = in.readString();
+        handlerDate = in.readString();
+        invitationDesc = in.readString();
+        userName = in.readString();
+        userEmail = in.readString();
+        headImg = in.readString();
+        performTypeName = in.readString();
+        webSiteAddress = in.readString();
+        longitude = in.readString();
+        latitude = in.readString();
+        venueScore = in.readString();
+        signature = in.readString();
+        musicFile = in.readString();
+        paypalAccount = in.readString();
+        twitterAccount = in.readString();
+        soundcloudAccount = in.readString();
+        facebookAccount = in.readString();
+        stageName = in.readString();
+        distance = in.readString();
+        starLevel = in.readString();
+        performDate = in.readString();
+        performTime = in.readString();
+
+    }
+
+    public static final Creator<VenueInViteModel> CREATOR = new Creator<VenueInViteModel>() {
+        @Override
+        public VenueInViteModel createFromParcel(Parcel in) {
+            return new VenueInViteModel(in);
+        }
+
+        @Override
+        public VenueInViteModel[] newArray(int size) {
+            return new VenueInViteModel[size];
+        }
+    };
 
     public String getCreateDate() {
         return createDate;
@@ -312,5 +362,44 @@ public class VenueInViteModel {
 
     public void setPerformTime(String performTime) {
         this.performTime = performTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createDate);
+        dest.writeString(inviteID);
+        dest.writeString(venueID);
+        dest.writeString(performStartDate);
+        dest.writeString(performEndDate);
+        dest.writeString(performType);
+        dest.writeString(performDesc);
+        dest.writeString(performerID);
+        dest.writeString(invitationState);
+        dest.writeString(handlerDate);
+        dest.writeString(invitationDesc);
+        dest.writeString(userName);
+        dest.writeString(userEmail);
+        dest.writeString(headImg);
+        dest.writeString(performTypeName);
+        dest.writeString(webSiteAddress);
+        dest.writeString(longitude);
+        dest.writeString(latitude);
+        dest.writeString(venueScore);
+        dest.writeString(signature);
+        dest.writeString(musicFile);
+        dest.writeString(paypalAccount);
+        dest.writeString(twitterAccount);
+        dest.writeString(soundcloudAccount);
+        dest.writeString(facebookAccount);
+        dest.writeString(stageName);
+        dest.writeString(distance);
+        dest.writeString(starLevel);
+        dest.writeString(performDate);
+        dest.writeString(performTime);
     }
 }

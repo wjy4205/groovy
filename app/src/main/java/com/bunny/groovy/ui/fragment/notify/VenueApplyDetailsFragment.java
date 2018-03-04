@@ -16,8 +16,8 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.model.ShowModel;
-import com.bunny.groovy.ui.fragment.apply.ConfirmInviteFragment;
+import com.bunny.groovy.model.VenueApplyModel;
+import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.socks.library.KLog;
@@ -29,23 +29,25 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /****************************************
- * 功能说明:  演出厅用户--查看邀请详情界面
+ * 功能说明:  演出厅用户--查看申请详情界面
  *
  ****************************************/
 
-public class InviteVenueDetailsFragment extends BaseFragment {
+public class VenueApplyDetailsFragment extends BaseFragment {
 
     public static String KEY_SHOW_BEAN = "key_show_bean";
-    private static ShowModel sModel;
+    private static VenueApplyModel sModel;
 
     public static void launch(Activity activity, Bundle bundle) {
         sModel = bundle.getParcelable(KEY_SHOW_BEAN);
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
-        FragmentContainerActivity.launch(activity, InviteVenueDetailsFragment.class, bundle);
+        FragmentContainerActivity.launch(activity, VenueApplyDetailsFragment.class, bundle);
     }
 
+    @Bind(R.id.show_detail_tv_date)
+    TextView mTvDate;
     @Bind(R.id.invite_tv_date)
-    TextView tvDate;
+    TextView tvName;
     @Bind(R.id.invite_tv_venue_name)
     TextView tvVenueName1;
     @Bind(R.id.invite_tv_notify)
@@ -56,54 +58,51 @@ public class InviteVenueDetailsFragment extends BaseFragment {
     @Bind(R.id.include_detail_tv_venueName)
     TextView mTvVenueName_2;
 
-    @Bind(R.id.include_detail_tv_venueStar)
-    TextView mTvVenueScore;
-
-    @Bind(R.id.include_detail_tv_venueAddress)
-    TextView mTvAddress;
-
-    @Bind(R.id.include_detail_tv_tel)
-    TextView mTvTel;
-
-    @Bind(R.id.include_detail_tv_email)
-    TextView mTvEmail;
-
     @Bind(R.id.include_detail_iv_head)
     ImageView mHead;
 
-    @Bind(R.id.include_detail_tv_21plus)
-    TextView tv21Plus;
-    @Bind(R.id.include_detail_tv_Alcohol)
-    TextView tvAlcohol;
-    @Bind(R.id.include_detail_tv_food)
-    TextView tvFood;
-    @Bind(R.id.include_detail_tv_Cover_Charge)
-    TextView tvCoverCharge;
+    @Bind(R.id.show_detail_tv_style)
+    TextView mTvStyle;
 
-    @OnClick({R.id.invite_iv_phone, R.id.include_detail_tv_tel})
-    public void call() {
-        Utils.CallPhone(mActivity, sModel.getPhoneNumber());
-    }
+    @Bind(R.id.show_detail_tv_time)
+    TextView mTvTime;
+
+    @Bind(R.id.show_detail_tv_distance)
+    TextView mTvDistance;
+
+    @Bind(R.id.show_detail_tv_desc)
+    TextView mTvDesc;
+    @Bind(R.id.user_center_tv_style)
+    TextView mTvDesDetail;
+    @Bind(R.id.user_center_tv_score)
+    TextView mTvStars;
+
+    @Bind(R.id.apply_layout)
+    LinearLayout mApplyLayout;
+
 
     @OnClick(R.id.facebook_page)
     public void facebook() {
-        Utils.openFacebook(mActivity, sModel.getFacebookAccount());
+        if (!TextUtils.isEmpty(sModel.getFacebookAccount()))
+            Utils.openFacebook(mActivity, sModel.getFacebookAccount());
     }
 
     @OnClick(R.id.twitter_page)
     public void twitter() {
-        Utils.openTwitter(mActivity, sModel.getTwitterAccount());
+        if (!TextUtils.isEmpty(sModel.getTwitterAccount()))
+            Utils.openTwitter(mActivity, sModel.getTwitterAccount());
     }
 
-    @OnClick(R.id.invite_iv_email)
-    public void email() {
-        Utils.sendEmail(mActivity, sModel.getVenueEmail());
+    @OnClick(R.id.me_tv_cloud)
+    public void cloud() {
+        if (!TextUtils.isEmpty(sModel.getSoundcloudAccount()))
+            Utils.openSoundCloud(mActivity, sModel.getSoundcloudAccount());
     }
 
     @OnClick(R.id.invite_tv_reject)
     public void reject() {//拒绝
         ApiService apiService = ApiRetrofit.getInstance().getApiService();
-        apiService.refusePerformApply(sModel.getInviteID())
+        apiService.refusePerformApply(sModel.getPerformID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResultResponse<Object>>() {
@@ -137,7 +136,7 @@ public class InviteVenueDetailsFragment extends BaseFragment {
     @OnClick(R.id.invite_tv_confirm)
     public void confirm() {//同意
         ApiService apiService = ApiRetrofit.getInstance().getApiService();
-        apiService.agreePerformApply(sModel.getInviteID())
+        apiService.agreePerformApply(sModel.getPerformID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResultResponse<Object>>() {
@@ -171,19 +170,26 @@ public class InviteVenueDetailsFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        mApplyLayout.setVisibility(View.GONE);
         if (sModel != null) {
-            tvDate.setText(sModel.getPerformDate());
+            mTvDate.setText(sModel.getPerformDate());
+            tvName.setText(sModel.getPerformerName());
+            mTvStyle.setText(sModel.getPerformType());
+            mTvTime.setText(sModel.getPerformType());
+            mTvTime.setText(sModel.getPerformTime());
+            if (!TextUtils.isEmpty(sModel.getDistance())) {
+                mTvDistance.setText(sModel.getDistance() + "mi");
+            }
+            mTvDesDetail.setText(sModel.getPerformDesc());
+            mTvDesc.setText(sModel.getPerformDesc());
             tvVenueName1.setText(sModel.getVenueName());
-            mTvVenueName_2.setText(sModel.getVenueName());
-            mTvVenueScore.setText(sModel.getVenueScore());
-            mTvAddress.setText(sModel.getVenueAddress());
-            mTvTel.setText(sModel.getPhoneNumber());
-            mTvEmail.setText(sModel.getWebSiteAddress());
+            mTvVenueName_2.setText(sModel.getPerformerName());
+            mTvStars.setText(sModel.getStarLevel());
             Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);
             llAction.setVisibility(View.GONE);
-            String invitationState = sModel.getInvitationState();
+            String invitationState = sModel.getPerformState();
             if ("1".equals(invitationState)) {
                 mTvNotify.setText(R.string.confirmed);
             } else if ("2".equals(invitationState)) {
@@ -193,17 +199,6 @@ public class InviteVenueDetailsFragment extends BaseFragment {
                 mTvNotify.setVisibility(View.GONE);
             }
 
-            //设置演出厅提供服务
-            String venueTypeName = sModel.getVenueTypeName();
-            if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
-                tvFood.setEnabled(venueTypeName.contains("Food"));
-                tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
-            } else {
-                tv21Plus.setEnabled(true);
-                tvFood.setEnabled(false);
-                tvAlcohol.setEnabled(false);
-            }
         }
     }
 
@@ -221,4 +216,19 @@ public class InviteVenueDetailsFragment extends BaseFragment {
     protected void loadData() {
 
     }
+
+    @OnClick(R.id.me_play_music)
+    public void playMusic() {
+        if (!TextUtils.isEmpty(sModel.getMusicFile())) {
+            MusicBox.getInstance().playOnLineMusic(sModel.getMusicFile(), mActivity);
+        } else {
+            UIUtils.showBaseToast("Play failed");
+        }
+    }
+
+    @OnClick(R.id.item_notification_tv_details)
+    public void performDetail() {
+        // TODO: 2018/3/4 0004 跳转表演者详情页
+    }
+
 }

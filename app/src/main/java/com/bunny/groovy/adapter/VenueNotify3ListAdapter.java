@@ -1,6 +1,7 @@
 package com.bunny.groovy.adapter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.bunny.groovy.api.ApiRetrofit;
 import com.bunny.groovy.api.ApiService;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.VenueInViteModel;
+import com.bunny.groovy.ui.fragment.notify.VenueInviteDetailsFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.socks.library.KLog;
 
@@ -93,25 +95,11 @@ public class VenueNotify3ListAdapter extends RecyclerView.Adapter<VenueNotify3Li
         int pos = (int) v.getTag();
         VenueInViteModel showModel = mList.get(pos);
         switch (v.getId()) {
-            /*case R.id.item_notification_tv_details://详情
+            case R.id.item_notification_tv_details://详情
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, showModel);
-                if (mTYPE == 1) {
-                    InviteDetailsFragment.launch(mContext, bundle);
-                } else {
-                    bundle.putInt("type", mTYPE);
-                    ShowDetailFragment.launch(mContext, bundle);
-                }
-
+                bundle.putParcelable("key_show_bean", showModel);
+                VenueInviteDetailsFragment.launch(mContext, bundle);
                 break;
-            case R.id.item_notification_tv_confirm://同意
-                Bundle arg = new Bundle();
-                arg.putParcelable(ConfirmInviteFragment.KEY_VENUE_BEAN, showModel);
-                ConfirmInviteFragment.launch(mContext, arg);
-                break;
-            case R.id.item_notification_tv_reject://拒绝
-                rejectInvite(showModel.getInviteID(), pos);
-                break;*/
         }
     }
 

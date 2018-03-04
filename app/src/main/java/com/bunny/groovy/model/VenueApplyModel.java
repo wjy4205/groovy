@@ -1,44 +1,47 @@
 package com.bunny.groovy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /****************************************
  * 功能说明:  演出厅用户的Notification中的Apply-获取申请列表的model
  * 具体的按实际返回数据为准，缺的后续再加
  ****************************************/
 
-public class VenueApplyModel {
+public class VenueApplyModel implements Parcelable {
 
     /**
-     "createDate": "2018-02-28 16:08",
-     "performID": "1582",
-     "venueID": "32",
-     "performStartDate": "2018-03-22 01:00",
-     "performEndDate": "2018-03-22 02:00",
-     "performType": "JAZZ",
-     "performerID": "29",
-     "performState": "0",
-     "isOpportunity": "0",
-     "performerName": "熊豆豆",
-     "performDesc": "流行408",
-     "venueName": "龙东大道金科路",
-     "venueAddress": "中国上海市浦东新区龙东大道 邮政编码: 201203",
-     "publishType": "0",
-     "venueLongitude": "121.6000",
-     "venueLatitude": "31.2200",
-     "updateType": null,
-     "distance": null,
-     "starLevel": "3",
-     "userName": "熊孩子",
-     "stageName": "熊豆豆",
-     "longitude": "-71.7000",
-     "latitude": "43.7200",
-     "signature": "hhjjj",
-     "musicFile": "http://47.100.104.82:8083/upload/musicFile/music_1514280946971.m4a",
-     "twitterAccount": "ccbhj",
-     "soundcloudAccount": "ffghh",
-     "facebookAccount": "ffghj",
-     "headImg": "http://47.100.104.82:8083/upload/headImgFile/headImg_1514280946972.jpg",
-     "performDate": "Mar 22 2018",
-     "performTime": "1:00AM-2:00AM"
+     * "createDate": "2018-02-28 16:08",
+     * "performID": "1582",
+     * "venueID": "32",
+     * "performStartDate": "2018-03-22 01:00",
+     * "performEndDate": "2018-03-22 02:00",
+     * "performType": "JAZZ",
+     * "performerID": "29",
+     * "performState": "0",
+     * "isOpportunity": "0",
+     * "performerName": "熊豆豆",
+     * "performDesc": "流行408",
+     * "venueName": "龙东大道金科路",
+     * "venueAddress": "中国上海市浦东新区龙东大道 邮政编码: 201203",
+     * "publishType": "0",
+     * "venueLongitude": "121.6000",
+     * "venueLatitude": "31.2200",
+     * "updateType": null,
+     * "distance": null,
+     * "starLevel": "3",
+     * "userName": "熊孩子",
+     * "stageName": "熊豆豆",
+     * "longitude": "-71.7000",
+     * "latitude": "43.7200",
+     * "signature": "hhjjj",
+     * "musicFile": "http://47.100.104.82:8083/upload/musicFile/music_1514280946971.m4a",
+     * "twitterAccount": "ccbhj",
+     * "soundcloudAccount": "ffghh",
+     * "facebookAccount": "ffghj",
+     * "headImg": "http://47.100.104.82:8083/upload/headImgFile/headImg_1514280946972.jpg",
+     * "performDate": "Mar 22 2018",
+     * "performTime": "1:00AM-2:00AM"
      */
 
 
@@ -73,6 +76,53 @@ public class VenueApplyModel {
     private String headImg;
     private String performDate;
     private String performTime;
+
+    protected VenueApplyModel(Parcel in) {
+        createDate = in.readString();
+        performID = in.readString();
+        venueID = in.readString();
+        performStartDate = in.readString();
+        performEndDate = in.readString();
+        performType = in.readString();
+        performerID = in.readString();
+        performState = in.readString();
+        isOpportunity = in.readString();
+        performerName = in.readString();
+        performDesc = in.readString();
+        venueName = in.readString();
+        venueAddress = in.readString();
+        publishType = in.readString();
+        venueLongitude = in.readString();
+        venueLatitude = in.readString();
+        updateType = in.readString();
+        distance = in.readString();
+        starLevel = in.readString();
+        userName = in.readString();
+        stageName = in.readString();
+        longitude = in.readString();
+        latitude = in.readString();
+        signature = in.readString();
+        musicFile = in.readString();
+        twitterAccount = in.readString();
+        soundcloudAccount = in.readString();
+        facebookAccount = in.readString();
+        headImg = in.readString();
+        performDate = in.readString();
+        performTime = in.readString();
+
+    }
+
+    public static final Creator<VenueApplyModel> CREATOR = new Creator<VenueApplyModel>() {
+        @Override
+        public VenueApplyModel createFromParcel(Parcel in) {
+            return new VenueApplyModel(in);
+        }
+
+        @Override
+        public VenueApplyModel[] newArray(int size) {
+            return new VenueApplyModel[size];
+        }
+    };
 
 
     public String getCreateDate() {
@@ -321,5 +371,46 @@ public class VenueApplyModel {
 
     public void setPerformTime(String performTime) {
         this.performTime = performTime;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(createDate);
+        dest.writeString(performID);
+        dest.writeString(venueID);
+        dest.writeString(performStartDate);
+        dest.writeString(performEndDate);
+        dest.writeString(performType);
+        dest.writeString(performerID);
+        dest.writeString(performState);
+        dest.writeString(isOpportunity);
+        dest.writeString(performerName);
+        dest.writeString(performDesc);
+        dest.writeString(venueName);
+        dest.writeString(venueAddress);
+        dest.writeString(publishType);
+        dest.writeString(venueLongitude);
+        dest.writeString(venueLatitude);
+        dest.writeString(updateType);
+        dest.writeString(distance);
+        dest.writeString(starLevel);
+        dest.writeString(userName);
+        dest.writeString(stageName);
+        dest.writeString(longitude);
+        dest.writeString(latitude);
+        dest.writeString(signature);
+        dest.writeString(musicFile);
+        dest.writeString(twitterAccount);
+        dest.writeString(soundcloudAccount);
+        dest.writeString(facebookAccount);
+        dest.writeString(headImg);
+        dest.writeString(performDate);
+        dest.writeString(performTime);
     }
 }

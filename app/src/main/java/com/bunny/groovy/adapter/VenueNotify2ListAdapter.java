@@ -16,7 +16,7 @@ import com.bunny.groovy.api.ApiRetrofit;
 import com.bunny.groovy.api.ApiService;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.VenueApplyModel;
-import com.bunny.groovy.ui.fragment.notify.InviteVenueDetailsFragment;
+import com.bunny.groovy.ui.fragment.notify.VenueApplyDetailsFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.socks.library.KLog;
 
@@ -106,18 +106,9 @@ public class VenueNotify2ListAdapter extends RecyclerView.Adapter<VenueNotify2Li
         VenueApplyModel showModel = mList.get(pos);
         switch (v.getId()) {
             case R.id.item_notification_tv_details://详情
-                /*Bundle bundle = new Bundle();
-                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, showModel);
-                if (mTYPE == 1) {
-                    InviteDetailsFragment.launch(mContext, bundle);
-                } else {
-                    bundle.putInt("type", mTYPE);
-                    ShowDetailFragment.launch(mContext, bundle);
-                }
-*/
-                /*Bundle bundle = new Bundle();
-//                bundle.putParcelable("key_show_bean", showModel);
-                InviteVenueDetailsFragment.launch(mContext, bundle);*/
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("key_show_bean", showModel);
+                VenueApplyDetailsFragment.launch(mContext, bundle);
                 break;
             case R.id.item_notification_tv_confirm://同意
                 agreeApply(showModel.getPerformerID(), pos);

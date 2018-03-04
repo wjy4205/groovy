@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -245,7 +246,8 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             }
             popupWindow.setContentView(inflate);
             popupWindow.setOutsideTouchable(true);
-            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(130));
+            popupWindow.setWidth(mVenueService.getWidth());
+            popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
@@ -263,6 +265,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
                         default:
                             mVenueService.setText("");
                     }
+                    mVenueService.setCheckStatus(XEditText.CheckStatus.NONE);
                 }
             });
         }
@@ -271,7 +274,13 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     public void showPopWindow(Context context, View view) {
         UIUtils.hideSoftInput(mVenueService);
         initPopWindow(context, mVenueService.getTrimmedString());
-        if (popupWindow.isShowing()) popupWindow.dismiss();
-        else popupWindow.showAsDropDown(mVenueService);
+        if (popupWindow.isShowing()) {
+            popupWindow.dismiss();
+            mVenueService.setCheckStatus(XEditText.CheckStatus.NONE);
+        }
+        else {
+            popupWindow.showAsDropDown(mVenueService, 0, 0);
+            mVenueService.setCheckStatus(XEditText.CheckStatus.INVALID);
+        }
     }
 }

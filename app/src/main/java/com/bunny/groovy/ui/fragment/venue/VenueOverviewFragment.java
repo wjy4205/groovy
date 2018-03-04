@@ -15,6 +15,7 @@ import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.presenter.VenueOverviewPresenter;
 import com.bunny.groovy.ui.fragment.notify.NotificationFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowOpportunityFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IOverView;
@@ -69,7 +70,7 @@ public class VenueOverviewFragment extends BaseFragment<VenueOverviewPresenter> 
 
     @OnClick(R.id.tv_release_opportunity)
     void releaseOpportunity() {
-
+        ReleaseShowOpportunityFragment.launch(getActivity());
     }
 
     @Override

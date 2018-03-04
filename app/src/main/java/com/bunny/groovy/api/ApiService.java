@@ -367,4 +367,11 @@ public interface ApiService {
     Observable<ResultResponse<ShowModel>> getNextPerformInfo(
             @Query("venueID") String venueID
     );
+
+    //发布演出机会
+    @FormUrlEncoded
+    @POST("VenueBookingsController/addPerformOpportunity")
+    Observable<ResultResponse<Object>> addPerformOpportunity(@Field("startDate") String startDate,
+                                                             @Field("endDate") String endDate,
+                                                             @Field("performDesc") String performDesc);
 }

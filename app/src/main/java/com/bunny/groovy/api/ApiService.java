@@ -2,6 +2,7 @@ package com.bunny.groovy.api;
 
 import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.GoogleMapLoc;
+import com.bunny.groovy.model.MusicianDetailModel;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
@@ -409,4 +410,21 @@ public interface ApiService {
                                                             @Field("performStartDate") String performStartDate,
                                                             @Field("performEndDate") String performEndDate,
                                                             @Field("invitationDesc") String invitationDesc);
+
+    //表演者个人主页：获取表演者主页信息
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/getSingPerformerDetail")
+    Observable<ResultResponse<MusicianDetailModel>> getSingPerformerDetail(@Field("performerID") String performerID,
+                                                                           @Field("userID") String userID);
+    //表演者个人主页：收藏表演者
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/collectionPerformer")
+    Observable<ResultResponse<Object>> collectionPerformer(@Field("performerID") String performerID,
+                                                                           @Field("userID") String userID);
+
+    //表演者个人主页：取消收藏表演者
+    @FormUrlEncoded
+    @POST("PerformerBasicsController/cancelCollectionPerformer")
+    Observable<ResultResponse<MusicianDetailModel>> cancelCollectionPerformer(@Field("performerID") String performerID,
+                                                                           @Field("userID") String userID);
 }

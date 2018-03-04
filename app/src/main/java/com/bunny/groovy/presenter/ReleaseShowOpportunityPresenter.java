@@ -22,6 +22,32 @@ public class ReleaseShowOpportunityPresenter extends BasePresenter<ISetFileView>
     }
 
     /**
+     * 演出发布
+     *
+     * @param fieldMap
+     * @param type     2-演出厅用户端发布
+     */
+    public void releaseShow(Map<String, String> fieldMap, int type) {
+        addSubscription(type == 2 ? apiService.releaseVenueShow(fieldMap) : apiService.releaseShow(fieldMap), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("发布成功");
+                mView.get().finish();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
+
+    /**
      * 演出机会发布
      */
     public void releaseShow(String startTime, String endTime, String desc) {

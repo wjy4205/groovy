@@ -364,8 +364,24 @@ public interface ApiService {
     );
 
     //发布演出机会
+    @FormUrlEncoded
     @POST("VenueBookingsController/addPerformOpportunity")
     Observable<ResultResponse<Object>> addPerformOpportunity(@Field("startDate") String startDate,
                                                              @Field("endDate") String endDate,
                                                              @Field("performDesc") String performDesc);
+
+    //获取表演者列表
+    @FormUrlEncoded
+    @POST("VenueBookingsController/getSearchPerformerList")
+    Observable<ResultResponse<List<PerformerUserModel>>> getSearchPerformerList(@Field("keyword") String keyword,
+                                                                                @Field("orderType") String orderType,
+                                                                                @Field("performType") String performType);
+
+    //获取表演者列表
+    @FormUrlEncoded
+    @POST("VenueBookingsController/addPerformInvitation")
+    Observable<ResultResponse<Object>> addPerformInvitation(@Field("performerID") String performerID,
+                                                            @Field("performStartDate") String performStartDate,
+                                                            @Field("performEndDate") String performEndDate,
+                                                            @Field("invitationDesc") String invitationDesc);
 }

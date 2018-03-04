@@ -14,6 +14,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.presenter.VenueOverviewPresenter;
 import com.bunny.groovy.ui.fragment.notify.NotificationFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.DiscoverMusicianFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowOpportunityFragment;
 import com.bunny.groovy.utils.AppCacheData;
@@ -65,7 +66,7 @@ public class VenueOverviewFragment extends BaseFragment<VenueOverviewPresenter> 
 
     @OnClick(R.id.tv_discover_musician)
     void discoverMusician() {
-
+        DiscoverMusicianFragment.launch(getActivity());
     }
 
     @OnClick(R.id.tv_release_opportunity)

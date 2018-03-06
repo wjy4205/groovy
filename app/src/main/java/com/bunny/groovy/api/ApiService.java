@@ -427,4 +427,8 @@ public interface ApiService {
     @POST("PerformerBasicsController/cancelCollectionPerformer")
     Observable<ResultResponse<MusicianDetailModel>> cancelCollectionPerformer(@Field("performerID") String performerID,
                                                                            @Field("userID") String userID);
+    //表演者个人主页：取消收藏表演者
+    @FormUrlEncoded
+    @POST("VenueBookingsController/choosePerformer")
+    Observable<ResultResponse<Object>> choosePerformer(@Field("applyID") String applyID);
 }

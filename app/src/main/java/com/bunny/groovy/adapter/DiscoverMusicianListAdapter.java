@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.InviteMusicianFragment;
-import com.bunny.groovy.ui.fragment.releaseshow.SearchMusicianFragment;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,6 +63,8 @@ public class DiscoverMusicianListAdapter extends RecyclerView.Adapter<DiscoverMu
 
         holder.mTvInvite.setTag(position);
         holder.mTvInvite.setOnClickListener(this);
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
     }
 
     @Override
@@ -82,7 +84,11 @@ public class DiscoverMusicianListAdapter extends RecyclerView.Adapter<DiscoverMu
     public void onClick(View v) {
         int pos = (int) v.getTag();
         PerformerUserModel model = mModelList.get(pos);
-        InviteMusicianFragment.launch(mContext, model);
+        if (v.getId() == R.id.musician_tv_invite) {
+            InviteMusicianFragment.launch(mContext, model);
+        } else {
+            MusicianDetailFragment.launch(mContext, model.getUserID());
+        }
     }
 
     static class MusicianHolder extends RecyclerView.ViewHolder {

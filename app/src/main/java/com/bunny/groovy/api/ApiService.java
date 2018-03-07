@@ -414,7 +414,7 @@ public interface ApiService {
                                                                                 @Field("orderType") String orderType,
                                                                                 @Field("performType") String performType);
 
-    //获取表演者列表
+    //邀请表演者
     @FormUrlEncoded
     @POST("VenueBookingsController/addPerformInvitation")
     Observable<ResultResponse<Object>> addPerformInvitation(@Field("performerID") String performerID,
@@ -451,4 +451,5 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueBookingsController/choosePerformer")
     Observable<ResultResponse<Object>> choosePerformer(@Field("applyID") String applyID);
+
 }

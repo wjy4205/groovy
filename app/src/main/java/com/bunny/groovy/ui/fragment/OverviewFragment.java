@@ -116,7 +116,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter> implements
         model = showModel;
         nextShowLayout.setVisibility(View.VISIBLE);
         Glide.with(this).load(showModel.getHeadImg())
-                .placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic).into(ivHead);
+                .placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic).into(ivHead);
         tvName.setText(showModel.getVenueName());
         tvStar.setText(showModel.getVenueScore());
         tvPerformType.setText(showModel.getPerformType());

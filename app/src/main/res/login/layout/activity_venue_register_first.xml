@@ -24,7 +24,7 @@
             android:id="@+id/iv_venue_select_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/login_photo"
+            android:src="@drawable/login_photo"
             android:layout_gravity="right|bottom"/>
     </FrameLayout>
     <com.xw.repo.XEditText
@@ -42,8 +42,8 @@
         android:inputType="textPassword"
         app:x_importantWord="true"
         app:x_disableEmoji="true"
-        app:x_hidePwdDrawable="@mipmap/login_closeeye"
-        app:x_showPwdDrawable="@mipmap/login_openeye" />
+        app:x_hidePwdDrawable="@drawable/login_closeeye"
+        app:x_showPwdDrawable="@drawable/login_openeye" />
 
     <com.xw.repo.XEditText
         android:id="@+id/et_venue_password_again"
@@ -52,8 +52,8 @@
         android:inputType="textPassword"
         app:x_disableEmoji="true"
         app:x_importantWord="true"
-        app:x_hidePwdDrawable="@mipmap/login_closeeye"
-        app:x_showPwdDrawable="@mipmap/login_openeye" />
+        app:x_hidePwdDrawable="@drawable/login_closeeye"
+        app:x_showPwdDrawable="@drawable/login_openeye" />
 
     <com.xw.repo.XEditText
         android:id="@+id/et_venue_public_name"

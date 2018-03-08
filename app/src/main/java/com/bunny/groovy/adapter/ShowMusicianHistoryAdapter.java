@@ -47,8 +47,8 @@ public class ShowMusicianHistoryAdapter extends RecyclerView.Adapter<ShowMusicia
     public void onBindViewHolder(HisHolder holder, int position) {
         final VenueShowModel bean = mList.get(position);
         Glide.with(mContext).load(bean.getPerformerImg())
-                .placeholder(R.mipmap.venue_instead_pic)
-                .error(R.mipmap.venue_instead_pic)
+                .placeholder(R.drawable.venue_instead_pic)
+                .error(R.drawable.venue_instead_pic)
                 .into(holder.mIvHead);
         holder.mTvStar.setText(bean.getPerformerScore());
         holder.mTvName.setText(bean.getPerformerName());

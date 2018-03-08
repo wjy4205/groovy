@@ -135,7 +135,7 @@ public class ShowDetailFragment extends BaseFragment {
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getPhoneNumber());
             mTvEmail.setText(model.getWebSiteAddress());
-            Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
+            Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
                     .into(mHead);
             switch (type) {
                 case 0://演出机会

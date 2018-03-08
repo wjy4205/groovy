@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20px"
-                    android:src="@mipmap/login_play"/>
+                    android:src="@drawable/login_play"/>
             </LinearLayout>
 
             <LinearLayout
@@ -81,21 +81,21 @@
                     android:id="@+id/performer_facebook_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/user_facebook"/>
+                    android:src="@drawable/user_facebook"/>
 
                 <ImageView
                     android:id="@+id/performer_twitter_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:src="@mipmap/user_twiter"/>
+                    android:src="@drawable/user_twiter"/>
 
                 <ImageView
                     android:id="@+id/performer_me_tv_cloud"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@mipmap/user_soundcloud"/>
+                    android:src="@drawable/user_soundcloud"/>
             </LinearLayout>
 
             <TextView

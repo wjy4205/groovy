@@ -84,7 +84,7 @@ public class VenueNotify2ListAdapter extends RecyclerView.Adapter<VenueNotify2Li
             }
         }
 
-        Glide.with(mContext).load(showModel.getHeadImg()).error(R.mipmap.venue_instead_pic).into(holder.ivHeader);
+        Glide.with(mContext).load(showModel.getHeadImg()).error(R.drawable.venue_instead_pic).into(holder.ivHeader);
         holder.tvName.setText(showModel.getPerformerName());
         holder.tvScore.setText(showModel.getStarLevel());
         holder.tvPerformType.setText(showModel.getPerformType());

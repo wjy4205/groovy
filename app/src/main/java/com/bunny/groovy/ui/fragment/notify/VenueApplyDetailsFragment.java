@@ -194,7 +194,7 @@ public class VenueApplyDetailsFragment extends BaseFragment {
             tvVenueName1.setText(sModel.getVenueName());
             mTvVenueName_2.setText(sModel.getPerformerName());
             mTvStars.setText(sModel.getStarLevel());
-            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
+            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);
             llAction.setVisibility(View.GONE);
@@ -241,7 +241,7 @@ public class VenueApplyDetailsFragment extends BaseFragment {
     private void handleMusic() {
         if (callBack != null) {
             boolean isPlay = callBack.isPlayerMusic();
-            mMusicView.setImageResource(isPlay ? R.mipmap.login_stop : R.mipmap.login_play);
+            mMusicView.setImageResource(isPlay ? R.drawable.login_stop : R.drawable.login_play);
         }
     }
 

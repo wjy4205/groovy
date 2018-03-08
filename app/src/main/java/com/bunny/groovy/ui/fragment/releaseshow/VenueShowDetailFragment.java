@@ -162,7 +162,8 @@ public class VenueShowDetailFragment extends BaseFragment {
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getVenueBookingPhone());
             mTvEmail.setText(model.getVenueWebSite());
-            Glide.with(mActivity).load(model.getVenueImg()).placeholder(R.mipmap.venue_instead_pic).error(R.mipmap.venue_instead_pic)
+            Glide.with(mActivity).load(model.getVenueImg()).placeholder(R.drawable.venue_instead_pic)
+                    .error(R.drawable.venue_instead_pic)
                     .into(mHead);
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
@@ -214,7 +215,7 @@ public class VenueShowDetailFragment extends BaseFragment {
     private void handleMusic() {
         if (callBack != null) {
             boolean isPlay = callBack.isPlayerMusic();
-            mMusicView.setImageResource(isPlay ? R.mipmap.login_stop : R.mipmap.login_play);
+            mMusicView.setImageResource(isPlay ? R.drawable.login_stop : R.drawable.login_play);
         }
     }
 
@@ -254,7 +255,7 @@ public class VenueShowDetailFragment extends BaseFragment {
         super.onPause();
         if (callBack != null && callBack.isPlaying()) {
             callBack.isPlayerMusic();
-            mMusicView.setImageResource(R.mipmap.login_play);
+            mMusicView.setImageResource(R.drawable.login_play);
         }
     }
 
@@ -263,7 +264,7 @@ public class VenueShowDetailFragment extends BaseFragment {
         super.onDestroy();
         if (callBack != null && callBack.isPlaying()) {
             callBack.isPlayerMusic();
-            mMusicView.setImageResource(R.mipmap.login_play);
+            mMusicView.setImageResource(R.drawable.login_play);
         }
     }
 }

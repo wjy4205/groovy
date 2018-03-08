@@ -107,7 +107,7 @@ public class VenueShowDetailFragment extends BaseFragment {
     @OnClick(R.id.twitter_page)
     public void twitter() {
         if (!TextUtils.isEmpty(model.getVenueTwitter()))
-            Utils.openFacebook(mActivity, model.getVenueTwitter());
+            Utils.openTwitter(mActivity, model.getVenueTwitter());
     }
 
     @OnClick(R.id.performer_facebook_page)

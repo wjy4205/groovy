@@ -2,15 +2,10 @@ package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.app.Activity;
 
-import com.bunny.groovy.adapter.ShowHistoryAdapter;
 import com.bunny.groovy.adapter.ShowMusicianHistoryAdapter;
 import com.bunny.groovy.base.BaseListFragment;
-import com.bunny.groovy.model.PerformerUserModel;
-import com.bunny.groovy.model.ShowModel;
-import com.bunny.groovy.model.ShowMusicianHistoryModel;
-import com.bunny.groovy.presenter.ListPresenter;
+import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.presenter.VenueListPresenter;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IListPageView;
 
 import java.util.List;
@@ -21,14 +16,14 @@ import java.util.List;
  * Author: Created by bayin on 2017/12/22.
  ****************************************/
 
-public class HistoryMusicianFragment extends BaseListFragment<VenueListPresenter, ShowMusicianHistoryAdapter> implements IListPageView<List<ShowMusicianHistoryModel>> {
+public class HistoryMusicianFragment extends BaseListFragment<VenueListPresenter, ShowMusicianHistoryAdapter> implements IListPageView<List<VenueShowModel>> {
     @Override
     public Activity get() {
         return getActivity();
     }
 
     @Override
-    public void setView(List<ShowMusicianHistoryModel> o) {
+    public void setView(List<VenueShowModel> o) {
         setNormalView();
         if (mAdapter == null) {
             mAdapter = new ShowMusicianHistoryAdapter(o);

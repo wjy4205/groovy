@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
-import com.bunny.groovy.model.FavoriteMusicianModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.InviteMusicianFragment;
@@ -26,10 +25,10 @@ import java.util.List;
  ****************************************/
 
 public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusicianListAdapter.MusicianHolder> implements View.OnClickListener {
-    private List<FavoriteMusicianModel> mModelList;
+    private List<PerformerUserModel> mModelList;
     private Activity mContext;
 
-    public CollectMusicianListAdapter(List<FavoriteMusicianModel> modelList) {
+    public CollectMusicianListAdapter(List<PerformerUserModel> modelList) {
         mModelList = modelList;
     }
 
@@ -42,18 +41,18 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
 
     @Override
     public void onBindViewHolder(MusicianHolder holder, int position) {
-        FavoriteMusicianModel musicianModel = mModelList.get(position);
-        if (!TextUtils.isEmpty(musicianModel.headImg)) {
-            Glide.with(mContext).load(musicianModel.headImg)
+        PerformerUserModel musicianModel = mModelList.get(position);
+        if (!TextUtils.isEmpty(musicianModel.getHeadImg())) {
+            Glide.with(mContext).load(musicianModel.getHeadImg())
                     .placeholder(R.mipmap.icon_load_pic)
                     .error(R.mipmap.icon_load_pic).dontAnimate()
                     .into(holder.mIvHead);
         } else {
             holder.mIvHead.setImageResource(R.mipmap.icon_load_pic);
         }
-        holder.mTvName.setText(musicianModel.stageName);
-        holder.mTvStar.setText(musicianModel.starLevel);
-        holder.mTvType.setText(musicianModel.performTypeName);
+        holder.mTvName.setText(musicianModel.getUserName());
+        holder.mTvStar.setText(musicianModel.getStarLevel());
+        holder.mTvType.setText(musicianModel.getPerformTypeName());
 
         holder.mTvInvite.setTag(position);
         holder.mTvInvite.setOnClickListener(this);
@@ -68,7 +67,7 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
         return 0;
     }
 
-    public void refresh(List<FavoriteMusicianModel> list) {
+    public void refresh(List<PerformerUserModel> list) {
         this.mModelList = list;
         notifyDataSetChanged();
     }
@@ -76,11 +75,11 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
     @Override
     public void onClick(View v) {
         int pos = (int) v.getTag();
-        FavoriteMusicianModel model = mModelList.get(pos);
+        PerformerUserModel model = mModelList.get(pos);
         if (v.getId() == R.id.musician_tv_invite) {
-//            InviteMusicianFragment.launch(mContext, model);
+            InviteMusicianFragment.launch(mContext, model);
         } else {
-            MusicianDetailFragment.launch(mContext, model.userID);
+            MusicianDetailFragment.launch(mContext, model.getUserID());
         }
     }
 

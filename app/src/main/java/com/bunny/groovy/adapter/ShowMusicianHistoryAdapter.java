@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
-import com.bunny.groovy.model.PerformerUserModel;
-import com.bunny.groovy.model.ShowModel;
-import com.bunny.groovy.model.ShowMusicianHistoryModel;
-import com.bunny.groovy.ui.fragment.releaseshow.ShowDetailFragment;
+import com.bunny.groovy.model.VenueShowModel;
+import com.bunny.groovy.ui.fragment.releaseshow.VenueShowDetailFragment;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
 import java.util.List;
@@ -26,14 +24,14 @@ import java.util.List;
  ****************************************/
 
 public class ShowMusicianHistoryAdapter extends RecyclerView.Adapter<ShowMusicianHistoryAdapter.HisHolder> {
-    private List<ShowMusicianHistoryModel> mList;
+    private List<VenueShowModel> mList;
     private Activity mContext;
 
-    public ShowMusicianHistoryAdapter(List<ShowMusicianHistoryModel> list) {
+    public ShowMusicianHistoryAdapter(List<VenueShowModel> list) {
         mList = list;
     }
 
-    public void refresh(List<ShowMusicianHistoryModel> list) {
+    public void refresh(List<VenueShowModel> list) {
         mList = list;
         notifyDataSetChanged();
     }
@@ -47,22 +45,22 @@ public class ShowMusicianHistoryAdapter extends RecyclerView.Adapter<ShowMusicia
 
     @Override
     public void onBindViewHolder(HisHolder holder, int position) {
-        final ShowMusicianHistoryModel bean = mList.get(position);
-        Glide.with(mContext).load(bean.performerImg)
+        final VenueShowModel bean = mList.get(position);
+        Glide.with(mContext).load(bean.getPerformerImg())
                 .placeholder(R.mipmap.venue_instead_pic)
                 .error(R.mipmap.venue_instead_pic)
                 .into(holder.mIvHead);
-        holder.mTvStar.setText(bean.performerScore);
-        holder.mTvName.setText(bean.performerName);
-        holder.mTvStyle.setText(bean.performType);
-        holder.mTvShowTime.setText(bean.performDate + " " + bean.performTime);
+        holder.mTvStar.setText(bean.getPerformerScore());
+        holder.mTvName.setText(bean.getPerformerName());
+        holder.mTvStyle.setText(bean.getPerformType());
+        holder.mTvShowTime.setText(bean.getPerformDate() + " " + bean.getPerformTime());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN,bean);
-//                ShowDetailFragment.launch(mContext, bundle);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(VenueShowDetailFragment.KEY_SHOW_BEAN,bean);
+                VenueShowDetailFragment.launch(mContext, bundle);
             }
         });
     }

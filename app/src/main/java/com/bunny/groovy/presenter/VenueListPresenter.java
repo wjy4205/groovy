@@ -2,9 +2,9 @@ package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.model.FavoriteMusicianModel;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.model.ShowMusicianHistoryModel;
+import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.view.IListPageView;
 
 import java.util.List;
@@ -25,9 +25,9 @@ public class VenueListPresenter extends BasePresenter<IListPageView> {
      */
     public void getCollectionPerformerList(String userID) {
         addSubscription(apiService.getCollectionPerformerList(userID),
-                new SubscriberCallBack<List<FavoriteMusicianModel>>(mView.get()) {
+                new SubscriberCallBack<List<PerformerUserModel>>(mView.get()) {
                     @Override
-                    protected void onSuccess(List<FavoriteMusicianModel> response) {
+                    protected void onSuccess(List<PerformerUserModel> response) {
                         if (response != null && response.size() > 0)
                             mView.setView(response);
                         else mView.setNodata();
@@ -51,9 +51,9 @@ public class VenueListPresenter extends BasePresenter<IListPageView> {
      */
     public void getPerformHistoryList() {
         addSubscription(apiService.getPerformHistoryList(),
-                new SubscriberCallBack<List<ShowMusicianHistoryModel>>(mView.get()) {
+                new SubscriberCallBack<List<VenueShowModel>>(mView.get()) {
                     @Override
-                    protected void onSuccess(List<ShowMusicianHistoryModel> response) {
+                    protected void onSuccess(List<VenueShowModel> response) {
                         if (response != null && response.size() > 0)
                             mView.setView(response);
                         else mView.setNodata();

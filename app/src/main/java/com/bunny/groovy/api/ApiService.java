@@ -1,6 +1,5 @@
 package com.bunny.groovy.api;
 
-import com.bunny.groovy.model.FavoriteMusicianModel;
 import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.MusicianDetailModel;
@@ -8,12 +7,12 @@ import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
-import com.bunny.groovy.model.ShowMusicianHistoryModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.VenueApplyModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.model.VenueInViteModel;
 import com.bunny.groovy.model.VenueOpportunityModel;
+import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.model.WalletBean;
 
 import java.util.List;
@@ -456,10 +455,10 @@ public interface ApiService {
 
     //获取历史表演记录
     @POST("VenueMeController/getPerformHistoryList")
-    Observable<ResultResponse<List<ShowMusicianHistoryModel>>> getPerformHistoryList();
+    Observable<ResultResponse<List<VenueShowModel>>> getPerformHistoryList();
 
     //获取收藏的表演者列表
     @FormUrlEncoded
     @POST("VenueMeController/getCollectionPerformerList")
-    Observable<ResultResponse<List<FavoriteMusicianModel>>> getCollectionPerformerList(@Field("userID") String userID);
+    Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList(@Field("userID") String userID);
 }

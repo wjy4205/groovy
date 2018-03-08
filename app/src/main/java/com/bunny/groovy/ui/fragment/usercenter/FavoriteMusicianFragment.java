@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.bunny.groovy.adapter.CollectMusicianListAdapter;
 import com.bunny.groovy.base.BaseListFragment;
-import com.bunny.groovy.model.FavoriteMusicianModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.VenueListPresenter;
 import com.bunny.groovy.utils.AppCacheData;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/21.
  */
 
-public class FavoriteMusicianFragment extends BaseListFragment<VenueListPresenter, CollectMusicianListAdapter> implements IListPageView<List<FavoriteMusicianModel>> {
+public class FavoriteMusicianFragment extends BaseListFragment<VenueListPresenter, CollectMusicianListAdapter> implements IListPageView<List<PerformerUserModel>> {
 
     @Override
     public Activity get() {
@@ -25,7 +24,7 @@ public class FavoriteMusicianFragment extends BaseListFragment<VenueListPresente
     }
 
     @Override
-    public void setView(List<FavoriteMusicianModel> o) {
+    public void setView(List<PerformerUserModel> o) {
         setNormalView();
         if (mAdapter == null) {
             mAdapter = new CollectMusicianListAdapter(o);

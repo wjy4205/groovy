@@ -1,7 +1,12 @@
 package com.bunny.groovy.ui.fragment.notify;
 
 import android.app.Activity;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +22,8 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.VenueApplyModel;
-import com.bunny.groovy.utils.MusicBox;
+import com.bunny.groovy.service.MusicService;
+import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.socks.library.KLog;
@@ -79,6 +85,9 @@ public class VenueApplyDetailsFragment extends BaseFragment {
 
     @Bind(R.id.apply_layout)
     LinearLayout mApplyLayout;
+
+    @Bind(R.id.performer_me_play_music)
+    ImageView mMusicView;
 
 
     @OnClick(R.id.performer_facebook_page)
@@ -198,7 +207,7 @@ public class VenueApplyDetailsFragment extends BaseFragment {
                 llAction.setVisibility(View.VISIBLE);
                 mTvNotify.setVisibility(View.GONE);
             }
-
+            if (!TextUtils.isEmpty(sModel.getMusicFile())) initMusicService();
         }
     }
 
@@ -219,16 +228,47 @@ public class VenueApplyDetailsFragment extends BaseFragment {
 
     @OnClick(R.id.performer_me_play_music)
     public void playMusic() {
-        if (!TextUtils.isEmpty(sModel.getMusicFile())) {
-            MusicBox.getInstance().playOnLineMusic(sModel.getMusicFile(), mActivity);
-        } else {
-            UIUtils.showBaseToast("Play failed");
+        if (TextUtils.isEmpty(sModel.getMusicFile())) {
+            UIUtils.showBaseToast("No music.");
+            return;
         }
+        handleMusic();
+    }
+
+    /**
+     * 控制音乐播放
+     */
+    private void handleMusic() {
+        if (callBack != null) {
+            boolean isPlay = callBack.isPlayerMusic();
+            mMusicView.setImageResource(isPlay ? R.mipmap.login_stop : R.mipmap.login_play);
+        }
+    }
+
+    private MusicService.CallBack callBack;
+    private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            callBack = (MusicService.MyBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            callBack = null;
+        }
+    };
+
+    private void initMusicService() {
+        /** 构造启动音乐播放服务的Intent，设置音乐资源 */
+        Intent intent = new Intent(getActivity(), MusicService.class);
+        intent.putExtra("music_path", sModel.getMusicFile());
+        getActivity().startService(intent);
+        getActivity().bindService(intent, conn, Service.BIND_AUTO_CREATE);
     }
 
     @OnClick(R.id.item_notification_tv_details)
     public void performDetail() {
-        // TODO: 2018/3/4 0004 跳转表演者详情页
+        MusicianDetailFragment.launch(mActivity, sModel.getPerformerID());
     }
 
 }

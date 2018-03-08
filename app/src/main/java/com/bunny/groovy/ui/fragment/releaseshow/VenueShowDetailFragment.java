@@ -1,7 +1,12 @@
 package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,9 +17,9 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
-import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.VenueShowModel;
-import com.bunny.groovy.utils.MusicBox;
+import com.bunny.groovy.service.MusicService;
+import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 
@@ -85,6 +90,8 @@ public class VenueShowDetailFragment extends BaseFragment {
     TextView mTvPerformerType;
     @Bind(R.id.performer_center_tv_score)
     TextView mTvPerformerStars;
+    @Bind(R.id.performer_me_play_music)
+    ImageView mMusicView;
 
     @OnClick(R.id.include_detail_tv_tel)
     public void call() {
@@ -160,9 +167,9 @@ public class VenueShowDetailFragment extends BaseFragment {
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
             String performScore = model.getPerformerScore();
-            if(performScore.contains(".")){
+            if (performScore.contains(".")) {
                 int index = model.getPerformerScore().indexOf(".");
-                performScore = performScore.substring(0,index+2);
+                performScore = performScore.substring(0, index + 2);
             }
             mTvPerformerStars.setText(performScore);
             Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.head).error(R.drawable.head)
@@ -188,20 +195,57 @@ public class VenueShowDetailFragment extends BaseFragment {
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
             }
+            if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
         }
     }
 
     @OnClick(R.id.performer_me_play_music)
     public void playMusic() {
-        if (!TextUtils.isEmpty(model.getPerformerMusic())) {
-            MusicBox.getInstance().playOnLineMusic(model.getPerformerMusic(), mActivity);
-        } else {
-            UIUtils.showBaseToast("Play failed");
+        if (TextUtils.isEmpty(model.getPerformerMusic())) {
+            UIUtils.showBaseToast("No music.");
+            return;
         }
+        handleMusic();
+    }
+
+    /**
+     * 控制音乐播放
+     */
+    private void handleMusic() {
+        if (callBack != null) {
+            boolean isPlay = callBack.isPlayerMusic();
+            mMusicView.setImageResource(isPlay ? R.mipmap.login_stop : R.mipmap.login_play);
+        }
+    }
+
+    private MusicService.CallBack callBack;
+    private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            callBack = (MusicService.MyBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            callBack = null;
+        }
+    };
+
+    private void initMusicService() {
+        /** 构造启动音乐播放服务的Intent，设置音乐资源 */
+        Intent intent = new Intent(getActivity(), MusicService.class);
+        intent.putExtra("music_path", model.getPerformerMusic());
+        getActivity().startService(intent);
+        getActivity().bindService(intent, conn, Service.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void loadData() {
 
+    }
+
+    @OnClick(R.id.item_notification_tv_details)
+    public void detail() {
+        MusicianDetailFragment.launch(mActivity, model.getPerformerID());
     }
 }

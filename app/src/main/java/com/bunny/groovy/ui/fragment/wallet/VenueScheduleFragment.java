@@ -3,6 +3,7 @@ package com.bunny.groovy.ui.fragment.wallet;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,8 @@ import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IScheduleVenueView;
 import com.bunny.groovy.weidget.MoveLayout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +44,7 @@ public class VenueScheduleFragment extends BaseFragment<VenueSchedulePresenter> 
     private ArrayList<TextView> mTextList;
     private ArrayList<ImageView> mImgAddList;
     private ScheduleVenueAdapter mAdapter;
+    private int mWeek;
 
     @Bind(R.id.moveLayout)
     MoveLayout mMoveLayout;
@@ -194,6 +198,7 @@ public class VenueScheduleFragment extends BaseFragment<VenueSchedulePresenter> 
      * @param i 周几
      */
     private void setWeekListData(int i) {
+        mWeek = i;
         if (mVenueScheduleModel.getShowModelList(String.valueOf(i)) != null && mVenueScheduleModel.getShowModelList(String.valueOf(i)).size() > 0) {
             mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_weeks[i - 1]));
             mTvListTitle.setGravity(Gravity.LEFT);
@@ -348,5 +353,32 @@ public class VenueScheduleFragment extends BaseFragment<VenueSchedulePresenter> 
     @Override
     public void spotlight(String performID, String userID) {
         mPresenter.spotlightPerform(performID, userID);
+    }
+
+
+    /**
+     * 编辑后刷新列表
+     *
+     * @param model
+     */
+    @Subscribe
+    public void refresh(VenueShowModel model) {
+        List<VenueShowModel> list = mVenueScheduleModel.getShowModelList(String.valueOf(mWeek));
+        for (VenueShowModel showModel : list) {
+            if (TextUtils.equals(showModel.getPerformID(), model.getPerformID())) {
+                showModel.setPerformStartDate(model.getPerformStartDate());
+                showModel.setPerformEndDate(model.getPerformEndDate());
+                showModel.setPerformType(model.getPerformType());
+                showModel.setPerformDesc(model.getPerformDesc());
+            }
+            break;
+        }
+        mAdapter.refresh(list);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        registerEventBus(this);
     }
 }

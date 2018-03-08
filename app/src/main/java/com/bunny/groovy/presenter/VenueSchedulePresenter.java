@@ -126,7 +126,7 @@ public class VenueSchedulePresenter extends BasePresenter<IScheduleVenueView> {
                         if (response.success) {
                             UIUtils.showBaseToast("推广成功！");
                         } else {
-                            UIUtils.showBaseToast("推广失败！请重试");
+                            UIUtils.showBaseToast(response.errorMsg);
                         }
                     }
                 });

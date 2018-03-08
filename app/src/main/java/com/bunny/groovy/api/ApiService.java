@@ -397,7 +397,7 @@ public interface ApiService {
 
     //获取下一场演出信息，包含演出详情
     @POST("VenueBookingsController/getNextPerformInfo")
-    Observable<ResultResponse<ShowModel>> getNextPerformInfo(
+    Observable<ResultResponse<VenueShowModel>> getNextPerformInfo(
             @Query("venueID") String venueID
     );
 

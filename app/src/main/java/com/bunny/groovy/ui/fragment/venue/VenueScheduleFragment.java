@@ -1,4 +1,4 @@
-package com.bunny.groovy.ui.fragment.wallet;
+package com.bunny.groovy.ui.fragment.venue;
 
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;

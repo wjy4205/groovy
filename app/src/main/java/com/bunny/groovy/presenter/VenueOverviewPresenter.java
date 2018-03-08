@@ -5,8 +5,10 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IOverView;
+import com.bunny.groovy.view.IVenueOverView;
 
 /****************************************
  * 功能说明:  
@@ -14,15 +16,15 @@ import com.bunny.groovy.view.IOverView;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class VenueOverviewPresenter extends BasePresenter<IOverView> {
-    public VenueOverviewPresenter(IOverView view) {
+public class VenueOverviewPresenter extends BasePresenter<IVenueOverView> {
+    public VenueOverviewPresenter(IVenueOverView view) {
         super(view);
     }
 
     public void requestNextShow(String venueId) {
-        addSubscription(apiService.getNextPerformInfo(venueId), new SubscriberCallBack<ShowModel>(null) {
+        addSubscription(apiService.getNextPerformInfo(venueId), new SubscriberCallBack<VenueShowModel>(null) {
             @Override
-            protected void onSuccess(ShowModel response) {
+            protected void onSuccess(VenueShowModel response) {
                 if (response != null) {
                     mView.initNextView(response);
                 } else {

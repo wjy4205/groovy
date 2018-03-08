@@ -461,4 +461,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueMeController/getCollectionPerformerList")
     Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList(@Field("userID") String userID);
+
+    //演播厅个人资料-编辑个人资料
+    @POST("VenueMeController/updateVenueInfo")
+    Observable<ResultResponse<Object>> updateVenueInfo(@Body RequestBody body);
 }

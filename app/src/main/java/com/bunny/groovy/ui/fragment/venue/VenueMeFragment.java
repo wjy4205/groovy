@@ -12,15 +12,12 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
-import com.bunny.groovy.presenter.MePresenter;
 import com.bunny.groovy.presenter.VenueMePresenter;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
-import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
 import com.bunny.groovy.ui.fragment.usercenter.FavoriteMusicianFragment;
-import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryMusicianFragment;
-import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.ui.fragment.usercenter.VenueDataFragment;
 import com.bunny.groovy.ui.fragment.wallet.WalletFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
@@ -73,11 +70,6 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
         SettingsFragment.launch(getActivity());
     }
 
-    @OnClick(R.id.user_center_iv_header)
-    public void setProfile() {
-        PersonalDataFragment.launch(getActivity());
-    }
-
     @OnClick(R.id.me_tv_facebook)
     public void facebook() {
         if (!TextUtils.isEmpty(AppCacheData.getPerformerUserModel().getFacebookAccount()))
@@ -98,6 +90,11 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
     @OnClick(R.id.me_tv_spotlight)
     public void spotlight() {
         SpotlightFragment.launch(mActivity);
+    }
+
+    @OnClick(R.id.user_center_iv_header)
+    public void updateUserInfo(){
+        VenueDataFragment.launch(mActivity);
     }
 
 

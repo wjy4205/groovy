@@ -3,7 +3,6 @@ package com.bunny.groovy.ui.fragment.venue;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import com.bunny.groovy.ui.fragment.releaseshow.DiscoverMusicianFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowOpportunityFragment;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IOverView;
 import com.bunny.groovy.weidget.HeightLightTextView;
 

@@ -3,7 +3,6 @@ package com.bunny.groovy.ui.fragment.venue;
 import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,14 +13,16 @@ import com.bunny.groovy.base.BaseListFragment;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.MePresenter;
+import com.bunny.groovy.presenter.VenueMePresenter;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.ui.fragment.usercenter.FavoriteFragment;
+import com.bunny.groovy.ui.fragment.usercenter.FavoriteMusicianFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryFragment;
+import com.bunny.groovy.ui.fragment.usercenter.HistoryMusicianFragment;
 import com.bunny.groovy.ui.fragment.usercenter.PersonalDataFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.ui.fragment.wallet.WalletFragment;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.MusicBox;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMeView;
@@ -40,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeView {
+public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements IMeView {
 
     @Bind(R.id.user_center_iv_header)
     CircleImageView ivHeader;
@@ -68,7 +69,7 @@ public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeVie
     private PerformerUserModel mModel;
 
     @OnClick(R.id.user_center_tv_settings)
-    public void setttings() {
+    public void settings() {
         SettingsFragment.launch(getActivity());
     }
 
@@ -101,8 +102,8 @@ public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeVie
 
 
     @Override
-    protected MePresenter createPresenter() {
-        return new MePresenter(this);
+    protected VenueMePresenter createPresenter() {
+        return new VenueMePresenter(this);
     }
 
     @Override
@@ -115,8 +116,8 @@ public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeVie
         //获取用户数据
         mPresenter.requestUserData();
         //设置viewpager
-        mFragments.add(new FavoriteFragment());
-        mFragments.add(new HistoryFragment());
+        mFragments.add(new FavoriteMusicianFragment());
+        mFragments.add(new HistoryMusicianFragment());
         mViewPager.setAdapter(new UserCenterAdapter(mFragments, titleArray, getActivity().getSupportFragmentManager()));
         pagerTabStrip.setDistributeEvenly(true);
         pagerTabStrip.setCustomTabView(R.layout.custorm_tab_layout, R.id.tv_tab);
@@ -157,10 +158,15 @@ public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeVie
     public void setUserView(PerformerUserModel model) {
         mModel = model;
         tvName.setText(mModel.getUserName());
-        tvStyle.setText(model.getPerformTypeName());
-        if (TextUtils.isEmpty(model.getStarLevel()))
+        tvStyle.setText(model.getVenueAddress());
+        if (TextUtils.isEmpty(model.getVenueScore()))
             tvScore.setText("0.0");
-        else tvScore.setText(model.getStarLevel());
+        else {
+            if (model.getVenueScore().contains(".")) {
+                model.setVenueScore(model.getVenueScore().substring(0, model.getVenueScore().indexOf(".") + 2));
+            }
+            tvScore.setText(model.getVenueScore());
+        }
         Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
     }
 
@@ -180,18 +186,5 @@ public class VenueMeFragment extends BaseFragment<MePresenter> implements IMeVie
         super.onResume();
         if (!isFirstEnter())
             mPresenter.requestUserData();
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MusicBox.getInstance().relasePlayer();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        MusicBox.getInstance().relasePlayer();
     }
 }

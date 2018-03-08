@@ -429,14 +429,14 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     public void onChooseMusician(PerformerUserModel model) {
         mPerformerModel = model;
         if (model != null) {
-            etVenue.setText(model.getUserName());
+            etVenue.setText(model.getStageName());
             venueInfoLayout.setVisibility(View.VISIBLE);
             llSpotLight.setVisibility(View.VISIBLE);
             Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
-            tvVenueName.setText(model.getUserName());
+            tvVenueName.setText(model.getStageName());
             tvVenueScore.setText(model.getStarLevel());
             tvVenueAddress.setText(model.getPerformTypeName());
-            tvVenuePhone.setText(model.getPhoneNumber());
+            tvVenuePhone.setText(model.getTelephone());
         } else {
             venueInfoLayout.setVisibility(View.GONE);
             llSpotLight.setVisibility(View.GONE);

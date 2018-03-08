@@ -232,8 +232,6 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
         final LoopView loopviewFromTime = (LoopView) timeView.findViewById(R.id.weidget_from_time);
         final LoopView loopviewEndTime = (LoopView) timeView.findViewById(R.id.weidget_end_time);
 
-        //set data
-        mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
         loopviewFromTime.setItems(mTimeClockList);
         loopviewEndTime.setItems(mTimeClockList);
         //set listener
@@ -275,7 +273,11 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
 
     @Override
     public void updateScheduleView(String scheduleID, String startDate, String endDate) {
-        if (mIndex != -1) tvTime.get(mIndex).setText(startTime + "-" + endTime);
+        if (mIndex != -1) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(startDate).append("-").append(endDate);
+            tvTime.get(mIndex).setText(stringBuilder.toString());
+        }
     }
 
     @Override

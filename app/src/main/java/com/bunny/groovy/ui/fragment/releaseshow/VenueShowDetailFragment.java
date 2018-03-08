@@ -248,4 +248,22 @@ public class VenueShowDetailFragment extends BaseFragment {
     public void detail() {
         MusicianDetailFragment.launch(mActivity, model.getPerformerID());
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (callBack != null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            mMusicView.setImageResource(R.mipmap.login_play);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (callBack != null && callBack.isPlaying()) {
+            callBack.isPlayerMusic();
+            mMusicView.setImageResource(R.mipmap.login_play);
+        }
+    }
 }

@@ -16,6 +16,7 @@ import com.bunny.groovy.presenter.VenueMePresenter;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.ui.fragment.usercenter.FavoriteMusicianFragment;
 import com.bunny.groovy.ui.fragment.usercenter.HistoryMusicianFragment;
+import com.bunny.groovy.ui.fragment.usercenter.MeTimeFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
 import com.bunny.groovy.ui.fragment.usercenter.VenueDataFragment;
 import com.bunny.groovy.ui.fragment.wallet.WalletFragment;
@@ -68,6 +69,11 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
     @OnClick(R.id.user_center_tv_settings)
     public void settings() {
         SettingsFragment.launch(getActivity());
+    }
+
+    @OnClick(R.id.me_tv_time)
+    public void times() {
+        MeTimeFragment.launch(getActivity());
     }
 
     @OnClick(R.id.me_tv_facebook)

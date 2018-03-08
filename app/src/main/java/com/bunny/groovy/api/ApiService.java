@@ -453,6 +453,21 @@ public interface ApiService {
     @POST("VenueBookingsController/choosePerformer")
     Observable<ResultResponse<Object>> choosePerformer(@Field("applyID") String applyID);
 
+    //查看演出厅营业时间安排
+    @POST("VenueMeController/getVenueSchedule")
+    Observable<ResultResponse<List<VenueModel.ScheduleListBean>>> getVenueSchedule();
+
+    //查看演出厅营业时间安排
+    @FormUrlEncoded
+    @POST("VenueMeController/updateScheduleDate")
+    Observable<ResultResponse<Object>> updateScheduleDate(@Field("scheduleID") String scheduleID,
+                                                          @Field("startDate") String startDate, @Field("endDate") String endDate);
+    //修改演出厅是否有服务费状态
+    @FormUrlEncoded
+    @POST("VenueMeController/updateScheduleIsHaveCharges")
+    Observable<ResultResponse<Object>> updateScheduleIsHaveCharges(@Field("scheduleID") String scheduleID,
+                                                          @Field("isHaveCharges") String isHaveCharges);
+
     //获取历史表演记录
     @POST("VenueMeController/getPerformHistoryList")
     Observable<ResultResponse<List<VenueShowModel>>> getPerformHistoryList();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.bunny.groovy.model.MusicBean;
 
@@ -113,12 +114,18 @@ public class MusicService extends Service {
         mPlayer.reset();
         try {
             mPlayer.setDataSource(musicPath);
-            mPlayer.prepare();
+            mPlayer.prepareAsync();
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     initMusic();
                     EventBus.getDefault().post("end");
+                }
+            });
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    Log.i("wjy","onPrepared");
                 }
             });
         } catch (IOException e) {
@@ -163,7 +170,7 @@ public class MusicService extends Service {
         mPlayer.reset();
         try {
             mPlayer.setDataSource(musicPath);
-            mPlayer.prepare();
+            mPlayer.prepareAsync();
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {

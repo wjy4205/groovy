@@ -24,6 +24,7 @@ import com.bunny.groovy.ui.fragment.notify.NotificationFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.DiscoverMusicianFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowOpportunityFragment;
+import com.bunny.groovy.ui.fragment.releaseshow.VenueShowDetailFragment;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.view.IVenueOverView;
@@ -59,8 +60,8 @@ public class VenueOverviewFragment extends BaseFragment<VenueOverviewPresenter> 
     @OnClick(R.id.nextshow_layout)
     public void showDetail() {
         Bundle bundle = new Bundle();
-//        bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, model);
-//        ShowDetailFragment.launch(mActivity, bundle);
+        bundle.putParcelable(VenueShowDetailFragment.KEY_SHOW_BEAN, model);
+        VenueShowDetailFragment.launch(mActivity, bundle);
     }
 
     @OnClick(R.id.tv_release_show)

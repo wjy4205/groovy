@@ -114,9 +114,7 @@ public class VenueOverviewFragment extends BaseFragment<VenueOverviewPresenter> 
             public void onClick(View v) {
                 //推广
                 if (TextUtils.equals(model.getIsHaveCharges(), "1")) {//已收费
-//                    if (mOnSpotlightListener != null) {
-//                        mOnSpotlightListener.spotlight(bean.getPerformID(), bean.getVenueID());
-//                    }
+                    mPresenter.spotlightPerform(model.getPerformID(), model.getVenueID());
                 } else {
                     SpotlightFragment.launch(mActivity);
                 }

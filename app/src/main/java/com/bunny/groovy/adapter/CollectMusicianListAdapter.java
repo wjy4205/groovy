@@ -51,7 +51,7 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
         } else {
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
         }
-        holder.mTvName.setText(musicianModel.getUserName());
+        holder.mTvName.setText(musicianModel.getStageName());
         holder.mTvStar.setText(Utils.getStar(musicianModel.getStarLevel()));
         holder.mTvType.setText(musicianModel.getPerformTypeName());
 

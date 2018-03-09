@@ -265,6 +265,10 @@ public interface ApiService {
     @POST("PerformerMeController/getWalletList")
     Observable<ResultResponse<List<WalletBean>>> getWalletList();
 
+    //演出厅用户--获取账单明细记录
+    @POST("VenueMeController/getUserTransactionRecord")
+    Observable<ResultResponse<List<WalletBean>>> getUserTransactionRecord();
+
 
     //获取PayPal 的token
     @FormUrlEncoded

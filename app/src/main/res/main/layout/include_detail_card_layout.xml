@@ -35,7 +35,6 @@
                 android:id="@+id/include_detail_tv_venueStar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.1"
                 android:layout_marginLeft="16dp"
                 android:drawableLeft="@drawable/list_star"
                 android:drawablePadding="4dp"

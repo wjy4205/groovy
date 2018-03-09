@@ -409,7 +409,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             etVenue.setText(model.getVenueName());
             venueInfoLayout.setVisibility(View.VISIBLE);
             llSpotLight.setVisibility(View.VISIBLE);
-            Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
+            Glide.with(get()).load(model.getHeadImg()).placeholder(R.drawable.head).dontAnimate().into(venueHeadImg);
             tvVenueName.setText(model.getVenueName());
             tvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             tvVenueAddress.setText(model.getVenueAddress());

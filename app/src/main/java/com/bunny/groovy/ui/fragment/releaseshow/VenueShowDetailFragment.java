@@ -158,7 +158,7 @@ public class VenueShowDetailFragment extends BaseFragment {
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
             mTvDesc.setText(model.getPerformDesc());
-            mTvVenueScore.setText(model.getVenueScore());
+            mTvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getVenueBookingPhone());
             mTvEmail.setText(model.getVenueWebSite());
@@ -167,12 +167,7 @@ public class VenueShowDetailFragment extends BaseFragment {
                     .into(mHead);
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
-            String performScore = model.getPerformerScore();
-            if (performScore.contains(".")) {
-                int index = model.getPerformerScore().indexOf(".");
-                performScore = performScore.substring(0, index + 2);
-            }
-            mTvPerformerStars.setText(performScore);
+            mTvPerformerStars.setText(Utils.getStar(model.getPerformerScore()));
             Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.head).error(R.drawable.head)
                     .into(mPerformerHead);
              /*mTvNotify.setVisibility(View.VISIBLE);

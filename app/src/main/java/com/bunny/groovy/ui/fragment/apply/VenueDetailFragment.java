@@ -119,7 +119,7 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
     public void setView(VenueModel model) {
         venueModel = model;
         mTvVenueName.setText(model.getVenueName());
-        mTvScore.setText(model.getVenueScore());
+        mTvScore.setText(Utils.getStar(model.getVenueScore()));
         mTvTel.setText(model.getPhoneNumber());
         mTvAddress.setText(model.getVenueAddress());
         mTvEmail.setText(model.getWebSiteAddress());

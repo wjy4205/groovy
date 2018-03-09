@@ -125,7 +125,7 @@ public class OpportunityDetailFragment extends BaseFragment {
             mTvName.setText(sParcelable.getVenueName());
             mTvDesc.setText(sParcelable.getPerformDesc());
             mTvVenueName.setText(sParcelable.getVenueName());
-            mTvScore.setText(sParcelable.getVenueScore());
+            mTvScore.setText(Utils.getStar(sParcelable.getVenueScore()));
             mTvAddress.setText(sParcelable.getVenueAddress());
             mTvTel.setText(sParcelable.getPhoneNumber());
             mTvEmail.setText(sParcelable.getWebSiteAddress());

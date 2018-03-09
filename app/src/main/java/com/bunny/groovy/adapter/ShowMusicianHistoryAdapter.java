@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.ui.fragment.releaseshow.VenueShowDetailFragment;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ShowMusicianHistoryAdapter extends RecyclerView.Adapter<ShowMusicia
                 .placeholder(R.drawable.venue_instead_pic)
                 .error(R.drawable.venue_instead_pic)
                 .into(holder.mIvHead);
-        holder.mTvStar.setText(bean.getPerformerScore());
+        holder.mTvStar.setText(Utils.getStar(bean.getPerformerScore()));
         holder.mTvName.setText(bean.getPerformerName());
         holder.mTvStyle.setText(bean.getPerformType());
         holder.mTvShowTime.setText(bean.getPerformDate() + " " + bean.getPerformTime());

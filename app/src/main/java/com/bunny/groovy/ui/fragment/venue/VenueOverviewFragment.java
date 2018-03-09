@@ -27,6 +27,7 @@ import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowOpportunityFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.VenueShowDetailFragment;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IVenueOverView;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
@@ -179,7 +180,7 @@ public class VenueOverviewFragment extends BaseFragment<VenueOverviewPresenter> 
         Glide.with(this).load(showModel.getPerformerImg())
                 .placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic).into(ivHead);
         tvName.setText(showModel.getVenueName());
-        tvStar.setText(showModel.getVenueScore());
+        tvStar.setText(Utils.getStar(showModel.getVenueScore()));
         tvPerformType.setText(showModel.getPerformType());
         tvTime.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
     }

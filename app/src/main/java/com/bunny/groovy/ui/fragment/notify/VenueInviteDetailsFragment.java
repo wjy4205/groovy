@@ -180,7 +180,7 @@ public class VenueInviteDetailsFragment extends BaseFragment {
             mApplyDes.setText(stringBuilder.toString());
             mTvDesDetail.setText(sModel.getInvitationDesc());
             mTvVenueName_2.setText(sModel.getUserName());
-            mTvStars.setText(sModel.getStarLevel());
+            mTvStars.setText(Utils.getStar(sModel.getStarLevel()));
             Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);

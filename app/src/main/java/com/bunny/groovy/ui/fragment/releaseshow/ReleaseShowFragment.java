@@ -411,7 +411,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             llSpotLight.setVisibility(View.VISIBLE);
             Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
             tvVenueName.setText(model.getVenueName());
-            tvVenueScore.setText(model.getVenueScore());
+            tvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             tvVenueAddress.setText(model.getVenueAddress());
             tvVenuePhone.setText(model.getPhoneNumber());
         } else {
@@ -434,7 +434,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             llSpotLight.setVisibility(View.VISIBLE);
             Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
             tvVenueName.setText(model.getStageName());
-            tvVenueScore.setText(model.getStarLevel());
+            tvVenueScore.setText(Utils.getStar(model.getStarLevel()));
             tvVenueAddress.setText(model.getPerformTypeName());
             tvVenuePhone.setText(model.getTelephone());
         } else {

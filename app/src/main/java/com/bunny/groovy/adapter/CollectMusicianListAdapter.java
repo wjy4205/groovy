@@ -14,6 +14,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.InviteMusicianFragment;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
         }
         holder.mTvName.setText(musicianModel.getUserName());
-        holder.mTvStar.setText(musicianModel.getStarLevel());
+        holder.mTvStar.setText(Utils.getStar(musicianModel.getStarLevel()));
         holder.mTvType.setText(musicianModel.getPerformTypeName());
 
         holder.mTvInvite.setTag(position);

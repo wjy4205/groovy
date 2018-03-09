@@ -16,6 +16,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.InviteMusicianFragment;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.HeightLightTextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,7 +58,7 @@ public class DiscoverMusicianListAdapter extends RecyclerView.Adapter<DiscoverMu
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
         }
         holder.mTvName.setTextHeighLight(performerModel.getUserName(), keyword);
-        holder.mTvStar.setText(performerModel.getStarLevel());
+        holder.mTvStar.setText(Utils.getStar(performerModel.getStarLevel()));
         holder.mTvDistance.setText(performerModel.getDistance() + "m");
         holder.mTvType.setText(performerModel.getPerformTypeName());
 

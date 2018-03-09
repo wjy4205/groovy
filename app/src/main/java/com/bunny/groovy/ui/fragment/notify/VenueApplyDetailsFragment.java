@@ -193,7 +193,7 @@ public class VenueApplyDetailsFragment extends BaseFragment {
             mTvDesc.setText(sModel.getPerformDesc());
             tvVenueName1.setText(sModel.getVenueName());
             mTvVenueName_2.setText(sModel.getPerformerName());
-            mTvStars.setText(sModel.getStarLevel());
+            mTvStars.setText(Utils.getStar(sModel.getStarLevel()));
             Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);

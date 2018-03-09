@@ -319,7 +319,7 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
             mHeadView.setImageResource(R.drawable.icon_load_pic);
         }
         mNameView.setText(mPerformerModel.getUserName());
-        mStarView.setText(mPerformerModel.getStarLevel());
+        mStarView.setText(Utils.getStar(mPerformerModel.getStarLevel()));
         mStyleView.setText(mPerformerModel.getPerformTypeName());
         mPhoneView.setText(mPerformerModel.getPhoneNumber());
     }

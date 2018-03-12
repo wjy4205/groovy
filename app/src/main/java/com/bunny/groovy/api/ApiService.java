@@ -3,7 +3,9 @@ package com.bunny.groovy.api;
 import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.GoogleMapLoc;
 import com.bunny.groovy.model.MusicianDetailModel;
+import com.bunny.groovy.model.MusicianModel;
 import com.bunny.groovy.model.OpportunityModel;
+import com.bunny.groovy.model.PerformDetail;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
@@ -484,4 +486,16 @@ public interface ApiService {
     //演播厅个人资料-编辑个人资料
     @POST("VenueMeController/updateVenueInfo")
     Observable<ResultResponse<Object>> updateVenueInfo(@Body RequestBody body);
+
+    //获取表演者个人信息
+    @POST("UserCenterController/getUserInfo")
+    Observable<ResultResponse<PerformerUserModel>> getUserInfo();
+
+    //获取表演信息列表
+    @POST("UserCenterController/getPerformViewList")
+    Observable<ResultResponse< List<PerformDetail>>> getPerformViewList();
+
+    //获取我收藏的所有表演者列表
+    @POST("UserCenterController/getCollectionPerformerList")
+    Observable<ResultResponse< List<MusicianModel>>> getCollectionPerformerList();
 }

@@ -483,6 +483,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueMeController/getCollectionPerformerList")
     Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList(@Field("userID") String userID);
+    @POST("VenueMeController/getCollectionPerformerList")
+    Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList();
 
     //演播厅个人资料-编辑个人资料
     @POST("VenueMeController/updateVenueInfo")
@@ -501,7 +503,7 @@ public interface ApiService {
     @POST("UserCenterController/getPerformViewList")
     Observable<ResultResponse< List<PerformDetail>>> getPerformViewList();
 
-    //获取我收藏的所有表演者列表
-    @POST("UserCenterController/getCollectionPerformerList")
-    Observable<ResultResponse< List<MusicianModel>>> getCollectionPerformerList();
+    //个人资料-编辑个人资料
+    @POST("UserCenterController/updateUserInfo")
+    Observable<ResultResponse<Object>> updateUserInfo(@Body RequestBody body);
 }

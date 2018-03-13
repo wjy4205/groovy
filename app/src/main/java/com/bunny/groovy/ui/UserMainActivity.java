@@ -28,6 +28,7 @@ import com.bunny.groovy.ui.fragment.user.MyFavoriteListFragment;
 import com.bunny.groovy.ui.fragment.user.MyHistoryListFragment;
 import com.bunny.groovy.ui.fragment.user.UserMainFragment;
 import com.bunny.groovy.ui.fragment.usercenter.SettingsFragment;
+import com.bunny.groovy.ui.fragment.usercenter.UserDataFragment;
 import com.bunny.groovy.ui.fragment.venue.VenueMeFragment;
 import com.bunny.groovy.ui.fragment.venue.VenueOverviewFragment;
 import com.bunny.groovy.ui.fragment.venue.VenueScheduleFragment;
@@ -137,10 +138,27 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
         headerView.findViewById(R.id.nav_settings).setOnClickListener(this);
     }
 
+    private void refresh(){
+        if(mNavigationView != null){
+            View headerView = mNavigationView.getHeaderView(0);
+            CircleImageView mHeadImage = headerView.findViewById(R.id.nav_head);
+            TextView mUserName = headerView.findViewById(R.id.nav_name);
+            Glide.with(this).load(AppCacheData.getPerformerUserModel().getHeadImg()).into(mHeadImage);
+            mUserName.setText(AppCacheData.getPerformerUserModel().getUserName());
+        }
+
+    }
+
     public static void start(Context outerContext) {
         Intent intent = new Intent(outerContext, UserMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         outerContext.startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refresh();
     }
 
     @Override
@@ -158,6 +176,7 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.nav_head:
+                UserDataFragment.launch(this);
                 break;
             case R.id.nav_wallet:
                 WalletFragment.launch(this);

@@ -10,6 +10,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.model.UserMainModel;
 import com.bunny.groovy.model.VenueApplyModel;
 import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.model.VenueInViteModel;
@@ -490,6 +491,11 @@ public interface ApiService {
     //获取表演者个人信息
     @POST("UserCenterController/getUserInfo")
     Observable<ResultResponse<PerformerUserModel>> getUserInfo();
+
+    //获取演出列表-条件查询
+    @FormUrlEncoded
+    @POST("UserHomeController/getPerformList")
+    Observable<ResultResponse<UserMainModel>> getPerformList(@FieldMap Map<String, String> map);
 
     //获取表演信息列表
     @POST("UserCenterController/getPerformViewList")

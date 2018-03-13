@@ -45,7 +45,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         if (TextUtils.isEmpty(headImg)) {
             holder.mIvHead.setImageResource(R.drawable.icon_default_photo);
         } else {
-            Glide.with(mContext).load(headImg).into(holder.mIvHead);
+            Glide.with(mContext).load(headImg).placeholder(R.drawable.icon_default_photo).into(holder.mIvHead);
         }
         //表演者姓名
         holder.mTvName.setText(model.getPerformerName());
@@ -58,19 +58,15 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //评论
-        String isEvaluate = model.getIsEvaluate();
-//        if (TextUtils.isEmpty(isEvaluate)) {
-//            holder.tv_review.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.tv_review.setVisibility(View.GONE);
-//        }
+        holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.GONE);
 
         //点击效果
-//        holder.tv_review.setTag(position);
-//        holder.tv_review.setOnClickListener(onClickListener);
-//        holder.tv_reward.setTag(position);
-//        holder.tv_reward.setOnClickListener(onClickListener);
-
+        holder.mTvReview.setTag(position);
+        holder.mTvReward.setTag(position);
+        holder.itemView.setTag(position);
+        holder.mTvReview.setOnClickListener(this);
+        holder.mTvReward.setOnClickListener(this);
+        holder.itemView.setOnClickListener(this);
     }
 
     @Override
@@ -88,7 +84,14 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
     @Override
     public void onClick(View v) {
         int pos = (int) v.getTag();
-        //todo 收藏跳转
+        switch (v.getId()) {
+            case R.id.tv_reward:
+                break;
+            case R.id.tv_review:
+                break;
+            default:
+                break;
+        }
     }
 
     static class VenueHolder extends RecyclerView.ViewHolder {
@@ -99,6 +102,8 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         private final TextView mTvTime;
         private final TextView mTvVenueName;
         private final TextView mTvAddress;
+        private final TextView mTvReward;
+        private final TextView mTvReview;
 
         public VenueHolder(View itemView) {
             super(itemView);
@@ -108,6 +113,8 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
             mTvTime = itemView.findViewById(R.id.tv_time);
             mTvVenueName = itemView.findViewById(R.id.tv_venue_name);
             mTvAddress = itemView.findViewById(R.id.tv_venue_address);
+            mTvReward = itemView.findViewById(R.id.tv_reward);
+            mTvReview = itemView.findViewById(R.id.tv_review);
         }
     }
 }

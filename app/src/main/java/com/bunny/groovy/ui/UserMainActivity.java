@@ -48,7 +48,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserMainActivity extends BaseActivity implements View.OnClickListener{
+public class UserMainActivity extends BaseActivity implements View.OnClickListener {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -64,8 +64,6 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
     private BaseFragment mMapFragment;
 
 
-
-
     @Override
     protected BasePresenter createPresenter() {
         return null;
@@ -76,14 +74,14 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
         mIsMap = !mIsMap;
         mNavList.setText(mIsMap ? "LIST" : "MAP");
         mFilterButton.setVisibility(mIsMap ? View.GONE : View.VISIBLE);
-        if(mMapFragment instanceof UserMainFragment){
+        if (mMapFragment instanceof UserMainFragment) {
             ((UserMainFragment) mMapFragment).switchListOrMap(mIsMap);
         }
     }
 
     @OnClick(R.id.ib_filter)
-    public void ib_filter(){
-        if(mMapFragment instanceof UserMainFragment){
+    public void ib_filter() {
+        if (mMapFragment instanceof UserMainFragment) {
             ((UserMainFragment) mMapFragment).mapFilter();
         }
     }
@@ -146,13 +144,19 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mMapFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean enableSlideClose() {
         return false;
     }
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.nav_head:
                 break;
             case R.id.nav_wallet:

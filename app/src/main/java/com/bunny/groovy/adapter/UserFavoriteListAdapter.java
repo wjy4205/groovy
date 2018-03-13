@@ -41,11 +41,11 @@ public class UserFavoriteListAdapter extends RecyclerView.Adapter<UserFavoriteLi
         MusicianModel model = mModelList.get(position);
         if (!TextUtils.isEmpty(model.headImg)) {
             Glide.with(mContext).load(model.headImg)
-                    .placeholder(R.drawable.icon_load_pic)
-                    .error(R.drawable.icon_load_pic)
+                    .placeholder(R.drawable.icon_default_photo)
+                    .error(R.drawable.icon_default_photo)
                     .into(holder.mIvHead);
         } else {
-            holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
+            holder.mIvHead.setImageResource(R.drawable.icon_default_photo);
         }
         holder.mTvName.setText(model.stageName);
         holder.mTvStar.setText(model.starLevel);

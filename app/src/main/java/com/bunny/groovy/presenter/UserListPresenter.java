@@ -3,16 +3,13 @@ package com.bunny.groovy.presenter;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.MusicianModel;
-import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
-import com.bunny.groovy.model.VenueApplyModel;
-import com.bunny.groovy.model.VenueInViteModel;
-import com.bunny.groovy.model.VenueModel;
-import com.bunny.groovy.model.VenueOpportunityModel;
+import com.bunny.groovy.model.UserMainModel;
 import com.bunny.groovy.view.IListPageView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 列表页面公用的控制器
@@ -75,6 +72,27 @@ public class UserListPresenter extends BasePresenter<IListPageView> {
                         mView.setError();
                     }
                 });
+    }
+
+    //请求周边地点数据
+    public void getPerformList(Map<String, String> map) {
+        addSubscription(apiService.getPerformList(map), new SubscriberCallBack<UserMainModel>(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
+            protected void onSuccess(UserMainModel response) {
+                mView.setView(response);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+
+        });
     }
 
 }

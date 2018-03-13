@@ -28,14 +28,20 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.divider.HLineDecoration;
 import com.bunny.groovy.model.OpportunityModel;
+import com.bunny.groovy.model.PerformDetail;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.model.UserMainModel;
 import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
+import com.bunny.groovy.presenter.UserListPresenter;
 import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.FilterFragment;
+import com.bunny.groovy.ui.fragment.apply.UserFilterFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.OpportunityDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
+import com.bunny.groovy.view.IListPageView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -78,20 +84,22 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/12/17.
  */
 
-public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> implements
+public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         OnMapReadyCallback,
-        IExploreView {
+        IListPageView<UserMainModel> {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
     int FILTER_REQUEST_CODE = 1;
     int PLACE_PICKER_REQUEST = 2;
     int OPEN_GPS_REQUEST_CODE = 1024;
 
     private GoogleMap mGoogleMap;
-    private List<OpportunityModel> mOpportunityModelList = new ArrayList<>();
+    private List<PerformDetail> performDetailList = new ArrayList<>();
     private OpportunityModel mCurrentBean;//当前选中的演出机会bean
     private List<Marker> mMarkerList = new ArrayList<>();
     private String distance = "500";//距离默认500mi
-    private String performDate;//表演时间
+    private String startDate, endDate;//表演时间
+    private String venueType;//表演厅类型（多选，英文逗号隔开）
+    private String performType;//表演类型（多选，英文逗号隔开）
     private Location mLastLocation;
     private boolean isMarkerShowing = false;
 
@@ -178,8 +186,8 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
     private void filter() {
         Bundle bundle = new Bundle();
         bundle.putInt(FilterFragment.KEY_DISTANCE, Integer.parseInt(distance));
-        bundle.putString(FilterFragment.KEY_START_TIME, performDate);
-        FilterFragment.launchForResult(mActivity, bundle, FILTER_REQUEST_CODE);
+        bundle.putString(FilterFragment.KEY_START_TIME, startDate);
+        UserFilterFragment.launchForResult(mActivity, bundle, FILTER_REQUEST_CODE);
     }
 
     public static void launch(Activity from) {
@@ -404,10 +412,10 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
     private void requestAroundList() {
         HashMap<String, String> map = new HashMap<>();
         if (mLastLocation != null) {
-            map.put("longitude", String.valueOf(mLastLocation.getLongitude()));
-            map.put("latitude", String.valueOf(mLastLocation.getLatitude()));
+            map.put("lon", String.valueOf(mLastLocation.getLongitude()));
+            map.put("lat", String.valueOf(mLastLocation.getLatitude()));
             map.put("distance", distance);
-            mPresenter.requestOpportunityList(map);
+            mPresenter.getPerformList(map);
         }
     }
 
@@ -426,49 +434,6 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
     }
 
     private boolean showMap = true;//显示的形式是列表还是map
-
-    @Override
-    public void setListData(List<OpportunityModel> list) {
-        mOpportunityModelList.clear();
-        mMarkerList.clear();
-        mOpportunityModelList = list;
-
-        //判断是list / map
-        if (showMap && mGoogleMap != null) {
-            mapLayout.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        } else {
-            //列表显示
-            mapLayout.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
-        //设置当前位置
-        resetMap();
-        if (list!=null){
-            //设置marker
-            isMarkerShowing = false;
-            mMarkerLayout.setVisibility(View.GONE);
-            LatLng loc;
-            for (int i = 0; i < list.size(); i++) {
-                OpportunityModel model = list.get(i);
-                loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
-                        .draggable(false)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
-                marker.setTag(model);
-                mMarkerList.add(marker);
-            }
-        }
-        //列表数据
-        if (mAdapter == null) {
-            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
-            mAdapter.setPresenter(mPresenter);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-            mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
-                    R.drawable.shape_item_divider_line));
-            mRecyclerView.setAdapter(mAdapter);
-        } else mAdapter.refresh(mOpportunityModelList);
-    }
 
     /**
      * 清空地图是原有的标记，添加当前位置
@@ -489,20 +454,6 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
         }
     }
 
-    @Override
-    public void applyResult(boolean success, String msg) {
-        if (success) {
-            UIUtils.showBaseToast("申请成功！");
-        } else {
-            UIUtils.showBaseToast("申请失败:" + msg);
-        }
-    }
-
-    @Override
-    public void showStylePop(List<StyleModel> modelList) {
-
-    }
-
     public void switchListOrMap(boolean isMap){
         if(isMap){
             showMap = true;
@@ -521,7 +472,6 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.explore_menu_filter:
-                // TODO 过滤器
                 filter();
                 return true;
         }
@@ -543,18 +493,33 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
                 distance = dis;
             }
             map.put("distance", distance);
-
-            String performStartDate = data.getStringExtra("performStartDate");
-            if (!TextUtils.isEmpty(performStartDate)) {
-                performDate = performStartDate;
-                map.put("performStartDate", performStartDate);
+            String startDate1 = data.getStringExtra("startDate");
+            if (!TextUtils.isEmpty(startDate1)) {
+                startDate = startDate1;
+                map.put("startDate", startDate);
             }
-
-            if (mLastLocation != null) {
-                map.put("longitude", String.valueOf(mLastLocation.getLongitude()));
-                map.put("latitude", String.valueOf(mLastLocation.getLatitude()));
+            String endDate1 = data.getStringExtra("endDate");
+            if (!TextUtils.isEmpty(endDate1)) {
+                endDate = endDate1;
+                map.put("endDate", endDate);
             }
-            mPresenter.requestOpportunityList(map);
+            String venueType1 = data.getStringExtra("venueType");
+            if (!TextUtils.isEmpty(venueType1)) {
+                venueType = venueType1;
+                map.put("venueType", venueType);
+            }
+            String performType1 = data.getStringExtra("performType");
+            if (!TextUtils.isEmpty(performType1)) {
+                performType = performType1;
+                map.put("performType", performType);
+            }
+            map.put("lat", "121.600");
+            map.put("lon", "21.600");
+//            if (mLastLocation != null) {
+//                map.put("lon", String.valueOf(mLastLocation.getLongitude()));
+//                map.put("lat", String.valueOf(mLastLocation.getLatitude()));
+//            }
+            mPresenter.getPerformList(map);
         } else if (requestCode == OPEN_GPS_REQUEST_CODE && resultCode == RESULT_OK) {
             //请求开启gps服务成功，开始请求当前位置信息
             setUpLocationRequest();
@@ -584,8 +549,8 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
 
 
     @Override
-    protected ExplorerOpptnyPresenter createPresenter() {
-        return new ExplorerOpptnyPresenter(this);
+    protected UserListPresenter createPresenter() {
+        return new UserListPresenter(this);
     }
 
     @Override
@@ -596,6 +561,64 @@ public class UserMainFragment extends BaseFragment<ExplorerOpptnyPresenter> impl
     @Override
     public Activity get() {
         return getActivity();
+    }
+
+    @Override
+    public void setView(UserMainModel userMainModel) {
+        performDetailList.clear();
+        mMarkerList.clear();
+        performDetailList = userMainModel.allPerformList;
+
+        //判断是list / map
+        if (showMap) {
+            mapLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            //列表显示
+            mapLayout.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+        //设置当前位置
+        resetMap();
+        if (performDetailList!=null){
+            //设置marker
+            isMarkerShowing = false;
+            mMarkerLayout.setVisibility(View.GONE);
+            LatLng loc;
+            for (int i = 0; i < performDetailList.size(); i++) {
+                PerformDetail model = performDetailList.get(i);
+                loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
+                        .draggable(false)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+                marker.setTag(model);
+                mMarkerList.add(marker);
+            }
+        }
+        //列表数据
+//        if (mAdapter == null) {
+//            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
+////            mAdapter.setPresenter(mPresenter);
+//            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+//            mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
+//                    R.drawable.shape_item_divider_line));
+//            mRecyclerView.setAdapter(mAdapter);
+//        } else mAdapter.refresh(mOpportunityModelList);
+    }
+
+    @Override
+    public void setNormalView() {
+
+    }
+
+    @Override
+    public void setNodata() {
+
+    }
+
+    @Override
+    public void setError() {
+
     }
 
     @Override

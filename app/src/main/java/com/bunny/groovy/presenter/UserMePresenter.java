@@ -47,6 +47,24 @@ public class UserMePresenter extends BasePresenter<IMeView> {
     }
 
     /**
+     * 评价表演者
+     */
+    public void evaluatePerformer(String performerID, String performerStarLevel, String evaluateContent) {
+        addSubscription(apiService.evaluatePerformer(performerID, performerStarLevel, evaluateContent),
+                new SubscriberCallBack<Object>(mView.get()) {
+                    @Override
+                    protected void onSuccess(Object response) {
+                        mView.get().finish();
+                    }
+
+                    @Override
+                    protected void onFailure(ResultResponse response) {
+
+                    }
+                });
+    }
+
+    /**
      * 上传信息
      *
      * @param fileMap
@@ -62,7 +80,7 @@ public class UserMePresenter extends BasePresenter<IMeView> {
         for (Map.Entry<String, String> entry :
                 entries) {
             //文本参数
-            if (!TextUtils.isEmpty(entry.getValue())&& (!entry.getValue().equals("imgfile"))) {
+            if (!TextUtils.isEmpty(entry.getValue()) && (!entry.getValue().equals("imgfile"))) {
                 builder.addFormDataPart(entry.getKey(), entry.getValue());
             }
         }
@@ -72,7 +90,7 @@ public class UserMePresenter extends BasePresenter<IMeView> {
             if (img.isFile()) {
                 builder.addFormDataPart("imgfile", img.getName(), RequestBody.create(MultipartBody.FORM, img));
             }
-        }else {
+        } else {
             builder.addFormDataPart("imgfile", "image.jpg", RequestBody.create(MultipartBody.FORM, ""));
         }
         RequestBody build = builder.build();

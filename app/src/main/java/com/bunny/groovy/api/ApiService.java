@@ -469,11 +469,12 @@ public interface ApiService {
     @POST("VenueMeController/updateScheduleDate")
     Observable<ResultResponse<Object>> updateScheduleDate(@Field("scheduleID") String scheduleID,
                                                           @Field("startDate") String startDate, @Field("endDate") String endDate);
+
     //修改演出厅是否有服务费状态
     @FormUrlEncoded
     @POST("VenueMeController/updateScheduleIsHaveCharges")
     Observable<ResultResponse<Object>> updateScheduleIsHaveCharges(@Field("scheduleID") String scheduleID,
-                                                          @Field("isHaveCharges") String isHaveCharges);
+                                                                   @Field("isHaveCharges") String isHaveCharges);
 
     //获取历史表演记录
     @POST("VenueMeController/getPerformHistoryList")
@@ -483,6 +484,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueMeController/getCollectionPerformerList")
     Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList(@Field("userID") String userID);
+
     @POST("VenueMeController/getCollectionPerformerList")
     Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList();
 
@@ -501,9 +503,16 @@ public interface ApiService {
 
     //获取表演信息列表
     @POST("UserCenterController/getPerformViewList")
-    Observable<ResultResponse< List<PerformDetail>>> getPerformViewList();
+    Observable<ResultResponse<List<PerformDetail>>> getPerformViewList();
 
     //个人资料-编辑个人资料
     @POST("UserCenterController/updateUserInfo")
     Observable<ResultResponse<Object>> updateUserInfo(@Body RequestBody body);
+
+    //评价表演者
+    @FormUrlEncoded
+    @POST("UserCenterController/evaluatePerformer")
+    Observable<ResultResponse<Object>> evaluatePerformer(@Field("performID") String performID,
+                                                         @Field("performerStarLevel") String performerStarLevel,
+                                                         @Field("evaluateContent") String evaluateContent);
 }

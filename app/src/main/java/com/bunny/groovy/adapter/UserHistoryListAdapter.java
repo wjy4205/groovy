@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformDetail;
+import com.bunny.groovy.ui.fragment.user.UserReviewFragment;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //评论
-        holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.GONE);
+        holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.INVISIBLE);
 
         //点击效果
         holder.mTvReview.setTag(position);
@@ -83,15 +84,21 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
 
     @Override
     public void onClick(View v) {
-        int pos = (int) v.getTag();
-        switch (v.getId()) {
-            case R.id.tv_reward:
-                break;
-            case R.id.tv_review:
-                break;
-            default:
-                break;
+        try {
+            int pos = (int) v.getTag();
+            PerformDetail performDetail = mModelList.get(pos);
+            switch (v.getId()) {
+                case R.id.tv_reward:
+                    break;
+                case R.id.tv_review:
+                    UserReviewFragment.launch(mContext, performDetail.getPerformerID());
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
         }
+
     }
 
     static class VenueHolder extends RecyclerView.ViewHolder {

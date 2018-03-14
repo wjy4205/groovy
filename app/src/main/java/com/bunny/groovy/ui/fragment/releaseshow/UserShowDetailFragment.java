@@ -17,7 +17,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
-import com.bunny.groovy.model.VenueShowModel;
+import com.bunny.groovy.model.PerformDetail;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
@@ -72,9 +72,6 @@ public class UserShowDetailFragment extends BaseFragment {
 
     @Bind(R.id.include_detail_iv_head)
     ImageView mHead;
-
-    @Bind(R.id.show_detail_tv_notify)
-    TextView mTvNotify;
 
     @Bind(R.id.include_detail_tv_21plus)
     TextView tv21Plus;
@@ -131,11 +128,12 @@ public class UserShowDetailFragment extends BaseFragment {
             Utils.openSoundCloud(mActivity, model.getPerformerSoundcloud());
     }
 
-    private static VenueShowModel model;
+    private static PerformDetail model;
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
-    public static void launch(Activity from, Bundle bundle) {
-        model = bundle.getParcelable(KEY_SHOW_BEAN);
+    public static void launch(Activity from, PerformDetail performDetail) {
+        model = performDetail;
+        Bundle bundle = new Bundle();
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
         FragmentContainerActivity.launch(from, UserShowDetailFragment.class, bundle);
     }
@@ -173,16 +171,6 @@ public class UserShowDetailFragment extends BaseFragment {
             mTvPerformerStars.setText(Utils.getStar(model.getPerformerScore()));
             Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.head).error(R.drawable.head)
                     .into(mPerformerHead);
-             /*mTvNotify.setVisibility(View.VISIBLE);
-            String applyState = model.getPerformState();
-            if ("1".equals(applyState)) {
-                mTvNotify.setText(R.string.confirmed);
-            } else if ("2".equals(applyState)) {
-                mTvNotify.setText(R.string.rejected);
-            } else {
-                mTvNotify.setText(R.string.verification);
-            }*/
-
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {

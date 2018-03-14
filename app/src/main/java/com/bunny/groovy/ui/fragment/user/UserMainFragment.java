@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.NearByOppListAdapter;
+import com.bunny.groovy.adapter.UserMainListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.divider.HLineDecoration;
@@ -121,7 +122,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     TextView mTvDistance;
     @Bind(R.id.opp_recyclerview)
     RecyclerView mRecyclerView;
-    private NearByOppListAdapter mAdapter;
+    private UserMainListAdapter mAdapter;
     @Bind(R.id.map_layout)
     RelativeLayout mapLayout;
     @Bind(R.id.map_et_search)
@@ -342,7 +343,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     @Override
     public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
-        if (ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ||
+        if (ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mGoogleMap.setMyLocationEnabled(true);
         }
@@ -417,7 +418,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             map.put("lat", String.valueOf(mLastLocation.getLatitude()));
             map.put("distance", distance);
             mPresenter.getPerformList(map);
-        }else{
+        } else {
             map.put("lon", "121.6000");
             map.put("lat", "31.2200");
             map.put("distance", distance);
@@ -460,13 +461,13 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         }
     }
 
-    public void switchListOrMap(boolean isMap){
-        if(isMap){
+    public void switchListOrMap(boolean isMap) {
+        if (isMap) {
             showMap = true;
             mRecyclerView.setVisibility(View.GONE);
             mapLayout.setVisibility(View.VISIBLE);
             mapSearchBar.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             showMap = false;
             mRecyclerView.setVisibility(View.VISIBLE);
             mapLayout.setVisibility(View.GONE);
@@ -587,7 +588,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         }
         //设置当前位置
         resetMap();
-        if (performDetailList!=null){
+        if (performDetailList != null) {
             //设置marker
             isMarkerShowing = false;
             mMarkerLayout.setVisibility(View.GONE);
@@ -604,13 +605,13 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         }
         //列表数据
         if (mAdapter == null) {
-            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
+            mAdapter = new UserMainListAdapter(userMainModel.allPerformList);
 //            mAdapter.setPresenter(mPresenter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
             mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
                     R.drawable.shape_item_divider_line));
             mRecyclerView.setAdapter(mAdapter);
-        } else mAdapter.refresh(mOpportunityModelList);
+        } else mAdapter.refresh(userMainModel.allPerformList);
     }
 
     @Override

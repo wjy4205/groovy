@@ -96,7 +96,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     private List<PerformDetail> performDetailList = new ArrayList<>();
     private OpportunityModel mCurrentBean;//当前选中的演出机会bean
     private List<Marker> mMarkerList = new ArrayList<>();
-    private String distance = "500";//距离默认500mi
+    private String distance = "50";//距离默认500mi
     private String startDate, endDate;//表演时间
     private String venueType;//表演厅类型（多选，英文逗号隔开）
     private String performType;//表演类型（多选，英文逗号隔开）
@@ -216,6 +216,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         } else {
             checkLocationSettings();
         }
+        updateCurrentLocation();
     }
 
     /**
@@ -410,10 +411,15 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
      * 请求周边数据
      */
     private void requestAroundList() {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap();
         if (mLastLocation != null) {
             map.put("lon", String.valueOf(mLastLocation.getLongitude()));
             map.put("lat", String.valueOf(mLastLocation.getLatitude()));
+            map.put("distance", distance);
+            mPresenter.getPerformList(map);
+        }else{
+            map.put("lon", "121.6000");
+            map.put("lat", "31.2200");
             map.put("distance", distance);
             mPresenter.getPerformList(map);
         }
@@ -513,8 +519,9 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 performType = performType1;
                 map.put("performType", performType);
             }
-            map.put("lat", "121.600");
-            map.put("lon", "21.600");
+            //todo TEST
+            map.put("lon", "121.6000");
+            map.put("lat", "31.2200");
 //            if (mLastLocation != null) {
 //                map.put("lon", String.valueOf(mLastLocation.getLongitude()));
 //                map.put("lat", String.valueOf(mLastLocation.getLatitude()));
@@ -585,25 +592,25 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             isMarkerShowing = false;
             mMarkerLayout.setVisibility(View.GONE);
             LatLng loc;
-            for (int i = 0; i < performDetailList.size(); i++) {
-                PerformDetail model = performDetailList.get(i);
-                loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
-                        .draggable(false)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
-                marker.setTag(model);
-                mMarkerList.add(marker);
-            }
+//            for (int i = 0; i < performDetailList.size(); i++) {
+//                PerformDetail model = performDetailList.get(i);
+//                loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
+//                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
+//                        .draggable(false)
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+//                marker.setTag(model);
+//                mMarkerList.add(marker);
+//            }
         }
         //列表数据
-//        if (mAdapter == null) {
-//            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
-////            mAdapter.setPresenter(mPresenter);
-//            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-//            mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
-//                    R.drawable.shape_item_divider_line));
-//            mRecyclerView.setAdapter(mAdapter);
-//        } else mAdapter.refresh(mOpportunityModelList);
+        if (mAdapter == null) {
+            mAdapter = new NearByOppListAdapter(mOpportunityModelList);
+//            mAdapter.setPresenter(mPresenter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
+                    R.drawable.shape_item_divider_line));
+            mRecyclerView.setAdapter(mAdapter);
+        } else mAdapter.refresh(mOpportunityModelList);
     }
 
     @Override

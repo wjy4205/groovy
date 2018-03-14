@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.MusicianScheduleAdapter;
+import com.bunny.groovy.adapter.PerformDetailListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
@@ -92,6 +96,9 @@ public class UserShowDetailFragment extends BaseFragment {
     TextView mTvPerformerStars;
     @Bind(R.id.performer_me_play_music)
     ImageView mMusicView;
+    @Bind(R.id.recyclerview)
+    RecyclerView mRecyclerView;
+    private PerformDetailListAdapter mAdapter;
 
     @OnClick(R.id.include_detail_tv_tel)
     public void call() {
@@ -183,6 +190,14 @@ public class UserShowDetailFragment extends BaseFragment {
                 tvAlcohol.setEnabled(false);
             }
             if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
+
+            if (mAdapter == null) {
+                mAdapter = new PerformDetailListAdapter(model.getPerformList());
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+                mRecyclerView.setAdapter(mAdapter);
+            } else {
+                mAdapter.refresh(model.getPerformList());
+            }
         }
     }
 

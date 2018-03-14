@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_head"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_centerVertical="true" />
 
@@ -19,13 +23,13 @@
         android:layout_gravity="center"
         android:background="@drawable/shape_circle_blue_stroke_bg"
         android:gravity="center"
-        android:paddingBottom="3dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="3dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="1dp"
         android:text="GO!"
         android:textColor="@color/textAccent"
-        android:textSize="12sp"
+        android:textSize="9sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -46,29 +50,29 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:drawablePadding="2dp"
                 android:drawableLeft="@drawable/list_star"
                 android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:text="adasdasfasfdasd | asdasdasd"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="3dp"
             android:textColor="#878787"
-            android:textSize="13sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 
     <ImageView
@@ -81,17 +85,17 @@
     <View
         android:id="@+id/tvTopLine"
         android:layout_width="0.5dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="2.5dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="2.4dp"
         android:background="@color/light_purple" />
 
 
     <View
         android:id="@+id/tvBottomLine"
         android:layout_width="0.5dp"
-        android:layout_height="35dp"
+        android:layout_height="28dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="2.5dp"
+        android:layout_marginLeft="2.4dp"
         android:background="@color/light_purple" />
 
 </RelativeLayout>

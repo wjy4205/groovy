@@ -21,11 +21,15 @@ import com.bunny.groovy.adapter.PerformDetailListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.MusicianDetailModel;
 import com.bunny.groovy.model.PerformDetail;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -98,7 +102,12 @@ public class UserShowDetailFragment extends BaseFragment {
     ImageView mMusicView;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.show_detail_go)
+    TextView mGoView;
+    @Bind(R.id.detail_next)
+    TextView mNextView;
     private PerformDetailListAdapter mAdapter;
+    private MusicianScheduleAdapter mMusicianAdapter;
 
     @OnClick(R.id.include_detail_tv_tel)
     public void call() {
@@ -136,12 +145,14 @@ public class UserShowDetailFragment extends BaseFragment {
     }
 
     private static PerformDetail model;
+    private static boolean isHistory;
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
-    public static void launch(Activity from, PerformDetail performDetail) {
+    public static void launch(Activity from, PerformDetail performDetail,boolean history) {
         model = performDetail;
+        isHistory = history;
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SHOW DETAILS");
         FragmentContainerActivity.launch(from, UserShowDetailFragment.class, bundle);
     }
 
@@ -191,13 +202,38 @@ public class UserShowDetailFragment extends BaseFragment {
             }
             if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
 
-            if (mAdapter == null) {
-                mAdapter = new PerformDetailListAdapter(model.getPerformList());
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                mAdapter.refresh(model.getPerformList());
+            if(isHistory){
+                mGoView.setVisibility(View.GONE);
+                mNextView.setText("MY EVALUATION");
+                if(!TextUtils.isEmpty(model.getEvaluateContent())){
+                    if (mMusicianAdapter == null) {
+                        MusicianDetailModel.PerformViewer performViewer = new MusicianDetailModel.PerformViewer();
+                        performViewer.evaluateContent = model.getEvaluateContent();
+                        performViewer.evaluateDate = model.getEvaluateDate();
+                        performViewer.performerStarLevel = model.getPerformerStarLevel();
+                        performViewer.userName = model.getPerformerName();
+                        List<MusicianDetailModel.PerformViewer> list = new ArrayList<>();
+                        list.add(performViewer);
+                        mMusicianAdapter = new MusicianScheduleAdapter(list);
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+                        mRecyclerView.setAdapter(mMusicianAdapter);
+                    } else {
+                        mAdapter.refresh(model.getPerformList());
+                    }
+                }else {
+                    mNextView.setVisibility(View.GONE);
+                }
+
+            }else {
+                if (mAdapter == null) {
+                    mAdapter = new PerformDetailListAdapter(model.getPerformList());
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    mAdapter.refresh(model.getPerformList());
+                }
             }
+
         }
     }
 

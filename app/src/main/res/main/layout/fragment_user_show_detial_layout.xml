@@ -169,9 +169,12 @@
         <include layout="@layout/include_detail_card_layout" />
 
         <TextView
+            android:id="@+id/detail_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="COMING UP NEXT"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/white"
             android:textSize="15dp" />
 
         <android.support.v7.widget.RecyclerView

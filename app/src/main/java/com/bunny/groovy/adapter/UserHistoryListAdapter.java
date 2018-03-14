@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformDetail;
+import com.bunny.groovy.ui.fragment.releaseshow.UserShowDetailFragment;
 import com.bunny.groovy.ui.fragment.user.UserReviewFragment;
 
 import java.util.List;
@@ -94,6 +95,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
                     UserReviewFragment.launch(mContext, performDetail.getPerformID());
                     break;
                 default:
+                    UserShowDetailFragment.launch(mContext, performDetail, true);
                     break;
             }
         } catch (Exception e) {

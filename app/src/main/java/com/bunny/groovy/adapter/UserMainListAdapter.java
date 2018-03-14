@@ -91,7 +91,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
                 case R.id.show_detail_go:
                     break;
                 default:
-                    UserShowDetailFragment.launch(mContext, performDetail);
+                    UserShowDetailFragment.launch(mContext, performDetail, false);
                     break;
             }
         } catch (Exception e) {

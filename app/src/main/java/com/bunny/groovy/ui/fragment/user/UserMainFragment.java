@@ -23,25 +23,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
-import com.bunny.groovy.adapter.NearByOppListAdapter;
 import com.bunny.groovy.adapter.UserMainListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.divider.HLineDecoration;
-import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.PerformDetail;
-import com.bunny.groovy.model.PerformerUserModel;
-import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.UserMainModel;
-import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
 import com.bunny.groovy.presenter.UserListPresenter;
-import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.FilterFragment;
 import com.bunny.groovy.ui.fragment.apply.UserFilterFragment;
-import com.bunny.groovy.ui.fragment.releaseshow.OpportunityDetailFragment;
-import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.ui.fragment.releaseshow.UserShowDetailFragment;
 import com.bunny.groovy.utils.Utils;
-import com.bunny.groovy.view.IExploreView;
 import com.bunny.groovy.view.IListPageView;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -95,7 +87,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 
     private GoogleMap mGoogleMap;
     private List<PerformDetail> performDetailList = new ArrayList<>();
-    private OpportunityModel mCurrentBean;//当前选中的演出机会bean
+    private PerformDetail mCurrentBean;//当前选中的演出
     private List<Marker> mMarkerList = new ArrayList<>();
     private String distance = "50";//距离默认500mi
     private String startDate, endDate;//表演时间
@@ -118,6 +110,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     TextView mTvadd;
     @Bind(R.id.marker_tv_time)
     TextView mTvTime;
+    @Bind(R.id.marker_tv_style)
+    TextView mTvStyle;
     @Bind(R.id.marker_tv_distance)
     TextView mTvDistance;
     @Bind(R.id.opp_recyclerview)
@@ -136,31 +130,12 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 
     @OnClick(R.id.marker_tv_venue_detail)
     public void venueDetail() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(OpportunityDetailFragment.KEY_OPPORTUNITY_BEAN, mCurrentBean);
-        OpportunityDetailFragment.launch(mActivity, bundle);
+        UserShowDetailFragment.launch(mActivity, mCurrentBean, false);
     }
 
 
-    @OnClick(R.id.marker_iv_phone)
+    @OnClick(R.id.marker_tv_go)
     public void call() {
-        Utils.CallPhone(mActivity, mCurrentBean.getPhoneNumber());
-    }
-
-    @OnClick(R.id.marker_iv_email)
-    public void email() {
-        Utils.sendEmail(mActivity, mCurrentBean.getVenueEmail());
-    }
-
-    /**
-     * 申请机会
-     */
-    @OnClick(R.id.marker_tv_apply)
-    public void apply() {
-        //跳转到申请页面
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ApplyOppFragment.KEY_OPP_BEAN, mCurrentBean);
-        ApplyOppFragment.launch(mActivity, bundle);
     }
 
     @OnClick(R.id.map_filter)
@@ -171,7 +146,6 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     @OnClick(R.id.map_ll_search)
     public void searchAddress() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
         try {
             startActivityForResult(builder.build(mActivity), PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException e) {
@@ -327,15 +301,16 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
      *
      * @param bean
      */
-    private void setMarkerData(OpportunityModel bean) {
+    private void setMarkerData(PerformDetail bean) {
         mCurrentBean = bean;
         mTvDate.setText(bean.getPerformDate());
-        mTvName.setText(bean.getVenueName());
+        mTvName.setText(bean.getPerformerName() + "@" + bean.getVenueName());
         mTvadd.setText(bean.getVenueAddress());
         mTvTime.setText(bean.getPerformTime());
         mTvDistance.setText(bean.getDistance() + "mi");
-        mTvScore.setText(bean.getVenueScore());
-        Glide.with(mActivity).load(bean.getHeadImg()).error(R.drawable.venue_instead_pic).into(mHeadImg);
+        mTvStyle.setText(bean.getPerformType());
+        mTvScore.setText(Utils.getStar(bean.getVenueScore()));
+        Glide.with(mActivity).load(bean.getPerformerImg()).error(R.drawable.icon_default_photo).into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index
@@ -354,18 +329,18 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                OpportunityModel info = (OpportunityModel) marker.getTag();
+                PerformDetail info = (PerformDetail) marker.getTag();
                 int clickedIndex = mMarkerList.indexOf(marker);
                 if (lastMarkerSelected == clickedIndex) {
                     //点击的是当前marker
                     if (info != null) {
                         if (isMarkerShowing) {
                             mMarkerLayout.setVisibility(View.GONE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
                         } else {
                             setMarkerData(info);
                             mMarkerLayout.setVisibility(View.VISIBLE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
+                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show_selected));
                         }
                         isMarkerShowing = !isMarkerShowing;
                     }
@@ -418,11 +393,11 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             map.put("lat", String.valueOf(mLastLocation.getLatitude()));
             map.put("distance", distance);
             mPresenter.getPerformList(map);
-        } else {
-            map.put("lon", "121.6000");
-            map.put("lat", "31.2200");
-            map.put("distance", distance);
-            mPresenter.getPerformList(map);
+//        } else {
+//            map.put("lon", "121.6000");
+//            map.put("lat", "31.2200");
+//            map.put("distance", distance);
+//            mPresenter.getPerformList(map);
         }
     }
 
@@ -520,13 +495,12 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 performType = performType1;
                 map.put("performType", performType);
             }
-            //todo TEST
-            map.put("lon", "121.6000");
-            map.put("lat", "31.2200");
-//            if (mLastLocation != null) {
-//                map.put("lon", String.valueOf(mLastLocation.getLongitude()));
-//                map.put("lat", String.valueOf(mLastLocation.getLatitude()));
-//            }
+//            map.put("lon", "121.6000");
+//            map.put("lat", "31.2200");
+            if (mLastLocation != null) {
+                map.put("lon", String.valueOf(mLastLocation.getLongitude()));
+                map.put("lat", String.valueOf(mLastLocation.getLatitude()));
+            }
             mPresenter.getPerformList(map);
         } else if (requestCode == OPEN_GPS_REQUEST_CODE && resultCode == RESULT_OK) {
             //请求开启gps服务成功，开始请求当前位置信息
@@ -586,27 +560,30 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             mapLayout.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
         }
+
+
         //设置当前位置
         resetMap();
         if (performDetailList != null) {
             //设置marker
             isMarkerShowing = false;
             mMarkerLayout.setVisibility(View.GONE);
-            LatLng loc;
-//            for (int i = 0; i < performDetailList.size(); i++) {
-//                PerformDetail model = performDetailList.get(i);
-//                loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
-//                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
-//                        .draggable(false)
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
-//                marker.setTag(model);
-//                mMarkerList.add(marker);
-//            }
+            if (mGoogleMap != null) {
+                LatLng loc;
+                for (int i = 0; i < performDetailList.size(); i++) {
+                    PerformDetail model = performDetailList.get(i);
+                    loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
+                            .draggable(false)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+                    marker.setTag(model);
+                    mMarkerList.add(marker);
+                }
+            }
         }
         //列表数据
         if (mAdapter == null) {
             mAdapter = new UserMainListAdapter(userMainModel.allPerformList);
-//            mAdapter.setPresenter(mPresenter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
             mRecyclerView.addItemDecoration(new HLineDecoration(mActivity, HLineDecoration.VERTICAL_LIST,
                     R.drawable.shape_item_divider_line));

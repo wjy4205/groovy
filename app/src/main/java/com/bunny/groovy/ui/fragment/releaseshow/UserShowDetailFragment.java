@@ -181,13 +181,13 @@ public class UserShowDetailFragment extends BaseFragment {
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getVenueBookingPhone());
             mTvEmail.setText(model.getVenueWebSite());
-            Glide.with(mActivity).load(model.getVenueImg()).placeholder(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(model.getVenueImg())
                     .error(R.drawable.venue_instead_pic)
                     .into(mHead);
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
             mTvPerformerStars.setText(Utils.getStar(model.getPerformerScore()));
-            Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.head).error(R.drawable.head)
+            Glide.with(mActivity).load(model.getPerformerImg()).error(R.drawable.head)
                     .into(mPerformerHead);
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();

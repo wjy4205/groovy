@@ -13,6 +13,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformDetail;
 import com.bunny.groovy.ui.fragment.releaseshow.UserShowDetailFragment;
 import com.bunny.groovy.ui.fragment.user.UserReviewFragment;
+import com.bunny.groovy.utils.Utils;
 
 import java.util.List;
 
@@ -47,12 +48,12 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         if (TextUtils.isEmpty(headImg)) {
             holder.mIvHead.setImageResource(R.drawable.icon_default_photo);
         } else {
-            Glide.with(mContext).load(headImg).placeholder(R.drawable.icon_default_photo).into(holder.mIvHead);
+            Glide.with(mContext).load(headImg).error(R.drawable.icon_default_photo).into(holder.mIvHead);
         }
         //表演者姓名
         holder.mTvName.setText(model.getPerformerName());
         //评分
-        holder.mTvStar.setText(model.getPerformerStarLevel());
+        holder.mTvStar.setText(Utils.getStar(model.getPerformerScore()));
         //演出厅名字
         holder.mTvVenueName.setText("@" + model.getVenueName());
         //演出厅地址
@@ -72,8 +73,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
 
     @Override
     public int getItemCount() {
-        if (mModelList != null && mModelList.size() > 0) return mModelList.size();
-
+        if (mModelList != null) return mModelList.size();
         return 0;
     }
 
@@ -113,7 +113,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         public VenueHolder(View itemView) {
             super(itemView);
             mIvHead = itemView.findViewById(R.id.iv_head);
-            mTvName = itemView.findViewById(R.id.tv_venue_name);
+            mTvName = itemView.findViewById(R.id.tv_name);
             mTvStar = itemView.findViewById(R.id.tv_score);
             mTvTime = itemView.findViewById(R.id.tv_time);
             mTvVenueName = itemView.findViewById(R.id.tv_venue_name);

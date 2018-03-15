@@ -499,11 +499,15 @@ public interface ApiService {
     Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList(@Field("userID") String userID);
 
     @POST("VenueMeController/getCollectionPerformerList")
-    Observable<ResultResponse<List<PerformerUserModel>>> getCollectionPerformerList();
+    Observable<ResultResponse<List<MusicianModel>>> getCollectionPerformerList();
 
     //演播厅个人资料-编辑个人资料
     @POST("VenueMeController/updateVenueInfo")
     Observable<ResultResponse<Object>> updateVenueInfo(@Body RequestBody body);
+
+    //获取表演信息列表
+    @POST("UserCenterController/getUserTransactionRecord")
+    Observable<ResultResponse<List<WalletBean>>> getNormalUserTransactionRecord();
 
     //获取表演者个人信息
     @POST("UserCenterController/getUserInfo")

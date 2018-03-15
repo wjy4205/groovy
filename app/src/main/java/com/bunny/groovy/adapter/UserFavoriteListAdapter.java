@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.MusicianModel;
+import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 
 import java.util.List;
 
@@ -57,7 +58,6 @@ public class UserFavoriteListAdapter extends RecyclerView.Adapter<UserFavoriteLi
 
 
         holder.itemView.setTag(position);//详情
-
         holder.itemView.setOnClickListener(this);
     }
 
@@ -76,7 +76,8 @@ public class UserFavoriteListAdapter extends RecyclerView.Adapter<UserFavoriteLi
     @Override
     public void onClick(View v) {
         int pos = (int) v.getTag();
-        //todo 收藏跳转
+        MusicianModel musicianModel = mModelList.get(pos);
+        MusicianDetailFragment.launch(mContext,musicianModel.userID);
     }
 
     static class VenueHolder extends RecyclerView.ViewHolder {

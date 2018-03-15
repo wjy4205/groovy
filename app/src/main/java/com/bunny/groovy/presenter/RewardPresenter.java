@@ -1,18 +1,20 @@
 package com.bunny.groovy.presenter;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.MusicianDetailModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.ui.fragment.spotlight.ISpotLightView;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IRewardView;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /****************************************
@@ -30,17 +32,42 @@ public class RewardPresenter extends BasePresenter<IRewardView> {
     /**
      * 获取用户数据
      */
-    public void requestUserData() {
-        addSubscription(apiService.getVenueDetailInfo(),
-                new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+    public void getrewardPerformerRecord(HashMap<String, String> map) {
+        addSubscription(apiService.getrewardPerformerRecord(map),
+                new SubscriberCallBack<List<MusicianDetailModel.TransactionRecord>>(mView.get()) {
                     @Override
-                    protected void onSuccess(PerformerUserModel response) {
+                    protected void onSuccess(List<MusicianDetailModel.TransactionRecord> response) {
+                        mView.setViewList(response);
+                    }
+
+                    @Override
+                    protected void onFailure(ResultResponse response) {
+
+                    }
+                });
+    }
+
+    /**
+     * 获取用户数据
+     */
+    public void requestUserData(final int userType) {
+        addSubscription(userType == AppConstants.USER_TYPE_MUSICIAN
+                        ? apiService.getPerformerInfo() : (userType == AppConstants.USER_TYPE_NORMAL
+                        ? apiService.getUserInfo() : apiService.getVenueDetailInfo())
+                , new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+                    @Override
+                    protected void onSuccess(final PerformerUserModel response) {
                         Utils.initLoginData(mView.get(), response);
                     }
 
                     @Override
                     protected void onFailure(ResultResponse response) {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                     }
                 });
     }

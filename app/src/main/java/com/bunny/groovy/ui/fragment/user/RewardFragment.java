@@ -3,24 +3,31 @@ package com.bunny.groovy.ui.fragment.user;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
 import com.bunny.groovy.R;
+import com.bunny.groovy.adapter.TransactionRecordListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
+import com.bunny.groovy.model.MusicianDetailModel;
 import com.bunny.groovy.presenter.RewardPresenter;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IRewardView;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,12 +57,24 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
     RadioGroup mRgPayMode;
     @Bind(R.id.rb_balance)
     RadioButton mRbBalance;
+    @Bind(R.id.tv_reward)
+    TextView mRewardView;
+    @Bind(R.id.tv_reward1)
+    TextView mRewardView1;
+    @Bind(R.id.recyclerview)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.tv_history)
+    TextView mHistoryView;
+
+    private TransactionRecordListAdapter mAdapter;
 
     private float mAmount, mBalance;
     private static String performerID;
+    private static boolean isHistory;
 
-    public static void launch(Activity from, String performerId) {
+    public static void launch(Activity from, String performerId, boolean history) {
         performerID = performerId;
+        isHistory = history;
         Bundle bundle = new Bundle();
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "REWARD");
         FragmentContainerActivity.launch(from, RewardFragment.class, bundle);
@@ -74,6 +93,18 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
     }
 
     @Override
+    public void setViewList(List<MusicianDetailModel.TransactionRecord> list) {
+        //set list
+        if (mAdapter == null) {
+            mAdapter = new TransactionRecordListAdapter(list);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.refresh(list);
+        }
+    }
+
+    @Override
     protected RewardPresenter createPresenter() {
         return new RewardPresenter(this);
     }
@@ -88,11 +119,25 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
         super.initView(rootView);
         mBalance = Float.parseFloat(AppCacheData.getPerformerUserModel().getBalance());
         mRbBalance.setText("BALANCE " + mBalance + " $");
+        if (isHistory) {
+            mHistoryView.setVisibility(View.VISIBLE);
+            mRewardView1.setVisibility(View.VISIBLE);
+            mRewardView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void loadData() {
-        mPresenter.requestUserData();
+        int userType = Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType());
+        mPresenter.requestUserData(userType);
+        if (isHistory) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("performerID", performerID);
+            if (AppConstants.USER_TYPE_NORMAL != userType) {
+                map.put("userID", AppCacheData.getPerformerUserModel().getUserID());
+            }
+            mPresenter.getrewardPerformerRecord(map);
+        }
     }
 
     @OnClick({R.id.rb_reward_1, R.id.rb_reward_2, R.id.rb_reward_5, R.id.rb_reward_10})
@@ -131,10 +176,11 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.tv_reward)
+    @OnClick({R.id.tv_reward, R.id.tv_reward1})
     void reward() {
         String text = mEtReward.getText().toString();
-        Float f = Float.valueOf(text);
+        Float f = null;
+        if (!TextUtils.isEmpty(text)) f = Float.valueOf(text);
         if (f == null) {
             UIUtils.showToast("not a number");
             return;

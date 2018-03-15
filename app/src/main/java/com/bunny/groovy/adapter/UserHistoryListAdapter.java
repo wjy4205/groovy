@@ -91,7 +91,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
             PerformDetail performDetail = mModelList.get(pos);
             switch (v.getId()) {
                 case R.id.tv_reward:
-                    RewardFragment.launch(mContext, performDetail.getPerformerID());
+                    RewardFragment.launch(mContext, performDetail.getPerformerID(), true);
                     break;
                 case R.id.tv_review:
                     UserReviewFragment.launch(mContext, performDetail.getPerformID());

@@ -533,4 +533,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("PaypalController/rewardPerformer")
     Observable<ResultResponse<Object>> rewardPerformer(@FieldMap Map<String, String> map);
+
+    //获取打赏记录
+    @FormUrlEncoded
+    @POST("VenueBasicsController/getrewardPerformerRecord")
+    Observable<ResultResponse<List<MusicianDetailModel.TransactionRecord>>> getrewardPerformerRecord(@FieldMap Map<String, String> map);
 }

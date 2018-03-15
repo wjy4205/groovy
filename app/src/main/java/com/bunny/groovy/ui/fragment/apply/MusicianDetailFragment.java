@@ -103,7 +103,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
 
     @OnClick({R.id.user_iv_money, R.id.iv_reward})
     public void rewardPerformer() {
-        RewardFragment.launch(mActivity, mPerformerId);
+        RewardFragment.launch(mActivity, mPerformerId,false);
     }
 
     @OnClick(R.id.user_iv_fav)

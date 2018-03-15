@@ -435,7 +435,10 @@ public interface ApiService {
     @POST("VenueBasicsController/getSingPerformerDetail")
     Observable<ResultResponse<MusicianDetailModel>> getSingPerformerDetail(@Field("performerID") String performerID,
                                                                            @Field("userID") String userID);
-
+    //表演者个人主页：获取表演者主页信息
+    @FormUrlEncoded
+    @POST("VenueBasicsController/getSingPerformerDetail")
+    Observable<ResultResponse<MusicianDetailModel>> getSingPerformerDetail(@Field("performerID") String performerID);
     //表演者个人主页：举报表演者
     @FormUrlEncoded
     @POST("VenueBasicsController/reportPerformer")

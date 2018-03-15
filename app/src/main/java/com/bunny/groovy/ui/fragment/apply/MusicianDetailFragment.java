@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,22 +23,18 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.MusicianScheduleAdapter;
-import com.bunny.groovy.adapter.VenueScheduleAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.MusicianDetailModel;
-import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.MusicianDetailPresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.fragment.notify.ReportFragment;
-import com.bunny.groovy.ui.fragment.releaseshow.InviteMusicianFragment;
+import com.bunny.groovy.ui.fragment.user.RewardFragment;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMusicianView;
-
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -104,17 +101,25 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
         Utils.openTwitter(mActivity, musicianDetailModel.twitterAccount);
     }
 
-    @OnClick(R.id.user_iv_money)
+    @OnClick({R.id.user_iv_money, R.id.iv_reward})
     public void rewardPerformer() {
-        //TODO reward
+        RewardFragment.launch(mActivity, mPerformerId);
     }
 
-    @OnClick({ R.id.user_iv_fav, R.id.iv_reward})
+    @OnClick(R.id.user_iv_fav)
     public void setFavourite() {
-        if (isFavorite) {
-            mPresenter.cancelCollectionPerformer(mPerformerId, AppCacheData.getPerformerUserModel().getUserID());
+        if (mIsUserType) {
+            if (isFavorite) {
+                mPresenter.cancelCollectionPerformer(mPerformerId);
+            } else {
+                mPresenter.collectionPerformer(mPerformerId);
+            }
         } else {
-            mPresenter.collectionPerformer(mPerformerId, AppCacheData.getPerformerUserModel().getUserID());
+            if (isFavorite) {
+                mPresenter.cancelCollectionPerformer(mPerformerId, AppCacheData.getPerformerUserModel().getUserID());
+            } else {
+                mPresenter.collectionPerformer(mPerformerId, AppCacheData.getPerformerUserModel().getUserID());
+            }
         }
     }
 
@@ -146,12 +151,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
     public void setView(MusicianDetailModel model) {
         musicianDetailModel = model;
         mUserName.setText(model.userName);
-        if (model.starLevel.contains(".")) {
-            model.starLevel = model.starLevel.substring(0, model.starLevel.lastIndexOf(".") + 2);
-            mUserScore.setText(model.starLevel);
-        } else {
-            mUserScore.setText(model.starLevel);
-        }
+        mUserScore.setText(Utils.getStar(model.starLevel));
 
         mUserPhone.setText(model.telephone);
         mUserStyle.setText(model.performTypeName);
@@ -196,11 +196,19 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
         setFavoriteStatus();
     }
 
+    private Handler mHandler = new Handler();
+
     private void setFavoriteStatus() {
         if (mIsUserType) {
             FragmentContainerActivity activity = (FragmentContainerActivity) getActivity();
-            Toolbar toolbar = activity.getToolBar();
-            toolbar.getMenu().getItem(0).setIcon(isFavorite ? R.drawable.nav_collection_selected : R.drawable.nav_collection);
+            final Toolbar toolbar = activity.getToolBar();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toolbar.getMenu().getItem(0).setIcon(isFavorite ? R.drawable.nav_collection_selected : R.drawable.nav_collection);
+                }
+            }, 200);
+
         } else {
             mIvFavouriteView.setImageResource(isFavorite ? R.drawable.nav_collection_selected : R.drawable.nav_collection);
         }
@@ -224,9 +232,9 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
 
     @Override
     protected void loadData() {
-        if(mIsUserType){
+        if (mIsUserType) {
             mPresenter.getSingPerformerDetail(mPerformerId);
-        }else {
+        } else {
             mPresenter.getSingPerformerDetail(mPerformerId, AppCacheData.getPerformerUserModel().getUserID());
         }
     }
@@ -282,7 +290,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
                 ReportFragment.launch(mActivity, AppCacheData.getPerformerUserModel().getUserID(), mPerformerId);
                 break;
             case R.id.musician_item_collection:
-                favorite();
+                setFavourite();
                 break;
         }
         return super.onOptionsItemSelected(item);

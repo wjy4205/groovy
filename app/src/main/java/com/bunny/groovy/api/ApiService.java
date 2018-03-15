@@ -455,6 +455,16 @@ public interface ApiService {
     //表演者个人主页：取消收藏表演者
     @FormUrlEncoded
     @POST("VenueBasicsController/cancelCollectionPerformer")
+    Observable<ResultResponse<MusicianDetailModel>> cancelCollectionPerformer(@Field("performerID") String performerID);
+
+    //表演者个人主页：收藏表演者
+    @FormUrlEncoded
+    @POST("VenueBasicsController/collectionPerformer")
+    Observable<ResultResponse<Object>> collectionPerformer(@Field("performerID") String performerID);
+
+    //表演者个人主页：取消收藏表演者
+    @FormUrlEncoded
+    @POST("VenueBasicsController/cancelCollectionPerformer")
     Observable<ResultResponse<MusicianDetailModel>> cancelCollectionPerformer(@Field("performerID") String performerID,
                                                                               @Field("userID") String userID);
 
@@ -518,4 +528,9 @@ public interface ApiService {
     Observable<ResultResponse<Object>> evaluatePerformer(@Field("performID") String performID,
                                                          @Field("performerStarLevel") String performerStarLevel,
                                                          @Field("evaluateContent") String evaluateContent);
+
+    //打赏表演者
+    @FormUrlEncoded
+    @POST("PaypalController/rewardPerformer")
+    Observable<ResultResponse<Object>> rewardPerformer(@FieldMap Map<String, String> map);
 }

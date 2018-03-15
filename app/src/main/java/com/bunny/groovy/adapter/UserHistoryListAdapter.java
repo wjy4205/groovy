@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformDetail;
 import com.bunny.groovy.ui.fragment.releaseshow.UserShowDetailFragment;
+import com.bunny.groovy.ui.fragment.user.RewardFragment;
 import com.bunny.groovy.ui.fragment.user.UserReviewFragment;
 
 import java.util.List;
@@ -90,6 +91,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
             PerformDetail performDetail = mModelList.get(pos);
             switch (v.getId()) {
                 case R.id.tv_reward:
+                    RewardFragment.launch(mContext, performDetail.getPerformerID());
                     break;
                 case R.id.tv_review:
                     UserReviewFragment.launch(mContext, performDetail.getPerformID());

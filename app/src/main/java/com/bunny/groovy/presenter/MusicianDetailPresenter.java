@@ -113,6 +113,51 @@ public class MusicianDetailPresenter extends BasePresenter<IMusicianView> {
     }
 
     /**
+     * 收藏表演者
+     */
+    public void collectionPerformer(String performerID){
+        addSubscription(apiService.collectionPerformer(performerID), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
+            protected void onSuccess(Object response) {
+                mView.favorite();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
+
+    /**
+     * 取消收藏表演者
+     */
+    public void cancelCollectionPerformer(String performerID){
+        addSubscription(apiService.cancelCollectionPerformer(performerID), new SubscriberCallBack(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
+            protected void onSuccess(Object response) {
+                mView.cancelFavorite();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
+
+
+    /**
      * 取消收藏表演者
      */
     public void invite(MusicianDetailModel musicianDetailModel){

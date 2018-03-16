@@ -89,6 +89,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
             PerformDetail performDetail = mModelList.get(pos);
             switch (v.getId()) {
                 case R.id.show_detail_go:
+                    Utils.openWebGoogleNavi(mContext, performDetail.getVenueLatitude(), performDetail.getVenueLongitude());
                     break;
                 default:
                     UserShowDetailFragment.launch(mContext, performDetail, false);

@@ -126,6 +126,11 @@ public class UserShowDetailFragment extends BaseFragment {
             Utils.openTwitter(mActivity, model.getVenueTwitter());
     }
 
+    @OnClick(R.id.show_detail_go)
+    public void go(){
+        Utils.openWebGoogleNavi(getActivity(), model.getVenueLatitude(), model.getVenueLongitude());
+    }
+
     @OnClick(R.id.performer_facebook_page)
     public void performerFacebook() {
         if (!TextUtils.isEmpty(model.getPerformerFacebook()))

@@ -135,7 +135,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 
 
     @OnClick(R.id.marker_tv_go)
-    public void call() {
+    public void go() {
+        Utils.openWebGoogleNavi(getActivity(), mCurrentBean.getVenueLatitude(), mCurrentBean.getVenueLongitude());
     }
 
     @OnClick(R.id.map_filter)

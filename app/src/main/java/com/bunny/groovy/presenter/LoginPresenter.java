@@ -48,14 +48,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             //需要完善信息
                             if (userType == AppConstants.USER_TYPE_MUSICIAN
                                     && TextUtils.isEmpty(response.getZipCode())) {
-
                                 mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                             } else if (userType == AppConstants.USER_TYPE_VENUE
                                     && TextUtils.isEmpty(response.getVenueTypeName())) {
                                 mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                             } else {
                                 //进入主页
-                                mView.launchMainPage();
+                                mView.launchMainPage(type);
                             }
                         }
                     }
@@ -201,7 +200,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         }
                         break;
                 }
-                mView.launchMainPage();
+                mView.launchMainPage(Utils.parseInt(userType));
             }
 
             @Override

@@ -12,8 +12,8 @@ import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.model.UserMainModel;
 import com.bunny.groovy.model.VenueApplyModel;
-import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.model.VenueInViteModel;
+import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.model.VenueOpportunityModel;
 import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.model.WalletBean;
@@ -542,4 +542,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("VenueBasicsController/getrewardPerformerRecord")
     Observable<ResultResponse<List<MusicianDetailModel.TransactionRecord>>> getrewardPerformerRecord(@FieldMap Map<String, String> map);
+
+    //普通用户注册
+    @FormUrlEncoded
+    @POST("FrontUserController/ordinaryFrontUserRegister")
+    Observable<ResultResponse> ordinaryFrontUserRegister(@FieldMap Map<String, String> map);
 }

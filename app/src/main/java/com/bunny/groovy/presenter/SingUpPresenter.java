@@ -1,10 +1,10 @@
 package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
-import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.base.BaseApp;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.listener.MyVerificationListener;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
@@ -19,6 +19,8 @@ import com.sinch.verification.VerificationListener;
 import com.socks.library.KLog;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 
 /**
  * 注册控制器
@@ -169,6 +171,27 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         });
     }
 
+    /**
+     * 表演者注册
+     *
+     * @param name
+     * @param pwd
+     * @param phone
+     * @param email
+     */
+    public void registerUser(HashMap<String,String> map) {
 
+        addSubscription(apiService.ordinaryFrontUserRegister(map), new SubscriberCallBack<ResultResponse>(mView.get()) {
+            @Override
+            protected void onSuccess(ResultResponse response) {
+                UIUtils.showBaseToast("注册成功！");
+                mView.registerSuccess();
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+            }
+        });
+    }
 
 }

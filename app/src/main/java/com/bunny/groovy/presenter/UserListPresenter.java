@@ -1,15 +1,24 @@
 package com.bunny.groovy.presenter;
 
+import com.bunny.groovy.api.ApiRetrofit;
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.MusicianModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.UserMainModel;
+import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.SharedPreferencesUtils;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IListPageView;
 
 import java.util.List;
 import java.util.Map;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 列表页面公用的控制器
@@ -26,7 +35,7 @@ public class UserListPresenter extends BasePresenter<IListPageView> {
      * 获取我收藏的所有表演者列表
      */
     public void getFavoriteList() {
-        addSubscription(apiService.getCollectionPerformerList(),
+        addSubscription(apiService.getUserCollectionPerformerList(AppCacheData.getPerformerUserModel().getUserID()),
                 new SubscriberCallBack<List<MusicianModel>>(mView.get()) {
                     @Override
                     protected void onSuccess(List<MusicianModel> response) {
@@ -52,7 +61,7 @@ public class UserListPresenter extends BasePresenter<IListPageView> {
      * 获取表演信息列表
      */
     public void getPerformViewList() {
-        addSubscription(apiService.getPerformViewList(),
+        addSubscription(apiService.getPerformViewList(AppCacheData.getPerformerUserModel().getUserID()),
                 new SubscriberCallBack<List<ShowModel>>(mView.get()) {
                     @Override
                     protected void onSuccess(List<ShowModel> response) {
@@ -93,6 +102,31 @@ public class UserListPresenter extends BasePresenter<IListPageView> {
             }
 
         });
+    }
+
+    /**
+     * 加入到show history
+     */
+    public static void addPerformViewer(String performId) {
+        ApiRetrofit.getInstance().getApiService()
+                .addPerformViewer(AppCacheData.getPerformerUserModel().getUserID(), performId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResultResponse<Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResultResponse<Object> response) {
+                    }
+                });
     }
 
 }

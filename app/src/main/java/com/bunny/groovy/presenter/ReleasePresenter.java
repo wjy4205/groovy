@@ -2,8 +2,11 @@ package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.StyleModel;
+import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISetFileView;
 
@@ -52,22 +55,37 @@ public class ReleasePresenter extends BasePresenter<ISetFileView> {
      * @param fieldMap
      * @param type     2-演出厅用户端发布
      */
-    public void releaseShow(Map<String, String> fieldMap, int type) {
-        addSubscription(type == 2 ? apiService.releaseVenueShow(fieldMap) : apiService.releaseShow(fieldMap), new SubscriberCallBack(mView.get()) {
+    public void releaseShow(Map<String, String> fieldMap, final int type) {
+        addSubscription(type == AppConstants.USER_TYPE_VENUE ? apiService.releaseVenueShow(fieldMap) : apiService.releaseShow(fieldMap), new SubscriberCallBack(mView.get()) {
             @Override
             protected void onSuccess(Object response) {
-                UIUtils.showBaseToast("发布成功");
+                UIUtils.showBaseToast("Release successfully");
+                //更新user数据
+                updateUserData(type);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+        });
+    }
+
+    private void updateUserData(int type) {
+        addSubscription(type == AppConstants.USER_TYPE_VENUE ? apiService.getVenueDetailInfo() : apiService.getPerformerInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+            @Override
+            protected void onSuccess(PerformerUserModel response) {
+                AppCacheData.setPerformerUserModel(response);
                 mView.get().finish();
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
 
-            }
-
-            @Override
-            protected boolean isShowProgress() {
-                return true;
             }
         });
     }

@@ -26,8 +26,8 @@ public class VenueOverviewPresenter extends BasePresenter<IVenueOverView> {
         super(view);
     }
 
-    public void requestNextShow(String venueId) {
-        addSubscription(apiService.getNextPerformInfo(venueId), new SubscriberCallBack<VenueShowModel>(null) {
+    public void requestNextShow() {
+        addSubscription(apiService.getNextPerformInfo(), new SubscriberCallBack<VenueShowModel>(null) {
             @Override
             protected void onSuccess(VenueShowModel response) {
                 if (response != null) {
@@ -100,7 +100,7 @@ public class VenueOverviewPresenter extends BasePresenter<IVenueOverView> {
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("To promote success !");
+                            UIUtils.showBaseToast("To promote successfully.");
                         } else {
                             UIUtils.showBaseToast(response.errorMsg);
                         }

@@ -11,6 +11,7 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMeView;
@@ -44,7 +45,9 @@ public class MePresenter extends BasePresenter<IMeView> {
                 new SubscriberCallBack<PerformerUserModel>(mView.get()) {
                     @Override
                     protected void onSuccess(PerformerUserModel response) {
+                        response.setUserType(String.valueOf(AppConstants.USER_TYPE_MUSICIAN));
                         mView.setUserView(response);
+
                         Utils.initLoginData(mView.get(),response);
                     }
 
@@ -65,12 +68,18 @@ public class MePresenter extends BasePresenter<IMeView> {
                 if (response != null && response.size() > 0) {
                     mView.showStylePop(response);
                 } else {
-                    UIUtils.showBaseToast("获取style失败，稍后再试");
+                    UIUtils.showBaseToast("Get Style Failed");
                 }
             }
 
             @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
             protected void onFailure(ResultResponse response) {
+                UIUtils.showBaseToast("Get Style Failed");
             }
         });
     }
@@ -142,7 +151,7 @@ public class MePresenter extends BasePresenter<IMeView> {
      * @param zipCode
      */
     public void searchLocation(String zipCode, final HashMap<String, String> params) {
-        addSubscription(apiService.getLocation(zipCode, ApiConstants.GoogleMapAppKey), new Subscriber<GoogleMapLoc>() {
+        addSubscription(apiService.getLocation(zipCode, ApiConstants.GOOGLE_MAP_APP_KEY), new Subscriber<GoogleMapLoc>() {
             ProgressHUD mProgressHUD;
 
             @Override
@@ -177,7 +186,7 @@ public class MePresenter extends BasePresenter<IMeView> {
                         params.put("latitude", loc.getResults().get(0).getGeometry().getLocation().getLat());
                         updatePerformerData(params);
                     } else {
-                        UIUtils.showBaseToast("邮编错误" + loc.getError_message());
+                        UIUtils.showBaseToast("The code is wrong.");
                     }
                 } catch (Exception e) {
                     UIUtils.showBaseToast(e.toString());

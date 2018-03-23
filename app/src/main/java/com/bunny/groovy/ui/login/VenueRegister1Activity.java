@@ -139,29 +139,30 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     //下一步
     @OnClick(R.id.tv_venue_next)
     void next() {
-        String pwd = mPassword.getTrimmedString();
-        String pwdAgain = mPasswordAgain.getTrimmedString();
-        String publicName = mPublicName.getTrimmedString();
-        String address = mAddress.getText().toString().trim();
-        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
-            UIUtils.showBaseToast("请输入密码");
-        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("密码至少8位");
-        } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("密码输入不一致");
-        } else if (TextUtils.isEmpty(publicName)) {
-            UIUtils.showBaseToast("名称不能为空");
-        } else if (TextUtils.isEmpty(address)) {
-            UIUtils.showBaseToast("地址不能为空");
-        } else {
-            //检查账户
-            String account = mPhoneEmail.getTrimmedString();
-            if (TextUtils.isEmpty(account)) {
-                UIUtils.showBaseToast("Please input account!");
-                return;
-            }
-            mPresenter.checkAccount(account, true);
-        }
+        nextStep();
+//        String pwd = mPassword.getTrimmedString();
+//        String pwdAgain = mPasswordAgain.getTrimmedString();
+//        String publicName = mPublicName.getTrimmedString();
+//        String address = mAddress.getText().toString().trim();
+//        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
+//            UIUtils.showBaseToast("请输入密码");
+//        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
+//            UIUtils.showBaseToast("密码至少8位");
+//        } else if (!pwd.equals(pwdAgain)) {
+//            UIUtils.showBaseToast("密码输入不一致");
+//        } else if (TextUtils.isEmpty(publicName)) {
+//            UIUtils.showBaseToast("名称不能为空");
+//        } else if (TextUtils.isEmpty(address)) {
+//            UIUtils.showBaseToast("地址不能为空");
+//        } else {
+//            //检查账户
+//            String account = mPhoneEmail.getTrimmedString();
+//            if (TextUtils.isEmpty(account)) {
+//                UIUtils.showBaseToast("Please input account!");
+//                return;
+//            }
+//            mPresenter.checkAccount(account, true);
+//        }
     }
 
     @OnClick(R.id.et_venue_address)

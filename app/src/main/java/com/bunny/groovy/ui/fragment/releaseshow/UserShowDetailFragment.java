@@ -3,6 +3,7 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.MusicianDetailModel;
 import com.bunny.groovy.model.PerformDetail;
+import com.bunny.groovy.presenter.UserListPresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.fragment.apply.MusicianDetailFragment;
 import com.bunny.groovy.utils.UIUtils;
@@ -127,8 +129,9 @@ public class UserShowDetailFragment extends BaseFragment {
     }
 
     @OnClick(R.id.show_detail_go)
-    public void go(){
+    public void go() {
         Utils.openWebGoogleNavi(getActivity(), model.getVenueLatitude(), model.getVenueLongitude());
+        UserListPresenter.addPerformViewer(model.getPerformID());
     }
 
     @OnClick(R.id.performer_facebook_page)
@@ -153,7 +156,7 @@ public class UserShowDetailFragment extends BaseFragment {
     private static boolean isHistory;
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
-    public static void launch(Activity from, PerformDetail performDetail,boolean history) {
+    public static void launch(Context from, PerformDetail performDetail, boolean history) {
         model = performDetail;
         isHistory = history;
         Bundle bundle = new Bundle();
@@ -181,6 +184,7 @@ public class UserShowDetailFragment extends BaseFragment {
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
+            mTvDistance.setText((TextUtils.isEmpty(model.getDistance()) ? "--" : model.getDistance()) + "mi");
             mTvDesc.setText(model.getPerformDesc());
             mTvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             mTvAddress.setText(model.getVenueAddress());
@@ -207,10 +211,10 @@ public class UserShowDetailFragment extends BaseFragment {
             }
             if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
 
-            if(isHistory){
+            if (isHistory) {
                 mGoView.setVisibility(View.GONE);
                 mNextView.setText("MY EVALUATION");
-                if(!TextUtils.isEmpty(model.getEvaluateContent())){
+                if (!TextUtils.isEmpty(model.getEvaluateContent())) {
                     if (mMusicianAdapter == null) {
                         MusicianDetailModel.PerformViewer performViewer = new MusicianDetailModel.PerformViewer();
                         performViewer.evaluateContent = model.getEvaluateContent();
@@ -225,11 +229,9 @@ public class UserShowDetailFragment extends BaseFragment {
                     } else {
                         mAdapter.refresh(model.getPerformList());
                     }
-                }else {
-                    mNextView.setVisibility(View.GONE);
                 }
-
-            }else {
+            } else {
+                mNextView.setVisibility(View.GONE);
                 if (mAdapter == null) {
                     mAdapter = new PerformDetailListAdapter(model.getPerformList());
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));

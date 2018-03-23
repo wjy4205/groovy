@@ -96,16 +96,19 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
         boolean isDiscover = (boolean) SharedPreferencesUtils.getUserParam(mActivity, AppConstants.KEY_DISCOVER, true);
         sbDiscover.setChecked(isDiscover);
         sbNotify.setChecked(true);
-        if(AppConstants.USER_TYPE_NORMAL == Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType())){
-            mDiscoverLayout.setVisibility(View.GONE);
+        int type = Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType());
+        if (AppConstants.USER_TYPE_NORMAL == type) {
             mNotificationLayout.setVisibility(View.GONE);
+        }
+        if (AppConstants.USER_TYPE_MUSICIAN != type) {
+            mDiscoverLayout.setVisibility(View.GONE);
         }
         sbDiscover.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
                     ApiRetrofit.getInstance().getApiService()
-                            .updateDiscover("1")
+                            .updateDiscover("0")
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<ResultResponse<Object>>() {
@@ -130,9 +133,9 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
                                     }
                                 }
                             });
-                }else {
+                } else {
                     ApiRetrofit.getInstance().getApiService()
-                            .updateDiscover("0")
+                            .updateDiscover("1")
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<ResultResponse<Object>>() {

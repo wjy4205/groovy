@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.PerformDetail;
+import com.bunny.groovy.presenter.UserListPresenter;
 import com.bunny.groovy.ui.fragment.releaseshow.UserShowDetailFragment;
 import com.bunny.groovy.utils.Utils;
 
@@ -60,7 +61,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //距离
-        holder.mTvDistance.setText(model.getDistance()+"m");
+        holder.mTvDistance.setText(model.getDistance()+"mi");
         //表演类型
         holder.mTvStyle.setText(model.getPerformType());
         //点击效果
@@ -89,6 +90,7 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
             switch (v.getId()) {
                 case R.id.show_detail_go:
                     Utils.openWebGoogleNavi(mContext, performDetail.getVenueLatitude(), performDetail.getVenueLongitude());
+                    UserListPresenter.addPerformViewer(performDetail.getPerformID());
                     break;
                 default:
                     UserShowDetailFragment.launch(mContext, performDetail, false);

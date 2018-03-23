@@ -28,6 +28,7 @@ import com.bunny.groovy.presenter.ReleasePresenter;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightInfoFragment;
 import com.bunny.groovy.utils.AppCacheData;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
@@ -158,7 +159,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         }
         Map<String, String> map = new HashMap<>();
         //mType-2:演出厅发布演出
-        if (mType == 2) {
+        if (mType == AppConstants.USER_TYPE_VENUE) {
             if (mPerformerModel != null && !TextUtils.isEmpty(mPerformerModel.getUserID())) {
                 map.put("performerID", mPerformerModel.getUserID());
             }
@@ -201,7 +202,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
      */
     @OnClick(R.id.release_tv_search)
     public void search() {
-        if (mType == 2) {
+        if (mType == AppConstants.USER_TYPE_VENUE) {
             SearchMusicianFragment.launchForResult(mActivity, new Bundle(), 1);
         } else {
             SearchVenueFragment.launchForResult(mActivity, new Bundle(), 1);
@@ -285,7 +286,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
                     int endIndex = loopviewEndTime.getSelectedItem();
                     startTime = mRealTimeClockList.get(startIndex);
                     endTime = mRealTimeClockList.get(endIndex);
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + (startIndex < 12 ? "am" : "pm") + "-" + endTime + (endIndex < 12 ? "am" : "pm"));
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + (startIndex < 24 ? "am" : "pm") + "-" + endTime + (endIndex < 24 ? "am" : "pm"));
                 }
             }
         });
@@ -476,14 +477,19 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         //禁用编辑
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         //spotlight
         if (Integer.parseInt(AppCacheData.getPerformerUserModel().getPackageCount()) > 0) {
-            tvSpotLightMoney.setVisibility(View.GONE);
-            cbUseSpotlight.setVisibility(View.VISIBLE);
-            cbUseSpotlight.setChecked(true);
-        } else {
             tvSpotLightMoney.setVisibility(View.VISIBLE);
             tvSpotLightMoney.setText(AppCacheData.getPerformerUserModel().getPackageCount());
+            cbUseSpotlight.setVisibility(View.VISIBLE);
+//            cbUseSpotlight.setChecked(true);
+        } else {
+            tvSpotLightMoney.setVisibility(View.GONE);
             cbUseSpotlight.setVisibility(View.GONE);
         }
     }

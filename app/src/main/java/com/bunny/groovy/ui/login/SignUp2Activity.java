@@ -67,7 +67,7 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
             {
                 UIUtils.showBaseToast("Phone must not be null.");
                 return;
-            } else if (!PatternUtils.isUSphonenumber(etPhone.getTrimmedString()) || !PatternUtils.isCNPhone(etPhone.getTrimmedString())) {
+            } else if (!(PatternUtils.isUSphonenumber(etPhone.getTrimmedString()) || PatternUtils.isCNPhone(etPhone.getTrimmedString()))) {
                 UIUtils.showBaseToast("Phone invalid.");
                 return;
             }
@@ -88,11 +88,12 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
                 mPresenter.register(mAccount, mPassword, etPhone.getTrimmedString(), etEmail.getTrimmedString());
                 break;
             case AppConstants.Code_Verify_Invalid:
-                UIUtils.showBaseToast("验证码不正确");
+                UIUtils.showBaseToast("check code incorrect.");
                 break;
             case AppConstants.Code_Send_ServerError:
+                UIUtils.showBaseToast("server error!");
+                break;
             default:
-                UIUtils.showBaseToast("服务器出错");
                 break;
         }
     }

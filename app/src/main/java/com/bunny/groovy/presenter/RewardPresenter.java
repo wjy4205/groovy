@@ -53,10 +53,11 @@ public class RewardPresenter extends BasePresenter<IRewardView> {
     public void requestUserData(final int userType) {
         addSubscription(userType == AppConstants.USER_TYPE_MUSICIAN
                         ? apiService.getPerformerInfo() : (userType == AppConstants.USER_TYPE_NORMAL
-                        ? apiService.getUserInfo() : apiService.getVenueDetailInfo())
+                        ? apiService.getUserInfo(AppCacheData.getPerformerUserModel().getUserID()) : apiService.getVenueDetailInfo())
                 , new SubscriberCallBack<PerformerUserModel>(mView.get()) {
                     @Override
                     protected void onSuccess(final PerformerUserModel response) {
+                        response.setUserType(String.valueOf(userType));
                         Utils.initLoginData(mView.get(), response);
                     }
 
@@ -77,7 +78,7 @@ public class RewardPresenter extends BasePresenter<IRewardView> {
         addSubscription(apiService.rewardPerformer(map), new SubscriberCallBack(mView.get()) {
             @Override
             protected void onSuccess(Object response) {
-                UIUtils.showBaseToast("reward success.");
+                UIUtils.showBaseToast("Reward successfully.");
                 mView.get().finish();
             }
 

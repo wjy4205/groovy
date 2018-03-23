@@ -128,9 +128,9 @@ public class InviteDetailsFragment extends BaseFragment {
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("确认成功！");
+                            UIUtils.showBaseToast("Success!");
                         } else {
-                            UIUtils.showBaseToast("确认失败！请重试");
+                            UIUtils.showBaseToast("Failed!");
                         }
                     }
                 });
@@ -165,7 +165,7 @@ public class InviteDetailsFragment extends BaseFragment {
             } else if ("2".equals(invitationState)) {
                 mTvNotify.setText(R.string.rejected);
             } else {
-                llAction.setVisibility(View.VISIBLE);
+//                llAction.setVisibility(View.VISIBLE);
                 mTvNotify.setVisibility(View.GONE);
             }
 

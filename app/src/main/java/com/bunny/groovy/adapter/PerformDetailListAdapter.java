@@ -52,7 +52,8 @@ public class PerformDetailListAdapter extends RecyclerView.Adapter<PerformDetail
         holder.mTvUserName.setText(detail.getPerformerName());
         holder.mTvScore.setText(Utils.getStar(detail.getPerformerStarLevel()));
         holder.mTvData.setText(detail.getPerformType() + "  |  " + detail.getPerformDate() + detail.getPerformTime());
-        Glide.with(mContext).load(detail.getPerformerImg()).placeholder(R.drawable.icon_default_photo).into(holder.mIvUserHead);
+        Glide.with(mContext).load(detail.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(holder.mIvUserHead);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }

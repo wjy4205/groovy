@@ -17,7 +17,6 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.BasePresenter;
-import com.bunny.groovy.manager.LoginBlock;
 import com.bunny.groovy.ui.fragment.user.MyFavoriteListFragment;
 import com.bunny.groovy.ui.fragment.user.MyHistoryListFragment;
 import com.bunny.groovy.ui.fragment.user.UserMainFragment;
@@ -111,8 +110,11 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
         View headerView = mNavigationView.getHeaderView(0);
         CircleImageView mHeadImage = headerView.findViewById(R.id.nav_head);
         TextView mUserName = headerView.findViewById(R.id.nav_name);
-        Glide.with(this).load(AppCacheData.getPerformerUserModel().getHeadImg()).into(mHeadImage);
-        mUserName.setText(AppCacheData.getPerformerUserModel().getUserName());
+        if(AppCacheData.getPerformerUserModel() != null){
+            Glide.with(this).load(AppCacheData.getPerformerUserModel().getHeadImg())
+                    .placeholder(R.drawable.user_default_photo).error(R.drawable.user_default_photo).into(mHeadImage);
+            mUserName.setText(AppCacheData.getPerformerUserModel().getUserName());
+        }
         mHeadImage.setOnClickListener(this);
         headerView.findViewById(R.id.nav_wallet).setOnClickListener(this);
         headerView.findViewById(R.id.nav_history).setOnClickListener(this);
@@ -128,7 +130,8 @@ public class UserMainActivity extends BaseActivity implements View.OnClickListen
             TextView mUserName = headerView.findViewById(R.id.nav_name);
             String url = AppCacheData.getPerformerUserModel().getHeadImg();
             Glide.with(this).load(url)
-                    .error(R.drawable.icon_default_photo).into(mHeadImage);
+                    .placeholder(R.drawable.user_default_photo)
+                    .error(R.drawable.user_default_photo).into(mHeadImage);
             mUserName.setText(AppCacheData.getPerformerUserModel().getUserName());
         }
 

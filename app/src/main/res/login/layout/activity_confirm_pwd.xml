@@ -19,37 +19,20 @@
         android:id="@+id/confirm_pwd_et_password_1"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
-        android:hint="NEW PASSWORD"
+        android:hint="NEW PASSWORD      "
+        android:inputType="textPassword"
         app:x_disableEmoji="true"
-        app:x_importantWord="true" />
-
+        app:x_hidePwdDrawable="@drawable/login_closeeye"
+        app:x_showPwdDrawable="@drawable/login_openeye"/>
     <com.xw.repo.XEditText
         android:id="@+id/confirm_pwd_et_password_2"
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
-        android:hint="NEW PASSWORD" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:gravity="bottom"
-            android:text="*"
-            android:textColor="@color/accentPurple"
-            android:textSize="@dimen/text_size_small" />
-
-        <TextView
-            style="@style/remark_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/required" />
-    </LinearLayout>
+        android:hint="NEW PASSWORD AGAIN"
+        android:inputType="textPassword"
+        app:x_disableEmoji="true"
+        app:x_hidePwdDrawable="@drawable/login_closeeye"
+        app:x_showPwdDrawable="@drawable/login_openeye"/>
 
 
     <TextView

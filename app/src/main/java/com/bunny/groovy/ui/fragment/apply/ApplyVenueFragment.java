@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -149,7 +150,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
             @Override
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("开始时间不能小于结束时间");
+                    UIUtils.showBaseToast("Start time must not be less than end time.");
                 } else {
                     closeTimePop();
                     //设置开始结束时间
@@ -267,7 +268,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today.");
                 } else {
                     closeDatePop();
                     //设置title
@@ -316,6 +317,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         map.put("venueAddress", sVenueBean.getVenueAddress());
         map.put("venueLongitude", sVenueBean.getLongitude());
         map.put("venueLatitude", sVenueBean.getLatitude());
+        map.put("isOpportunity", "0");
         mPresenter.applyVenue(map);
     }
 
@@ -349,6 +351,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
         mPopupWindow.setTouchable(true);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
+        mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         RecyclerView recyclerview = popview.findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mAdapter = new StyleGridAdapter(modelList, etStyle.getText().toString().trim());

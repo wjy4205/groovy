@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.api.ApiConstants;
@@ -69,12 +71,12 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     @Bind(R.id.et_venue_twitter)
     XEditText mVenueTwitter;
     private PopupWindow popupWindow;
+    @Bind(R.id.tv_venue_protocol)
+    TextView mProtocolView;
 
     @OnClick(R.id.tv_venue_protocol)
-    void link(){
-        Uri uri = Uri.parse(ApiConstants.BASE_PROTOCOL_URL);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+    void link() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ApiConstants.BASE_PROTOCOL_URL)));
     }
 
     private WeakReference<Activity> mWeakReference = new WeakReference<Activity>(this);
@@ -105,6 +107,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             mEditPhone.setFocusable(false);
             mEditPhone.setTextColor(Color.GRAY);
         }
+        mProtocolView.setText(Html.fromHtml(getString(R.string.protocol_link)));
     }
 
     @OnClick(R.id.et_venue_service)
@@ -117,50 +120,20 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     void signUp() {
         //验证码为空
         if (TextUtils.isEmpty(mEditCode.getTrimmedString())) {
-            UIUtils.showBaseToast("Code must not be null.");
+            UIUtils.showBaseToast("please input verification code.");
+            //venueType为空
+//        }else if (TextUtils.isEmpty(mVenueService.getTrimmedString())) {
+//            UIUtils.showBaseToast("Please select venue service.");
+        }else if (TextUtils.isEmpty(mVenuePhone.getTrimmedString())) {
+            UIUtils.showBaseToast("Please input booking telphone.");
+        }else if (TextUtils.isEmpty(mVenueWebsite.getTrimmedString())) {
+            UIUtils.showBaseToast("Please input website.");
+        }else if (TextUtils.isEmpty(mVenueFacebook.getTrimmedString())) {
+            UIUtils.showBaseToast("Please input facebook.");
+        }else if (TextUtils.isEmpty(mVenueTwitter.getTrimmedString())) {
+            UIUtils.showBaseToast("Please input twitter.");
             return;
         }
-        if (TextUtils.isEmpty(mVenueService.getTrimmedString())) {
-            UIUtils.showBaseToast("Venue service must not be null.");
-            return;
-        }
-        if (TextUtils.isEmpty(mVenuePhone.getTrimmedString())) {
-            UIUtils.showBaseToast("Booking telphone must not be null.");
-            return;
-        }
-        if (TextUtils.isEmpty(mVenueWebsite.getTrimmedString())) {
-            UIUtils.showBaseToast("Website telphone must not be null.");
-            return;
-        }
-        if (TextUtils.isEmpty(mVenueFacebook.getTrimmedString())) {
-            UIUtils.showBaseToast("Facebook must not be null.");
-            return;
-        }
-        if (TextUtils.isEmpty(mVenueTwitter.getTrimmedString())) {
-            UIUtils.showBaseToast("Twitter must not be null.");
-            return;
-        }
-//        if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
-//            if (TextUtils.isEmpty(mEditEmail.getTrimmedString())) {
-//                //邮箱为空
-//                UIUtils.showBaseToast("E-mail must not be null.");
-//                return;
-//            } else if (!PatternUtils.isValidEmail(mEditEmail.getTrimmedString())) {
-//                //邮箱不合法
-//                UIUtils.showBaseToast("E-mail invalid.");
-//                return;
-//            }
-//            VerifyEvent.verifyCode(mEditCode.getTrimmedString());
-//        } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
-//            if (TextUtils.isEmpty(mEditPhone.getTrimmedString()))
-//            //手机号为空
-//            {
-//                UIUtils.showBaseToast("Phone must not be null.");
-//                return;
-//            } else if (!PatternUtils.isUSphonenumber(mEditPhone.getTrimmedString()) && !PatternUtils.isCNPhone(mEditPhone.getTrimmedString())) {
-//                UIUtils.showBaseToast("Phone invalid.");
-//                return;
-//            }
         mPresenter.registerVenue(mPublicName, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
                 mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
                 mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString()
@@ -185,7 +158,6 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
         mVenueService.setCursorVisible(false);
         mVenueService.setFocusable(false);
         mVenueService.setFocusableInTouchMode(false);
-        registerEventBus(this);
     }
 
 
@@ -231,14 +203,26 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
                         , mVenueFacebook.getTrimmedString(), mHeadUrl);
                 break;
             case AppConstants.Code_Verify_Invalid:
-                UIUtils.showBaseToast("验证码不正确");
+                UIUtils.showBaseToast("Check code incorrect.");
                 break;
             case AppConstants.Code_Send_ServerError:
-                UIUtils.showBaseToast("服务器出错");
+                UIUtils.showBaseToast("Server wrong.");
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerEventBus(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterEventBus(this);
     }
 
     private void initPopWindow(Context context, String value) {

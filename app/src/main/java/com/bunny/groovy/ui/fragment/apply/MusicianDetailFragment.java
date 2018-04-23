@@ -123,6 +123,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
     private boolean isFavorite = false;
 
     public static void launch(Activity from, String performerId) {
+        if (TextUtils.isEmpty(performerId)) return;
         mPerformerId = performerId;
         Bundle bundle = new Bundle();
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "MUSICIAN DETAILS");
@@ -147,7 +148,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
     @Override
     public void setView(MusicianDetailModel model) {
         musicianDetailModel = model;
-        mUserName.setText(model.userName);
+        mUserName.setText(model.stageName);
         mUserScore.setText(Utils.getStar(model.starLevel));
 
         mUserPhone.setText(model.telephone);
@@ -156,7 +157,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
         isFavorite = "1".equals(model.isBeCollection);
         setFavoriteStatus();
 
-        Glide.with(mActivity).load(model.headImg).error(R.drawable.venue_instead_pic).into(mUserHeader);
+        Glide.with(mActivity).load(model.headImg).placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(mUserHeader);
         //set list
         if (mAdapter == null) {
             mAdapter = new MusicianScheduleAdapter(model.evaluateList);
@@ -170,7 +171,7 @@ public class MusicianDetailFragment extends BaseFragment<MusicianDetailPresenter
 
     @OnClick(R.id.user_music)
     public void playMusic() {
-        if (TextUtils.isEmpty(musicianDetailModel.musicFile)) {
+        if (musicianDetailModel == null || TextUtils.isEmpty(musicianDetailModel.musicFile)) {
             UIUtils.showBaseToast("No music.");
             return;
         }

@@ -28,8 +28,7 @@ public class SearchMusicianListPresenter extends BasePresenter<ISearchMusicianLi
         addSubscription(apiService.getPerformerList(keyword), new SubscriberCallBack<List<PerformerUserModel>>(mView.get()) {
             @Override
             protected void onSuccess(List<PerformerUserModel> response) {
-                if (response != null && response.size() > 0)
-                    mView.setListView(response);
+                mView.setListView(response);
             }
 
             @Override

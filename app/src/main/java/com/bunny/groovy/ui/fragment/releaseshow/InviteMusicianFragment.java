@@ -83,11 +83,11 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
     public void invite() {
         //判断空
         if (UIUtils.isEdittextEmpty(etTime)) {
-            UIUtils.showBaseToast("请选择演出机会时间");
+            UIUtils.showBaseToast("Please choose show time.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etBio)) {
-            UIUtils.showBaseToast("请填写内容");
+            UIUtils.showBaseToast("please input message.");
             return;
         }
         mPresenter.inviteMusician(mPerformerModel.getUserID(), DateUtils.getFormatTime(mSelectDate.getTime(), startTime),
@@ -162,13 +162,15 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
             @Override
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("开始时间不能小于结束时间");
+                    UIUtils.showBaseToast("Start time must not be less than end time.");
                 } else {
                     closeTimePop();
                     //设置开始结束时间
                     startTime = mRealTimeClockList.get(loopviewFromTime.getSelectedItem());
                     endTime = mRealTimeClockList.get(loopviewEndTime.getSelectedItem());
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) +
+                            (loopviewFromTime.getSelectedItem() < 24 ? "am" : "pm")
+                            + "-" + endTime + (loopviewEndTime.getSelectedItem() < 24 ? "am" : "pm"));
                 }
             }
         });
@@ -271,7 +273,7 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today");
                 } else {
                     closeDatePop();
                     //设置title
@@ -308,16 +310,16 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
         etTime.setFocusable(false);
         if (!TextUtils.isEmpty(mPerformerModel.getHeadImg())) {
             Glide.with(getActivity()).load(mPerformerModel.getHeadImg())
-                    .placeholder(R.drawable.icon_load_pic)
-                    .error(R.drawable.icon_load_pic).dontAnimate()
+                    .placeholder(R.drawable.musicion_default_photo)
+                    .error(R.drawable.musicion_default_photo).dontAnimate()
                     .into(mHeadView);
         } else {
             mHeadView.setImageResource(R.drawable.icon_load_pic);
         }
-        mNameView.setText(mPerformerModel.getUserName());
+        mNameView.setText(mPerformerModel.getStageName());
         mStarView.setText(Utils.getStar(mPerformerModel.getStarLevel()));
         mStyleView.setText(mPerformerModel.getPerformTypeName());
-        mPhoneView.setText(mPerformerModel.getPhoneNumber());
+        mPhoneView.setText(mPerformerModel.getTelephone());
     }
 
     @Override

@@ -58,7 +58,7 @@ public class VenueNotify1ListAdapter extends RecyclerView.Adapter<VenueNotify1Li
         StringBuilder stringBuilder2 = new StringBuilder();
         if (TextUtils.equals("0", status)) {
             holder.tvDetail.setText("REVIEW");
-            stringBuilder2.append(list.size()).append(" Applicants for your review:");
+            stringBuilder2.append(list.size()).append(" Applicants for your review");
         } else {
             holder.tvDetail.setText("DETAILS");
             stringBuilder2.append(list.size()).append(" Applicants: ");

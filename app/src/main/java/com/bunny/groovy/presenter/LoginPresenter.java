@@ -9,7 +9,6 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
-import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.login.BindAccountFragment;
 import com.bunny.groovy.ui.login.VenueRegister1Activity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
@@ -40,6 +39,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     @Override
                     protected void onSuccess(PerformerUserModel response) {
                         //保存用户账号密码，用于切换时自动登录
+                        SharedPreferencesUtils.setAppParam(mView.get(), AppConstants.KEY_HISTORY_ACCOUNT_BY_TYPE + type, account);
                         SharedPreferencesUtils.setUserParam(mView.get(), AppConstants.KEY_ACCOUNT + response.getUserID(), account);
                         SharedPreferencesUtils.setUserParam(mView.get(), AppConstants.KEY_PASSWORD + response.getUserID(), password);
                         //坑爹服务器，登录之后类型还是原来的，只能自己转
@@ -56,7 +56,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                                     && TextUtils.isEmpty(response.getZipCode())) {
                                 mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                             } else if (userType == AppConstants.USER_TYPE_VENUE
-                                    && TextUtils.isEmpty(response.getVenueTypeName())) {
+                                    && TextUtils.isEmpty(response.getVenueAddress())) {
                                 mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                             } else {
                                 //进入主页
@@ -103,6 +103,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             protected void onSuccess(PerformerUserModel response) {
                 //已经绑定，直接登录
                 if (response != null) {
+                    response.setUserType(userType);
+                    Utils.initLoginData(mView.get(), response);
                     //获取全局参数
                     getGlobParam();
                     //判断资料是否完善
@@ -111,11 +113,11 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             && TextUtils.isEmpty(response.getZipCode())) {
                         mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                     } else if (type == AppConstants.USER_TYPE_VENUE
-                            && TextUtils.isEmpty(response.getVenueTypeName())) {
+                            && TextUtils.isEmpty(response.getVenueAddress())) {
                         mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                     } else {
                         //进入主页
-                        MainActivity.launch(mView.get());
+                        mView.launchMainPage(type);
                     }
                 } else {
                     //未绑定任何账户，跳转到绑定账户页面
@@ -130,13 +132,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
             @Override
             protected void onFailure(ResultResponse response) {
-                //未绑定任何账户，跳转到绑定账户页面
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                bundle.putString("logintype", loginType);
-                bundle.putString("uid", uid);
-                bundle.putString("userType", userType);
-                BindAccountFragment.launch(mView.get(), bundle);
+                //已绑定其他类型账户
+//                Bundle bundle = new Bundle();
+//                bundle.putString("username", username);
+//                bundle.putString("logintype", loginType);
+//                bundle.putString("uid", uid);
+//                bundle.putString("userType", userType);
+//                BindAccountFragment.launch(mView.get(), bundle);
             }
 
             @Override
@@ -193,8 +195,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 Utils.initLoginData(mView.get(), response);
                 switch (Utils.parseInt(userType)) {
                     case AppConstants.USER_TYPE_VENUE:
-                        if (response == null || TextUtils.isEmpty(response.getStageName()) ||
-                                TextUtils.isEmpty(response.getVenueTypeName())) {
+                        if (response == null || TextUtils.isEmpty(response.getVenueAddress())) {
                             mView.launchToSetFile();
                             return;
                         }

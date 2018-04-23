@@ -11,6 +11,7 @@ import com.bunny.groovy.presenter.ForgetPwdPresenter;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IForgetView;
 import com.xw.repo.XEditText;
 
@@ -38,37 +39,39 @@ public class ConfirmPwdActivity extends BaseActivity<ForgetPwdPresenter> impleme
     public void submit() {
         String pwd_1 = etPwd_1.getTrimmedString();
         String pwd_2 = etPwd_2.getTrimmedString();
-        if (!TextUtils.isEmpty(pwd_1) && !TextUtils.isEmpty(pwd_2)) {
-            if (pwd_1.equals(pwd_2)) {
-                if (TextUtils.isEmpty(etCode.getTrimmedString()))
-                    UIUtils.showBaseToast("Please input code.");
-                else {
-                    if ("0".equals(type)) {//手机
-                        //验证code
-                        VerifyEvent.verifyCode(etCode.getTrimmedString());
-                    } else if ("1".equals(type)) {//邮箱
-                        mPresenter.checkMailCode(etCode.getTrimmedString(), account, type, etPwd_1.getTrimmedString());
-                    }
-                }
-
-            } else {
-                UIUtils.showBaseToast("Password not same.");
-            }
+        if (TextUtils.isEmpty(etCode.getTrimmedString())) {
+            UIUtils.showBaseToast("please input verification code.");
+        } else if (TextUtils.isEmpty(pwd_1)) {
+            UIUtils.showBaseToast("Please input password.");
+        } else if (TextUtils.isEmpty(pwd_2)) {
+            UIUtils.showBaseToast("Please input password again.");
+        } else if (pwd_1.length() < 8) {
+            UIUtils.showBaseToast("Password length less than 8.");
+        } else if (!pwd_2.equals(pwd_1)) {
+            UIUtils.showBaseToast("Password not same.");
         } else {
-            UIUtils.showBaseToast("Please input correct password.");
+            if ("0".equals(type)) {//手机
+                //验证code
+                VerifyEvent.verifyCode(etCode.getTrimmedString());
+            } else if ("1".equals(type)) {//邮箱
+                mPresenter.checkMailCode(etCode.getTrimmedString(), account, type, etPwd_1.getTrimmedString());
+            }
         }
     }
 
     @OnClick(R.id.confirm_pwd_tv_login)
     public void login() {
-        int type = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
+        if (AppCacheData.getPerformerUserModel() == null) return;
+        int type = Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType());
         LoginActivity.launch(this, type);
     }
 
     public static String KEY_ACCOUNT = "key_account";
     public static String KEY_TYPE = "key_type";
+    public static String KEY_USER_TYPE = "key_user_type";
     private String account;
     private String type;
+    private int mUserType;
 
 
     @Override
@@ -78,10 +81,22 @@ public class ConfirmPwdActivity extends BaseActivity<ForgetPwdPresenter> impleme
             Intent intent = getIntent();
             account = intent.getStringExtra(KEY_ACCOUNT);
             type = intent.getStringExtra(KEY_TYPE);
+            mUserType = intent.getIntExtra(KEY_USER_TYPE, 0);
         } catch (Exception e) {
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         registerEventBus(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterEventBus(this);
     }
 
     /**
@@ -93,13 +108,14 @@ public class ConfirmPwdActivity extends BaseActivity<ForgetPwdPresenter> impleme
     public void onVerifyEvent(String result) {
         switch (result) {
             case AppConstants.Code_Verify_Correct:
+                if(!TextUtils.isEmpty(etPwd_1.getTrimmedString()))
                 mPresenter.updateNewPassword(account, type, etPwd_1.getTrimmedString());
                 break;
             case AppConstants.Code_Verify_Invalid:
-                UIUtils.showBaseToast("验证码不正确");
+//                UIUtils.showBaseToast("Check code incorrect.");
                 break;
             case AppConstants.Code_Send_ServerError:
-                UIUtils.showBaseToast("服务器出错");
+                UIUtils.showBaseToast("Server wrong.");
                 break;
         }
     }
@@ -111,8 +127,7 @@ public class ConfirmPwdActivity extends BaseActivity<ForgetPwdPresenter> impleme
 
     @Override
     public void next() {
-        int type = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
-        LoginActivity.launch(this, type);
+        LoginActivity.launch(this, mUserType);
     }
 
     @Override

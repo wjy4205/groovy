@@ -7,13 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,7 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.adapter.StyleAdapter;
+import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.model.MusicBean;
 import com.bunny.groovy.model.StyleModel;
@@ -67,8 +72,8 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
             callBack = null;
         }
     };
-    private PopupWindow popupWindow;
-    private StyleAdapter adapter;
+    private PopupWindow mPopupWindow;
+    private StyleGridAdapter mAdapter;
 
     @OnClick(R.id.iv_select_music)
     void selectMusic() {
@@ -117,11 +122,11 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     @OnClick(R.id.tv_next)
     void next() {
         if (TextUtils.isEmpty(etSelectStyle.getTrimmedString())) {
-            UIUtils.showBaseToast("请选择类型");
+            UIUtils.showBaseToast("Please select Style.");
             return;
         }
         if (TextUtils.isEmpty(etBio.getText().toString())) {
-            UIUtils.showBaseToast("请输入签名");
+            UIUtils.showBaseToast("Please input Bio.");
             return;
         }
         AppCacheData.getFileMap().put("performTypeName", etSelectStyle.getTrimmedString());
@@ -183,37 +188,73 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
 
     @Override
     public void showStylePop(List<StyleModel> modelList) {
-        showPopWindow(this, etSelectStyle, modelList);
-    }
-
-    private void initPopWindow(Context context, List<StyleModel> dataList, String selectStyle) {
-        if (popupWindow == null) {
-            popupWindow = new PopupWindow(context);
-            View inflate = LayoutInflater.from(context).inflate(R.layout.pop_performer_style_layout, null, false);
-            ListView listView = inflate.findViewById(R.id.style_listview);
-            adapter = new StyleAdapter(dataList);
-            listView.setAdapter(adapter);
-            popupWindow.setContentView(inflate);
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(130));
-            popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    etSelectStyle.setText(adapter.getSelectStyle());
-                }
-            });
-        } else {
-            adapter.refresh(dataList, selectStyle);
-        }
-    }
-
-    public void showPopWindow(Context context, View view, List<StyleModel> dataList) {
         UIUtils.hideSoftInput(etSelectStyle);
-        initPopWindow(context, dataList, etSelectStyle.getTrimmedString());
-        if (popupWindow.isShowing()) popupWindow.dismiss();
-        else popupWindow.showAsDropDown(etSelectStyle, 0, 0, Gravity.CENTER);
+        showPopWindow(modelList);
     }
+
+    private void initPopWindow(List<StyleModel> modelList) {
+        mPopupWindow = new PopupWindow(this);
+        View popview = LayoutInflater.from(this).inflate(R.layout.pop_style_grid_layout, null, false);
+        mPopupWindow.setContentView(popview);
+        mPopupWindow.setOutsideTouchable(false);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
+        mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        RecyclerView recyclerview = popview.findViewById(R.id.recyclerview);
+        recyclerview.setLayoutManager(new GridLayoutManager(SetFile2Activity.this, 3));
+        mAdapter = new StyleGridAdapter(modelList, etSelectStyle.getText().toString().trim());
+        recyclerview.setAdapter(mAdapter);
+        mAdapter.setSelectNum(99);
+        TextView textView = popview.findViewById(R.id.style_num_text);
+        textView.setText("SELECT ALL");
+        CheckBox checkBox = popview.findViewById(R.id.style_num_checkbox);
+        checkBox.setVisibility(View.VISIBLE);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mAdapter.selectAll(b);
+            }
+        });
+        popview.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+            }
+        });
+        popview.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+                etSelectStyle.setText(mAdapter.getSelectStyles());
+            }
+        });
+        // 按下android回退物理键 PopipWindow消失解决
+        popview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                    closePop();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void showPopWindow(List<StyleModel> dataList) {
+        if (mPopupWindow == null) initPopWindow(dataList);
+        if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+        else mPopupWindow.showAtLocation(etSelectStyle, Gravity.CENTER, 0, UIUtils.dip2Px(15));
+    }
+
+    /**
+     * 关闭选择style窗口
+     */
+    private void closePop() {
+        if (mPopupWindow != null) mPopupWindow.dismiss();
+    }
+
 
     @Override
     protected SetFilePresenter createPresenter() {
@@ -251,7 +292,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
                 mMusic_file = data.getParcelableExtra("music_file");
                 initMusicService();
             }
-        } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH){
+        } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
             setResult(AppConstants.ACTIVITY_FINISH);
             finish();
         }

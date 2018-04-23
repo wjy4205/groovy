@@ -13,7 +13,7 @@
         android:layout_height="140px"
         android:layout_marginBottom="6dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/venue_instead_pic" />
+        android:src="@drawable/venue_default_photo" />
 
     <RelativeLayout
         android:layout_width="0dp"

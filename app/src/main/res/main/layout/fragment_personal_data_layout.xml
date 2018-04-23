@@ -22,7 +22,7 @@
                 android:id="@+id/personal_headview"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/icon_head_default"
+                android:background="@drawable/musicion_default_photo"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
 
@@ -68,6 +68,18 @@
             android:id="@+id/personal_et_zipcode"
             style="@style/personal_data_input_text"
             android:hint="ZIP CODE"
+            tools:text="HAHHAHA" />
+
+        <TextView
+            style="@style/common_text_style"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp"
+            android:text="PHONE" />
+
+        <EditText
+            android:id="@+id/personal_et_phone"
+            style="@style/personal_data_input_text"
+            android:hint="PNONE"
             tools:text="HAHHAHA" />
 
         <TextView

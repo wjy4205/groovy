@@ -2,11 +2,14 @@ package com.bunny.groovy.presenter;
 
 import com.bunny.groovy.api.ApiRetrofit;
 import com.bunny.groovy.api.ApiService;
+import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.VenueScheduleModel;
 import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IScheduleVenueView;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.google.gson.Gson;
@@ -96,7 +99,7 @@ public class VenueSchedulePresenter extends BasePresenter<IScheduleVenueView> {
     /**
      * 推广
      */
-    public void spotlightPerform(String performID,String userID) {
+    public void spotlightPerform(String performID, String userID) {
         ApiService apiService = ApiRetrofit.getInstance().getApiService();
         apiService.spotlightPerform(performID, userID)
                 .subscribeOn(Schedulers.io())
@@ -121,11 +124,34 @@ public class VenueSchedulePresenter extends BasePresenter<IScheduleVenueView> {
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("To promote success !");
+                            UIUtils.showBaseToast("This show has joined the promotion.");
                         } else {
                             UIUtils.showBaseToast(response.errorMsg);
                         }
                     }
                 });
     }
+
+    /**
+     * 获取user数据
+     */
+    public void requestUserData() {
+        addSubscription(apiService.getVenueDetailInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+            @Override
+            protected boolean isShowProgress() {
+                return true;
+            }
+
+            @Override
+            protected void onSuccess(PerformerUserModel response) {
+                Utils.initLoginData(mView.get(), response);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+
+            }
+        });
+    }
+
 }

@@ -44,8 +44,8 @@ public class MusicListActivity extends BaseActivity {
             @Override
             public void onItemClick(int positon) {
                 mPlayList.get(positon);
-                if (mPlayList.get(positon).getLength() > 10) {
-                    UIUtils.showBaseToast("Music size must within 10M.");
+                if (mPlayList.get(positon).getLength() > 5) {
+                    UIUtils.showBaseToast("Music size must within 5M.");
                     return;
                 }
                 Intent intent = new Intent();

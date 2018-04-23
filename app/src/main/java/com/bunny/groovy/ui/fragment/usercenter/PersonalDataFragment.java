@@ -11,15 +11,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -29,7 +35,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bunny.groovy.R;
-import com.bunny.groovy.adapter.StyleAdapter;
+import com.bunny.groovy.adapter.StyleGridAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.listener.PermissionListener;
@@ -39,6 +45,7 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.MePresenter;
 import com.bunny.groovy.service.MusicService;
 import com.bunny.groovy.ui.setfile.MusicListActivity;
+import com.bunny.groovy.ui.setfile.SetFile2Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
@@ -97,6 +104,9 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
     @Bind(R.id.personal_et_style)
     EditText mEtStyle;
     private String headImagePath;
+
+    @Bind(R.id.personal_et_phone)
+    EditText mEtPhone;
 
     @OnClick(R.id.personal_et_style)
     public void selectStyle() {
@@ -160,36 +170,79 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
         FragmentContainerActivity.launch(from, PersonalDataFragment.class, bundle);
     }
 
-    private PopupWindow popupWindow;
-    private StyleAdapter adapter;
+    private PopupWindow mPopupWindow;
+    private StyleGridAdapter mAdapter;
 
-    private void initPopWindow(Context context, List<StyleModel> dataList, String selectStyle) {
-        if (popupWindow == null) {
-            popupWindow = new PopupWindow(context);
-            View inflate = LayoutInflater.from(context).inflate(R.layout.pop_performer_style_layout, null, false);
-            ListView listView = inflate.findViewById(R.id.style_listview);
-            adapter = new StyleAdapter(dataList);
-            listView.setAdapter(adapter);
-            popupWindow.setContentView(inflate);
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(130));
-            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    mEtStyle.setText(adapter.getSelectStyle());
-                }
-            });
-        } else {
-            adapter.refresh(dataList, selectStyle);
-        }
-    }
 
-    public void showPopWindow(Context context, List<StyleModel> dataList) {
+    @Override
+    public void showStylePop(List<StyleModel> modelList) {
         UIUtils.hideSoftInput(mEtStyle);
-        initPopWindow(context, dataList, mEtStyle.getText().toString());
-        if (popupWindow.isShowing()) popupWindow.dismiss();
-        else popupWindow.showAsDropDown(mEtStyle, 0, 0, Gravity.CENTER);
+        showPopWindow(modelList);
     }
+
+    private void initPopWindow(List<StyleModel> modelList) {
+        mPopupWindow = new PopupWindow(getActivity());
+        View popview = LayoutInflater.from(getActivity()).inflate(R.layout.pop_style_grid_layout, null, false);
+        mPopupWindow.setContentView(popview);
+        mPopupWindow.setOutsideTouchable(false);
+        mPopupWindow.setTouchable(true);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
+        mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        RecyclerView recyclerview = popview.findViewById(R.id.recyclerview);
+        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mAdapter = new StyleGridAdapter(modelList, mEtStyle.getText().toString().trim());
+        recyclerview.setAdapter(mAdapter);
+        mAdapter.setSelectNum(99);
+        TextView textView = popview.findViewById(R.id.style_num_text);
+        textView.setText("SELECT ALL");
+        CheckBox checkBox = popview.findViewById(R.id.style_num_checkbox);
+        checkBox.setVisibility(View.VISIBLE);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mAdapter.selectAll(b);
+            }
+        });
+        popview.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+            }
+        });
+        popview.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePop();
+                mEtStyle.setText(mAdapter.getSelectStyles());
+            }
+        });
+        // 按下android回退物理键 PopipWindow消失解决
+        popview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+                    closePop();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void showPopWindow(List<StyleModel> dataList) {
+        if (mPopupWindow == null) initPopWindow(dataList);
+        if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+        else mPopupWindow.showAtLocation(mEtStyle, Gravity.CENTER, 0, UIUtils.dip2Px(15));
+    }
+
+    /**
+     * 关闭选择style窗口
+     */
+    private void closePop() {
+        if (mPopupWindow != null) mPopupWindow.dismiss();
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -215,6 +268,7 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
             ma.put("performTypeName", mEtStyle.getText().toString());
             ma.put("signature", mEtBio.getText().toString());
             ma.put("zipCode", mEtZipcode.getText().toString());
+            ma.put("phoneNumber", mEtPhone.getText().toString());
             ma.put("stageName", mEtArtistName.getText().toString());
             ma.put("webSiteAddress", mEtWebsite.getText().toString());
             ma.put("twitterAccount", mEtTwitter.getText().toString());
@@ -244,7 +298,7 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
     public void setUserView(PerformerUserModel model) {
         mTvName.setText(model.getUserName());
         Glide.with(getActivity()).load(model.getHeadImg())
-                .placeholder(R.drawable.head).into(new SimpleTarget<GlideDrawable>() {
+                .placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(new SimpleTarget<GlideDrawable>() {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 mHeadView.setImageDrawable(resource.getCurrent());
@@ -258,11 +312,7 @@ public class PersonalDataFragment extends BaseFragment<MePresenter> implements I
         mEtFaceBook.setText(model.getFacebookAccount());
         mEtTwitter.setText(model.getTwitterAccount());
         mEtSoundClound.setText(model.getSoundcloudAccount());
-    }
-
-    @Override
-    public void showStylePop(List<StyleModel> modelList) {
-        showPopWindow(getActivity(), modelList);
+        mEtPhone.setText(model.getTelephone());
     }
 
     @Override

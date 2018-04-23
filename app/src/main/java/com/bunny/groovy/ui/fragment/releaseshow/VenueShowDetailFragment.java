@@ -40,9 +40,6 @@ public class VenueShowDetailFragment extends BaseFragment {
     @Bind(R.id.show_detail_tv_performer_name)
     TextView mTvPerformerName;
 
-    @Bind(R.id.show_detail_tv_venue_name)
-    TextView mTvVenueName_1;
-
     @Bind(R.id.show_detail_tv_style)
     TextView mTvStyle;
 
@@ -133,6 +130,7 @@ public class VenueShowDetailFragment extends BaseFragment {
 
     public static void launch(Activity from, Bundle bundle) {
         model = bundle.getParcelable(KEY_SHOW_BEAN);
+        if (model == null || TextUtils.isEmpty(model.getPerformID())) return;
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
         FragmentContainerActivity.launch(from, VenueShowDetailFragment.class, bundle);
     }
@@ -152,8 +150,7 @@ public class VenueShowDetailFragment extends BaseFragment {
         super.initView(rootView);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
-            mTvPerformerName.setText(model.getPerformerName());
-            mTvVenueName_1.setText(model.getVenueName());
+            mTvPerformerName.setText(model.getPerformerName() + " @ " + model.getVenueName());
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
@@ -162,13 +159,14 @@ public class VenueShowDetailFragment extends BaseFragment {
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getVenueBookingPhone());
             mTvEmail.setText(model.getVenueWebSite());
-            Glide.with(mActivity).load(model.getVenueImg()).placeholder(R.drawable.venue_instead_pic)
-                    .error(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(model.getVenueImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
             mTvPerformerStars.setText(Utils.getStar(model.getPerformerScore()));
-            Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.head).error(R.drawable.head)
+            Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
+                    .error(R.drawable.musicion_default_photo)
                     .into(mPerformerHead);
              /*mTvNotify.setVisibility(View.VISIBLE);
             String applyState = model.getPerformState();
@@ -183,13 +181,17 @@ public class VenueShowDetailFragment extends BaseFragment {
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
                 tvFood.setEnabled(venueTypeName.contains("Food"));
                 tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
             } else {
-                tv21Plus.setEnabled(true);
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
+            }
+            tv21Plus.setEnabled(Utils.is21Enabled(model.getVenueID(), model.getVenueTypeName(), model.getPerformDesc()));
+            if (!TextUtils.isEmpty(model.getIsHaveCharges()) && model.getIsHaveCharges().equals("1")) {
+                tvCoverCharge.setEnabled(true);
+            } else {
+                tvCoverCharge.setEnabled(false);
             }
             if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
         }

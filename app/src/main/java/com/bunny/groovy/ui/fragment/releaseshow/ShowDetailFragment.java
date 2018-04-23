@@ -32,9 +32,6 @@ public class ShowDetailFragment extends BaseFragment {
     @Bind(R.id.show_detail_tv_performer_name)
     TextView mTvPerformerName;
 
-    @Bind(R.id.show_detail_tv_venue_name)
-    TextView mTvVenueName_1;
-
     @Bind(R.id.show_detail_tv_style)
     TextView mTvStyle;
 
@@ -86,6 +83,7 @@ public class ShowDetailFragment extends BaseFragment {
 
     @OnClick(R.id.show_detail_iv_email)
     public void email() {
+        if (model!=null)
         Utils.sendEmail(mActivity, model.getVenueEmail());
     }
 
@@ -104,6 +102,7 @@ public class ShowDetailFragment extends BaseFragment {
 
     public static void launch(Activity from, Bundle bundle) {
         model = bundle.getParcelable(KEY_SHOW_BEAN);
+        if(model == null) return;
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
         type = bundle.getInt("type", -1);
         FragmentContainerActivity.launch(from, ShowDetailFragment.class, bundle);
@@ -124,8 +123,7 @@ public class ShowDetailFragment extends BaseFragment {
         super.initView(rootView);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
-            mTvPerformerName.setText(model.getPerformerName());
-            mTvVenueName_1.setText(model.getVenueName());
+            mTvPerformerName.setText(model.getPerformerName() + " @ " + model.getVenueName());
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
@@ -135,7 +133,8 @@ public class ShowDetailFragment extends BaseFragment {
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getPhoneNumber());
             mTvEmail.setText(model.getWebSiteAddress());
-            Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             switch (type) {
                 case 0://演出机会
@@ -179,14 +178,13 @@ public class ShowDetailFragment extends BaseFragment {
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
                 tvFood.setEnabled(venueTypeName.contains("Food"));
                 tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
             } else {
-                tv21Plus.setEnabled(true);
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
             }
+            tv21Plus.setEnabled(Utils.is21Enabled(model.getVenueID(), model.getVenueTypeName(), model.getPerformDesc()));
             if (!TextUtils.isEmpty(model.getIsHaveCharges()) && model.getIsHaveCharges().equals("1")) {
                 tvCoverCharge.setEnabled(true);
             } else {

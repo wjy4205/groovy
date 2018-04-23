@@ -90,7 +90,7 @@
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="TUES"
+            android:text="TUE"
             android:textColor="#878787"
             android:textSize="@dimen/text_size_common" />
         <TextView
@@ -159,7 +159,7 @@
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="THUR"
+            android:text="THU"
             android:textColor="#878787"
             android:textSize="@dimen/text_size_common" />
         <TextView
@@ -227,7 +227,7 @@
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="STA"
+            android:text="SAT"
             android:textColor="#878787"
             android:textSize="@dimen/text_size_common" />
         <TextView

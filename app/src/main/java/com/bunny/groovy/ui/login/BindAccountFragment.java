@@ -56,10 +56,13 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
             case R.id.bind_account_tv_ok:
                 //输入了邮箱
                 if (!TextUtils.isEmpty(etEmail.getTrimmedString())) {
-                    if (PatternUtils.isValidEmail(etEmail.getTrimmedString()))
+                    if (PatternUtils.isValidEmail(etEmail.getTrimmedString())) {
+
                         //加入邮箱参数
-                        AppCacheData.getPerformerUserModel().setUserEmail(etEmail.getTrimmedString());
-                    else {
+                        if(AppCacheData.getPerformerUserModel()!=null){
+                            AppCacheData.getPerformerUserModel().setUserEmail(etEmail.getTrimmedString());
+                        }
+                    } else {
                         UIUtils.showBaseToast("Invalid Email.");
                         return;
                     }
@@ -118,10 +121,10 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
                 mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString(),userType);
                 break;
             case AppConstants.Code_Verify_Invalid:
-                UIUtils.showBaseToast("check code incorrect.");
+                UIUtils.showBaseToast("Check code incorrect.");
                 break;
             case AppConstants.Code_Send_ServerError:
-                UIUtils.showBaseToast("server error!");
+                UIUtils.showBaseToast("Server error!");
                 break;
         }
     }

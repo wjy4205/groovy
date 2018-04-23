@@ -133,11 +133,13 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
                 break;
         }
 
-        Glide.with(mContext).load(showModel.getHeadImg()).error(R.drawable.venue_instead_pic).into(holder.ivHeader);
+        Glide.with(mContext).load(showModel.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                .error(R.drawable.venue_default_photo).into(holder.ivHeader);
         holder.tvName.setText(showModel.getVenueName());
         holder.tvScore.setText(showModel.getVenueScore());
         holder.tvCreateTime.setText(showModel.getCreateDate());
         holder.tvPerformDate.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
+        holder.btEmail.setVisibility(TextUtils.isEmpty(showModel.getVenueEmail()) ? View.GONE : View.VISIBLE);
         //onclick
         holder.btDetails.setTag(position);
         holder.btConfirm.setTag(position);
@@ -177,7 +179,8 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
                 rejectInvite(showModel.getInviteID(), pos);
                 break;
             case R.id.item_notification_iv_email://发邮箱
-                Utils.sendEmail(mContext, showModel.getVenueEmail());
+                if (showModel != null)
+                    Utils.sendEmail(mContext, showModel.getVenueEmail());
                 break;
             case R.id.item_notification_iv_phone://打电话
                 Utils.CallPhone(mContext, showModel.getPhoneNumber());
@@ -216,11 +219,11 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("Success!");
+                            UIUtils.showBaseToast("Reject success.");
                             mList.get(position).setInvitationState("2");
                             notifyItemChanged(position);
                         } else {
-                            UIUtils.showBaseToast("Failed!");
+                            UIUtils.showBaseToast("Reject failed.");
                         }
                     }
                 });

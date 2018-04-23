@@ -98,6 +98,7 @@ public class InviteDetailsFragment extends BaseFragment {
 
     @OnClick(R.id.invite_iv_email)
     public void email() {
+        if (sModel!=null)
         Utils.sendEmail(mActivity, sModel.getVenueEmail());
     }
 
@@ -148,14 +149,14 @@ public class InviteDetailsFragment extends BaseFragment {
         super.initView(rootView);
         if (sModel != null) {
             tvDate.setText(sModel.getPerformDate());
-            tvVenueName1.setText(sModel.getVenueName());
+            tvVenueName1.setText("@ " + sModel.getVenueName());
             mTvVenueName_2.setText(sModel.getVenueName());
             mTvVenueScore.setText(Utils.getStar(sModel.getVenueScore()));
             mTvAddress.setText(sModel.getVenueAddress());
             mTvTel.setText(sModel.getPhoneNumber());
             mTvEmail.setText(sModel.getWebSiteAddress());
-            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_instead_pic)
-                    .error(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);
             llAction.setVisibility(View.GONE);
@@ -165,20 +166,24 @@ public class InviteDetailsFragment extends BaseFragment {
             } else if ("2".equals(invitationState)) {
                 mTvNotify.setText(R.string.rejected);
             } else {
-//                llAction.setVisibility(View.VISIBLE);
+                llAction.setVisibility(View.VISIBLE);
                 mTvNotify.setVisibility(View.GONE);
             }
 
             //设置演出厅提供服务
             String venueTypeName = sModel.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
                 tvFood.setEnabled(venueTypeName.contains("Food"));
                 tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
             } else {
-                tv21Plus.setEnabled(true);
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
+            }
+            tv21Plus.setEnabled(Utils.is21Enabled(sModel.getVenueID(), sModel.getVenueTypeName(), sModel.getPerformDesc()));
+            if (!TextUtils.isEmpty(sModel.getIsHaveCharges()) && sModel.getIsHaveCharges().equals("1")) {
+                tvCoverCharge.setEnabled(true);
+            } else {
+                tvCoverCharge.setEnabled(false);
             }
         }
     }

@@ -181,7 +181,8 @@ public class VenueInviteDetailsFragment extends BaseFragment {
             mTvDesDetail.setText(sModel.getInvitationDesc());
             mTvVenueName_2.setText(sModel.getUserName());
             mTvStars.setText(Utils.getStar(sModel.getStarLevel()));
-            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(sModel.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             mTvNotify.setVisibility(View.VISIBLE);
             llAction.setVisibility(View.GONE);
@@ -191,7 +192,7 @@ public class VenueInviteDetailsFragment extends BaseFragment {
             } else if ("2".equals(invitationState)) {
                 mTvNotify.setText(R.string.rejected);
             } else {
-                llAction.setVisibility(View.VISIBLE);
+//                llAction.setVisibility(View.VISIBLE);
                 mTvNotify.setVisibility(View.GONE);
             }
             if (!TextUtils.isEmpty(sModel.getMusicFile())) initMusicService();

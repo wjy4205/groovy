@@ -62,8 +62,8 @@ public class VenueOpportunityDetailAdapter extends RecyclerView.Adapter<VenueOpp
         } else {
             holder.imgSelect.setSelected(mPosition == position);
         }
-        Glide.with(mContext).load(showModel.getHeadImg()).placeholder(R.drawable.head)
-                .error(R.drawable.head).dontAnimate().into(holder.imgHead);
+        Glide.with(mContext).load(showModel.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(holder.imgHead);
 
         holder.layout.setTag(position);
         holder.layout.setOnClickListener(this);

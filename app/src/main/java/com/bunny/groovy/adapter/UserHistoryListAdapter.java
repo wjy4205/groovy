@@ -45,15 +45,12 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         PerformDetail model = mModelList.get(position);
         //表演者头像
         String headImg = model.getPerformerImg();
-        if (TextUtils.isEmpty(headImg)) {
-            holder.mIvHead.setImageResource(R.drawable.icon_default_photo);
-        } else {
-            Glide.with(mContext).load(headImg).placeholder(R.drawable.icon_default_photo).into(holder.mIvHead);
-        }
+        Glide.with(mContext).load(headImg).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(holder.mIvHead);
         //表演者姓名
         holder.mTvName.setText(model.getPerformerName());
         //评分
-        holder.mTvStar.setText(model.getPerformerStarLevel());
+        holder.mTvStar.setText(TextUtils.isEmpty(model.getPerformerStarLevel()) ? "0" : model.getPerformerStarLevel());
         //演出厅名字
         holder.mTvVenueName.setText("@" + model.getVenueName());
         //演出厅地址
@@ -94,6 +91,9 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
                     RewardFragment.launch(mContext, performDetail.getPerformerID(), true);
                     break;
                 case R.id.tv_review:
+                    if (TextUtils.isEmpty(performDetail.getPerformerID())) {
+                        return;
+                    }
                     UserReviewFragment.launch(mContext, performDetail.getPerformID());
                     break;
                 default:

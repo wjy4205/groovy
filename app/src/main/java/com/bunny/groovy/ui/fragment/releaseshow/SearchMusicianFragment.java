@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.MusicianListAdapter;
@@ -42,6 +43,8 @@ public class SearchMusicianFragment extends BaseFragment<SearchMusicianListPrese
     EditText etSearch;
     @Bind(R.id.venue_list)
     RecyclerView mRecyclerView;
+    @Bind(R.id.base_no_data)
+    TextView mEmptyView;
     private MusicianListAdapter mVenueListAdapter;
 
     public static void launchForResult(Activity activity, Bundle bundle, int requestCode) {
@@ -137,6 +140,7 @@ public class SearchMusicianFragment extends BaseFragment<SearchMusicianListPrese
 
     @Override
     public void setListView(List<PerformerUserModel> list) {
+        mEmptyView.setVisibility(list != null && list.size() > 0 ? View.GONE : View.VISIBLE);
         if (mVenueListAdapter == null) {
             mVenueListAdapter = new MusicianListAdapter(list, etSearch.getText().toString().trim());
             mRecyclerView.setAdapter(mVenueListAdapter);

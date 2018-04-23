@@ -8,6 +8,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IVenueOverView;
 import com.socks.library.KLog;
 
@@ -62,6 +63,7 @@ public class VenueOverviewPresenter extends BasePresenter<IVenueOverView> {
 
             @Override
             protected void onSuccess(PerformerUserModel response) {
+                Utils.initLoginData(mView.get(), response);
                 mView.setView(response);
             }
 
@@ -100,11 +102,14 @@ public class VenueOverviewPresenter extends BasePresenter<IVenueOverView> {
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("To promote successfully.");
+                            UIUtils.showBaseToast("This show has joined the promotion.");
+                            requestUserData();
                         } else {
                             UIUtils.showBaseToast(response.errorMsg);
                         }
                     }
                 });
     }
+
+
 }

@@ -40,23 +40,27 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
     //下一步
     @OnClick(R.id.tv_signup_next)
     void next() {
+        //检查账户
+        String account = etPhoneEmail.getTrimmedString();
+        if (TextUtils.isEmpty(account)) {
+            UIUtils.showBaseToast("Please input account!");
+            return;
+        }
         String pwd = etPassword.getTrimmedString();
         String pwdAgain = etPasswordAgain.getTrimmedString();
         if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
-            UIUtils.showBaseToast("请输入密码");
+            UIUtils.showBaseToast("Please input Password.");
+            return;
         } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("密码至少8位");
+            UIUtils.showBaseToast("Password length less than 8.");
+            return;
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("密码输入不一致");
-        } else {
-            //检查账户
-            String account = etPhoneEmail.getTrimmedString();
-            if (TextUtils.isEmpty(account)) {
-                UIUtils.showBaseToast("Please input account!");
-                return;
-            }
-            mPresenter.checkAccount(account, true);
+            UIUtils.showBaseToast("Password not same.");
+            return;
         }
+
+        mPresenter.checkAccount(account, true);
+
     }
 
     //登陆
@@ -101,10 +105,10 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
                 nextStep();
                 break;
             case AppConstants.Code_Send_InvalidPhone://发送失败
-                UIUtils.showBaseToast("phone number invalid.");
+                UIUtils.showBaseToast("Phone number invalid.");
                 break;
             case AppConstants.Code_Send_ServerError:
-                UIUtils.showBaseToast("server error!");
+                UIUtils.showBaseToast("Server error!");
                 break;
             default:
                 break;

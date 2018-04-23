@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.VenueListAdapter;
@@ -47,6 +48,8 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     @Bind(R.id.venue_list)
     RecyclerView mRecyclerView;
     private VenueListAdapter mVenueListAdapter;
+    @Bind(R.id.base_no_data)
+    TextView mEmptyView;
 
     public static void launchForResult(Activity activity, Bundle bundle, int requestCode) {
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SEARCH VENUE");
@@ -144,6 +147,7 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
 
     @Override
     public void setListView(List<VenueModel> list) {
+        mEmptyView.setVisibility(list != null && list.size() > 0 ? View.GONE : View.VISIBLE);
         if (mVenueListAdapter == null) {
             mVenueListAdapter = new VenueListAdapter(list, etSearch.getText().toString().trim());
             mRecyclerView.setAdapter(mVenueListAdapter);

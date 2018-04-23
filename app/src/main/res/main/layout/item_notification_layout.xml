@@ -29,7 +29,7 @@
             android:layout_width="160px"
             android:layout_height="160px"
             android:scaleType="centerCrop"
-            android:src="@drawable/head"/>
+            android:src="@drawable/musicion_default_photo"/>
 
         <LinearLayout
             android:layout_width="match_parent"

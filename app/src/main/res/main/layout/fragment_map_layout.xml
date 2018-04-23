@@ -7,13 +7,13 @@
         android:id="@+id/map_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
         android:background="@color/black">
         <LinearLayout
             android:id="@+id/map_ll_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/shape_textarea_bg"
@@ -29,7 +29,7 @@
                 android:src="@drawable/icon_search"
                 />
 
-            <TextView
+            <EditText
                 android:id="@+id/map_et_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -48,11 +48,24 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/opp_recyclerview"
+        <FrameLayout
+            android:id="@+id/recyclerview_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/opp_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/base_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="NO VENUES"
+                android:textColor="@color/common_grey"
+                android:textSize="@dimen/text_size_big" />
+        </FrameLayout>
 
         <RelativeLayout
             android:id="@+id/map_layout"
@@ -71,8 +84,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="110px"
-                android:layout_marginRight="16px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/icon_filter"/>
 
             <FrameLayout

@@ -1,13 +1,21 @@
 package com.bunny.groovy.presenter;
 
+import com.bunny.groovy.api.ApiRetrofit;
+import com.bunny.groovy.api.ApiService;
+import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.model.PerformerUserModel;
+import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IScheduleView;
 import com.bunny.groovy.weidget.ProgressHUD;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.socks.library.KLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +25,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/12/28.
@@ -88,5 +98,62 @@ public class SchedulePresenter extends BasePresenter<IScheduleView> {
 
             }
         });
+    }
+
+    /**
+     * 推广
+     */
+    public void spotlightPerform(String performID,String userID) {
+        ApiService apiService = ApiRetrofit.getInstance().getApiService();
+        apiService.spotlightPerform(performID, userID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResultResponse<Object>>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        UIUtils.showBaseToast(e.toString());
+                        KLog.d(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(ResultResponse<Object> response) {
+                        if (response.success) {
+                            requestUserData();
+                            UIUtils.showBaseToast("This show has joined the promotion.");
+
+                        } else {
+                            UIUtils.showBaseToast(response.errorMsg);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 获取用户数据
+     */
+    public void requestUserData() {
+        addSubscription(apiService.getPerformerInfo(),
+                new SubscriberCallBack<PerformerUserModel>(mView.get()) {
+                    @Override
+                    protected void onSuccess(PerformerUserModel response) {
+                        response.setUserType(String.valueOf(AppConstants.USER_TYPE_MUSICIAN));
+                        Utils.initLoginData(mView.get(), response);
+                    }
+
+                    @Override
+                    protected void onFailure(ResultResponse response) {
+
+                    }
+                });
     }
 }

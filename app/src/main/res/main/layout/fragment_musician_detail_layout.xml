@@ -50,7 +50,7 @@
                         android:layout_height="75dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="30dp"
-                        android:src="@drawable/head"
+                        android:src="@drawable/musicion_default_photo"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="1dp" />
 
@@ -112,6 +112,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="POP , ROCK"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="16dp"
                         android:textColor="@color/white"
                         android:textSize="14dp" />
 

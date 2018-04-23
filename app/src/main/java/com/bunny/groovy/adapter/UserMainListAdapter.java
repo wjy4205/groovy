@@ -45,15 +45,21 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         PerformDetail model = mModelList.get(position);
         //表演者头像
         String headImg = model.getPerformerImg();
-        if (TextUtils.isEmpty(headImg)) {
-            holder.mIvHead.setImageResource(R.drawable.icon_default_photo);
-        } else {
-            Glide.with(mContext).load(headImg).error(R.drawable.icon_default_photo).into(holder.mIvHead);
-        }
+        Glide.with(mContext).load(headImg).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(holder.mIvHead);
         //表演者姓名
         holder.mTvName.setText(model.getPerformerName());
         //评分
         holder.mTvStar.setText(Utils.getStar(model.getPerformerScore()));
+        //表演类型
+        if (!TextUtils.isEmpty(model.getPerformType())) {
+            String type[] = model.getPerformType().split(",");
+            if (type.length > 2) {
+                holder.mTvStyle.setText(type[0] + "," + type[1] + "...");
+            } else {
+                holder.mTvStyle.setText(model.getPerformType());
+            }
+        }
         //演出厅名字
         holder.mTvVenueName.setText("@" + model.getVenueName());
         //演出厅地址
@@ -61,9 +67,8 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //距离
-        holder.mTvDistance.setText(model.getDistance()+"mi");
-        //表演类型
-        holder.mTvStyle.setText(model.getPerformType());
+        holder.mTvDistance.setText(model.getDistance() + "mi");
+
         //点击效果
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);

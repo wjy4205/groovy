@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,9 +50,6 @@ public class UserShowDetailFragment extends BaseFragment {
 
     @Bind(R.id.show_detail_tv_performer_name)
     TextView mTvPerformerName;
-
-    @Bind(R.id.show_detail_tv_venue_name)
-    TextView mTvVenueName_1;
 
     @Bind(R.id.show_detail_tv_style)
     TextView mTvStyle;
@@ -108,6 +106,8 @@ public class UserShowDetailFragment extends BaseFragment {
     TextView mGoView;
     @Bind(R.id.detail_next)
     TextView mNextView;
+    @Bind(R.id.show_detail_tv_distance_layout)
+    LinearLayout mDistanceLinearLayout;
     private PerformDetailListAdapter mAdapter;
     private MusicianScheduleAdapter mMusicianAdapter;
 
@@ -157,7 +157,9 @@ public class UserShowDetailFragment extends BaseFragment {
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
     public static void launch(Context from, PerformDetail performDetail, boolean history) {
+        if(performDetail == null || TextUtils.isEmpty(performDetail.getPerformID())) return;
         model = performDetail;
+
         isHistory = history;
         Bundle bundle = new Bundle();
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SHOW DETAILS");
@@ -179,35 +181,44 @@ public class UserShowDetailFragment extends BaseFragment {
         super.initView(rootView);
         if (model != null) {
             mTvDate.setText(model.getPerformDate());
-            mTvPerformerName.setText(model.getPerformerName());
-            mTvVenueName_1.setText(model.getVenueName());
+            mTvPerformerName.setText(model.getPerformerName() + " @ " + model.getVenueName());
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
-            mTvDistance.setText((TextUtils.isEmpty(model.getDistance()) ? "--" : model.getDistance()) + "mi");
+            if(!TextUtils.isEmpty(model.getDistance())){
+                mTvDistance.setText(model.getDistance());
+            }else {
+                mDistanceLinearLayout.setVisibility(View.GONE);
+            }
             mTvDesc.setText(model.getPerformDesc());
             mTvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             mTvAddress.setText(model.getVenueAddress());
             mTvTel.setText(model.getVenueBookingPhone());
             mTvEmail.setText(model.getVenueWebSite());
             Glide.with(mActivity).load(model.getVenueImg())
-                    .error(R.drawable.venue_instead_pic)
+                    .placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             mTvPerformerName2.setText(model.getPerformerName());
             mTvPerformerType.setText(model.getPerformerSignature());
             mTvPerformerStars.setText(Utils.getStar(model.getPerformerScore()));
-            Glide.with(mActivity).load(model.getPerformerImg()).error(R.drawable.head)
+            Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
+                    .error(R.drawable.musicion_default_photo)
                     .into(mPerformerHead);
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
                 tvFood.setEnabled(venueTypeName.contains("Food"));
                 tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
             } else {
-                tv21Plus.setEnabled(true);
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
+            }
+            tv21Plus.setEnabled(Utils.is21Enabled(model.getVenueID(), model.getVenueTypeName(), model.getPerformDesc()));
+            if (!TextUtils.isEmpty(model.getIsHaveCharges()) && model.getIsHaveCharges().equals("1")) {
+                tvCoverCharge.setEnabled(true);
+            } else {
+                tvCoverCharge.setEnabled(false);
             }
             if (!TextUtils.isEmpty(model.getPerformerMusic())) initMusicService();
 

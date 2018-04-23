@@ -28,7 +28,7 @@
             android:id="@+id/item_notification_iv_header"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/head"
+            android:src="@drawable/musicion_default_photo"
             />
 
         <LinearLayout
@@ -60,7 +60,7 @@
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/list_star"
                     android:drawablePadding="4dp"
-                    android:text="0.0"
+                    android:text="0"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_small"/>
 

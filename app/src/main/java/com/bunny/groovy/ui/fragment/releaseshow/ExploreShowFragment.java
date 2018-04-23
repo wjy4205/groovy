@@ -5,41 +5,55 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.NearByOppListAdapter;
+import com.bunny.groovy.adapter.SearchListAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.divider.HLineDecoration;
+import com.bunny.groovy.model.LocationModel;
 import com.bunny.groovy.model.OpportunityModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.ExplorerOpptnyPresenter;
 import com.bunny.groovy.ui.fragment.apply.ApplyOppFragment;
 import com.bunny.groovy.ui.fragment.apply.FilterFragment;
+import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IExploreView;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -48,7 +62,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,6 +75,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -64,6 +84,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.socks.library.KLog;
 
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +101,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> implements
-        OnMapReadyCallback,
+        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, TextWatcher,
         IExploreView {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
     int FILTER_REQUEST_CODE = 1;
@@ -91,8 +112,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     private List<OpportunityModel> mOpportunityModelList = new ArrayList<>();
     private OpportunityModel mCurrentBean;//当前选中的演出机会bean
     private List<Marker> mMarkerList = new ArrayList<>();
-    private String distance = "500";//距离默认500mi
-    private String performDate;//表演时间
+    private String distance = "25";//距离默认25mi
     private Location mLastLocation;
     private boolean isMarkerShowing = false;
 
@@ -114,6 +134,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     TextView mTvDistance;
     @Bind(R.id.opp_recyclerview)
     RecyclerView mRecyclerView;
+    @Bind(R.id.base_no_data)
+    TextView mEmptyView;
+    @Bind(R.id.recyclerview_layout)
+    View mRecyclerViewLayout;
     private NearByOppListAdapter mAdapter;
     @Bind(R.id.map_layout)
     RelativeLayout mapLayout;
@@ -121,10 +145,64 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     TextView etSearch;
     @Bind(R.id.map_search_bar)
     View mapSearchBar;
-
+    @Bind(R.id.map_ll_search)
+    LinearLayout searchLayout;
+    private GoogleApiClient mGoogleApiClient;
     private LocationManager locationManager;
     private FusedLocationProviderClient mLocationClient;
     private LocationRequest mLocationRequest;
+
+    private String mKeyword;
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                if (!TextUtils.isEmpty(mKeyword) && mGoogleApiClient.isConnected()) {
+                    LatLngBounds bounds = null;
+                    if (mLastLocation == null) {
+                        bounds = new LatLngBounds(
+                                new LatLng(AppConstants.DEFAULT_LATITUDE - 0.02, AppConstants.DEFAULT_LONGITUDE - 0.02),
+                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
+                    } else {
+                        bounds = new LatLngBounds(
+                                new LatLng(mLastLocation.getLatitude() - 0.02, mLastLocation.getLongitude() - 0.02),
+                                new LatLng(mLastLocation.getLatitude() + 0.02, mLastLocation.getLongitude() + 0.02));
+                    }
+                    final PendingResult<AutocompletePredictionBuffer> results =
+                            Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, mKeyword,
+                                    bounds, new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE).build());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                AutocompletePredictionBuffer autocompletePredictions = results.await();
+                                if (autocompletePredictions != null) {
+                                    if (mLocationList != null) mLocationList.clear();
+                                    else mLocationList = new ArrayList<>();
+                                    for (AutocompletePrediction autocompletePrediction : autocompletePredictions) {
+                                        if (autocompletePrediction != null) {
+                                            LocationModel model = new LocationModel();
+                                            model.id = autocompletePrediction.getPlaceId();
+                                            model.name = autocompletePrediction.getPrimaryText(null);
+                                            model.summary = autocompletePrediction.getSecondaryText(null);
+                                            mLocationList.add(model);
+                                        }
+                                    }
+                                    mHandler.sendEmptyMessage(2);
+                                    autocompletePredictions.release();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            } else {
+                showLocationPopupWindow();
+            }
+        }
+    };
 
     @OnClick(R.id.marker_tv_venue_detail)
     public void venueDetail() {
@@ -140,7 +218,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
 
     @OnClick(R.id.marker_iv_email)
     public void email() {
-        Utils.sendEmail(mActivity, mCurrentBean.getVenueEmail());
+        if (mCurrentBean != null)
+            Utils.sendEmail(mActivity, mCurrentBean.getVenueEmail());
     }
 
     /**
@@ -159,7 +238,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         filter();
     }
 
-    @OnClick(R.id.map_ll_search)
+    /*@OnClick(R.id.map_ll_search)
     public void searchAddress() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -170,7 +249,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 跳转到条件页面
@@ -191,8 +270,13 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+        mGoogleApiClient.connect();
         mMarkerLayout.setVisibility(View.GONE);
-
+        etSearch.addTextChangedListener(this);
         //初始化map
         SupportMapFragment supportMapFragment = new SupportMapFragment();
         getChildFragmentManager().beginTransaction().add(R.id.map_container, supportMapFragment, "map_fragment").commit();
@@ -324,7 +408,8 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         mTvTime.setText(bean.getPerformTime());
         mTvDistance.setText(bean.getDistance() + "mi");
         mTvScore.setText(bean.getVenueScore());
-        Glide.with(mActivity).load(bean.getHeadImg()).error(R.drawable.venue_instead_pic).into(mHeadImg);
+        Glide.with(mActivity).load(bean.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                .error(R.drawable.venue_default_photo).into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index
@@ -332,13 +417,20 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
-        if (ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ||
+        if (ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(get(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mGoogleMap.setMyLocationEnabled(true);
         }
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 mActivity, R.raw.map_style));
-
+        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mLastLocation = mGoogleMap.getMyLocation();
+                updateCurrentLocation();
+                return false;
+            }
+        });
         //点击监听
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -375,7 +467,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 return false;
             }
         });
-//        updateLoc();
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         //设置当前位置
         updateCurrentLocation();
     }
@@ -384,14 +476,26 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
      * 设置当前位置
      */
     private void updateCurrentLocation() {
-        if (mLastLocation != null && mGoogleMap != null) {
+        if (mGoogleMap != null) {
             mGoogleMap.clear();
-            LatLng myLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mGoogleMap.addMarker(new MarkerOptions().position(myLoc)
-                    .title("Your Location")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
-                    .draggable(true));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
+            if (mLastLocation != null) {
+                LatLng myLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mGoogleMap.addMarker(new MarkerOptions().position(myLoc)
+                        .title("Your Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
+                        .draggable(true));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
+            } else {
+                //默认位置旧金山
+                LatLng defaultLoc = new LatLng(37.774930, -122.419416);
+                mGoogleMap.addMarker(new MarkerOptions().position(defaultLoc)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
+                        .draggable(true));
+
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLoc, 15));
+            }
+
+
         }
         //请求机会数据
         requestAroundList();
@@ -419,6 +523,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     checkLocationSettings();
+                } else {
+                    //设置默认位置
+                    //Latitude:37.774930 longitude:-122.419416
+                    UIUtils.showBaseToast("Positioning function is not available, please go to set to open the positioning.");
                 }
             }
         }
@@ -435,15 +543,15 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         //判断是list / map
         if (showMap && mGoogleMap != null) {
             mapLayout.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
+            mRecyclerViewLayout.setVisibility(View.GONE);
         } else {
             //列表显示
             mapLayout.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
+            mRecyclerViewLayout.setVisibility(View.VISIBLE);
         }
         //设置当前位置
         resetMap();
-        if (list!=null){
+        if (list != null) {
             //设置marker
             isMarkerShowing = false;
             mMarkerLayout.setVisibility(View.GONE);
@@ -458,6 +566,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 mMarkerList.add(marker);
             }
         }
+        mEmptyView.setVisibility(mOpportunityModelList !=null && mOpportunityModelList.size() > 0?View.GONE:View.VISIBLE);
         //列表数据
         if (mAdapter == null) {
             mAdapter = new NearByOppListAdapter(mOpportunityModelList);
@@ -476,7 +585,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         if (mGoogleMap != null) {
             mGoogleMap.clear();
             if (mLastLocation != null) {
-                KLog.a("当前位置：" + mLastLocation.getLatitude() + " -- " + mLastLocation.getLongitude());
                 LatLng myLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                 mGoogleMap.addMarker(new MarkerOptions().position(myLoc)
                         .title("Your Location")
@@ -484,6 +592,14 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                         .draggable(true));
 
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLoc, 15));
+            } else {
+                LatLng defaultLoc = new LatLng(37.774930, -122.419416);
+                mGoogleMap.addMarker(new MarkerOptions().position(defaultLoc)
+                        .title("Your Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_location))
+                        .draggable(true));
+
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLoc, 15));
             }
         }
     }
@@ -491,9 +607,9 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     public void applyResult(boolean success, String msg) {
         if (success) {
-            UIUtils.showBaseToast("申请成功！");
+            UIUtils.showBaseToast("Apply successfully.");
         } else {
-            UIUtils.showBaseToast("申请失败:" + msg);
+            UIUtils.showBaseToast("Apply failed.");
         }
     }
 
@@ -526,7 +642,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 mMenu.findItem(R.id.explore_menu_filter).setVisible(true);
                 mMenu.findItem(R.id.explore_menu_map).setVisible(true);
                 mMenu.findItem(R.id.explore_menu_list).setVisible(false);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecyclerViewLayout.setVisibility(View.VISIBLE);
                 mapLayout.setVisibility(View.GONE);
                 mapSearchBar.setVisibility(View.GONE);
                 return true;
@@ -536,7 +652,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 mMenu.findItem(R.id.explore_menu_list).setVisible(true);
                 mMenu.findItem(R.id.explore_menu_filter).setVisible(false);
                 mMenu.findItem(R.id.explore_menu_map).setVisible(false);
-                mRecyclerView.setVisibility(View.GONE);
+                mRecyclerViewLayout.setVisibility(View.GONE);
                 mapLayout.setVisibility(View.VISIBLE);
                 mapSearchBar.setVisibility(View.VISIBLE);
                 return true;
@@ -562,7 +678,6 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
 
             String performStartDate = data.getStringExtra("performStartDate");
             if (!TextUtils.isEmpty(performStartDate)) {
-                performDate = performStartDate;
                 map.put("performStartDate", performStartDate);
             }
 
@@ -617,5 +732,100 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     @Override
     protected int provideContentViewId() {
         return R.layout.fragment_map_layout;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mKeyword = s.toString();
+        mHandler.removeMessages(1);
+        mHandler.sendEmptyMessageDelayed(1, 500);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
+
+    private PopupWindow mPopupWindow;
+    private RecyclerView mPopupRecyclerView;
+    private SearchListAdapter mRecyclerViewAdapter;
+
+    /**
+     * 弹出选择号码的对话框
+     */
+    private void showLocationPopupWindow() {
+        if (mLocationList != null && mLocationList.size() > 0) {
+            initRecyclerView(mLocationList);
+            if (mPopupWindow == null) {
+                mPopupWindow = new PopupWindow(mPopupRecyclerView, searchLayout.getWidth() - 4, etSearch.getWidth() * 3 / 5);
+                mPopupWindow.setOutsideTouchable(true);   // 设置外部可以被点击
+                mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+                mPopupWindow.setFocusable(true);    // 使PopupWindow可以获得焦点
+            }
+            if (!mPopupWindow.isShowing())
+                // 显示在输入框的左下角
+                mPopupWindow.showAsDropDown(searchLayout, 2, 50);
+        } else {
+            UIUtils.showBaseToast("No search for content.");
+        }
+
+
+    }
+
+    /**
+     * 初始化RecyclerView，模仿ListView下拉列表的效果
+     */
+    private List<LocationModel> mLocationList;
+
+    private void initRecyclerView(List<LocationModel> list) {
+        if (mPopupRecyclerView == null) {
+            mPopupRecyclerView = new RecyclerView(getContext());
+            mPopupRecyclerView.setMinimumWidth(mapSearchBar.getWidth() - 4);
+            //设置布局管理器
+            mPopupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            //设置Adapter
+            mRecyclerViewAdapter = new SearchListAdapter(list);
+            mRecyclerViewAdapter.setKeyword(mKeyword);
+            mRecyclerViewAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    LocationModel model = mLocationList.get(position);
+                    Places.GeoDataApi.getPlaceById(mGoogleApiClient, model.id)
+                            .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                                @Override
+                                public void onResult(PlaceBuffer places) {
+                                    if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                                        final Place myPlace = places.get(0);
+                                        mLastLocation.setLatitude(myPlace.getLatLng().latitude);
+                                        mLastLocation.setLongitude(myPlace.getLatLng().longitude);
+                                        updateCurrentLocation();
+                                    }
+                                    places.release();
+                                }
+                            });
+                    mPopupWindow.dismiss();
+                }
+            });
+            mPopupRecyclerView.setAdapter(mRecyclerViewAdapter);
+        } else {
+            mRecyclerViewAdapter.setKeyword(mKeyword);
+            mRecyclerViewAdapter.refresh(list);
+        }
+
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
     }
 }

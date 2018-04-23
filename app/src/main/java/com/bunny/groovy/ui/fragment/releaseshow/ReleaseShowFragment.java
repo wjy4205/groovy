@@ -142,19 +142,19 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     public void release() {
         //判断空
         if (UIUtils.isEdittextEmpty(etVenue)) {
-            UIUtils.showBaseToast(mType == 2 ? "请选择表演者" : "请选择音乐厅");
+            UIUtils.showBaseToast(mType == 2 ? "Please search or input artist's name" : "Please choose venue.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etStyle)) {
-            UIUtils.showBaseToast("请选择演出类型");
+            UIUtils.showBaseToast("Please choose show genre.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etTime)) {
-            UIUtils.showBaseToast("请选择演出时间");
+            UIUtils.showBaseToast("Please choose show time.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etBio)) {
-            UIUtils.showBaseToast("请填写演出介绍");
+            UIUtils.showBaseToast("Please input show description.");
             return;
         }
         Map<String, String> map = new HashMap<>();
@@ -182,7 +182,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
                 map.put("venueLongitude", String.valueOf(mPlace.getLatLng().longitude));
                 map.put("venueLatitude", String.valueOf(mPlace.getLatLng().latitude));
             } else {
-                UIUtils.showBaseToast("音乐厅选取失败，请重新选择");
+                UIUtils.showBaseToast("Please Try again.");
                 return;
             }
             map.put("performerName", AppCacheData.getPerformerUserModel().getUserName());
@@ -256,7 +256,9 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         //set data
         mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
         loopviewFromTime.setItems(mTimeClockList);
+        loopviewFromTime.setCurrentPosition(24);
         loopviewEndTime.setItems(mTimeClockList);
+        loopviewEndTime.setCurrentPosition(28);
         //set listener
         timeView.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -278,7 +280,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("开始时间不能小于结束时间");
+                    UIUtils.showBaseToast("Start time must not be less than end time.");
                 } else {
                     closeTimePop();
                     //设置开始结束时间
@@ -286,7 +288,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
                     int endIndex = loopviewEndTime.getSelectedItem();
                     startTime = mRealTimeClockList.get(startIndex);
                     endTime = mRealTimeClockList.get(endIndex);
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + (startIndex < 24 ? "am" : "pm") + "-" + endTime + (endIndex < 24 ? "am" : "pm"));
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
                 }
             }
         });
@@ -389,7 +391,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today.");
                 } else {
                     closeDatePop();
                     //设置title
@@ -411,7 +413,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         if (model != null) {
             etVenue.setText(model.getVenueName());
             venueInfoLayout.setVisibility(View.VISIBLE);
-            Glide.with(get()).load(model.getHeadImg()).placeholder(R.drawable.head).dontAnimate().into(venueHeadImg);
+            Glide.with(get()).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo).dontAnimate().into(venueHeadImg);
             tvVenueName.setText(model.getVenueName());
             tvVenueScore.setText(Utils.getStar(model.getVenueScore()));
             tvVenueAddress.setText(model.getVenueAddress());
@@ -432,7 +435,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         if (model != null) {
             etVenue.setText(model.getStageName());
             venueInfoLayout.setVisibility(View.VISIBLE);
-            Glide.with(get()).load(model.getHeadImg()).into(venueHeadImg);
+            Glide.with(get()).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo).into(venueHeadImg);
             tvVenueName.setText(model.getStageName());
             tvVenueScore.setText(Utils.getStar(model.getStarLevel()));
             tvVenueAddress.setText(model.getPerformTypeName());

@@ -33,7 +33,7 @@ public class UserReviewFragment extends BaseFragment<UserMePresenter> implements
     EditText mEtContent;
     @Bind(R.id.star_grade)
     StarGradeView mStarView;
-    private static String performerId;
+    private static String performId;
 
     @OnClick(R.id.tv_submit)
     public void submit() {
@@ -47,13 +47,14 @@ public class UserReviewFragment extends BaseFragment<UserMePresenter> implements
             UIUtils.showBaseToast("Please select star");
             return;
         }
-        mPresenter.evaluatePerformer(performerId, String.valueOf(star), content);
+        mPresenter.evaluatePerformer(performId, String.valueOf(star), content);
     }
 
-    public static void launch(Activity from, String performerID) {
-        performerId = performerID;
+    public static void launch(Activity from, String performID) {
+        if(TextUtils.isEmpty(performID)) return;
+        performId = performID;
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "PERSONAL DATA");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "REVIEW MUSICIAN");
         FragmentContainerActivity.launch(from, UserReviewFragment.class, bundle);
     }
 

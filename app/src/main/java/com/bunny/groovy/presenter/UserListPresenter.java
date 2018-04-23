@@ -8,10 +8,7 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.model.ShowModel;
 import com.bunny.groovy.model.UserMainModel;
 import com.bunny.groovy.utils.AppCacheData;
-import com.bunny.groovy.utils.AppConstants;
-import com.bunny.groovy.utils.SharedPreferencesUtils;
-import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.view.IListPageView;
+import com.bunny.groovy.view.IUserMainView;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +23,8 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2017/12/21.
  */
 
-public class UserListPresenter extends BasePresenter<IListPageView> {
-    public UserListPresenter(IListPageView view) {
+public class UserListPresenter extends BasePresenter<IUserMainView> {
+    public UserListPresenter(IUserMainView view) {
         super(view);
     }
 

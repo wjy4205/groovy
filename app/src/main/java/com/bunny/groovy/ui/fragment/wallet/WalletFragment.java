@@ -68,16 +68,21 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
         }
     }
 
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        String account = AppCacheData.getPerformerUserModel().getPaypalAccount();
+
+        if(!TextUtils.isEmpty(account))
+        mWalletTvBindPaypal.setText("UPDATE PAYPAL");
+    }
+
     @OnClick({R.id.wallet_tv_recharge, R.id.wallet_tv_withdraw, R.id.wallet_tv_bind_paypal})
     public void onViewClicked(View view) {
         String paypalAccount = AppCacheData.getPerformerUserModel().getPaypalAccount();
         switch (view.getId()) {
             case R.id.wallet_tv_recharge:
                 //充值
-                if (TextUtils.isEmpty(paypalAccount)) {
-                    UIUtils.showBaseToast("Please bind PayPal.");
-                    return;
-                }
                 RechargeFragment.launch(mActivity);
                 break;
             case R.id.wallet_tv_withdraw:
@@ -90,11 +95,7 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
                 break;
             case R.id.wallet_tv_bind_paypal:
                 //绑定
-                if (!TextUtils.isEmpty(paypalAccount)) {
-                    UIUtils.showBaseToast("You have bound PayPal.");
-                    return;
-                }
-                BindPaypalFragment.launch(mActivity);
+                BindPaypalFragment.launch(mActivity, paypalAccount);
                 break;
         }
     }

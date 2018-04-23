@@ -45,21 +45,18 @@ public class UserRegister1Activity extends BaseActivity<SingUpPresenter> impleme
         String pwd = etPassword.getTrimmedString();
         String pwdAgain = etPasswordAgain.getTrimmedString();
         String name = etName.getTrimmedString();
-        if (TextUtils.isEmpty(name)) {
-            UIUtils.showBaseToast("Please input your name");
+        String account = etPhoneEmail.getTrimmedString();
+        if (TextUtils.isEmpty(account)) {
+            UIUtils.showBaseToast("Please input account.");
         } else if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
             UIUtils.showBaseToast("Please input your code");
         } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("密码至少8位");
+            UIUtils.showBaseToast("Password length less than 8.");
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("密码输入不一致");
+            UIUtils.showBaseToast("Password not same.");
+        } else if (TextUtils.isEmpty(name)) {
+            UIUtils.showBaseToast("Please input your name.");
         } else {
-            //检查账户
-            String account = etPhoneEmail.getTrimmedString();
-            if (TextUtils.isEmpty(account)) {
-                UIUtils.showBaseToast("Please input account!");
-                return;
-            }
             mPresenter.checkAccount(account, true);
         }
     }
@@ -112,10 +109,10 @@ public class UserRegister1Activity extends BaseActivity<SingUpPresenter> impleme
                 nextStep();
                 break;
             case AppConstants.Code_Send_InvalidPhone://发送失败
-                UIUtils.showBaseToast("手机号码不正确");
+                UIUtils.showBaseToast("Phone number invalid.");
                 break;
             case "5000"://网络错误
-                UIUtils.showBaseToast("服务器出错");
+                UIUtils.showBaseToast("Server wrong.");
                 break;
             default:
                 break;

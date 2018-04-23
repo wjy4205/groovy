@@ -162,15 +162,8 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
         mModel = model;
         tvName.setText(mModel.getUserName());
         tvStyle.setText(model.getVenueAddress());
-        if (TextUtils.isEmpty(model.getVenueScore()))
-            tvScore.setText("0.0");
-        else {
-            if (model.getVenueScore().contains(".")) {
-                model.setVenueScore(model.getVenueScore().substring(0, model.getVenueScore().indexOf(".") + 2));
-            }
-            tvScore.setText(model.getVenueScore());
-        }
-        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.icon_default_photo).into(ivHeader);
+        tvScore.setText(Utils.getStar(model.getVenueScore()));
+        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.user_default_photo).into(ivHeader);
     }
 
     @Override

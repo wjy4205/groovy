@@ -40,6 +40,7 @@ public class HistoryFragment extends BaseListFragment<ListPresenter, ShowHistory
 
     @Override
     public void setNodata() {
+        setEmptyViewText("NO SHOWS");
         setPageState(PageState.NODATA);
     }
 

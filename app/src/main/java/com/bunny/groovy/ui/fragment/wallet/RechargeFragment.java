@@ -3,11 +3,12 @@ package com.bunny.groovy.ui.fragment.wallet;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
@@ -16,6 +17,7 @@ import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,15 +31,14 @@ import butterknife.OnClick;
 
 public class RechargeFragment extends BaseFragment<RechargePresenter> implements IRechargeView {
     private static final int REQUEST_CODE = 888;
-    @Bind(R.id.recharge_tv_paypal_value)
-    TextView mRechargeTvPaypalValue;
-    @Bind(R.id.recharge_tv_paypal_max)
-    TextView mRechargeTvPaypalMax;
+//    @Bind(R.id.recharge_tv_paypal_value)
+//    TextView mRechargeTvPaypalValue;
+//    @Bind(R.id.recharge_tv_paypal_max)
+//    TextView mRechargeTvPaypalMax;
     @Bind(R.id.recharge_et_balance)
     EditText mRechargeEtBalance;
-    @Bind(R.id.tv_recharge)
-    TextView mTvRecharge;
-    private BraintreeFragment mBraintreeFragment;
+//    @Bind(R.id.tv_recharge)
+//    TextView mTvRecharge;
     private double mAmount;
 
     public static void launch(Activity from) {
@@ -49,7 +50,9 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        mRechargeTvPaypalValue.setText(AppCacheData.getPerformerUserModel().getPaypalAccount());
+//        mRechargeTvPaypalValue.setText(AppCacheData.getPerformerUserModel().getPaypalAccount());
+        mRechargeEtBalance.setHint("CHARGE AMOUNT");
+        Utils.controlEditText(mRechargeEtBalance,2);
     }
 
     @Override
@@ -98,12 +101,15 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
     @OnClick(R.id.tv_recharge)
     public void onViewClicked() {
         //判断金额
-        mAmount = Double.parseDouble(mRechargeEtBalance.getText().toString());
+        try{
+            mAmount = Double.parseDouble(mRechargeEtBalance.getText().toString());
+            if(mAmount > 999){
+                UIUtils.showBaseToast("Maximum amount: $1000");
+                return;
+            }
+        }catch (Exception e){}
         if (mAmount <= 0) {
             UIUtils.showBaseToast("Input incorrect.");
-            return;
-        } else if (mAmount > 999) {
-            UIUtils.showBaseToast("Recharge At most $999.");
             return;
         }
         mPresenter.getToken();

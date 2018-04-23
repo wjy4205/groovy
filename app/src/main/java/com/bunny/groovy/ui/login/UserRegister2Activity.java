@@ -2,9 +2,13 @@ package com.bunny.groovy.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.Html;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.presenter.SingUpPresenter;
@@ -38,12 +42,14 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
     private String mName;
     @Bind(R.id.signup_et_code)
     XEditText etCode;
+    @Bind(R.id.tv_user_protocol)
+    TextView mProtocolView;
 
     @OnClick(R.id.bt_sign_up)
     void signUp() {
         //验证码为空
         if (TextUtils.isEmpty(etCode.getTrimmedString())) {
-            UIUtils.showBaseToast("Code must not be null.");
+            UIUtils.showBaseToast("please input verification code.");
             return;
         }
 
@@ -52,6 +58,11 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
         } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
             mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount));
         }
+    }
+
+    @OnClick(R.id.tv_user_protocol)
+    void link() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ApiConstants.BASE_PROTOCOL_URL)));
     }
 
     /**
@@ -74,10 +85,10 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
                 mPresenter.registerUser(map);
                 break;
             case AppConstants.Code_Verify_Invalid:
-                UIUtils.showBaseToast("验证码不正确");
+                UIUtils.showBaseToast("Check code incorrect.");
                 break;
             case AppConstants.Code_Send_ServerError:
-                UIUtils.showBaseToast("服务器出错");
+                UIUtils.showBaseToast("Server wrong.");
                 break;
             default:
                 break;
@@ -93,6 +104,7 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
             mType = intent.getIntExtra(KEY_TYPE, 0);
             mPassword = intent.getStringExtra(KEY_PASSWORD);
             mName = intent.getStringExtra(KEY_NAME);
+            mProtocolView.setText(Html.fromHtml(getString(R.string.protocol_link)));
         } else finish();
 
     }
@@ -100,7 +112,18 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
     @Override
     public void initListener() {
         super.initListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         registerEventBus(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterEventBus(this);
     }
 
     @Override

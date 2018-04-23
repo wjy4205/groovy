@@ -131,5 +131,5 @@
         android:id="@+id/include_detail_iv_head"
         android:layout_width="300px"
         android:layout_height="300px"
-        android:src="@drawable/venue_instead_pic"/>
+        android:src="@drawable/venue_default_photo"/>
 </LinearLayout>

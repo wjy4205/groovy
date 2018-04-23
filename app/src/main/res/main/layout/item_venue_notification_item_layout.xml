@@ -13,7 +13,7 @@
             android:id="@+id/item_notification_iv_header"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/head" />
+            android:src="@drawable/musicion_default_photo" />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_notification_iv_header_dark"
             android:layout_width="30dp"

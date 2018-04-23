@@ -73,6 +73,7 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
     private static boolean isHistory;
 
     public static void launch(Activity from, String performerId, boolean history) {
+        if(TextUtils.isEmpty(performerId)) return;
         performerID = performerId;
         isHistory = history;
         Bundle bundle = new Bundle();
@@ -124,6 +125,7 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
             mRewardView1.setVisibility(View.VISIBLE);
             mRewardView.setVisibility(View.GONE);
         }
+        Utils.controlEditText(mEtReward,2);
     }
 
     @Override
@@ -133,9 +135,7 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
         if (isHistory) {
             HashMap<String, String> map = new HashMap<>();
             map.put("performerID", performerID);
-            if (AppConstants.USER_TYPE_NORMAL != userType) {
-                map.put("userID", AppCacheData.getPerformerUserModel().getUserID());
-            }
+            map.put("userID", AppCacheData.getPerformerUserModel().getUserID());
             mPresenter.getrewardPerformerRecord(map);
         }
     }
@@ -217,7 +217,7 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
     private void doRewardPayPal(String checkCode) {
         HashMap<String, String> map = new HashMap<>();
         map.put("payMethod", AppConstants.PAY_STYLE_PAYPAL);
-        map.put("checkCode", checkCode);
+        map.put("payment_method_nonce", checkCode);
         doReward(map);
     }
 

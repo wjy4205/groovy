@@ -52,7 +52,7 @@
                 android:id="@+id/marker_iv_head"
                 android:layout_width="130px"
                 android:layout_height="130px"
-                android:src="@drawable/head"/>
+                android:src="@drawable/musicion_default_photo"/>
 
             <FrameLayout
                 android:orientation="vertical"
@@ -70,8 +70,11 @@
                         android:id="@+id/marker_tv_venue_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxWidth="100dp"
                         android:textColor="@color/textAccent"
                         android:textSize="@dimen/text_size_common"
+                        android:lines="1"
+                        android:ellipsize="end"
                         android:text="The Gooota"/>
 
                     <TextView

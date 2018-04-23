@@ -3,6 +3,8 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +55,8 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
     TextView mDiscoverSortRating;
     @Bind(R.id.discover_sort_distance)
     TextView mDiscoverSortDistance;
+    @Bind(R.id.base_no_data)
+    TextView mEmptyView;
     private String mSortType = "1";
     private String mPerformType;
     private String mKeyWord;
@@ -60,6 +64,13 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
     private StyleGridAdapter mAdapter;
     private List<StyleModel> styleList;
     private DiscoverMusicianListAdapter mMusicianListAdapter;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mPresenter.searchPerformer(mKeyWord, mSortType, mPerformType);
+        }
+    };
 
     public static void launch(Activity activity) {
         Bundle bundle = new Bundle();
@@ -72,7 +83,7 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
         super.initView(rootView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
         mDiscoverSortRating.setActivated(true);
-        mPresenter.searchPerformer("", mSortType, mPerformType);
+        mPresenter.searchPerformer(mKeyWord, mSortType, mPerformType);
     }
 
     @Override
@@ -86,13 +97,14 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mKeyWord = s.toString();
-                    mPresenter.searchPerformer(mKeyWord, mSortType, mPerformType);
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                mKeyWord = s.toString().trim();
+                mHandler.removeMessages(1);
+                mHandler.sendEmptyMessageDelayed(1, 1000);
             }
         });
     }
@@ -163,6 +175,7 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
 
     @Override
     public void setListView(List<PerformerUserModel> list) {
+        mEmptyView.setVisibility(list != null && list.size() > 0 ? View.GONE : View.VISIBLE);
         if (mMusicianListAdapter == null) {
             mMusicianListAdapter = new DiscoverMusicianListAdapter(list, etSearch.getText().toString().trim());
             mRecyclerView.setAdapter(mMusicianListAdapter);

@@ -88,6 +88,7 @@ public class OpportunityDetailFragment extends BaseFragment {
     }
     @OnClick(R.id.opp_detail_iv_email)
     public void email() {
+        if (sParcelable!=null)
         Utils.sendEmail(mActivity, sParcelable.getVenueEmail());
     }
 
@@ -122,27 +123,26 @@ public class OpportunityDetailFragment extends BaseFragment {
     protected void loadData() {
         if (sParcelable != null) {
             mTvTime.setText(sParcelable.getPerformDate() + " " + sParcelable.getPerformTime());
-            mTvName.setText(sParcelable.getVenueName());
+            mTvName.setText("@ " + sParcelable.getVenueName());
             mTvDesc.setText(sParcelable.getPerformDesc());
             mTvVenueName.setText(sParcelable.getVenueName());
             mTvScore.setText(Utils.getStar(sParcelable.getVenueScore()));
             mTvAddress.setText(sParcelable.getVenueAddress());
             mTvTel.setText(sParcelable.getPhoneNumber());
             mTvEmail.setText(sParcelable.getWebSiteAddress());
-            Glide.with(mActivity).load(sParcelable.getHeadImg()).placeholder(R.drawable.venue_instead_pic).error(R.drawable.venue_instead_pic)
+            Glide.with(mActivity).load(sParcelable.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(mHead);
             //设置演出厅提供服务
             String venueTypeName = sParcelable.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {
-                tv21Plus.setEnabled(!venueTypeName.contains("21"));
                 tvFood.setEnabled(venueTypeName.contains("Food"));
                 tvAlcohol.setEnabled(venueTypeName.contains("Alcohol"));
             } else {
-                tv21Plus.setEnabled(true);
                 tvFood.setEnabled(false);
                 tvAlcohol.setEnabled(false);
             }
-
+            tv21Plus.setEnabled(Utils.is21Enabled(sParcelable.getVenueID(), sParcelable.getVenueTypeName(), sParcelable.getPerformDesc()));
             List<OpportunityModel.PerformerOpportunityBean> OpportunityList = sParcelable.getPerformerOpportunity();
             if (OpportunityList != null && OpportunityList.size() > 0) {
                 //set adapter

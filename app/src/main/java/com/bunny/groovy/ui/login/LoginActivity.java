@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     void login() {
         //拦截非法输入
         if (TextUtils.isEmpty(etPhoneOrEmail.getTrimmedString())) {
-            UIUtils.showBaseToast(getString(R.string.account_not_be_null));
+            UIUtils.showBaseToast("Please input email or phone.");
             return;
         }
         if (!(PatternUtils.isUSphonenumber(etPhoneOrEmail.getTrimmedString())
@@ -89,7 +89,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             return;
         }
         if (TextUtils.isEmpty(etPassword.getTrimmedString())) {
-            UIUtils.showBaseToast(getString(R.string.account_not_be_null));
+            UIUtils.showBaseToast("Please input password.");
             return;
         } else if (etPassword.getTrimmedString().length() < 8) {
             UIUtils.showBaseToast(getString(R.string.invalid_password));
@@ -102,9 +102,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.tv_forget_password)
     void forgetPassword() {
-        Intent intent = new Intent();
-        intent.setClass(this, ForgetActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, ForgetActivity.class).putExtra("userType", mUserType));
     }
 
     @OnClick(R.id.iv_login_google)
@@ -134,14 +132,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         super.initData();
         int type = getIntent().getIntExtra("switch_type", -1);
         if (type > -1) {
+            mUserType = type;
             String userID = AppCacheData.getPerformerUserModel().getUserID();
             String account = (String) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_ACCOUNT + userID, "");
             String password = (String) SharedPreferencesUtils.getUserParam(this, AppConstants.KEY_PASSWORD + userID, "");
             if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
-                mUserType = type;
                 etPhoneOrEmail.setText(account);
                 etPassword.setText(password);
                 login();
+                return;
             }
         } else {
             mUserType = getIntent().getIntExtra("type", AppConstants.USER_TYPE_NORMAL);
@@ -150,18 +149,23 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         if (BuildConfig.DEBUG) {
             switch (mUserType) {
                 case AppConstants.USER_TYPE_NORMAL:
-                    etPhoneOrEmail.setText("18601794067");
+                    etPhoneOrEmail.setText("18321320584");
                     break;
                 case AppConstants.USER_TYPE_MUSICIAN:
-                    etPhoneOrEmail.setText("13564521320");
+                    etPhoneOrEmail.setText("15021370938");
                     break;
                 case AppConstants.USER_TYPE_VENUE:
-                    etPhoneOrEmail.setText("13761434342");
-//                    etPhoneOrEmail.setText("15021370938");
-//                    etPhoneOrEmail.setText("13476027261");
+                    etPhoneOrEmail.setText("13476027261");
             }
             etPassword.setText("123456789");
         }
+        try {
+            String account = (String) SharedPreferencesUtils.getAppParam(this
+                    , AppConstants.KEY_HISTORY_ACCOUNT_BY_TYPE + mUserType, "");
+            if (!TextUtils.isEmpty(account)) etPhoneOrEmail.setText(account);
+        } catch (Exception e) {
+        }
+
 
     }
 

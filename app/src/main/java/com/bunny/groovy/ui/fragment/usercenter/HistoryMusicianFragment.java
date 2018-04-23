@@ -40,6 +40,7 @@ public class HistoryMusicianFragment extends BaseListFragment<VenueListPresenter
 
     @Override
     public void setNodata() {
+        setEmptyViewText("NO SHOWS");
         setPageState(PageState.NODATA);
     }
 

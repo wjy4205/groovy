@@ -13,6 +13,7 @@ import com.bunny.groovy.base.BasePresenter;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
+import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.SlidingTabLayout;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class NotificationFragment extends BaseFragment {
 
     @Override
     public void initData() {
-         mType = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
+         mType = Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType());
          if(mType == 2){
              //设置viewpager
              VenueNotify1ListFragment opp = new VenueNotify1ListFragment();

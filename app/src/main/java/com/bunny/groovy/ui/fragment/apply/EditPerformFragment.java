@@ -137,10 +137,11 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
             mSelectDate.setTime(DateUtils.getDate(sVenueShow.getPerformStartDate()));
             startTime = DateUtils.getDateHour(sVenueShow.getPerformStartDate());
             endTime = DateUtils.getDateHour(sVenueShow.getPerformEndDate());
+            int index = sVenueShow.getPerformDesc().length();
+            etDesc.setSelection(index);
+            tvNumber.setText(String.valueOf(index));
         }
-        int index = sVenueShow.getPerformDesc().length();
-        etDesc.setSelection(index);
-        tvNumber.setText(String.valueOf(index));
+
         etDesc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -200,7 +201,7 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
             @Override
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("开始时间不能小于结束时间");
+                    UIUtils.showBaseToast("Start time must not be less than end time.");
                 } else {
                     closeTimePop();
                     //设置开始结束时间
@@ -318,7 +319,7 @@ public class EditPerformFragment extends BaseFragment<ApplyVenuePresenter> imple
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today");
                 } else {
                     closeDatePop();
                     //设置title

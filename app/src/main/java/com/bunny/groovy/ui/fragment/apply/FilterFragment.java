@@ -68,7 +68,7 @@ public class FilterFragment extends BaseFragment {
     @OnClick(R.id.filter_tv_submit)
     public void submit() {
         //提交过滤条件
-        distance = String.valueOf(mSeekBar.getProgress() * 10);
+        distance = String.valueOf(mSeekBar.getProgress());
         Intent intent = new Intent();
         intent.putExtra("distance", distance);
         if (!TextUtils.isEmpty(mEtStartTime.getText().toString()))
@@ -97,7 +97,7 @@ public class FilterFragment extends BaseFragment {
         if (args != null) {
             int distance = args.getInt(KEY_DISTANCE, -1);
             if (distance > 0) {
-                mSeekBar.setProgress(distance / 10);
+                mSeekBar.setProgress(distance);
                 mTvDistance.setText(distance + "mi");
             }
 //            String time = args.getString(KEY_START_TIME);
@@ -107,8 +107,8 @@ public class FilterFragment extends BaseFragment {
 //                mEtStartTime.setText(DateUtils.getFormatTime(new Date()));
 //            }
         } else {
-            mSeekBar.setProgress(50);
-            mTvDistance.setText("500mi");
+            mSeekBar.setProgress(25);
+            mTvDistance.setText("25mi");
             mEtStartTime.setText(DateUtils.getFormatTime(new Date()));
         }
 
@@ -122,12 +122,12 @@ public class FilterFragment extends BaseFragment {
     @Override
     public void initListener() {
         super.initListener();
-        mSeekBar.setMax(100);
+        mSeekBar.setMax(50);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                distance = String.valueOf(progress * 10);
+                distance = String.valueOf(progress);
                 mTvDistance.setText(distance + "mi");
             }
 
@@ -234,7 +234,7 @@ public class FilterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today");
                 } else {
                     mEtStartTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()));
                     closeDatePop();

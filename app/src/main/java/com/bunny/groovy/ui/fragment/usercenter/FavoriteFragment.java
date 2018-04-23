@@ -40,6 +40,7 @@ public class FavoriteFragment extends BaseListFragment<ListPresenter, FavoriteLi
 
     @Override
     public void setNodata() {
+        setEmptyViewText("NO SHOWS");
         setPageState(PageState.NODATA);
     }
 

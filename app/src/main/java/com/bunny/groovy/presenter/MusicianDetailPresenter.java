@@ -150,6 +150,7 @@ public class MusicianDetailPresenter extends BasePresenter<IMusicianView> {
         model.setHeadImg(musicianDetailModel.headImg);
         model.setStarLevel(musicianDetailModel.starLevel);
         model.setUserName(musicianDetailModel.userName);
+        model.setStageName(musicianDetailModel.stageName);
         model.setPerformTypeName(musicianDetailModel.performTypeName);
         model.setPhoneNumber(musicianDetailModel.telephone);
         InviteMusicianFragment.launch(mView.get(), model);

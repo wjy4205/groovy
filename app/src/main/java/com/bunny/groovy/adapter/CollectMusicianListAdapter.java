@@ -45,8 +45,8 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
         PerformerUserModel musicianModel = mModelList.get(position);
         if (!TextUtils.isEmpty(musicianModel.getHeadImg())) {
             Glide.with(mContext).load(musicianModel.getHeadImg())
-                    .placeholder(R.drawable.icon_load_pic)
-                    .error(R.drawable.icon_load_pic).dontAnimate()
+                    .placeholder(R.drawable.musicion_default_photo)
+                    .error(R.drawable.musicion_default_photo).dontAnimate()
                     .into(holder.mIvHead);
         } else {
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);

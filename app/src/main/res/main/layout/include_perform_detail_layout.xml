@@ -21,7 +21,7 @@
                 android:id="@+id/performer_detail_iv_head"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/head"
+                android:src="@drawable/musicion_default_photo"
                 tools:civ_border_color="@color/white"
                 tools:civ_border_width="1dp"
                 android:layout_marginBottom="8dp"/>

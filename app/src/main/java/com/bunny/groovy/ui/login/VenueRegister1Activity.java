@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -116,6 +117,12 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     }
 
     @Override
+    public void initView() {
+        super.initView();
+        mAddressText.setText(Html.fromHtml(getString(R.string.protocol_link)));
+    }
+
+    @Override
     public void registerSuccess() {
 
     }
@@ -139,30 +146,32 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     //下一步
     @OnClick(R.id.tv_venue_next)
     void next() {
-        nextStep();
-//        String pwd = mPassword.getTrimmedString();
-//        String pwdAgain = mPasswordAgain.getTrimmedString();
-//        String publicName = mPublicName.getTrimmedString();
-//        String address = mAddress.getText().toString().trim();
-//        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
-//            UIUtils.showBaseToast("请输入密码");
-//        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-//            UIUtils.showBaseToast("密码至少8位");
-//        } else if (!pwd.equals(pwdAgain)) {
-//            UIUtils.showBaseToast("密码输入不一致");
-//        } else if (TextUtils.isEmpty(publicName)) {
-//            UIUtils.showBaseToast("名称不能为空");
-//        } else if (TextUtils.isEmpty(address)) {
-//            UIUtils.showBaseToast("地址不能为空");
-//        } else {
-//            //检查账户
-//            String account = mPhoneEmail.getTrimmedString();
-//            if (TextUtils.isEmpty(account)) {
-//                UIUtils.showBaseToast("Please input account!");
-//                return;
-//            }
-//            mPresenter.checkAccount(account, true);
-//        }
+        //检查账户
+        String account = mPhoneEmail.getTrimmedString();
+        String pwd = mPassword.getTrimmedString();
+        String pwdAgain = mPasswordAgain.getTrimmedString();
+        String publicName = mPublicName.getTrimmedString();
+        String address = mAddress.getText().toString().trim();
+        if (TextUtils.isEmpty(headImagePath)) {
+            UIUtils.showBaseToast("Please select your head image.");
+        }else if (TextUtils.isEmpty(account)) {
+            UIUtils.showBaseToast("Please input booking phone or email.");
+        }else if (TextUtils.isEmpty(pwd)) {
+            UIUtils.showBaseToast("Please input password.");
+        } else if (TextUtils.isEmpty(pwdAgain)) {
+            UIUtils.showBaseToast("Please input password again.");
+        }else if (pwd.length() < 8) {
+            UIUtils.showBaseToast("Password length less than 8.");
+        } else if (!pwd.equals(pwdAgain)) {
+            UIUtils.showBaseToast("Password not same.");
+        } else if (TextUtils.isEmpty(publicName)) {
+            UIUtils.showBaseToast("Please input venue name.");
+        } else if (TextUtils.isEmpty(address)) {
+            UIUtils.showBaseToast("Please select venue address.");
+        } else {
+//            nextStep();
+            mPresenter.checkAccount(account, true);
+        }
     }
 
     @OnClick(R.id.et_venue_address)
@@ -177,13 +186,14 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
             e.printStackTrace();
             UIUtils.showBaseToast("GooglePlay services not available!");
         }
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             mAddress.setText("中国上海市浦东新区");
             mLongitude = "121.6000";
             mLatitude = "31.2200";
             mPlaceId = "ChIJG9rV8LJ3sjURgCSirgwJAGM";
         }
     }
+
     //登陆
     @OnClick(R.id.tv_signup_login)
     void login() {
@@ -220,7 +230,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {
             setResult(AppConstants.ACTIVITY_FINISH);
             finish();
-        }else if (requestCode == PLACE_PICKER_REQUEST) {
+        } else if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 mAddress.setText(place.getAddress());
@@ -240,7 +250,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
                 nextStep();
                 break;
             case AppConstants.Code_Send_InvalidPhone://发送失败
-                UIUtils.showBaseToast("手机号码不正确");
+                UIUtils.showBaseToast("Phone number invalid.");
                 break;
             default:
             case "5000"://网络错误

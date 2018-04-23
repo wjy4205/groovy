@@ -64,7 +64,7 @@ public class VenueNotify2ListAdapter extends RecyclerView.Adapter<VenueNotify2Li
         String PerformState = showModel.getPerformState();//接口上说-演出状态（0-待验证1-已发布 2-已取消）
         if (!TextUtils.isEmpty(PerformState)) {
             holder.tvMsg.setVisibility(View.VISIBLE);
-            holder.tvMsg.setText(R.string.invite_you_for_a_show);
+            holder.tvMsg.setText("has schedule a show at your venue");
             switch (PerformState) {
                 case "1"://同意
                     holder.llActionLayout.setVisibility(View.GONE);
@@ -85,7 +85,8 @@ public class VenueNotify2ListAdapter extends RecyclerView.Adapter<VenueNotify2Li
             }
         }
 
-        Glide.with(mContext).load(showModel.getHeadImg()).error(R.drawable.venue_instead_pic).into(holder.ivHeader);
+        Glide.with(mContext).load(showModel.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(holder.ivHeader);
         holder.tvName.setText(showModel.getPerformerName());
         holder.tvScore.setText(Utils.getStar(showModel.getStarLevel()));
         holder.tvPerformType.setText(showModel.getPerformType());
@@ -190,11 +191,11 @@ public class VenueNotify2ListAdapter extends RecyclerView.Adapter<VenueNotify2Li
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("同意申请！");
+                            UIUtils.showBaseToast("Apply successfully.");
                             mList.get(position).setPerformState("1");
                             notifyItemChanged(position);
                         } else {
-                            UIUtils.showBaseToast("同意失败！请重试");
+                            UIUtils.showBaseToast("Apply failed.");
                         }
                     }
                 });

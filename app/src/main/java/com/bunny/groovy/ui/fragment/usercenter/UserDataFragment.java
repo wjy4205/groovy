@@ -94,13 +94,13 @@ public class UserDataFragment extends BaseFragment<UserMePresenter> implements I
             //判断空，拦截
             if (TextUtils.isEmpty(mEtName.getText().toString())) {
                 UIUtils.showBaseToast("Please input name.");
-                return super.onOptionsItemSelected(item);
+            } else {
+                HashMap<String, String> ma = new HashMap<>();
+                ma.put("userName", mEtName.getText().toString());
+                if (!TextUtils.isEmpty(headImagePath))
+                    ma.put("imgfile", headImagePath);
+                mPresenter.updateUserInfo(ma);
             }
-            HashMap<String, String> ma = new HashMap<>();
-            ma.put("userName", mEtName.getText().toString());
-            if (!TextUtils.isEmpty(headImagePath))
-                ma.put("imgfile", headImagePath);
-            mPresenter.updateUserInfo(ma);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,7 +114,7 @@ public class UserDataFragment extends BaseFragment<UserMePresenter> implements I
     public void setUserView(PerformerUserModel model) {
         mEtName.setText(model.getUserName());
         Glide.with(getActivity()).load(model.getHeadImg())
-                .placeholder(R.drawable.head).into(new SimpleTarget<GlideDrawable>() {
+                .placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(new SimpleTarget<GlideDrawable>() {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 mHeadView.setImageDrawable(resource.getCurrent());

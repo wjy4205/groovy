@@ -142,7 +142,7 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     }
 
     @OnClick(R.id.me_tv_switch_to)
-    public void switchTo(){
+    public void switchTo() {
         startActivity(new Intent(getActivity(), LoginActivity.class).putExtra("switch_type", AppConstants.USER_TYPE_NORMAL));
         getActivity().finish();
     }
@@ -205,10 +205,9 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         mModel = model;
         tvName.setText(mModel.getUserName());
         tvStyle.setText(model.getPerformTypeName());
-        if (TextUtils.isEmpty(model.getStarLevel()))
-            tvScore.setText("0.0");
-        else tvScore.setText(model.getStarLevel());
-        Glide.with(getActivity()).load(model.getHeadImg()).into(ivHeader);
+        tvScore.setText(Utils.getStar(model.getStarLevel()));
+        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).into(ivHeader);
         //prepare music state
         isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
     }

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bunny.groovy.R;
 
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/12/21.
  */
 
-abstract public class BaseListFragment<T extends BasePresenter,A extends RecyclerView.Adapter> extends LazyLoadFragment {
+abstract public class BaseListFragment<T extends BasePresenter, A extends RecyclerView.Adapter> extends LazyLoadFragment {
     protected T mPresenter;
     private View rootView;
     protected BaseActivity mActivity;
@@ -32,7 +33,7 @@ abstract public class BaseListFragment<T extends BasePresenter,A extends Recycle
     View mNetErrorView;
 
     @Bind(R.id.base_no_data)
-    View mEmptyView;
+    TextView mEmptyView;
 
     @OnClick(R.id.base_net_error)
     public void loadAgain() {
@@ -44,6 +45,7 @@ abstract public class BaseListFragment<T extends BasePresenter,A extends Recycle
     public enum PageState {
         NORMAL, NODATA, ERROR
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,15 @@ abstract public class BaseListFragment<T extends BasePresenter,A extends Recycle
                 mRecyclerView.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    /**
+     * 设置页面状态
+     *
+     * @param text
+     */
+    protected void setEmptyViewText(String text) {
+        mEmptyView.setText(text);
     }
 
     /**

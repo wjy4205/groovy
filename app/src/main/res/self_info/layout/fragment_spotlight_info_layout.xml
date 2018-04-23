@@ -36,5 +36,5 @@
         android:id="@+id/tv_spotlight"
         style="@style/role_selected_text_style"
         android:layout_marginTop="80px"
-        android:text="Get Credits" />
+        android:text="GET CREDITS" />
 </LinearLayout>

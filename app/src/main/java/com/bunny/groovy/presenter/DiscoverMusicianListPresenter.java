@@ -52,7 +52,6 @@ public class DiscoverMusicianListPresenter extends BasePresenter<IDiscoverSearch
         addSubscription(apiService.getSearchPerformerList(keyword, orderType, performType), new SubscriberCallBack<List<PerformerUserModel>>(mView.get()) {
             @Override
             protected void onSuccess(List<PerformerUserModel> response) {
-                if (response != null && response.size() > 0)
                     mView.setListView(response);
             }
 
@@ -63,7 +62,7 @@ public class DiscoverMusicianListPresenter extends BasePresenter<IDiscoverSearch
 
             @Override
             protected boolean isShowProgress() {
-                return true;
+                return false;
             }
         });
     }

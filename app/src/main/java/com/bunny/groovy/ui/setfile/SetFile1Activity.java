@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.widget.ViewUtils;
 import android.text.TextUtils;
 
 import com.bunny.groovy.R;
@@ -13,6 +12,7 @@ import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.SetFilePresenter;
+import com.bunny.groovy.ui.RoleChooseActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
@@ -21,6 +21,8 @@ import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ISetFileView;
 import com.xw.repo.XEditText;
 import com.zfdang.multiple_images_selector.SelectorSettings;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     XEditText etFullName;
     @Bind(R.id.perfect_info_et_artistname)
     XEditText etArtistName;
+    @Bind(R.id.perfect_info_et_phone)
+    XEditText etPhone;
     @Bind(R.id.perfect_info_et_zipcode)
     XEditText etZipcode;
     @Bind(R.id.perfect_info_et_website)
@@ -53,7 +57,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     CircleImageView headView;
 
     @OnClick(R.id.zipcode_info)
-    void showZipCodeInfo(){
+    void showZipCodeInfo() {
         UIUtils.showBaseToast("Set the zip code for current location so that the performance hall can find you.");
     }
 
@@ -75,6 +79,26 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
         });
     }
 
+    @OnClick(R.id.iv_logout)
+    void logout() {
+        Utils.clearLoginData(get());
+        //跳转到角色选择页面
+        RoleChooseActivity.launch(this);
+//        //退出setting页面
+        finish();
+//        //退出MainActivity
+        EventBus.getDefault().post(AppConstants.EVENT_LOGIN_OUT);
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        try {
+            etFullName.setText(AppCacheData.getPerformerUserModel().getUserName());
+            etPhone.setText(AppCacheData.getPerformerUserModel().getTelephone());
+        }catch (Exception e){}
+    }
+
     @OnClick(R.id.perfect_info_tv_login)
     void login() {
         LoginActivity.launch(this, AppConstants.USER_TYPE_MUSICIAN);
@@ -83,26 +107,30 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     @OnClick(R.id.perfect_info_tv_next)
     void next() {
         //拦截
+        if (TextUtils.isEmpty(headImagePath)) {
+            UIUtils.showBaseToast("Please select your head image.");
+            return;
+        }
         if (TextUtils.isEmpty(etFullName.getTrimmedString())) {
-            UIUtils.showBaseToast("请输入名字");
+            UIUtils.showBaseToast("Please input name.");
             return;
         }
         if (TextUtils.isEmpty(etArtistName.getTrimmedString())) {
-            UIUtils.showBaseToast("请输入昵称");
+            UIUtils.showBaseToast("Please input stage name.");
             return;
         }
         if (TextUtils.isEmpty(etZipcode.getTrimmedString())) {
-            UIUtils.showBaseToast("请输入邮编");
+            UIUtils.showBaseToast("Please input zip code.");
             return;
         }
         if (TextUtils.isEmpty(etWebsite.getTrimmedString())) {
-            UIUtils.showBaseToast("请输入网站");
+            UIUtils.showBaseToast("Please input website.");
             return;
         }
         //保存数据
         AppCacheData.getFileMap().put("userName", etFullName.getTrimmedString());
         AppCacheData.getFileMap().put("zipCode", etZipcode.getTrimmedString());
-        AppCacheData.getFileMap().put("phoneNumber", AppCacheData.getPerformerUserModel().getTelephone());
+        AppCacheData.getFileMap().put("phoneNumber", etPhone.getTrimmedString());
         AppCacheData.getFileMap().put("stageName", etArtistName.getTrimmedString());
         AppCacheData.getFileMap().put("webSiteAddress", etWebsite.getTrimmedString());
         AppCacheData.getFileMap().put("imgfile", headImagePath);

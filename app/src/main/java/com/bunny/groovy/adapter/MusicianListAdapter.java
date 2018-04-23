@@ -45,17 +45,13 @@ public class MusicianListAdapter extends RecyclerView.Adapter<MusicianListAdapte
     @Override
     public void onBindViewHolder(MusicianHolder holder, int position) {
         PerformerUserModel performerModel = mModelList.get(position);
-        if (!TextUtils.isEmpty(performerModel.getHeadImg())) {
-            Glide.with(mContext).load(performerModel.getHeadImg())
-                    .placeholder(R.drawable.head)
-                    .error(R.drawable.head).dontAnimate()
-                    .into(holder.mIvHead);
-        } else {
-            holder.mIvHead.setImageResource(R.drawable.head);
-        }
+        Glide.with(mContext).load(performerModel.getHeadImg())
+                .placeholder(R.drawable.musicion_default_photo)
+                .error(R.drawable.musicion_default_photo).dontAnimate()
+                .into(holder.mIvHead);
         holder.mTvName.setTextHeighLight(performerModel.getStageName(), keyword);
         holder.mTvStar.setText(Utils.getStar(performerModel.getStarLevel()));
-        holder.mTvPhone.setTextHeighLight(performerModel.getTelephone(),keyword);
+        holder.mTvPhone.setTextHeighLight(performerModel.getTelephone(), keyword);
         holder.mTvType.setText(performerModel.getPerformTypeName());
 
         holder.itemView.setTag(position);

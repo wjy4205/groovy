@@ -47,8 +47,8 @@ public class VenueListAdapter extends RecyclerView.Adapter<VenueListAdapter.Venu
         VenueModel venueModel = mModelList.get(position);
         if (!TextUtils.isEmpty(venueModel.getHeadImg())) {
             Glide.with(mContext).load(venueModel.getHeadImg())
-                    .placeholder(R.drawable.icon_load_pic)
-                    .error(R.drawable.icon_load_pic)
+                    .placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(holder.mIvHead);
         } else {
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);

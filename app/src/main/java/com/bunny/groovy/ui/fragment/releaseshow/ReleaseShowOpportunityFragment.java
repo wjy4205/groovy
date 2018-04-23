@@ -73,11 +73,11 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
     public void release() {
         //判断空
         if (UIUtils.isEdittextEmpty(etTime)) {
-            UIUtils.showBaseToast("请选择演出机会时间");
+            UIUtils.showBaseToast("Please choose show time.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etBio)) {
-            UIUtils.showBaseToast("请填写内容");
+            UIUtils.showBaseToast("Please input message.");
             return;
         }
         mPresenter.releaseShow(DateUtils.getFormatTime(mSelectDate.getTime(), startTime),
@@ -125,6 +125,8 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
         mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
         loopviewFromTime.setItems(mTimeClockList);
         loopviewEndTime.setItems(mTimeClockList);
+        loopviewFromTime.setCurrentPosition(24);
+        loopviewEndTime.setCurrentPosition(28);
         //set listener
         timeView.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -146,13 +148,15 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
             @Override
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("开始时间不能小于结束时间");
+                    UIUtils.showBaseToast("Start time must not be less than end time.");
                 } else {
                     closeTimePop();
                     //设置开始结束时间
                     startTime = mRealTimeClockList.get(loopviewFromTime.getSelectedItem());
                     endTime = mRealTimeClockList.get(loopviewEndTime.getSelectedItem());
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) +
+                            (loopviewFromTime.getSelectedItem() < 24 ? "am" : "pm")
+                            + "-" + endTime + (loopviewEndTime.getSelectedItem() < 24 ? "am" : "pm"));
                 }
             }
         });
@@ -255,7 +259,7 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
             @Override
             public void onClick(View v) {
                 if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
+                    UIUtils.showBaseToast("The selection date is less than today");
                 } else {
                     closeDatePop();
                     //设置title

@@ -47,8 +47,8 @@ public class ShowHistoryAdapter extends RecyclerView.Adapter<ShowHistoryAdapter.
     public void onBindViewHolder(HisHolder holder, int position) {
         final ShowModel bean = mList.get(position);
         Glide.with(mContext).load(bean.getHeadImg())
-                .placeholder(R.drawable.venue_instead_pic)
-                .error(R.drawable.venue_instead_pic)
+                .placeholder(R.drawable.venue_default_photo)
+                .error(R.drawable.venue_default_photo)
                 .into(holder.mIvHead);
         holder.mTvStar.setText(bean.getVenueScore());
         holder.mTvName.setText(bean.getVenueName());
@@ -59,7 +59,7 @@ public class ShowHistoryAdapter extends RecyclerView.Adapter<ShowHistoryAdapter.
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN,bean);
+                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, bean);
                 ShowDetailFragment.launch(mContext, bundle);
             }
         });

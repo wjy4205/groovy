@@ -49,14 +49,10 @@ public class NearByOppListAdapter extends RecyclerView.Adapter<NearByOppListAdap
     @Override
     public void onBindViewHolder(NearByHolder holder, int position) {
         OpportunityModel model = mModelList.get(position);
-        if (!TextUtils.isEmpty(model.getHeadImg())) {
-            Glide.with(mContext).load(model.getHeadImg())
-                    .placeholder(R.drawable.venue_instead_pic)
-                    .error(R.drawable.venue_instead_pic)
-                    .into(holder.mIvHead);
-        } else {
-            holder.mIvHead.setImageResource(R.drawable.venue_instead_pic);
-        }
+        Glide.with(mContext).load(model.getHeadImg())
+                .placeholder(R.drawable.venue_default_photo)
+                .error(R.drawable.venue_default_photo)
+                .into(holder.mIvHead);
         holder.mTvName.setText(model.getVenueName());
         holder.mTvStar.setText(model.getVenueScore());
         holder.mTvAddress.setText(model.getVenueAddress());
@@ -95,7 +91,8 @@ public class NearByOppListAdapter extends RecyclerView.Adapter<NearByOppListAdap
                 Utils.CallPhone(mContext, model.getPhoneNumber());
                 break;
             case R.id.item_nearby_iv_email:
-                Utils.sendEmail(mContext, model.getVenueEmail());
+                if (model != null)
+                    Utils.sendEmail(mContext, model.getVenueEmail());
                 break;
             case R.id.item_nearby_tv_apply:
                 //申请

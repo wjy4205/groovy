@@ -3,11 +3,13 @@ package com.bunny.groovy.ui.fragment;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.ScheduleAdapter;
+import com.bunny.groovy.adapter.ScheduleVenueAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
@@ -32,7 +34,7 @@ import butterknife.OnClick;
  * Author: Created by bayin on 2017/12/15.
  ****************************************/
 
-public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements IScheduleView {
+public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements IScheduleView, ScheduleVenueAdapter.OnSpotlightListener {
 
     private ScheduleModel mScheduleModel;
     private Calendar todayCal = Calendar.getInstance();
@@ -161,7 +163,7 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
     private void releaseShow(int i) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(monDate);
-        instance.add(Calendar.DATE,i-1);
+        instance.add(Calendar.DATE, i - 1);
         ReleaseShowFragment.launch(mActivity);
     }
 
@@ -171,12 +173,16 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
      * @param i 周几
      */
     private void setWeekListData(int i) {
-        mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_weeks[i - 1]));
+
         if (mScheduleModel.getShowModelList(String.valueOf(i)) != null && mScheduleModel.getShowModelList(String.valueOf(i)).size() > 0) {
+            mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_FULL_WEEKS[i - 1]));
+            mTvListTitle.setGravity(Gravity.LEFT);
             mAdapter.refresh(mScheduleModel.getShowModelList(String.valueOf(i)));
             mRcyvlerview.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
+            mTvListTitle.setGravity(Gravity.CENTER);
+            mTvListTitle.setText(String.format(listTitleClearStr, DateUtils.FULL_WEEKS[i - 1]));
             mRcyvlerview.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
@@ -189,11 +195,12 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
     private String sameMonthTimeStr = "%s %s-%s";
     private String diffMonthTimeStr = "%s %s-%s %s";
     private String listTitleStr = "SHOW LIST ON %s";
+    private String listTitleClearStr = "YOUR SCHEDULE'S CLEAR ON %s!";
 
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        mMoveLayout.setLoaction(UIUtils.getScreenHeight() / 2);
+        mMoveLayout.setLoaction(UIUtils.getScreenHeight() * 2 / 5);
         //setTime
         List<Date> weekStartEndDate = DateUtils.getWeekStartEndDate();
         monDate = weekStartEndDate.get(0);
@@ -265,7 +272,7 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
             }
         }
         //title
-        mTvListTitle.setText(String.format(listTitleStr, DateUtils.getDayOfWeek(todayCal)));
+        mTvListTitle.setText(String.format(listTitleStr, DateUtils.CN_FULL_WEEKS[todayCal.get(Calendar.DAY_OF_WEEK) - 1]));
 
         //list
         int day = todayCal.get(Calendar.DAY_OF_WEEK);
@@ -277,9 +284,12 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         }
 
         if (showModelList != null && showModelList.size() > 0) {
+            mTvListTitle.setGravity(Gravity.LEFT);
             mRcyvlerview.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
+            mTvListTitle.setGravity(Gravity.CENTER);
+            mTvListTitle.setText(String.format(listTitleClearStr, DateUtils.FULL_WEEKS[day - 1]));
             mRcyvlerview.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
@@ -290,5 +300,11 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
         } else {
             mAdapter.refresh(showModelList);
         }
+        mAdapter.setOnSpotlightListener(this);
+    }
+
+    @Override
+    public void spotlight(String performID, String userID) {
+        mPresenter.spotlightPerform(performID, userID);
     }
 }

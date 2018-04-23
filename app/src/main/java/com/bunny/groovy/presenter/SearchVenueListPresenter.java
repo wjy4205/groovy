@@ -30,8 +30,7 @@ public class SearchVenueListPresenter extends BasePresenter<ISearchVenueList> {
         addSubscription(apiService.getVenueList(keyword), new SubscriberCallBack<List<VenueModel>>(mView.get()) {
             @Override
             protected void onSuccess(List<VenueModel> response) {
-                if (response != null && response.size() > 0)
-                    mView.setListView(response);
+                mView.setListView(response);
             }
 
             @Override

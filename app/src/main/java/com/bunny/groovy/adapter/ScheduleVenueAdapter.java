@@ -1,9 +1,11 @@
 package com.bunny.groovy.adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.ui.fragment.apply.EditPerformFragment;
 import com.bunny.groovy.ui.fragment.releaseshow.VenueShowDetailFragment;
 import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.weidget.HeightLightTextView;
@@ -67,12 +70,13 @@ public class ScheduleVenueAdapter extends RecyclerView.Adapter<ScheduleVenueAdap
                 holder.tvStatus.setText("Confirmed");
                 break;
             case "2"://已取消
+                holder.ivEdit.setVisibility(View.GONE);
                 holder.tvStatus.setText("Rejected");
                 break;
         }
         Glide.with(mContext).load(bean.getPerformerImg())
-                .placeholder(R.drawable.head)
-                .error(R.drawable.head).dontAnimate()
+                .placeholder(R.drawable.venue_default_photo)
+                .error(R.drawable.venue_default_photo).dontAnimate()
                 .into(holder.mIvHead);
         holder.mTvStar.setText(Utils.getStar(bean.getPerformerScore()));
         holder.mTvName.setText(bean.getPerformerName());
@@ -118,12 +122,28 @@ public class ScheduleVenueAdapter extends RecyclerView.Adapter<ScheduleVenueAdap
                     @Override
                     public void onClick(View v) {
                         //推广
-                        if (TextUtils.equals(bean.getIsHaveCharges(), "1")) {//已收费
+                        int count = Utils.parseInt(AppCacheData.getPerformerUserModel().getPackageCount());
+                        if (count > 0) {//有推广包
                             if (mOnSpotlightListener != null) {
-                                mOnSpotlightListener.spotlight(bean.getPerformID(), bean.getVenueID());
+                                mOnSpotlightListener.spotlight(bean.getPerformID(), AppCacheData.getPerformerUserModel().getUserID());
                             }
                         } else {
-                            SpotlightFragment.launch(mContext);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setTitle("No promotional package");
+                            builder.setMessage("Whether to buy promotional package?");
+                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SpotlightFragment.launch(mContext);
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                         }
                         popupWindow.dismiss();
                     }

@@ -45,8 +45,8 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
         VenueModel model = mModelList.get(position);
         if (!TextUtils.isEmpty(model.getHeadImg())) {
             Glide.with(mContext).load(model.getHeadImg())
-                    .placeholder(R.drawable.icon_load_pic)
-                    .error(R.drawable.icon_load_pic)
+                    .placeholder(R.drawable.venue_default_photo)
+                    .error(R.drawable.venue_default_photo)
                     .into(holder.mIvHead);
         } else {
             holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
@@ -81,22 +81,23 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
     @Override
     public void onClick(View v) {
         int pos = (int) v.getTag();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.item_favorite_iv_phone:
-                Utils.CallPhone(mContext,mModelList.get(pos).getPhoneNumber());
+                Utils.CallPhone(mContext, mModelList.get(pos).getPhoneNumber());
                 break;
             case R.id.item_favorite_iv_email:
-                Utils.sendEmail(mContext,mModelList.get(pos).getVenueEmail());
+                if (mModelList != null && mModelList.get(pos) != null)
+                    Utils.sendEmail(mContext, mModelList.get(pos).getVenueEmail());
                 break;
             case R.id.item_favorite_tv_apply:
                 Bundle arg = new Bundle();
-                arg.putParcelable(ApplyVenueFragment.KEY_VENUE_BEAN,mModelList.get(pos));
-                ApplyVenueFragment.launch(mContext,arg);
+                arg.putParcelable(ApplyVenueFragment.KEY_VENUE_BEAN, mModelList.get(pos));
+                ApplyVenueFragment.launch(mContext, arg);
                 break;
             default:
                 Bundle bundle = new Bundle();
-                bundle.putString(VenueDetailFragment.KEY_VENUE_ID,mModelList.get(pos).getVenueID());
-                VenueDetailFragment.launch(mContext,bundle);
+                bundle.putString(VenueDetailFragment.KEY_VENUE_ID, mModelList.get(pos).getVenueID());
+                VenueDetailFragment.launch(mContext, bundle);
                 break;
         }
     }

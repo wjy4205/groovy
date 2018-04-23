@@ -71,10 +71,10 @@ public class VenueNotify3ListAdapter extends RecyclerView.Adapter<VenueNotify3Li
                     break;
                 case "0"://未处理
                 default:
-                    holder.tvMsg.setText("verification");
+                    holder.tvMsg.setText("confirming invitation");
                     break;
             }
-        Glide.with(mContext).load(showModel.getHeadImg()).error(R.drawable.venue_instead_pic).into(holder.ivHeader);
+        Glide.with(mContext).load(showModel.getHeadImg()).placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(holder.ivHeader);
         holder.tvName.setText(showModel.getStageName());
         holder.tvScore.setText(showModel.getStarLevel());
         holder.tvPerformType.setText(showModel.getPerformTypeName());
@@ -134,11 +134,11 @@ public class VenueNotify3ListAdapter extends RecyclerView.Adapter<VenueNotify3Li
                     @Override
                     public void onNext(ResultResponse<Object> response) {
                         if (response.success) {
-                            UIUtils.showBaseToast("确认成功！");
+                            UIUtils.showBaseToast("Reject successfully");
                             mList.get(position).setInvitationState("1");
                             notifyItemChanged(position);
                         } else {
-                            UIUtils.showBaseToast("确认失败！请重试");
+                            UIUtils.showBaseToast("Reject failed.");
                         }
                     }
                 });

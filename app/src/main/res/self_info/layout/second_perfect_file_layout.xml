@@ -56,7 +56,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="26dp"
-            android:src="@drawable/head">
+            android:src="@drawable/musicion_default_photo">
 
             <ImageView
                 android:id="@+id/iv_select_music"
@@ -97,6 +97,7 @@
             android:hint="YOUR STYLE"
             app:x_disableEmoji="true"
             android:focusable="false"
+            android:maxLines="3"
             app:x_importantWord="true"/>
 
         <TextView

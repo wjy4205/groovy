@@ -17,7 +17,7 @@
         <EditText
             android:id="@+id/release_et_venue"
             style="@style/common_input_text"
-            android:hint="@string/search"/>
+            android:hint="Venue Name/Venue Phone"/>
 
         <TextView
             android:id="@+id/release_tv_search"

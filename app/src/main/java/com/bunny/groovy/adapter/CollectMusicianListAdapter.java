@@ -49,7 +49,7 @@ public class CollectMusicianListAdapter extends RecyclerView.Adapter<CollectMusi
                     .error(R.drawable.musicion_default_photo).dontAnimate()
                     .into(holder.mIvHead);
         } else {
-            holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
+            holder.mIvHead.setImageResource(R.drawable.musicion_default_photo);
         }
         holder.mTvName.setText(musicianModel.getStageName());
         holder.mTvStar.setText(Utils.getStar(musicianModel.getStarLevel()));

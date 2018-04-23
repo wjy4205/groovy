@@ -48,7 +48,7 @@ public class WithDrawFragment extends BaseFragment<PayPalPresenter> implements I
         mRechargeTvPaypalValue.setText(AppCacheData.getPerformerUserModel().getPaypalAccount());
         mBalance = AppCacheData.getPerformerUserModel().getBalance();
         mTvWithDraw.setText("WITHDRAW");
-        mRechargeEtBalance.setHint("WITHDRAW AMOUNT(max：$" +mBalance+")");
+        mRechargeEtBalance.setHint("Withdraw Amount(max：$" +mBalance+")");
         Utils.controlEditText(mRechargeEtBalance,2);
     }
 

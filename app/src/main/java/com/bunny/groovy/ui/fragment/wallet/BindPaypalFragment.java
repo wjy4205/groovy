@@ -32,7 +32,6 @@ public class BindPaypalFragment extends BaseFragment<PayPalPresenter> implements
 
     public static void launch(Activity from,String account){
         Bundle bundle = new Bundle();
-        if(!TextUtils.isEmpty(account))
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE,!TextUtils.isEmpty(account) ? "UPDATE PAYPAL":"BIND PAYPAL");
         bundle.putString("account",account);
         FragmentContainerActivity.launch(from,BindPaypalFragment.class,bundle);

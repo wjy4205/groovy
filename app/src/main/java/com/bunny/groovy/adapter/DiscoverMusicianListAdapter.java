@@ -51,7 +51,7 @@ public class DiscoverMusicianListAdapter extends RecyclerView.Adapter<DiscoverMu
                     .error(R.drawable.musicion_default_photo).dontAnimate()
                     .into(holder.mIvHead);
         } else {
-            holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
+            holder.mIvHead.setImageResource(R.drawable.musicion_default_photo);
         }
         holder.mTvName.setTextHeighLight(performerModel.getStageName(), keyword);
         holder.mTvStar.setText(Utils.getStar(performerModel.getStarLevel()));

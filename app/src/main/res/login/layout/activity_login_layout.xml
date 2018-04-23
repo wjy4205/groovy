@@ -28,7 +28,6 @@
         style="@style/base_edit_text_style"
         android:hint="@string/password"
         android:inputType="textPassword"
-        app:x_importantWord="true"
         app:x_disableEmoji="true"
         app:x_hidePwdDrawable="@drawable/login_closeeye"
         app:x_showPwdDrawable="@drawable/login_openeye" />

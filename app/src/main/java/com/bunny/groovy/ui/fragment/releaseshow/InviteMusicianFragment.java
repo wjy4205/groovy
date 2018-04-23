@@ -168,9 +168,8 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
                     //设置开始结束时间
                     startTime = mRealTimeClockList.get(loopviewFromTime.getSelectedItem());
                     endTime = mRealTimeClockList.get(loopviewEndTime.getSelectedItem());
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) +
-                            (loopviewFromTime.getSelectedItem() < 24 ? "am" : "pm")
-                            + "-" + endTime + (loopviewEndTime.getSelectedItem() < 24 ? "am" : "pm"));
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime)
+                            + "-" + endTime );
                 }
             }
         });
@@ -314,7 +313,7 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
                     .error(R.drawable.musicion_default_photo).dontAnimate()
                     .into(mHeadView);
         } else {
-            mHeadView.setImageResource(R.drawable.icon_load_pic);
+            mHeadView.setImageResource(R.drawable.musicion_default_photo);
         }
         mNameView.setText(mPerformerModel.getStageName());
         mStarView.setText(Utils.getStar(mPerformerModel.getStarLevel()));

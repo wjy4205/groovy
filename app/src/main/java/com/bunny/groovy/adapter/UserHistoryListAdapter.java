@@ -59,13 +59,19 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //评论
         holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.INVISIBLE);
-
+        if (TextUtils.isEmpty(model.getPerformerID())) {
+            holder.mTvReward.setVisibility(View.GONE);
+            holder.mTvReview.setVisibility(View.GONE);
+        } else {
+            holder.mTvReward.setVisibility(View.VISIBLE);
+            holder.mTvReview.setVisibility(View.VISIBLE);
+            holder.mTvReview.setOnClickListener(this);
+            holder.mTvReward.setOnClickListener(this);
+        }
         //点击效果
         holder.mTvReview.setTag(position);
         holder.mTvReward.setTag(position);
         holder.itemView.setTag(position);
-        holder.mTvReview.setOnClickListener(this);
-        holder.mTvReward.setOnClickListener(this);
         holder.itemView.setOnClickListener(this);
     }
 

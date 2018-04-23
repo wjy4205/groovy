@@ -51,7 +51,7 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
     public void initView(View rootView) {
         super.initView(rootView);
 //        mRechargeTvPaypalValue.setText(AppCacheData.getPerformerUserModel().getPaypalAccount());
-        mRechargeEtBalance.setHint("CHARGE AMOUNT");
+        mRechargeEtBalance.setHint("Recharge Amount");
         Utils.controlEditText(mRechargeEtBalance,2);
     }
 

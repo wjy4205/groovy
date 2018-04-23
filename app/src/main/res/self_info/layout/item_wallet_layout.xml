@@ -24,7 +24,7 @@
         android:layout_marginTop="5dp"
         android:text="2017"
         android:textColor="@color/common_grey"
-        android:textSize="@dimen/text_size_big" />
+        android:textSize="@dimen/text_size_common" />
 
     <TextView
         android:id="@+id/item_wallet_tv_amount"

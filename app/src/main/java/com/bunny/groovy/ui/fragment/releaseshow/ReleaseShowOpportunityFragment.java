@@ -154,9 +154,8 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
                     //设置开始结束时间
                     startTime = mRealTimeClockList.get(loopviewFromTime.getSelectedItem());
                     endTime = mRealTimeClockList.get(loopviewEndTime.getSelectedItem());
-                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) +
-                            (loopviewFromTime.getSelectedItem() < 24 ? "am" : "pm")
-                            + "-" + endTime + (loopviewEndTime.getSelectedItem() < 24 ? "am" : "pm"));
+                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime)
+                            + "-" + endTime);
                 }
             }
         });

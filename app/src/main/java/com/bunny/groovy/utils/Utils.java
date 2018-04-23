@@ -306,10 +306,18 @@ public class Utils {
         return 0;
     }
 
+    public static double parseDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
     public static String getStar(String star) {
         String starStr = "0";
         if (!TextUtils.isEmpty(star)) {
-            if(Utils.parseInt(star) == 0) return starStr;
+            if(Utils.parseDouble(star) == 0) return starStr;
             try {
                 double starDouble = Double.parseDouble(star);
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");

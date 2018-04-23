@@ -49,7 +49,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
                     .error(R.drawable.venue_default_photo)
                     .into(holder.mIvHead);
         } else {
-            holder.mIvHead.setImageResource(R.drawable.icon_load_pic);
+            holder.mIvHead.setImageResource(R.drawable.venue_default_photo);
         }
         holder.mTvName.setText(model.getVenueName());
         holder.mTvStar.setText(model.getVenueScore());

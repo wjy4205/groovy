@@ -24,6 +24,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MHodler> {
         this.listData = list;
     }
 
+    public void refresh(ArrayList<MusicBean> list){
+        this.listData = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public MHodler onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_music_layout, parent, false);

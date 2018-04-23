@@ -4,7 +4,50 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
     android:orientation="vertical">
-    <include layout="@layout/include_actionbar_layout"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/actionbar_iv_back"
+            android:layout_width="64px"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_textarea_bg"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_search"
+                />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:background="@null"
+                android:hint="Search"
+                android:textColor="@color/white"
+                android:textColorHint="@color/common_grey"
+                android:textSize="@dimen/text_size_common"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,6 +60,15 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/base_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="NO RESULT"
+            android:visibility="gone"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/text_size_big" />
     </FrameLayout>
 
 </LinearLayout>

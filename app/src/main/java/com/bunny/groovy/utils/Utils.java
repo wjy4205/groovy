@@ -103,7 +103,7 @@ public class Utils {
 //        data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");
 //        data.putExtra(Intent.EXTRA_TEXT, "这是内容");
             context.startActivity(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             UIUtils.showBaseToast("Not find the appropriate application to open");
         }
 
@@ -187,16 +187,16 @@ public class Utils {
 
 
     /**
-     * 获取目录下的歌曲
+     * 获取类似musicName的歌曲
      *
-     * @param dirName
+     * @param musicName
      */
-    public static ArrayList<MusicBean> queryMusic(String dirName, Context context) {
+    public static ArrayList<MusicBean> queryMusic(String musicName, Context context) {
         ArrayList<MusicBean> mMediaLists = new ArrayList<>();
+        String query = MediaStore.Audio.Media.DISPLAY_NAME + " like ?";
         Cursor cursor = context.getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
-                MediaStore.Audio.Media.DATA + " like ?",
-                new String[]{dirName + "%"},
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, query,
+                new String[]{"%" + musicName + "%"},
                 MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
 
         if (cursor == null) return null;
@@ -317,7 +317,7 @@ public class Utils {
     public static String getStar(String star) {
         String starStr = "0";
         if (!TextUtils.isEmpty(star)) {
-            if(Utils.parseDouble(star) == 0) return starStr;
+            if (Utils.parseDouble(star) == 0) return starStr;
             try {
                 double starDouble = Double.parseDouble(star);
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");

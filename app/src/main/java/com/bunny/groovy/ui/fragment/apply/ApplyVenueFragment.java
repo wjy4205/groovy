@@ -151,6 +151,7 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
             public void onClick(View v) {
                 if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
                     UIUtils.showBaseToast("Start time must not be less than end time.");
+                    loopviewEndTime.setCurrentPosition(loopviewFromTime.getSelectedItem());
                 } else {
                     closeTimePop();
                     //设置开始结束时间

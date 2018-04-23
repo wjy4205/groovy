@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * 音乐列表
@@ -31,6 +32,11 @@ public class MusicListActivity extends BaseActivity {
     @Bind(R.id.progress)
     ProgressBar progressBar;
     private ArrayList<MusicBean> mPlayList;
+
+    @OnClick(R.id.actionbar_iv_back)
+    public void clickBack() {
+        finish();
+    }
 
     @Override
     public void initView() {
@@ -49,8 +55,8 @@ public class MusicListActivity extends BaseActivity {
                     return;
                 }
                 Intent intent = new Intent();
-                intent.putExtra("music_file",mPlayList.get(positon));
-                setResult(RESULT_OK,intent);
+                intent.putExtra("music_file", mPlayList.get(positon));
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

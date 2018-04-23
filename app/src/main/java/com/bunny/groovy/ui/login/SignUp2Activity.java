@@ -56,7 +56,8 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
             return;
         }
 
-//        if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
+        if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
+
 //            if (TextUtils.isEmpty(etEmail.getTrimmedString())) {
 //                //邮箱为空
 //                UIUtils.showBaseToast("E-mail must not be null.");
@@ -66,8 +67,9 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
 //                UIUtils.showBaseToast("E-mail invalid.");
 //                return;
 //            }
-//            VerifyEvent.verifyCode(etCode.getTrimmedString());
-//        } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
+            VerifyEvent.verifyCode(etCode.getTrimmedString());
+        } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
+            mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount));
 //            if (TextUtils.isEmpty(etPhone.getTrimmedString()))
 //            //手机号为空
 //            {
@@ -77,9 +79,10 @@ public class SignUp2Activity extends BaseActivity<SingUpPresenter> implements IS
 //                UIUtils.showBaseToast("Phone invalid.");
 //                return;
 //            }
-//
-//        }
-        mPresenter.checkEmailCode(etCode.getTrimmedString(), URLEncoder.encode(mAccount));
+
+        }
+
+
 
     }
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bunny.groovy.R;
 import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.base.BaseActivity;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.presenter.VenueRegisterPresenter;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
@@ -26,6 +27,7 @@ import com.xw.repo.XEditText;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.ref.WeakReference;
+import java.net.URLEncoder;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -134,10 +136,15 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             UIUtils.showBaseToast("Please input twitter.");
             return;
         }
-        mPresenter.registerVenue(mPublicName, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
-                mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
-                mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString()
-                , mVenueFacebook.getTrimmedString(), mHeadUrl);
+        if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
+            VerifyEvent.verifyCode(mEditCode.getTrimmedString());
+        } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {
+            mPresenter.checkEmailCode(mEditCode.getTrimmedString(), URLEncoder.encode(mAccount));
+        }
+//        mPresenter.registerVenue(mPublicName, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
+//                mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
+//                mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString()
+//                , mVenueFacebook.getTrimmedString(), mHeadUrl);
 //            mPresenter.checkEmailCode(mEditCode.getTrimmedString(), URLEncoder.encode(mAccount));
 //        }
     }

@@ -206,8 +206,12 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         tvName.setText(mModel.getUserName());
         tvStyle.setText(model.getPerformTypeName());
         tvScore.setText(Utils.getStar(model.getStarLevel()));
-        Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
-                .error(R.drawable.musicion_default_photo).into(ivHeader);
+        if(TextUtils.isEmpty(model.getHeadImg())){
+            ivHeader.setImageResource(R.drawable.musicion_default_photo);
+        }else {
+            Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
+                    .error(R.drawable.musicion_default_photo).into(ivHeader);
+        }
         //prepare music state
         isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
     }

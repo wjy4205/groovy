@@ -52,7 +52,6 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
             UIUtils.showBaseToast("please input verification code.");
             return;
         }
-
         if (mType == AppConstants.ACCOUNT_TYPE_PHONE) {
             VerifyEvent.verifyCode(etCode.getTrimmedString());
         } else if (mType == AppConstants.ACCOUNT_TYPE_EMAIL) {

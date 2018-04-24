@@ -17,6 +17,7 @@ import com.bunny.groovy.model.VenueModel;
 import com.bunny.groovy.presenter.TimePresenter;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ITimeView;
+import com.bunny.groovy.weidget.TimePopupWindow;
 import com.bunny.groovy.weidget.loopview.LoopView;
 import com.suke.widget.SwitchButton;
 
@@ -32,7 +33,7 @@ import butterknife.Bind;
  *
  ****************************************/
 
-public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITimeView, View.OnClickListener, SwitchButton.OnCheckedChangeListener {
+public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITimeView, View.OnClickListener, SwitchButton.OnCheckedChangeListener,TimePopupWindow.OnTimeConfirmListener {
 
     @Bind(R.id.switch_time_mon)
     SwitchButton switchTimeMon;
@@ -68,11 +69,9 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
     private List<SwitchButton> tvSwitchButton = new ArrayList<>();
     private List<VenueModel.ScheduleListBean> mModel;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
-    private PopupWindow mTimePop;
-    private TextView mTvTimeTitle;
-    private List<String> mTimeClockList;
-    private String startTime = "";//开始时间
-    private String endTime = "";//结束时间
+    private String mStartTime = "";//开始时间
+    private String mEndTime = "";//结束时间
+    private TimePopupWindow mTimePop;
     private int mIndex = -1;
 
     public static void launch(Activity from) {
@@ -94,9 +93,6 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
     @Override
     protected void loadData() {
         mPresenter.getVenueSchedule();
-        //获取展示的时间
-        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array);
-        mTimeClockList = Arrays.asList(timeClockArray);
     }
 
     @Override
@@ -141,33 +137,36 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
         for (int i = 0; i < tvSwitchButton.size(); i++) {
             tvSwitchButton.get(i).setOnCheckedChangeListener(this);
         }
+        mTimePop = new TimePopupWindow(getActivity());
+        mTimePop.setListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_time_mon:
-                showTimePop(0);
+                mIndex = 0;
                 break;
             case R.id.tv_time_tues:
-                showTimePop(1);
+                mIndex = 1;
                 break;
             case R.id.tv_time_wed:
-                showTimePop(2);
+                mIndex = 2;
                 break;
             case R.id.tv_time_thur:
-                showTimePop(3);
+                mIndex = 3;
                 break;
             case R.id.tv_time_fri:
-                showTimePop(4);
+                mIndex = 4;
                 break;
             case R.id.tv_time_sta:
-                showTimePop(5);
+                mIndex = 5;
                 break;
             case R.id.tv_time_sun:
-                showTimePop(6);
+                mIndex = 6;
                 break;
         }
+        mTimePop.showTimeChoosePop(tvTime.get(mIndex));
     }
 
     @Override
@@ -206,78 +205,6 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
         }
     }
 
-    private void showTimePop(int index) {
-        mIndex = index;
-        if (mTimePop == null) {
-            initTimePop();
-        }
-        mTimePop.showAtLocation(tvTime.get(mIndex), Gravity.CENTER, 0, 0);
-    }
-
-    /**
-     * 关闭时间点选择框
-     */
-    private void closeTimePop() {
-        if (mTimePop != null) mTimePop.dismiss();
-    }
-
-    /**
-     * 初始化选择时间点弹框
-     */
-    private void initTimePop() {
-        mTimePop = new PopupWindow(getActivity());
-        View timeView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_time_choose_layout, null);
-        mTimePop.setContentView(timeView);
-        mTimePop.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
-        mTimePop.setHeight(UIUtils.getScreenHeight() / 2);
-        timeView.setFocusable(true);
-        timeView.setFocusableInTouchMode(true);
-        mTimePop.setFocusable(true);
-        mTvTimeTitle = timeView.findViewById(R.id.weidget_tv_title);
-        mTvTimeTitle.setText("Choose time interval");
-        final LoopView loopviewFromTime = timeView.findViewById(R.id.weidget_from_time);
-        final LoopView loopviewEndTime = timeView.findViewById(R.id.weidget_end_time);
-
-        loopviewFromTime.setItems(mTimeClockList);
-        loopviewEndTime.setItems(mTimeClockList);
-        //set listener
-        timeView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    closeTimePop();
-                    return true;
-                }
-                return false;
-            }
-        });
-        timeView.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeTimePop();
-            }
-        });
-        timeView.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("Start time must not be less than end time.");
-                    loopviewEndTime.setCurrentPosition(loopviewFromTime.getSelectedItem());
-                } else {
-                    closeTimePop();
-                    //设置开始结束时间
-                    startTime = mTimeClockList.get(loopviewFromTime.getSelectedItem());
-                    endTime = mTimeClockList.get(loopviewEndTime.getSelectedItem());
-//                    textView.setText(startTime + "-" + endTime);
-                    if (mIndex != -1) {
-                        VenueModel.ScheduleListBean bean = mModel.get(mIndex);
-                        mPresenter.updateScheduleDate(bean.getScheduleID(), startTime.replaceAll(" ", ""), endTime.replaceAll(" ", ""));
-                    }
-                }
-            }
-        });
-    }
-
     @Override
     public void updateScheduleView(String scheduleID, String startDate, String endDate) {
         if (mIndex != -1) {
@@ -296,5 +223,16 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
     @Override
     public Activity get() {
         return getActivity();
+    }
+
+    @Override
+    public void chooseTime(String startTime, String endTime, Calendar selectDate) {
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mSelectDate = selectDate;
+        if (mIndex != -1) {
+            VenueModel.ScheduleListBean bean = mModel.get(mIndex);
+            mPresenter.updateScheduleDate(bean.getScheduleID(), mStartTime.replaceAll(" ", ""), mEndTime.replaceAll(" ", ""));
+        }
     }
 }

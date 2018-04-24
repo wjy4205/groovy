@@ -26,17 +26,10 @@ import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.ApplyVenuePresenter;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
-import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IApplyVenueView;
-import com.bunny.groovy.weidget.datepick.DatePickerHelper;
-import com.bunny.groovy.weidget.loopview.LoopView;
-import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
+import com.bunny.groovy.weidget.TimePopupWindow;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,7 +41,7 @@ import butterknife.OnClick;
  * Author: Created by wjy on 2018/3/16.
  ****************************************/
 
-public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView {
+public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView, TimePopupWindow.OnTimeConfirmListener {
 
     public final static String KEY_DISTANCE = "key_distance";
     public final static String KEY_START_TIME = "key_start_time";
@@ -56,18 +49,14 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
     public final static String KEY_VENUE_TYPE = "key_venue_type";
     public final static String KEY_PERFORM_TYPE = "key_perform_type";
 
-    private TextView mTvTimeTitle;
-    private List<String> mTimeClockList, mRealTimeList;
     private Calendar mSelectDate = Calendar.getInstance();//选择的日期
-    private PopupWindow mDatePop;
-    private Date today = Calendar.getInstance().getTime();
-    private String startTime = "";//开始时间
-    private String endTime = "";//结束时间
+    private String mStartTime = "";//开始时间
+    private String mEndTime = "";//结束时间
     private int mDistance = 25;//距离
     private StringBuilder mVenueType;//演播厅类型
     private String mPerformType;//表演类型
     private List<StyleModel> styleList;
-    private PopupWindow mTimePop;
+    private TimePopupWindow mTimePop;
     private PopupWindow mPopupWindow;
     private StyleGridAdapter mAdapter;
     private CheckBox mCheckList[];//演播厅类型多选框
@@ -106,7 +95,7 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
     @OnClick(R.id.filter_time)
     public void selectTime() {
         UIUtils.hideSoftInput(mEtTime);
-        showTimeChoosePop();
+        mTimePop.showTimeChoosePop(mEtTime);
     }
 
     @OnClick(R.id.tv_apply)
@@ -128,19 +117,10 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
         intent.putExtra(KEY_DISTANCE, distance);
         intent.putExtra(KEY_VENUE_TYPE, mVenueType.toString());
         intent.putExtra(KEY_PERFORM_TYPE, mEtPerformStyle.getText().toString().trim());
-        intent.putExtra(KEY_START_TIME, TextUtils.isEmpty(startTime) ? "" : DateUtils.getFormatTime(mSelectDate.getTime(), startTime));
-        intent.putExtra(KEY_END_TIME, TextUtils.isEmpty(endTime) ? "" : DateUtils.getFormatTime(mSelectDate.getTime(), endTime));
+        intent.putExtra(KEY_START_TIME, TextUtils.isEmpty(mStartTime) ? "" : DateUtils.getFormatTime(mSelectDate.getTime(), mStartTime));
+        intent.putExtra(KEY_END_TIME, TextUtils.isEmpty(mEndTime) ? "" : DateUtils.getFormatTime(mSelectDate.getTime(), mEndTime));
         mActivity.setResult(Activity.RESULT_OK, intent);
         mActivity.finish();
-    }
-
-    /**
-     * 弹出选择时间窗口
-     */
-    private void showTimeChoosePop() {
-        if (mTimePop == null)
-            initTimePop();
-        mTimePop.showAtLocation(mEtTime, Gravity.CENTER, 0, 0);
     }
 
     @Override
@@ -200,189 +180,8 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
 
             }
         });
-    }
-
-    /**
-     * 初始化选择时间点弹框
-     */
-    private void initTimePop() {
-        mTimePop = new PopupWindow(getActivity());
-        View timeView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_time_choose_layout, null);
-        mTimePop.setContentView(timeView);
-        mTimePop.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
-        mTimePop.setHeight(UIUtils.getScreenHeight() / 2);
-        timeView.setFocusable(true);
-        timeView.setFocusableInTouchMode(true);
-        mTimePop.setFocusable(true);
-        mTvTimeTitle = timeView.findViewById(R.id.weidget_tv_title);
-        final LoopView loopviewFromTime = timeView.findViewById(R.id.weidget_from_time);
-        final LoopView loopviewEndTime = timeView.findViewById(R.id.weidget_end_time);
-
-        //set data
-        mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
-        loopviewFromTime.setItems(mTimeClockList);
-        loopviewFromTime.setCurrentPosition(getTimeClockIndex(startTime));
-        loopviewEndTime.setItems(mTimeClockList);
-        loopviewEndTime.setCurrentPosition(getTimeClockIndex(endTime));
-        //set listener
-        timeView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    closeTimePop();
-                    return true;
-                }
-                return false;
-            }
-        });
-        timeView.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeTimePop();
-            }
-        });
-        timeView.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (loopviewFromTime.getSelectedItem() >= loopviewEndTime.getSelectedItem()) {
-                    UIUtils.showBaseToast("Start time must not be less than end time.");
-                    loopviewEndTime.setCurrentPosition(loopviewFromTime.getSelectedItem());
-                } else {
-                    closeTimePop();
-                    //设置开始结束时间
-                    startTime = mRealTimeList.get(loopviewFromTime.getSelectedItem());
-                    endTime = mRealTimeList.get(loopviewEndTime.getSelectedItem());
-                    mEtTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
-                }
-            }
-        });
-        mTvTimeTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //弹出选择日期的弹窗
-                showDatePop();
-            }
-        });
-    }
-
-    private int getTimeClockIndex(String time) {
-        int index = 0;
-        for (String s : mRealTimeList) {
-            if (TextUtils.equals(s, time)) {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
-
-
-    /**
-     * 关闭时间点选择框
-     */
-    private void closeTimePop() {
-        if (mTimePop != null) mTimePop.dismiss();
-    }
-
-
-    /**
-     * 显示日期选择器
-     */
-    private void showDatePop() {
-        if (mDatePop == null)
-            initDatePop();
-        mDatePop.showAtLocation(mEtTime, Gravity.CENTER, 0, 0);
-    }
-
-    /**
-     * 关闭选择日期窗口
-     */
-    private void closeDatePop() {
-        if (mDatePop != null) mDatePop.dismiss();
-    }
-
-    /**
-     * 初始化选择日期窗口
-     */
-    private void initDatePop() {
-        Calendar minCalendar = Calendar.getInstance();
-        Calendar maxCalendar = Calendar.getInstance();
-        maxCalendar.add(Calendar.YEAR, 1);
-        maxCalendar.add(Calendar.MINUTE, -1);
-
-        mDatePop = new PopupWindow(getActivity());
-        View dateView = LayoutInflater.from(getActivity()).inflate(R.layout.weidget_date_choose_layout, null, false);
-        mDatePop.setContentView(dateView);
-        mDatePop.setWidth(UIUtils.getScreenWidth() - UIUtils.dip2Px(32));
-        mDatePop.setHeight(UIUtils.getScreenHeight() / 2);
-        LoopView loopMonth = dateView.findViewById(R.id.weidget_month);
-        final LoopView loopDay = dateView.findViewById(R.id.weidget_day);
-        LoopView loopYear = dateView.findViewById(R.id.weidget_year);
-        //set data
-        final DatePickerHelper helper = new DatePickerHelper();
-        //年
-        final List<String> years = new ArrayList<>();
-        years.add(String.valueOf(minCalendar.get(Calendar.YEAR)));
-        years.add(String.valueOf(maxCalendar.get(Calendar.YEAR)));
-        loopYear.setItems(years);
-        loopYear.setNotLoop();
-        //listener
-        loopYear.setListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-//                currentYear = Integer.parseInt(years.get(index));
-                mSelectDate.set(Calendar.YEAR, Integer.parseInt(years.get(index)));
-            }
-        });
-        //月份
-        String[] monthValues = helper.getEnMonths();
-        loopMonth.setItems(Arrays.asList(monthValues));
-        loopMonth.setNotLoop();
-        //listener
-        loopMonth.setListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-//                currentMonth = index + 1;
-                mSelectDate.set(Calendar.MONTH, index);
-                loopDay.setItems(Arrays.asList(helper.getDisplayDayAndWeek(mSelectDate.get(Calendar.YEAR),
-                        mSelectDate.get(Calendar.MONTH))));
-            }
-        });
-        //日期
-        String[] dayValues = helper.getDisplayDayAndWeek(mSelectDate.get(Calendar.YEAR), mSelectDate.get(Calendar.MONTH));
-        loopDay.setItems(Arrays.asList(dayValues));
-        loopDay.setListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-                mSelectDate.set(Calendar.DATE, index + 1);
-            }
-        });
-        //初始日期
-        loopYear.setInitPosition(mSelectDate.get(Calendar.YEAR));
-        loopMonth.setInitPosition(mSelectDate.get(Calendar.MONTH));
-        loopDay.setInitPosition(mSelectDate.get(Calendar.DATE) - 1);
-        //点击事件
-        dateView.findViewById(R.id.pop_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeDatePop();
-            }
-        });
-        dateView.findViewById(R.id.pop_confirm).setOnClickListener(new View.OnClickListener() {
-            /**
-             * @param v
-             */
-            @Override
-            public void onClick(View v) {
-                if (mSelectDate.getTime().before(today)) {
-                    UIUtils.showBaseToast("选择日期小于今天");
-                } else {
-                    closeDatePop();
-                    //设置title
-                    mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
-                }
-            }
-        });
+        mTimePop = new TimePopupWindow(getActivity());
+        mTimePop.setListener(this);
     }
 
     @Override
@@ -470,11 +269,13 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
 
     @Override
     protected void loadData() {
-        //获取可选择的时间
-        String[] timeClockArray = mActivity.getResources().getStringArray(R.array.time_clock_array);
-        String[] realTimeArr = mActivity.getResources().getStringArray(R.array.time_clock_array_24);
-        mTimeClockList = Arrays.asList(timeClockArray);
-        mRealTimeList = Arrays.asList(realTimeArr);
     }
 
+    @Override
+    public void chooseTime(String startTime, String endTime, Calendar selectDate) {
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mSelectDate = selectDate;
+        mEtTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
+    }
 }

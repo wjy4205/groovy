@@ -393,7 +393,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         mTvDistance.setText(bean.getDistance() + "mi");
         mTvStyle.setText(bean.getPerformType());
         mTvScore.setText(Utils.getStar(bean.getVenueScore()));
-        Glide.with(mActivity).load(bean.getPerformerImg()).error(R.drawable.user_default_photo).into(mHeadImg);
+        Glide.with(mActivity).load(bean.getPerformerImg()).placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index

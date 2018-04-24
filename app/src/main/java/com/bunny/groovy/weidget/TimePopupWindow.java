@@ -81,6 +81,12 @@ public class TimePopupWindow {
         //set data
         mTvTimeTitle.setText(Utils.getFormatDate(mSelectDate.getTime()));
         loopviewFromTime.setItems(mTimeClockList);
+        loopviewFromTime.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                loopviewEndTime.setCurrentPosition(index);
+            }
+        });
         loopviewEndTime.setItems(mTimeClockList);
         //set listener
         timeView.setOnKeyListener(new View.OnKeyListener() {

@@ -87,6 +87,15 @@ public class TimePopupWindow {
                 loopviewEndTime.setCurrentPosition(index);
             }
         });
+        loopviewEndTime.setListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                if(index < loopviewFromTime.getSelectedItem()){
+                    loopviewEndTime.setCurrentPosition(loopviewFromTime.getSelectedItem());
+                }
+
+            }
+        });
         loopviewEndTime.setItems(mTimeClockList);
         //set listener
         timeView.setOnKeyListener(new View.OnKeyListener() {

@@ -86,16 +86,16 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     public void initListener() {
         super.initListener();
         //账户输入框的监听
-        mPhoneEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String account = mPhoneEmail.getText().toString();
-                if (!hasFocus && !TextUtils.isEmpty(account)) {
-                    //检查是否合法
-                    mPresenter.checkAccount(account, false);
-                }
-            }
-        });
+//        mPhoneEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                String account = mPhoneEmail.getText().toString();
+//                if (!hasFocus && !TextUtils.isEmpty(account)) {
+//                    //检查是否合法
+//                    mPresenter.checkAccount(account, false);
+//                }
+//            }
+//        });
         //event bus
         registerEventBus(this);
     }

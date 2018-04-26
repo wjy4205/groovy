@@ -194,7 +194,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                                     mHandler.sendEmptyMessage(2);
                                     autocompletePredictions.release();
                                 }
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
 
                         }
                     }).start();
@@ -393,7 +394,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         mTvDistance.setText(bean.getDistance() + "mi");
         mTvStyle.setText(bean.getPerformType());
         mTvScore.setText(Utils.getStar(bean.getVenueScore()));
-        Glide.with(mActivity).load(bean.getPerformerImg()).error(R.drawable.user_default_photo).into(mHeadImg);
+        Glide.with(mActivity).load(bean.getVenueImg()).error(R.drawable.venue_default_photo)
+                .placeholder(R.drawable.venue_default_photo).into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index
@@ -735,7 +737,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 }
             }
         }
-        mEmptyView.setVisibility(userMainModel.allPerformList !=null && userMainModel.allPerformList.size() > 0?View.GONE:View.VISIBLE);
+        mEmptyView.setVisibility(userMainModel.allPerformList != null && userMainModel.allPerformList.size() > 0 ? View.GONE : View.VISIBLE);
         //列表数据
         if (mAdapter == null) {
             mAdapter = new UserMainListAdapter(userMainModel.allPerformList);

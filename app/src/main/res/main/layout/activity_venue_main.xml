@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_rl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="#000">
+
+        <TextView
+            android:id="@+id/main_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big"
+            android:typeface="sans"
+            tool:text="Jack" />
+    </RelativeLayout>
+
+    <com.bunny.groovy.weidget.NoScrollViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="720px"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+    <com.bunny.groovy.weidget.BottomBarLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="#111111">
+
+        <com.bunny.groovy.weidget.BottomBarItem
+            android:id="@+id/tab_overview"
+            style="@style/tab_item_style"
+            app:iconHeight="25dp"
+            app:iconNormal="@drawable/tab_bookings"
+            app:iconSelected="@drawable/tab_bookings_selected"
+            app:iconWidth="25dp"
+            app:itemText="BOOKINGS"
+            app:itemTextSize="@dimen/text_size_small"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab" />
+
+        <com.bunny.groovy.weidget.BottomBarItem
+            android:id="@+id/tab_schedule"
+            style="@style/tab_item_style"
+            app:iconHeight="25dp"
+            app:iconNormal="@drawable/tab_schedule"
+            app:iconSelected="@drawable/tab_schedule_selected"
+            app:iconWidth="20dp"
+            app:itemText="@string/tab_schedule"
+            app:itemTextSize="@dimen/text_size_small"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab" />
+
+        <com.bunny.groovy.weidget.BottomBarItem
+            android:id="@+id/tab_me"
+            style="@style/tab_item_style"
+            app:iconHeight="25dp"
+            app:iconNormal="@drawable/tab_venue_me"
+            app:iconSelected="@drawable/tab_venue_me_selected"
+            app:iconWidth="20dp"
+            app:itemText="@string/tab_user"
+            app:itemTextSize="@dimen/text_size_small"
+            app:openTouchBg="true"
+            app:textColorNormal="@color/common_grey"
+            app:textColorSelected="#fff"
+            app:touchDrawable="@drawable/selector_bottom_tab" />
+    </com.bunny.groovy.weidget.BottomBarLayout>
+
+</LinearLayout>

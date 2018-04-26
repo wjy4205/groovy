@@ -78,7 +78,7 @@ public class VenueMainActivity extends BaseActivity {
 
     @Override
     protected int provideContentViewId() {
-        return R.layout.activity_main;
+        return R.layout.activity_venue_main;
     }
 
     @Override

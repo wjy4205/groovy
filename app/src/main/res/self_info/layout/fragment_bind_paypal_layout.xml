@@ -42,6 +42,6 @@
         android:id="@+id/bind_paypal_tv_bind"
         style="@style/role_selected_text_style"
         android:layout_marginTop="80px"
-        android:text="BIND"/>
+        android:text="BIND PAYPAL"/>
 
 </LinearLayout>

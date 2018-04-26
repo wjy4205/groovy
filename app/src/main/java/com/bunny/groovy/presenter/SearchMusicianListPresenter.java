@@ -38,7 +38,7 @@ public class SearchMusicianListPresenter extends BasePresenter<ISearchMusicianLi
 
             @Override
             protected boolean isShowProgress() {
-                return true;
+                return false;
             }
         });
     }

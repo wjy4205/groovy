@@ -3,7 +3,11 @@ package com.bunny.groovy.ui.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.bunny.groovy.BuildConfig;
 import com.bunny.groovy.R;
@@ -33,6 +37,8 @@ import com.google.android.gms.tasks.Task;
 import com.socks.library.KLog;
 import com.xw.repo.XEditText;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import butterknife.Bind;
@@ -120,7 +126,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.iv_login_facebook)
     public void facebookLogin() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        getKey();
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
     public static void launch(Context activity, int type) {
@@ -279,4 +286,27 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     private void syso(String tag) {
         System.out.println(tag);
     }
+
+    private String getKey(){
+        try {
+            int i = 0;
+            PackageInfo info = getPackageManager().getPackageInfo( getPackageName(),  PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                i++;
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String KeyHash = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                etPassword.setText(KeyHash);
+            }
+        }
+        catch (PackageManager.NameNotFoundException e) {
+
+        }
+        catch (NoSuchAlgorithmException e) {
+
+        }
+        return null;
+    }
+
+
 }

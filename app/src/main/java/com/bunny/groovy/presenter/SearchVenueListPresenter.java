@@ -40,7 +40,7 @@ public class SearchVenueListPresenter extends BasePresenter<ISearchVenueList> {
 
             @Override
             protected boolean isShowProgress() {
-                return true;
+                return false;
             }
         });
     }

@@ -79,7 +79,7 @@ public class UserDataFragment extends BaseFragment<UserMePresenter> implements I
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "PERSONAL DATA");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "MY INFORMATION");
         FragmentContainerActivity.launch(from, UserDataFragment.class, bundle);
     }
 

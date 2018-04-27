@@ -83,16 +83,16 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
     public void initListener() {
         super.initListener();
         //账户输入框的监听
-        etPhoneEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String account = etPhoneEmail.getText().toString();
-                if (!hasFocus && !TextUtils.isEmpty(account)) {
-                    //检查是否合法
-                    mPresenter.checkAccount(account, false);
-                }
-            }
-        });
+//        etPhoneEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                String account = etPhoneEmail.getText().toString();
+//                if (!hasFocus && !TextUtils.isEmpty(account)) {
+//                    //检查是否合法
+//                    mPresenter.checkAccount(account, false);
+//                }
+//            }
+//        });
         //event bus
         registerEventBus(this);
     }

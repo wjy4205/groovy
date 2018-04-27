@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +25,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -194,10 +191,14 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                                     mHandler.sendEmptyMessage(2);
                                     autocompletePredictions.release();
                                 }
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
 
                         }
                     }).start();
+                } else {
+                    if (mLocationList != null) mLocationList.clear();
+                    showLocationPopupWindow();
                 }
             } else {
                 showLocationPopupWindow();
@@ -259,7 +260,6 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         SupportMapFragment supportMapFragment = new SupportMapFragment();
         getChildFragmentManager().beginTransaction().add(R.id.map_container, supportMapFragment, "map_fragment").commit();
         supportMapFragment.getMapAsync(this);
-
         checkPermission(true);
 //        updateCurrentLocation();
     }
@@ -393,7 +393,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         mTvDistance.setText(bean.getDistance() + "mi");
         mTvStyle.setText(bean.getPerformType());
         mTvScore.setText(Utils.getStar(bean.getVenueScore()));
-        Glide.with(mActivity).load(bean.getPerformerImg()).placeholder(R.drawable.musicion_default_photo).error(R.drawable.musicion_default_photo).into(mHeadImg);
+        Glide.with(mActivity).load(bean.getVenueImg()).error(R.drawable.venue_default_photo)
+                .placeholder(R.drawable.venue_default_photo).into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index
@@ -418,6 +419,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                     } catch (Exception e) {
                     }
                 }
+                Utils.hideSoftInput(getActivity(), etSearch);
+                mSearchContentLayout.setVisibility(View.GONE);
             }
         });
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
@@ -465,9 +468,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             }
         });
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-//        updateLoc();
-        //设置当前位置
-//        updateCurrentLocation();
+
     }
 
     /**
@@ -735,7 +736,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 }
             }
         }
-        mEmptyView.setVisibility(userMainModel.allPerformList !=null && userMainModel.allPerformList.size() > 0?View.GONE:View.VISIBLE);
+        mEmptyView.setVisibility(userMainModel.allPerformList != null && userMainModel.allPerformList.size() > 0 ? View.GONE : View.VISIBLE);
         //列表数据
         if (mAdapter == null) {
             mAdapter = new UserMainListAdapter(userMainModel.allPerformList);
@@ -782,30 +783,19 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     public void afterTextChanged(Editable s) {
     }
 
-    private PopupWindow mPopupWindow;
-    private RecyclerView mPopupRecyclerView;
+    @Bind(R.id.search_recyclerview)
+    RecyclerView mSearchRecyclerView;
+    @Bind(R.id.search_no_data)
+    View mEmptySearchView;
+    @Bind(R.id.search_content_layout)
+    View mSearchContentLayout;
     private SearchListAdapter mRecyclerViewAdapter;
 
     /**
      * 弹出选择号码的对话框
      */
     private void showLocationPopupWindow() {
-        if (mLocationList != null && mLocationList.size() > 0) {
-            initRecyclerView(mLocationList);
-            if (mPopupWindow == null) {
-                mPopupWindow = new PopupWindow(mPopupRecyclerView, searchLayout.getWidth() - 4, etSearch.getWidth() * 3 / 5);
-                mPopupWindow.setOutsideTouchable(true);   // 设置外部可以被点击
-                mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-                mPopupWindow.setFocusable(true);    // 使PopupWindow可以获得焦点
-            }
-            if (!mPopupWindow.isShowing())
-                // 显示在输入框的左下角
-                mPopupWindow.showAsDropDown(searchLayout, 2, 50);
-        } else {
-            UIUtils.showBaseToast("No search for content.");
-        }
-
-
+        initRecyclerView(mLocationList);
     }
 
     /**
@@ -814,11 +804,10 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     private List<LocationModel> mLocationList;
 
     private void initRecyclerView(List<LocationModel> list) {
-        if (mPopupRecyclerView == null) {
-            mPopupRecyclerView = new RecyclerView(getContext());
-            mPopupRecyclerView.setMinimumWidth(mapSearchBar.getWidth() - 4);
+        if (mRecyclerViewAdapter == null) {
+            mLocationList = new ArrayList<>();
             //设置布局管理器
-            mPopupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mSearchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             //设置Adapter
             mRecyclerViewAdapter = new SearchListAdapter(list);
@@ -840,16 +829,16 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                                     places.release();
                                 }
                             });
-                    mPopupWindow.dismiss();
+                    mSearchContentLayout.setVisibility(View.GONE);
                 }
             });
-            mPopupRecyclerView.setAdapter(mRecyclerViewAdapter);
+            mSearchRecyclerView.setAdapter(mRecyclerViewAdapter);
         } else {
             mRecyclerViewAdapter.setKeyword(mKeyword);
             mRecyclerViewAdapter.refresh(list);
         }
-
-
+        mSearchContentLayout.setVisibility(View.VISIBLE);
+        mEmptySearchView.setVisibility((list == null || list.size() == 0) ? View.VISIBLE : View.GONE);
     }
 
     @Override

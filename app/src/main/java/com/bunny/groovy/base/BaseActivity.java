@@ -118,6 +118,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+        try {
+            unregisterEventBus(this);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -165,9 +169,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void unregisterEventBus(Object subscribe) {
-        if (isEventBusRegisted(subscribe)) {
-            EventBus.getDefault().unregister(subscribe);
-        }
+//        if (isEventBusRegisted(subscribe)) {
+        EventBus.getDefault().unregister(subscribe);
+//        }
     }
 
     /**

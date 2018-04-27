@@ -50,7 +50,7 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         //表演者姓名
         holder.mTvName.setText(model.getPerformerName());
         //评分
-        holder.mTvStar.setText(TextUtils.isEmpty(model.getPerformerStarLevel()) ? "0" : model.getPerformerStarLevel());
+        holder.mTvStar.setText(TextUtils.isEmpty(model.getPerformerScore()) ? "0" : model.getPerformerScore());
         //演出厅名字
         holder.mTvVenueName.setText("@" + model.getVenueName());
         //演出厅地址
@@ -58,13 +58,12 @@ public class UserHistoryListAdapter extends RecyclerView.Adapter<UserHistoryList
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //评论
-        holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.INVISIBLE);
         if (TextUtils.isEmpty(model.getPerformerID())) {
             holder.mTvReward.setVisibility(View.GONE);
             holder.mTvReview.setVisibility(View.GONE);
         } else {
             holder.mTvReward.setVisibility(View.VISIBLE);
-            holder.mTvReview.setVisibility(View.VISIBLE);
+            holder.mTvReview.setVisibility(TextUtils.isEmpty(model.getIsEvaluate()) ? View.VISIBLE : View.INVISIBLE);
             holder.mTvReview.setOnClickListener(this);
             holder.mTvReward.setOnClickListener(this);
         }

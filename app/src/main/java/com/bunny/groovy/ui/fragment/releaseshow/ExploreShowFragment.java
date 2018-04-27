@@ -197,6 +197,9 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                             }
                         }
                     }).start();
+                }else {
+                    if (mLocationList != null) mLocationList.clear();
+                    showLocationPopupWindow();
                 }
             } else {
                 showLocationPopupWindow();
@@ -423,6 +426,20 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         }
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 mActivity, R.raw.map_style));
+        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (mMarkerLayout.getVisibility() == View.VISIBLE) {
+                    try {
+                        mMarkerLayout.setVisibility(View.GONE);
+                        mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+                    } catch (Exception e) {
+                    }
+                }
+                Utils.hideSoftInput(getActivity(), etSearch);
+                mSearchContentLayout.setVisibility(View.GONE);
+            }
+        });
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -750,30 +767,19 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     public void afterTextChanged(Editable s) {
     }
 
-    private PopupWindow mPopupWindow;
-    private RecyclerView mPopupRecyclerView;
+    @Bind(R.id.search_recyclerview)
+    RecyclerView mSearchRecyclerView;
+    @Bind(R.id.search_no_data)
+    View mEmptySearchView;
+    @Bind(R.id.search_content_layout)
+    View mSearchContentLayout;
     private SearchListAdapter mRecyclerViewAdapter;
 
     /**
      * 弹出选择号码的对话框
      */
     private void showLocationPopupWindow() {
-        if (mLocationList != null && mLocationList.size() > 0) {
-            initRecyclerView(mLocationList);
-            if (mPopupWindow == null) {
-                mPopupWindow = new PopupWindow(mPopupRecyclerView, searchLayout.getWidth() - 4, etSearch.getWidth() * 3 / 5);
-                mPopupWindow.setOutsideTouchable(true);   // 设置外部可以被点击
-                mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-                mPopupWindow.setFocusable(true);    // 使PopupWindow可以获得焦点
-            }
-            if (!mPopupWindow.isShowing())
-                // 显示在输入框的左下角
-                mPopupWindow.showAsDropDown(searchLayout, 2, 50);
-        } else {
-            UIUtils.showBaseToast("No search for content.");
-        }
-
-
+        initRecyclerView(mLocationList);
     }
 
     /**
@@ -782,12 +788,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
     private List<LocationModel> mLocationList;
 
     private void initRecyclerView(List<LocationModel> list) {
-        if (mPopupRecyclerView == null) {
-            mPopupRecyclerView = new RecyclerView(getContext());
-            mPopupRecyclerView.setMinimumWidth(mapSearchBar.getWidth() - 4);
+        if (mRecyclerViewAdapter == null) {
+            mLocationList = new ArrayList<>();
             //设置布局管理器
-            mPopupRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+            mSearchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             //设置Adapter
             mRecyclerViewAdapter = new SearchListAdapter(list);
             mRecyclerViewAdapter.setKeyword(mKeyword);
@@ -808,16 +812,16 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                                     places.release();
                                 }
                             });
-                    mPopupWindow.dismiss();
+                    mSearchContentLayout.setVisibility(View.GONE);
                 }
             });
-            mPopupRecyclerView.setAdapter(mRecyclerViewAdapter);
+            mSearchRecyclerView.setAdapter(mRecyclerViewAdapter);
         } else {
             mRecyclerViewAdapter.setKeyword(mKeyword);
             mRecyclerViewAdapter.refresh(list);
         }
-
-
+        mSearchContentLayout.setVisibility(View.VISIBLE);
+        mEmptySearchView.setVisibility((list == null || list.size() == 0) ? View.VISIBLE : View.GONE);
     }
 
     @Override

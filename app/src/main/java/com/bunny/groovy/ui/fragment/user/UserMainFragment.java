@@ -159,15 +159,15 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             if (msg.what == 1) {
                 if (!TextUtils.isEmpty(mKeyword) && mGoogleApiClient.isConnected()) {
                     LatLngBounds bounds = null;
-                    if (mLastLocation == null) {
+//                    if (mLastLocation == null) {
+//                        bounds = new LatLngBounds(
+//                                new LatLng(AppConstants.DEFAULT_LATITUDE - 0.02, AppConstants.DEFAULT_LONGITUDE - 0.02),
+//                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
+//                    } else {
                         bounds = new LatLngBounds(
-                                new LatLng(AppConstants.DEFAULT_LATITUDE - 0.02, AppConstants.DEFAULT_LONGITUDE - 0.02),
-                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
-                    } else {
-                        bounds = new LatLngBounds(
-                                new LatLng(mLastLocation.getLatitude() - 0.02, mLastLocation.getLongitude() - 0.02),
-                                new LatLng(mLastLocation.getLatitude() + 0.02, mLastLocation.getLongitude() + 0.02));
-                    }
+                                new LatLng(38.186043, -121.853114),
+                                new LatLng(37.028521,-123.078089));
+//                    }
                     final PendingResult<AutocompletePredictionBuffer> results =
                             Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, mKeyword,
                                     bounds, new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE).build());
@@ -785,8 +785,6 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 
     @Bind(R.id.search_recyclerview)
     RecyclerView mSearchRecyclerView;
-    @Bind(R.id.search_no_data)
-    View mEmptySearchView;
     @Bind(R.id.search_content_layout)
     View mSearchContentLayout;
     private SearchListAdapter mRecyclerViewAdapter;
@@ -837,8 +835,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             mRecyclerViewAdapter.setKeyword(mKeyword);
             mRecyclerViewAdapter.refresh(list);
         }
-        mSearchContentLayout.setVisibility(View.VISIBLE);
-        mEmptySearchView.setVisibility((list == null || list.size() == 0) ? View.VISIBLE : View.GONE);
+        mSearchContentLayout.setVisibility((list == null || list.size() == 0) ? View.GONE : View.VISIBLE);
     }
 
     @Override

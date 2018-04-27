@@ -110,7 +110,11 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
                 if (mVenueType.toString().length() != 0) {
                     mVenueType.append(",");
                 }
-                mVenueType.append(mCheckList[i].getText().toString().trim());
+                if (i == 0) {
+                    mVenueType.append("Exclude 21+");
+                } else {
+                    mVenueType.append(mCheckList[i].getText().toString().trim());
+                }
             }
         }
         Intent intent = new Intent();

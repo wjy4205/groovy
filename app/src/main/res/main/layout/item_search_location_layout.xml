@@ -3,16 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:paddingRight="12dp"
+    android:orientation="vertical">
 
+    <com.bunny.groovy.weidget.HeightLightTextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="16dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textColor="@color/white" />
     <com.bunny.groovy.weidget.HeightLightTextView
         android:id="@+id/tv_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:minWidth="500dp"
+        android:textSize="12sp"
+        android:lines="1"
+        android:ellipsize="end"
         android:textColor="@color/white" />
-
 </LinearLayout>

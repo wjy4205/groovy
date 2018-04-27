@@ -49,7 +49,8 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Lo
     public void onBindViewHolder(LocationHolder holder, int position) {
         LocationModel model = mModelList.get(position);
         //地址
-        holder.mTvAddress.setTextHeighLight(model.name.toString(), mKeyword);
+        holder.mTvName.setTextHeighLight(model.name.toString(), mKeyword);
+        holder.mTvAddress.setTextHeighLight(model.summary.toString(), mKeyword);
         //点击效果
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
@@ -78,10 +79,11 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Lo
     static class LocationHolder extends RecyclerView.ViewHolder {
 
         private final HeightLightTextView mTvAddress;
-
+        private final HeightLightTextView mTvName;
         public LocationHolder(View itemView) {
             super(itemView);
             mTvAddress = itemView.findViewById(R.id.tv_address);
+            mTvName = itemView.findViewById(R.id.tv_name);
         }
     }
 }

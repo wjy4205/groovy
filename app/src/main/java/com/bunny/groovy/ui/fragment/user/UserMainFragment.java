@@ -165,8 +165,9 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 //                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
 //                    } else {
                         bounds = new LatLngBounds(
-                                new LatLng(38.186043, -121.853114),
-                                new LatLng(37.028521,-123.078089));
+                                new LatLng(37.028521,-123.078089),
+                                new LatLng(38.186043, -121.853114)
+                                );
 //                    }
                     final PendingResult<AutocompletePredictionBuffer> results =
                             Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, mKeyword,

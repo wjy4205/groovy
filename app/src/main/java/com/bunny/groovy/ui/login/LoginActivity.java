@@ -159,7 +159,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etPhoneOrEmail.setText("18321320584");
                     break;
                 case AppConstants.USER_TYPE_MUSICIAN:
-                    etPhoneOrEmail.setText("15021370938");
+                    etPhoneOrEmail.setText("18321320584");
                     break;
                 case AppConstants.USER_TYPE_VENUE:
                     etPhoneOrEmail.setText("13476027261");

@@ -411,7 +411,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
         mTvadd.setText(bean.getVenueAddress());
         mTvTime.setText(bean.getPerformTime());
         mTvDistance.setText(bean.getDistance() + "mi");
-        mTvScore.setText(bean.getVenueScore());
+        mTvScore.setText(Utils.getStar(bean.getVenueScore()));
         Glide.with(mActivity).load(bean.getHeadImg()).placeholder(R.drawable.venue_default_photo)
                 .error(R.drawable.venue_default_photo).into(mHeadImg);
     }

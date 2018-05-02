@@ -57,8 +57,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -111,9 +111,9 @@
                         android:id="@+id/user_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="POP , ROCK"
-                        android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="POP , ROCK"
                         android:textColor="@color/white"
                         android:textSize="14dp" />
 
@@ -131,10 +131,10 @@
                         android:id="@+id/user_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:gravity="left"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:layout_marginTop="30dp"
-                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="12dp" />
                 </LinearLayout>
@@ -146,9 +146,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:paddingBottom="40dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="40dp"/>
+                android:paddingRight="16dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -156,11 +156,11 @@
         android:id="@+id/iv_reward"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/details_reward"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="20dp"
-        android:visibility="gone"/>
+        android:src="@drawable/details_reward"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/invite_layout"
@@ -183,8 +183,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingRight="10dp"
             android:layout_weight="1"
+            android:paddingRight="10dp"
             android:src="@drawable/dashang" />
 
         <View

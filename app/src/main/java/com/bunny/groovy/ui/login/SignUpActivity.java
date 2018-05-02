@@ -43,19 +43,22 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
         //检查账户
         String account = etPhoneEmail.getTrimmedString();
         if (TextUtils.isEmpty(account)) {
-            UIUtils.showBaseToast("Please input account!");
+            UIUtils.showBaseToast("Please input email or phone.");
             return;
         }
         String pwd = etPassword.getTrimmedString();
         String pwdAgain = etPasswordAgain.getTrimmedString();
-        if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
+        if (TextUtils.isEmpty(pwd)) {
             UIUtils.showBaseToast("Please input Password.");
             return;
-        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("Password length less than 8.");
+        } else if (pwd.length() < 8) {
+            UIUtils.showBaseToast("The password length less than 8.");
+            return;
+        } else if (TextUtils.isEmpty(pwdAgain)) {
+            UIUtils.showBaseToast("Please input password again.");
             return;
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("Password not same.");
+            UIUtils.showBaseToast("The password entered twice is not the same.");
             return;
         }
 

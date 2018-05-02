@@ -64,7 +64,7 @@ public class ScheduleVenueAdapter extends RecyclerView.Adapter<ScheduleVenueAdap
         holder.ivEdit.setVisibility(View.VISIBLE);
         switch (performState) {
             case "0"://待验证
-                holder.tvStatus.setText("Verification");
+                holder.tvStatus.setText("Verifying");
                 break;
             case "1"://已发布
                 holder.tvStatus.setText("Confirmed");

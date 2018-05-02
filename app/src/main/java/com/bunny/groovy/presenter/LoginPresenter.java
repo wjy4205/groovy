@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.bunny.groovy.api.SubscriberCallBack;
 import com.bunny.groovy.base.BasePresenter;
+import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
@@ -14,10 +15,13 @@ import com.bunny.groovy.ui.login.VenueRegister1Activity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.SharedPreferencesUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.ILoginView;
+
+import org.greenrobot.eventbus.EventBus;
 
 /****************************************
  * 功能说明:  登录控制器
@@ -193,27 +197,74 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                 //登录，判断是否完善了资料
                 response.setUserType(userType);
                 Utils.initLoginData(mView.get(), response);
-                switch (Utils.parseInt(userType)) {
-                    case AppConstants.USER_TYPE_VENUE:
-                        if (response == null || TextUtils.isEmpty(response.getVenueAddress())) {
-                            mView.launchToSetFile();
-                            return;
-                        }
-                        break;
-                    case AppConstants.USER_TYPE_MUSICIAN:
-                        if (response == null || TextUtils.isEmpty(response.getVenueTypeName()) ||
-                                TextUtils.isEmpty(response.getUserType())) {
-                            mView.launchToSetFile();
-                            return;
-                        }
-                        break;
+                int type = Utils.parseInt(userType);
+                if (type == AppConstants.USER_TYPE_MUSICIAN
+                        && TextUtils.isEmpty(response.getZipCode())) {
+                    mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                } else if (type == AppConstants.USER_TYPE_VENUE
+                        && TextUtils.isEmpty(response.getVenueAddress())) {
+                    mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                } else {
+                    //进入主页
+                    mView.launchMainPage(type);
                 }
-                mView.launchMainPage(Utils.parseInt(userType));
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
 
+            }
+        });
+    }
+
+    /**
+     * 检查账户是否可用，和类型
+     */
+    public void checkAccount(final String account) {
+        if (PatternUtils.isUSphonenumber(account) || PatternUtils.isCNPhone(account)) {
+            //手机号
+            VerifyEvent.initSinch(mView.get(), account);
+        } else if (PatternUtils.isValidEmail(account)) {
+            //邮箱
+            addSubscription(apiService.getEmailCheckCode(account, String.valueOf(AppConstants.USER_TYPE_MUSICIAN)),
+                    new SubscriberCallBack<ResultResponse>(mView.get()) {
+                        @Override
+                        protected void onSuccess(ResultResponse response) {
+                            UIUtils.showBaseToast("Code send to your E-mail successfully.");
+                        }
+
+                        @Override
+                        protected void onFailure(ResultResponse response) {
+
+                        }
+
+                        @Override
+                        protected boolean isShowProgress() {
+                            return true;
+                        }
+                    });
+        } else {
+            //不合法，提示用户
+            UIUtils.showBaseToast("Invalid phone or email!");
+            return;
+        }
+    }
+
+    /**
+     * 检验邮箱验证码
+     *
+     * @param code
+     */
+    public void checkEmailCode(String code, final String userAccount) {
+        addSubscription(apiService.chekEmailCodeRegister(code, userAccount), new SubscriberCallBack<ResultResponse>(mView.get()) {
+            @Override
+            protected void onSuccess(ResultResponse response) {
+                EventBus.getDefault().post(AppConstants.Code_Verify_Correct);
+            }
+
+            @Override
+            protected void onFailure(ResultResponse response) {
+                EventBus.getDefault().post(AppConstants.Code_Verify_Invalid);
             }
         });
     }

@@ -26,6 +26,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -126,8 +127,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @OnClick(R.id.iv_login_facebook)
     public void facebookLogin() {
-        getKey();
-//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+//        getKey();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
 
     public static void launch(Context activity, int type) {
@@ -189,6 +190,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     public void onSuccess(LoginResult loginResult) {
                         // App code
                         KLog.a("facebook success :" + loginResult.getAccessToken());
+                        Profile profile = Profile.getCurrentProfile();
+                        String userid = profile.getId();
+                        String name = profile.getName();
+                        mPresenter.checkHadBindUid("1", userid, name, String.valueOf(mUserType));
                     }
 
                     @Override
@@ -287,10 +292,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         System.out.println(tag);
     }
 
-    private String getKey(){
+    private String getKey() {
         try {
             int i = 0;
-            PackageInfo info = getPackageManager().getPackageInfo( getPackageName(),  PackageManager.GET_SIGNATURES);
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 i++;
                 MessageDigest md = MessageDigest.getInstance("SHA");
@@ -298,11 +303,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 String KeyHash = Base64.encodeToString(md.digest(), Base64.DEFAULT);
                 etPassword.setText(KeyHash);
             }
-        }
-        catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
 
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
 
         }
         return null;

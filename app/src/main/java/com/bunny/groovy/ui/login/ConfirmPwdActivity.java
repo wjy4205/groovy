@@ -46,9 +46,9 @@ public class ConfirmPwdActivity extends BaseActivity<ForgetPwdPresenter> impleme
         } else if (TextUtils.isEmpty(pwd_2)) {
             UIUtils.showBaseToast("Please input password again.");
         } else if (pwd_1.length() < 8) {
-            UIUtils.showBaseToast("Password length less than 8.");
+            UIUtils.showBaseToast("The password length less than 8.");
         } else if (!pwd_2.equals(pwd_1)) {
-            UIUtils.showBaseToast("Password not same.");
+            UIUtils.showBaseToast("The password entered twice is not the same.");
         } else {
             if ("0".equals(type)) {//手机
                 //验证code

@@ -47,15 +47,15 @@ public class UserRegister1Activity extends BaseActivity<SingUpPresenter> impleme
         String name = etName.getTrimmedString();
         String account = etPhoneEmail.getTrimmedString();
         if (TextUtils.isEmpty(account)) {
-            UIUtils.showBaseToast("Please input account.");
-        } else if (TextUtils.isEmpty(pwd) || TextUtils.isEmpty(pwdAgain)) {
-            UIUtils.showBaseToast("Please input your code");
-        } else if (pwd.length() < 8 || pwdAgain.length() < 8) {
-            UIUtils.showBaseToast("Password length less than 8.");
+            UIUtils.showBaseToast("Please input booking phone or email.");
+        } else if (TextUtils.isEmpty(pwd)) {
+            UIUtils.showBaseToast("Please input password");
+        }else if (TextUtils.isEmpty(pwdAgain)) {
+            UIUtils.showBaseToast("Please input password again.");
+        } else if (pwd.length() < 8) {
+            UIUtils.showBaseToast("The password length less than 8.");
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("Password not same.");
-        } else if (TextUtils.isEmpty(name)) {
-            UIUtils.showBaseToast("Please input your name.");
+            UIUtils.showBaseToast("The password entered twice is not the same.");
         } else {
             mPresenter.checkAccount(account, true);
         }

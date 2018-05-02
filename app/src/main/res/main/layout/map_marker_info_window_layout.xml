@@ -89,7 +89,7 @@
                         android:paddingRight="8dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
-                        android:text="DETAIL"/>
+                        android:text="DETAILS"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/marker_tv_venue_address"

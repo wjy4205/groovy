@@ -14,7 +14,7 @@
         <TextView
             style="@style/common_text_style"
             android:layout_marginTop="10dp"
-            android:text="TIME"/>
+            android:text="SHOW TIME"/>
 
         <LinearLayout style="@style/input_text_parent">
 

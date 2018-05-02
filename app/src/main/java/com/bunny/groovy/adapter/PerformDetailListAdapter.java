@@ -50,8 +50,8 @@ public class PerformDetailListAdapter extends RecyclerView.Adapter<PerformDetail
         holder.tvTopLine.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
         holder.tvBottomLine.setVisibility(position == mList.size() - 1 ? View.GONE : View.VISIBLE);
         holder.mTvUserName.setText(detail.getPerformerName());
-        holder.mTvScore.setText(Utils.getStar(detail.getPerformerStarLevel()));
-        holder.mTvData.setText(detail.getPerformType() + "  |  " + detail.getPerformDate() + detail.getPerformTime());
+        holder.mTvScore.setText(Utils.getStar(detail.getPerformerScore()));
+        holder.mTvData.setText(detail.getPerformType() + "  |  " + detail.getPerformDate() );
         Glide.with(mContext).load(detail.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
                 .error(R.drawable.musicion_default_photo).into(holder.mIvUserHead);
         holder.itemView.setTag(position);

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bunny.groovy.R;
+import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.listener.VerifyEvent;
@@ -40,8 +41,6 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
     XEditText etAccount;
     @Bind(R.id.bind_account_et_code)
     XEditText etCode;
-    @Bind(R.id.bind_account_et_email)
-    XEditText etEmail;
     private static String logintype;
     private static String uid;
     private static String username;
@@ -54,20 +53,7 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
         String account = etAccount.getTrimmedString();
         switch (view.getId()) {
             case R.id.bind_account_tv_ok:
-                //输入了邮箱
-                if (!TextUtils.isEmpty(etEmail.getTrimmedString())) {
-                    if (PatternUtils.isValidEmail(etEmail.getTrimmedString())) {
-
-                        //加入邮箱参数
-                        if(AppCacheData.getPerformerUserModel()!=null){
-                            AppCacheData.getPerformerUserModel().setUserEmail(etEmail.getTrimmedString());
-                        }
-                    } else {
-                        UIUtils.showBaseToast("Invalid Email.");
-                        return;
-                    }
-                }
-
+                //输入了手机
                 String code = etCode.getTrimmedString();
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(code)) {
                     if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
@@ -75,16 +61,12 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
                         VerifyEvent.verifyCode(code);
                     } else {
                         //非法账户
-                        UIUtils.showBaseToast("Invalid account.");
+                        mPresenter.checkEmailCode(code, account);
                     }
                 }
                 break;
             case R.id.bind_account_tv_send:
-                if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
-                    //发送手机验证码
-                    if (mSendProgress != null && !mSendProgress.isShowing()) mSendProgress.show();
-                    VerifyEvent.initSinch(mActivity, account);
-                }
+                mPresenter.checkAccount(account);
                 break;
         }
     }
@@ -118,7 +100,7 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
         if (mSendProgress != null && mSendProgress.isShowing()) mSendProgress.dismiss();
         switch (result) {
             case AppConstants.Code_Verify_Correct:
-                mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString(),userType);
+                mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString(), userType);
                 break;
             case AppConstants.Code_Verify_Invalid:
                 UIUtils.showBaseToast("Check code incorrect.");
@@ -147,7 +129,14 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
 
     @Override
     public void launchToSetFile() {
-        startActivityForResult(new Intent(mActivity, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+        switch (userType) {
+            case "2":
+                startActivityForResult(new Intent(mActivity, VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                break;
+            default:
+                startActivityForResult(new Intent(mActivity, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+        }
+
     }
 
 

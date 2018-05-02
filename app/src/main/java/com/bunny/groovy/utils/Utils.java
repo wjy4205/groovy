@@ -336,9 +336,12 @@ public class Utils {
      */
     public static void openWebGoogleNavi(Context context, String lat, String lng) {
         try {
-            StringBuilder stringBuilder = new StringBuilder("http://ditu.google.cn/maps?hl=zh&mrt=loc&q=").append(lat).append(",").append(lng);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringBuilder.toString()));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://maps.google.com/maps?"
+                            + "&daddr=" + lat + "," + lng
+                            + "&avoid=highway"
+                            + "&language=zh-CN")
+            );
             context.startActivity(intent);
         } catch (Exception e) {
 
@@ -431,7 +434,7 @@ public class Utils {
         return enable;
     }
 
-    public static void hideSoftInput(Context context, View view){
+    public static void hideSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         // 隐藏软键盘
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

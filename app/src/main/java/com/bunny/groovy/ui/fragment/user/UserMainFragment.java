@@ -726,6 +726,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
             mMarkerLayout.setVisibility(View.GONE);
             if (mGoogleMap != null) {
                 LatLng loc;
+                lastMarkerSelected = -1;
                 for (int i = 0; i < performDetailList.size(); i++) {
                     PerformDetail model = performDetailList.get(i);
                     loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));

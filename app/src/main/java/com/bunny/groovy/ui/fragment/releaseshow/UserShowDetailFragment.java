@@ -157,7 +157,7 @@ public class UserShowDetailFragment extends BaseFragment {
     public static String KEY_SHOW_BEAN = "key_show_bean";
 
     public static void launch(Context from, PerformDetail performDetail, boolean history) {
-        if(performDetail == null || TextUtils.isEmpty(performDetail.getPerformID())) return;
+        if (performDetail == null || TextUtils.isEmpty(performDetail.getPerformID())) return;
         model = performDetail;
 
         isHistory = history;
@@ -185,9 +185,9 @@ public class UserShowDetailFragment extends BaseFragment {
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
-            if(!TextUtils.isEmpty(model.getDistance())){
+            if (!TextUtils.isEmpty(model.getDistance())) {
                 mTvDistance.setText(model.getDistance());
-            }else {
+            } else {
                 mDistanceLinearLayout.setVisibility(View.GONE);
             }
             mTvDesc.setText(model.getPerformDesc());
@@ -226,23 +226,23 @@ public class UserShowDetailFragment extends BaseFragment {
                 mGoView.setVisibility(View.GONE);
                 mNextView.setText("MY EVALUATION");
                 if (!TextUtils.isEmpty(model.getEvaluateContent())) {
+                    MusicianDetailModel.PerformViewer performViewer = new MusicianDetailModel.PerformViewer();
+                    performViewer.evaluateContent = model.getEvaluateContent();
+                    performViewer.evaluateDate = model.getEvaluateDate();
+                    performViewer.performerStarLevel = model.getPerformerStarLevel();
+                    performViewer.userName = model.getPerformerName();
+                    List<MusicianDetailModel.PerformViewer> list = new ArrayList<>();
+                    list.add(performViewer);
                     if (mMusicianAdapter == null) {
-                        MusicianDetailModel.PerformViewer performViewer = new MusicianDetailModel.PerformViewer();
-                        performViewer.evaluateContent = model.getEvaluateContent();
-                        performViewer.evaluateDate = model.getEvaluateDate();
-                        performViewer.performerStarLevel = model.getPerformerStarLevel();
-                        performViewer.userName = model.getPerformerName();
-                        List<MusicianDetailModel.PerformViewer> list = new ArrayList<>();
-                        list.add(performViewer);
                         mMusicianAdapter = new MusicianScheduleAdapter(list);
                         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
                         mRecyclerView.setAdapter(mMusicianAdapter);
                     } else {
-                        mAdapter.refresh(model.getPerformList());
+                        mMusicianAdapter.refresh(list);
                     }
                 }
             } else {
-                mNextView.setVisibility(View.GONE);
+                mNextView.setText("COMING UP NEXT");
                 if (mAdapter == null) {
                     mAdapter = new PerformDetailListAdapter(model.getPerformList());
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));

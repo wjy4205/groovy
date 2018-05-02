@@ -54,7 +54,7 @@ public class NearByOppListAdapter extends RecyclerView.Adapter<NearByOppListAdap
                 .error(R.drawable.venue_default_photo)
                 .into(holder.mIvHead);
         holder.mTvName.setText(model.getVenueName());
-        holder.mTvStar.setText(model.getVenueScore());
+        holder.mTvStar.setText(Utils.getStar(model.getVenueScore()));
         holder.mTvAddress.setText(model.getVenueAddress());
         holder.mTvDistance.setText(model.getDistance() + "mi");
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());

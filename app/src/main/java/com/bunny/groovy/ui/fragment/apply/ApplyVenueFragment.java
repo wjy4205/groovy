@@ -47,7 +47,7 @@ import butterknife.OnClick;
  * Author: Created by bayin on 2018/1/3.
  ****************************************/
 
-public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView,TimePopupWindow.OnTimeConfirmListener {
+public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implements IApplyVenueView, TimePopupWindow.OnTimeConfirmListener {
 
     public static String KEY_VENUE_BEAN = "KEY_VENUE_BEAN";
     private static VenueModel sVenueBean;
@@ -108,13 +108,16 @@ public class ApplyVenueFragment extends BaseFragment<ApplyVenuePresenter> implem
     public void apply() {
         UIUtils.hideSoftInput(etStyle);
         //拦截判空
-        if (TextUtils.isEmpty(etDesc.getText().toString())) {
-            UIUtils.showBaseToast("Please input description.");
+        if (TextUtils.isEmpty(etTime.getText().toString())) {
+            UIUtils.showBaseToast("Please input show time.");
             return;
         }
-
         if (TextUtils.isEmpty(etStyle.getText().toString())) {
-            UIUtils.showBaseToast("Please choose perform style.");
+            UIUtils.showBaseToast("Please choose show genre.");
+            return;
+        }
+        if (TextUtils.isEmpty(etDesc.getText().toString())) {
+            UIUtils.showBaseToast("Please input description.");
             return;
         }
 

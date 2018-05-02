@@ -53,7 +53,7 @@ public class WalletAdapter extends RecyclerView.Adapter<WalletAdapter.WalletHold
                 holder.tvAmount.setText("+"+walletBean.getCost());
                 break;
             case "5":
-                holder.tvType.setText("SPOTLIGHT");
+                holder.tvType.setText("SPOTLIGHT PURCHASE");
                 holder.tvAmount.setText("-"+walletBean.getCost());
                 break;
         }

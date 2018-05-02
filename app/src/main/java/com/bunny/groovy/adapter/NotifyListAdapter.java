@@ -141,13 +141,13 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         holder.tvPerformDate.setText(showModel.getPerformDate() + " " + showModel.getPerformTime());
         holder.btEmail.setVisibility(TextUtils.isEmpty(showModel.getVenueEmail()) ? View.GONE : View.VISIBLE);
         //onclick
-        holder.btDetails.setTag(position);
+        holder.itemView.setTag(position);
         holder.btConfirm.setTag(position);
         holder.btReject.setTag(position);
         holder.btEmail.setTag(position);
         holder.btPhone.setTag(position);
 
-        holder.btDetails.setOnClickListener(this);
+        holder.itemView.setOnClickListener(this);
         holder.btConfirm.setOnClickListener(this);
         holder.btReject.setOnClickListener(this);
         holder.btEmail.setOnClickListener(this);
@@ -159,17 +159,6 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
         int pos = (int) v.getTag();
         ShowModel showModel = mList.get(pos);
         switch (v.getId()) {
-            case R.id.item_notification_tv_details://详情
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, showModel);
-                if (mTYPE == 1) {
-                    InviteDetailsFragment.launch(mContext, bundle);
-                } else {
-                    bundle.putInt("type", mTYPE);
-                    ShowDetailFragment.launch(mContext, bundle);
-                }
-
-                break;
             case R.id.item_notification_tv_confirm://同意
                 Bundle arg = new Bundle();
                 arg.putParcelable(ConfirmInviteFragment.KEY_VENUE_BEAN, showModel);
@@ -185,6 +174,15 @@ public class NotifyListAdapter extends RecyclerView.Adapter<NotifyListAdapter.No
             case R.id.item_notification_iv_phone://打电话
                 Utils.CallPhone(mContext, showModel.getPhoneNumber());
                 break;
+            default:
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(ShowDetailFragment.KEY_SHOW_BEAN, showModel);
+                if (mTYPE == 1) {
+                    InviteDetailsFragment.launch(mContext, bundle);
+                } else {
+                    bundle.putInt("type", mTYPE);
+                    ShowDetailFragment.launch(mContext, bundle);
+                }
         }
     }
 

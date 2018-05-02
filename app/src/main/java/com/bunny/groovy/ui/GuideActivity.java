@@ -37,7 +37,7 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
     private static final int[] LAYOUT_RES;
 
     static {
-        LAYOUT_RES = new int[]{R.drawable.guide_1, R.drawable.guide_2, R.drawable.guide_3};
+        LAYOUT_RES = new int[]{R.drawable.loding1, R.drawable.loding2, R.drawable.loding3};
     }
 
     public static void launch(Context activity) {

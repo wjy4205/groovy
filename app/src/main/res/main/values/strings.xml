@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Groovy</string>
+    <string name="app_name">Show-Go</string>
     <string name="next_show_default_info">RECRUIT, INVITE, OR DISCOVER MUSICIANS \n FROM THE BOOKINGS MENU OR CLICK \n THE "+ ICON" TO MANUALLY RELEASE \n A PERFORMANCE.</string>
 
     <string name="facebook_app_id">1824124224267047</string>

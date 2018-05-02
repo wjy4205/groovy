@@ -797,20 +797,26 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
             mRecyclerViewAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    LocationModel model = mLocationList.get(position);
-                    Places.GeoDataApi.getPlaceById(mGoogleApiClient, model.id)
-                            .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                                @Override
-                                public void onResult(PlaceBuffer places) {
-                                    if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                                        final Place myPlace = places.get(0);
-                                        mLastLocation.setLatitude(myPlace.getLatLng().latitude);
-                                        mLastLocation.setLongitude(myPlace.getLatLng().longitude);
-                                        updateCurrentLocation();
+                    try {
+                        LocationModel model = mLocationList.get(position);
+                        Places.GeoDataApi.getPlaceById(mGoogleApiClient, model.id)
+                                .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                                    @Override
+                                    public void onResult(PlaceBuffer places) {
+                                        try {
+                                            if(places == null)UIUtils.showBaseToast("Get location failed.");
+                                            if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                                                final Place myPlace = places.get(0);
+                                                mLastLocation.setLatitude(myPlace.getLatLng().latitude);
+                                                mLastLocation.setLongitude(myPlace.getLatLng().longitude);
+                                                updateCurrentLocation();
+                                            }
+                                            places.release();
+                                        }catch (Exception e){}
                                     }
-                                    places.release();
-                                }
-                            });
+                                });
+                    }catch (Exception e){}
+
                     mSearchContentLayout.setVisibility(View.GONE);
                 }
             });

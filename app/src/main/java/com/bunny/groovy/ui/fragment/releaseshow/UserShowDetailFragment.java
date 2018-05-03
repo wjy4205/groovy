@@ -240,6 +240,8 @@ public class UserShowDetailFragment extends BaseFragment {
                     } else {
                         mMusicianAdapter.refresh(list);
                     }
+                }else {
+                    mNextView.setVisibility(View.GONE);
                 }
             } else {
                 mNextView.setText("COMING UP NEXT");

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bunny.groovy.R;
 import com.bunny.groovy.model.MusicianDetailModel;
+import com.bunny.groovy.utils.Utils;
+import com.bunny.groovy.weidget.StarGradeView;
 
 import java.util.List;
 
@@ -45,7 +47,8 @@ public class MusicianScheduleAdapter extends RecyclerView.Adapter<MusicianSchedu
         holder.tvTopLine.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
         holder.tvBottomLine.setVisibility(position == mList.size() - 1 ? View.GONE : View.VISIBLE);
         holder.mTvUserName.setText(performViewer.userName);
-        holder.mTvReplyData.setText(performViewer.performerStarLevel + "  |  " + performViewer.evaluateContent);
+        holder.mTvReplyData.setText(performViewer.evaluateContent);
+        holder.mStarView.setGrade(Utils.parseInt(performViewer.performerStarLevel));
         if (!TextUtils.isEmpty(performViewer.evaluateDate)) {
             holder.mTvReplyTime.setText(performViewer.evaluateDate);
         }
@@ -62,6 +65,7 @@ public class MusicianScheduleAdapter extends RecyclerView.Adapter<MusicianSchedu
         private TextView mTvUserName;
         private TextView mTvReplyTime;
         private TextView mTvReplyData;
+        private StarGradeView mStarView;
         private View tvBottomLine, tvTopLine;
 
 
@@ -70,6 +74,7 @@ public class MusicianScheduleAdapter extends RecyclerView.Adapter<MusicianSchedu
             mTvUserName = itemView.findViewById(R.id.item_musician_reply_user_name);
             mTvReplyTime = itemView.findViewById(R.id.item_musician_reply_time);
             mTvReplyData = itemView.findViewById(R.id.item_musician_reply_data);
+            mStarView = itemView.findViewById(R.id.star_grade);
             tvBottomLine = itemView.findViewById(R.id.tvBottomLine);
             tvTopLine = itemView.findViewById(R.id.tvTopLine);
         }

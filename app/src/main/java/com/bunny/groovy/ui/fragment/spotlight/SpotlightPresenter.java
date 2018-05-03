@@ -30,6 +30,7 @@ public class SpotlightPresenter extends BasePresenter<ISpotLightView> {
                 UIUtils.showBaseToast("success");
                 //更新用户数据
                 updateUserData();
+
             }
 
             @Override
@@ -45,12 +46,21 @@ public class SpotlightPresenter extends BasePresenter<ISpotLightView> {
                 ? apiService.getPerformerInfo() : apiService.getVenueDetailInfo(), new SubscriberCallBack<PerformerUserModel>(mView.get()) {
             @Override
             protected void onSuccess(PerformerUserModel response) {
-                AppCacheData.setPerformerUserModel(response);
+                try {
+                    AppCacheData.setPerformerUserModel(response);
+                    mView.get().finish();
+                }catch (Exception e){}
+
             }
 
             @Override
             protected void onFailure(ResultResponse response) {
 
+            }
+
+            @Override
+            protected boolean isShowProgress() {
+                return true;
             }
         });
     }

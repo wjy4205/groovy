@@ -12,8 +12,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.braintreepayments.api.BraintreeFragment;
+import com.braintreepayments.api.PayPal;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.api.exceptions.BraintreeError;
+import com.braintreepayments.api.exceptions.ErrorWithResponse;
+import com.braintreepayments.api.exceptions.InvalidArgumentException;
+import com.braintreepayments.api.interfaces.BraintreeCancelListener;
+import com.braintreepayments.api.interfaces.BraintreeErrorListener;
+import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
+import com.braintreepayments.api.models.PayPalRequest;
+import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.bunny.groovy.R;
 import com.bunny.groovy.adapter.TransactionRecordListAdapter;
 import com.bunny.groovy.base.BaseFragment;
@@ -86,11 +96,52 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
         return mActivity;
     }
 
+    private BraintreeFragment mBraintreeFragment;
     @Override
     public void onTokenGet(String token) {
         DropInRequest dropInRequest = new DropInRequest()
                 .clientToken(token);
         startActivityForResult(dropInRequest.getIntent(mActivity), REQUEST_PAYPAL_AUTHORITY);
+        try {
+            mBraintreeFragment = BraintreeFragment.newInstance(getActivity(), token);
+            mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
+                @Override
+                public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+                    String nonce = paymentMethodNonce.getNonce();
+                    doRewardPayPal(nonce);
+                }
+            });
+            mBraintreeFragment.addListener(new BraintreeCancelListener() {
+                @Override
+                public void onCancel(int requestCode) {
+
+                }
+            });
+            mBraintreeFragment.addListener(new BraintreeErrorListener() {
+                @Override
+                public void onError(Exception error) {
+                    if (error instanceof ErrorWithResponse) {
+                        ErrorWithResponse errorWithResponse = (ErrorWithResponse) error;
+                        BraintreeError cardErrors = errorWithResponse.errorFor("creditCard");
+                        if (cardErrors != null) {
+                            // There is an issue with the credit card.
+                            BraintreeError expirationMonthError = cardErrors.errorFor("expirationMonth");
+                            if (expirationMonthError != null) {
+                                // There is an issue with the expiration month.
+                            }
+                        }
+                    }
+                }
+            });
+            PayPal.authorizeAccount(mBraintreeFragment);
+            PayPalRequest request = new PayPalRequest(String.valueOf(mAmount))
+                    .currencyCode("USD")
+                    .intent(PayPalRequest.INTENT_AUTHORIZE);
+            PayPal.requestOneTimePayment(mBraintreeFragment, request);
+            // mBraintreeFragment is ready to use!
+        } catch (InvalidArgumentException e) {
+            // There was an issue with your authorization string.
+        }
     }
 
     @Override
@@ -233,14 +284,14 @@ public class RewardFragment extends BaseFragment<RewardPresenter> implements IRe
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_PAYPAL_AUTHORITY:
-                if (resultCode == Activity.RESULT_OK) {
-                    DropInResult dropInResult = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                    if (dropInResult == null || dropInResult.getPaymentMethodNonce() == null) {
-                        return;
-                    }
-                    String nonce = dropInResult.getPaymentMethodNonce().getNonce();
-                    doRewardPayPal(nonce);
-                }
+//                if (resultCode == Activity.RESULT_OK) {
+//                    DropInResult dropInResult = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+//                    if (dropInResult == null || dropInResult.getPaymentMethodNonce() == null) {
+//                        return;
+//                    }
+//                    String nonce = dropInResult.getPaymentMethodNonce().getNonce();
+//                    doRewardPayPal(nonce);
+//                }
                 break;
         }
     }

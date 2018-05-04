@@ -7,16 +7,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.bunny.groovy.R;
-import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.manager.LoginBlock;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.LoginPresenter;
-import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
-import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.PatternUtils;
 import com.bunny.groovy.utils.UIUtils;
@@ -47,28 +44,27 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
     private static String userType;
     private ProgressHUD mSendProgress;
 
-    @OnClick({R.id.bind_account_tv_ok, R.id.bind_account_tv_send})
-    public void onViewClick(View view) {
-        UIUtils.hideSoftInput(view);
+    @OnClick(R.id.bind_account_tv_ok)
+    public void sendCode() {
+        UIUtils.hideSoftInput(etCode);
         String account = etAccount.getTrimmedString();
-        switch (view.getId()) {
-            case R.id.bind_account_tv_ok:
-                //输入了手机
-                String code = etCode.getTrimmedString();
-                if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(code)) {
-                    if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
-                        //手机账户
-                        VerifyEvent.verifyCode(code);
-                    } else {
-                        //非法账户
-                        mPresenter.checkEmailCode(code, account);
-                    }
-                }
-                break;
-            case R.id.bind_account_tv_send:
-                mPresenter.checkAccount(account);
-                break;
+        String code = etCode.getTrimmedString();
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(code)) {
+            if (PatternUtils.isCNPhone(account) || PatternUtils.isUSphonenumber(account)) {
+                //手机账户
+                VerifyEvent.verifyCode(code);
+            } else {
+                //非法账户
+                mPresenter.checkEmailCode(code, account);
+            }
         }
+    }
+
+    @OnClick(R.id.bind_account_tv_send)
+    public void checkAccount() {
+        UIUtils.hideSoftInput(etAccount);
+        String account = etAccount.getTrimmedString();
+        mPresenter.checkAccount(account);
     }
 
     public static void launch(Activity from, Bundle bundle) {

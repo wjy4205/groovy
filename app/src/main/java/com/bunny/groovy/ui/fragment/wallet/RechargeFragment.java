@@ -87,6 +87,7 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
                 @Override
                 public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
                     String nonce = paymentMethodNonce.getNonce();
+                    mPresenter.recharge(String.valueOf(mAmount), nonce);
                 }
             });
             mBraintreeFragment.addListener(new BraintreeCancelListener() {
@@ -111,7 +112,7 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
                     }
                 }
             });
-            PayPal.authorizeAccount(mBraintreeFragment);
+//            PayPal.authorizeAccount(mBraintreeFragment);
             PayPalRequest request = new PayPalRequest(String.valueOf(mAmount))
                     .currencyCode("USD")
                     .intent(PayPalRequest.INTENT_AUTHORIZE);

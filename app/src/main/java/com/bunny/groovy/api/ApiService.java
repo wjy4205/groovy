@@ -326,7 +326,7 @@ public interface ApiService {
 
     //第三方登陆
     @FormUrlEncoded
-    @POST("FrontUserController/checkAccountNotLogin")
+    @POST("FrontUserController/checkAccountIOSNotLogin")
     Observable<ResultResponse<PerformerUserModel>> socialAccountLogin(@Field("loginType") String loginType,
                                                                       @Field("uid") String uid,
                                                                       @Field("userName") String userName,

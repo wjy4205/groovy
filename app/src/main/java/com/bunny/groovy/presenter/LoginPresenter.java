@@ -137,12 +137,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             @Override
             protected void onFailure(ResultResponse response) {
                 //已绑定其他类型账户
-//                Bundle bundle = new Bundle();
-//                bundle.putString("username", username);
-//                bundle.putString("logintype", loginType);
-//                bundle.putString("uid", uid);
-//                bundle.putString("userType", userType);
-//                BindAccountFragment.launch(mView.get(), bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                bundle.putString("logintype", loginType);
+                bundle.putString("uid", uid);
+                bundle.putString("userType", userType);
+                BindAccountFragment.launch(mView.get(), bundle);
             }
 
             @Override

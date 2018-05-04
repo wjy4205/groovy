@@ -6,14 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bunny.groovy.R;
 
 import java.util.concurrent.ExecutionException;
@@ -30,7 +29,7 @@ public class StarGradeView extends View {
     private int mGrade = 0;
     private float mStarSpace = 15;
     private boolean mChangeGradeEnable = false;
-    private static Bitmap sFullStar, sStrokeStar;
+    private Bitmap sFullStar, sStrokeStar;
     private Context mContext;
     private PaintFlagsDrawFilter mPaintFlagsDrawFilter;
 
@@ -76,7 +75,7 @@ public class StarGradeView extends View {
                         sFullStar = Glide.with(mContext)
                                 .load(R.drawable.icon_review_selected)
                                 .asBitmap()
-                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .into((int)mStarWidth, (int)mStarHeight)
                                 .get();
                         needRefresh = true;
@@ -86,6 +85,7 @@ public class StarGradeView extends View {
                         sStrokeStar = Glide.with(mContext)
                                 .load(R.drawable.icon_review)
                                 .asBitmap() //必须
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .into((int)mStarWidth, (int)mStarHeight)
                                 .get();
                         needRefresh = true;

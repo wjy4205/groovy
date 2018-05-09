@@ -16,6 +16,7 @@ import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.presenter.SingUpPresenter;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
@@ -99,6 +100,8 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         //event bus
         registerEventBus(this);
     }
+
+
 
 
     @Override

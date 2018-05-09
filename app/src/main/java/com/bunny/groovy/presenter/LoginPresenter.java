@@ -11,6 +11,7 @@ import com.bunny.groovy.model.GlobalModel;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.login.BindAccountFragment;
+import com.bunny.groovy.ui.login.VenueFile1Activity;
 import com.bunny.groovy.ui.login.VenueRegister1Activity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
@@ -118,7 +119,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                     } else if (type == AppConstants.USER_TYPE_VENUE
                             && TextUtils.isEmpty(response.getVenueAddress())) {
-                        mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                        mView.get().startActivityForResult(new Intent(mView.get(), VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                     } else {
                         //进入主页
                         mView.launchMainPage(type);
@@ -203,7 +204,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     mView.get().startActivityForResult(new Intent(mView.get(), SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                 } else if (type == AppConstants.USER_TYPE_VENUE
                         && TextUtils.isEmpty(response.getVenueAddress())) {
-                    mView.get().startActivityForResult(new Intent(mView.get(), VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+                    mView.get().startActivityForResult(new Intent(mView.get(), VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
                 } else {
                     //进入主页
                     mView.launchMainPage(type);

@@ -10,6 +10,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.ui.MainActivity;
 import com.bunny.groovy.ui.UserMainActivity;
 import com.bunny.groovy.ui.VenueMainActivity;
+import com.bunny.groovy.ui.login.VenueFile1Activity;
 import com.bunny.groovy.ui.login.VenueRegister1Activity;
 import com.bunny.groovy.ui.setfile.SetFile1Activity;
 import com.bunny.groovy.utils.AppCacheData;
@@ -91,7 +92,7 @@ public class LoginBlock {
             context.startActivityForResult(new Intent(context, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
         } else if (type == AppConstants.USER_TYPE_VENUE
                 && TextUtils.isEmpty(userInfo.getVenueTypeName())) {
-            context.startActivityForResult(new Intent(context, VenueRegister1Activity.class), AppConstants.REQUESTCODE_SETFILE);
+            context.startActivityForResult(new Intent(context, VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
         } else {
             //进入主页
             handleCheckSuccess(String.valueOf(type));

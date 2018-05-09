@@ -41,6 +41,15 @@ public class VenueFile2Activity extends BaseActivity<VenueRegisterPresenter> imp
     }
 
     @Override
+    public void initView() {
+        super.initView();
+        String facebookId = AppCacheData.getPerformerUserModel().getFacebookUID();
+        if(!TextUtils.isEmpty(facebookId)) etFaceBook.setText(facebookId);
+        String twitterAccount = AppCacheData.getPerformerUserModel().getTwitterAccount();
+        if(!TextUtils.isEmpty(twitterAccount)) etTwitter.setText(twitterAccount);
+    }
+
+    @Override
     public void nextStep() {
 
     }

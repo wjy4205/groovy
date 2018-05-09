@@ -83,7 +83,7 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
 
         RequestBody build = builder.build();
 
-        addSubscription(apiService.updatePerformerInfoFirstLogin(build), new SubscriberCallBack<Object>(mView.get()) {
+        addSubscription(apiService.updateVenueInfo(build), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;
@@ -161,6 +161,5 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
             protected void onFailure(ResultResponse response) {
             }
         });
-
     }
 }

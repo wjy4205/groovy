@@ -45,7 +45,7 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
     private ProgressHUD mSendProgress;
 
     @OnClick(R.id.bind_account_tv_ok)
-    public void sendCode() {
+    public void bind() {
         UIUtils.hideSoftInput(etCode);
         String account = etAccount.getTrimmedString();
         String code = etCode.getTrimmedString();
@@ -64,6 +64,9 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
     public void checkAccount() {
         UIUtils.hideSoftInput(etAccount);
         String account = etAccount.getTrimmedString();
+        if (PatternUtils.isUSphonenumber(account) || PatternUtils.isCNPhone(account)) {
+            mSendProgress.show();
+        }
         mPresenter.checkAccount(account);
     }
 
@@ -82,7 +85,7 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
             ((FragmentContainerActivity) mActivity).getToolBar().setVisibility(View.GONE);
 
         //验证码dialog
-        mSendProgress = ProgressHUD.show(mActivity, "sending...", true, true, null);
+        mSendProgress = ProgressHUD.show(mActivity, "", true, true, null);
         registerEventBus(this);
     }
 
@@ -96,7 +99,9 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
         if (mSendProgress != null && mSendProgress.isShowing()) mSendProgress.dismiss();
         switch (result) {
             case AppConstants.Code_Verify_Correct:
-                mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString(), userType);
+                if(!TextUtils.isEmpty(etCode.getTrimmedString())){
+                    mPresenter.socialLogin(logintype, uid, username, etAccount.getTrimmedString(), userType);
+                }
                 break;
             case AppConstants.Code_Verify_Invalid:
                 UIUtils.showBaseToast("Check code incorrect.");
@@ -104,6 +109,8 @@ public class BindAccountFragment extends BaseFragment<LoginPresenter> implements
             case AppConstants.Code_Send_ServerError:
                 UIUtils.showBaseToast("Server error!");
                 break;
+            case AppConstants.Code_Send_Success:
+
         }
     }
 

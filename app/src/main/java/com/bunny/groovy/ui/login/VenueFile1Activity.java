@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bunny.groovy.BuildConfig;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
@@ -105,7 +106,12 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
             UIUtils.showBaseToast("GooglePlay services not available!");
-
+        }
+        if (BuildConfig.DEBUG) {
+            mVenueAddress.setText("中国上海市浦东新区");
+            mLongitude = "121.6000";
+            mLatitude = "31.2200";
+            mPlaceId = "ChIJG9rV8LJ3sjURgCSirgwJAGM";
         }
     }
 
@@ -143,20 +149,21 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
             UIUtils.showBaseToast("Please input address.");
         } else if (TextUtils.isEmpty(mHeadUrl)) {
             UIUtils.showBaseToast("Please select head image.");
+        }else {
+            //保存数据
+            AppCacheData.getFileMap().put("venueTypeName", mVenueService.getTrimmedString());
+            AppCacheData.getFileMap().put("longitude", mLongitude);
+            AppCacheData.getFileMap().put("latitude", mLatitude);
+            AppCacheData.getFileMap().put("placeID", mPlaceId);
+            AppCacheData.getFileMap().put("userEmail", mVenueEmail.getTrimmedString());
+            AppCacheData.getFileMap().put("phoneNumber", mVenuePhone.getTrimmedString());
+            AppCacheData.getFileMap().put("userID", AppCacheData.getPerformerUserModel().getUserID());
+            if (!TextUtils.isEmpty(mWebsite.getTrimmedString())) {
+                AppCacheData.getFileMap().put("webSiteAddress", mWebsite.getTrimmedString());
+            }
+            AppCacheData.getFileMap().put("imgfile", mHeadUrl);
+            startActivityForResult(new Intent(this, VenueFile2Activity.class), 2);
         }
-        //保存数据
-        AppCacheData.getFileMap().put("venueTypeName", mVenueService.getTrimmedString());
-        AppCacheData.getFileMap().put("longitude", mLongitude);
-        AppCacheData.getFileMap().put("latitude", mLatitude);
-        AppCacheData.getFileMap().put("placeID", mPlaceId);
-        AppCacheData.getFileMap().put("userEmail", mVenueEmail.getTrimmedString());
-        AppCacheData.getFileMap().put("phoneNumber", mVenuePhone.getTrimmedString());
-        AppCacheData.getFileMap().put("userID", AppCacheData.getPerformerUserModel().getUserID());
-        if (!TextUtils.isEmpty(mWebsite.getTrimmedString())) {
-            AppCacheData.getFileMap().put("webSiteAddress", mWebsite.getTrimmedString());
-        }
-        AppCacheData.getFileMap().put("headUrl", mHeadUrl);
-        startActivityForResult(new Intent(this, VenueFile2Activity.class), 2);
     }
 
     @Override

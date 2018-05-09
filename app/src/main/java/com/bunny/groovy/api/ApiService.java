@@ -417,6 +417,10 @@ public interface ApiService {
     @POST("FrontUserController/updatePerformerInfoFirstLogin")
     Observable<ResultResponse<Object>> updatePerformerInfoFirstLogin(@Body RequestBody body);
 
+    //演出厅：第三方登陆后首次登陆完善表演者信息
+    @POST("FrontUserController/updateVenueInfoFirstLogin")
+    Observable<ResultResponse<Object>> updateVenueInfoFirstLogin(@Body RequestBody body);
+
     //获取下一场演出信息，包含演出详情
     @POST("VenueBookingsController/getNextPerformInfo")
     Observable<ResultResponse<VenueShowModel>> getNextPerformInfo();

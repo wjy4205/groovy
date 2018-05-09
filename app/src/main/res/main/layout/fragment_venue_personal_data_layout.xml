@@ -21,7 +21,6 @@
                 android:id="@+id/personal_headview"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/venue_default_photo"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
 

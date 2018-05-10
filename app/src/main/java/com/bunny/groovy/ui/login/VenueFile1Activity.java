@@ -19,6 +19,7 @@ import com.bunny.groovy.BuildConfig;
 import com.bunny.groovy.R;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.PermissionListener;
+import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.presenter.SingUpPresenter;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
@@ -55,6 +56,8 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
     XEditText mVenueAddress;
     @Bind(R.id.venue_info_booking_email)
     XEditText mVenueEmail;
+    @Bind(R.id.venue_info_booking_phone)
+    XEditText mVenueTelPhone;
     private String mHeadUrl;
     private PopupWindow popupWindow;
     private RadioGroup mRadioGroup;
@@ -87,6 +90,21 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
                 UIUtils.showBaseToast("Select picture denied.");
             }
         });
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        PerformerUserModel model = AppCacheData.getPerformerUserModel();
+        if (model != null) {
+            if (!TextUtils.isEmpty(model.getTelephone())) {
+                mVenueTelPhone.setText(model.getTelephone());
+                mVenueTelPhone.setEnabled(false);
+            } else if (!TextUtils.isEmpty(model.getUserEmail())) {
+                mVenueEmail.setText(model.getUserEmail());
+                mVenueEmail.setEnabled(false);
+            }
+        }
     }
 
     @OnClick(R.id.venue_info_service)
@@ -142,6 +160,8 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
         //拦截
         if (TextUtils.isEmpty(mHeadUrl)) {
             UIUtils.showBaseToast("Please select head image.");
+        } else if (TextUtils.isEmpty(mVenueTelPhone.getTrimmedString())) {
+            UIUtils.showBaseToast("Please input venue telephone.");
         } else if (TextUtils.isEmpty(mVenueEmail.getTrimmedString())) {
             UIUtils.showBaseToast("Please input venue email.");
 //        } else if (TextUtils.isEmpty(mVenueService.getTrimmedString())) {
@@ -152,6 +172,7 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
             UIUtils.showBaseToast("Please input address.");
         } else {
             //保存数据
+            AppCacheData.getFileMap().put("telephone", mVenueTelPhone.getTrimmedString());
             AppCacheData.getFileMap().put("userEmail", mVenueEmail.getTrimmedString());
             AppCacheData.getFileMap().put("phoneNumber", mVenuePhone.getTrimmedString());
             AppCacheData.getFileMap().put("venueTypeName", mVenueService.getTrimmedString());

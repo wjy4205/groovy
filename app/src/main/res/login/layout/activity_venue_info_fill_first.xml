@@ -50,6 +50,13 @@
     </FrameLayout>
 
     <com.xw.repo.XEditText
+        android:id="@+id/venue_info_booking_phone"
+        style="@style/base_edit_text_style"
+        android:layout_marginTop="20dp"
+        android:hint="@string/venue_register_booking_phone"
+        app:x_disableEmoji="true"
+        app:x_importantWord="true" />
+    <com.xw.repo.XEditText
         android:id="@+id/venue_info_booking_email"
         style="@style/base_edit_text_style"
         android:layout_marginTop="20dp"

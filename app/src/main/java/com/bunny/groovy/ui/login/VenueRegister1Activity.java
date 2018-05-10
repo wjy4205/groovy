@@ -102,8 +102,6 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
     }
 
 
-
-
     @Override
     public Activity get() {
         return mWeakReference.get();
@@ -157,13 +155,13 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         String address = mAddress.getText().toString().trim();
         if (TextUtils.isEmpty(headImagePath)) {
             UIUtils.showBaseToast("Please select your head image.");
-        }else if (TextUtils.isEmpty(account)) {
+        } else if (TextUtils.isEmpty(account)) {
             UIUtils.showBaseToast("Please input booking phone or email.");
-        }else if (TextUtils.isEmpty(pwd)) {
+        } else if (TextUtils.isEmpty(pwd)) {
             UIUtils.showBaseToast("Please input password.");
         } else if (TextUtils.isEmpty(pwdAgain)) {
             UIUtils.showBaseToast("Please input password again.");
-        }else if (pwd.length() < 8) {
+        } else if (pwd.length() < 8) {
             UIUtils.showBaseToast("The password length less than 8.");
         } else if (!pwd.equals(pwdAgain)) {
             UIUtils.showBaseToast("The password entered twice is not the same.");
@@ -237,6 +235,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 mAddress.setText(place.getAddress());
+                mPublicName.setText(place.getName());
                 mLongitude = String.valueOf(place.getLatLng().longitude);
                 mLatitude = String.valueOf(place.getLatLng().latitude);
                 mPlaceId = String.valueOf(place.getId());

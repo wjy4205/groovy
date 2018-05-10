@@ -67,7 +67,7 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
         for (Map.Entry<String, String> entry :
                 entries) {
             //文本参数
-            if (!TextUtils.isEmpty(entry.getValue()) && (!entry.getValue().equals("imgfile") || !entry.getValue().equals("music"))) {
+            if (!TextUtils.isEmpty(entry.getValue()) && (!entry.getValue().equals("imgfile"))) {
                 builder.addFormDataPart(entry.getKey(), entry.getValue());
             }
         }
@@ -83,7 +83,7 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
 
         RequestBody build = builder.build();
 
-        addSubscription(apiService.updateVenueInfo(build), new SubscriberCallBack<Object>(mView.get()) {
+        addSubscription(apiService.updateVenueInfoFirstLogin(build), new SubscriberCallBack<Object>(mView.get()) {
             @Override
             protected boolean isShowProgress() {
                 return true;

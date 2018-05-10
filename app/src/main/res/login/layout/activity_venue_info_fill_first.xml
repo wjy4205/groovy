@@ -62,8 +62,7 @@
         style="@style/base_edit_text_style"
         android:layout_marginTop="10dp"
         android:hint="@string/venue_register_service"
-        app:x_disableEmoji="true"
-        app:x_importantWord="true" />
+        app:x_disableEmoji="true"/>
 
     <com.xw.repo.XEditText
         android:id="@+id/venue_info_phone"

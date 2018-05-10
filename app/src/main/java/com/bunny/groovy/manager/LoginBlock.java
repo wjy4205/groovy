@@ -91,7 +91,7 @@ public class LoginBlock {
                 && TextUtils.isEmpty(userInfo.getZipCode())) {
             context.startActivityForResult(new Intent(context, SetFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
         } else if (type == AppConstants.USER_TYPE_VENUE
-                && TextUtils.isEmpty(userInfo.getVenueTypeName())) {
+                && TextUtils.isEmpty(userInfo.getVenueAddress())) {
             context.startActivityForResult(new Intent(context, VenueFile1Activity.class), AppConstants.REQUESTCODE_SETFILE);
         } else {
             //进入主页

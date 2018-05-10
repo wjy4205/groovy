@@ -204,7 +204,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     public void onVerifyEvent(String result) {
         switch (result) {
             case AppConstants.Code_Verify_Correct:
-                mPresenter.registerVenue(mAccount, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
+                mPresenter.registerVenue(mPublicName, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
                         mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
                         mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString()
                         , mVenueFacebook.getTrimmedString(), mHeadUrl);

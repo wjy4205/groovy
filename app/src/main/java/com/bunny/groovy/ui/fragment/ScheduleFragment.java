@@ -3,6 +3,7 @@ package com.bunny.groovy.ui.fragment;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -13,12 +14,15 @@ import com.bunny.groovy.adapter.ScheduleVenueAdapter;
 import com.bunny.groovy.base.BaseFragment;
 import com.bunny.groovy.model.ScheduleModel;
 import com.bunny.groovy.model.ShowModel;
+import com.bunny.groovy.model.VenueShowModel;
 import com.bunny.groovy.presenter.SchedulePresenter;
 import com.bunny.groovy.ui.fragment.releaseshow.ReleaseShowFragment;
 import com.bunny.groovy.utils.DateUtils;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IScheduleView;
 import com.bunny.groovy.weidget.MoveLayout;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -306,5 +310,21 @@ public class ScheduleFragment extends BaseFragment<SchedulePresenter> implements
     @Override
     public void spotlight(String performID, String userID) {
         mPresenter.spotlightPerform(performID, userID);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        registerEventBus(this);
+    }
+
+    /**
+     * 编辑后刷新列表
+     *
+     * @param model
+     */
+    @Subscribe
+    public void refresh(VenueShowModel model) {
+        refreshUI();
     }
 }

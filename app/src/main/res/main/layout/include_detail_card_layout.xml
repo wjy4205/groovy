@@ -25,8 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:maxEms="11"
-                android:maxLines="1"
+                android:maxWidth="130dp"
+                android:lines="1"
                 android:ellipsize="end"
                 android:textSize="@dimen/text_size_common"
                 tools:text="The Show The"/>

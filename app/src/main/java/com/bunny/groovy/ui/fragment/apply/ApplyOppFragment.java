@@ -37,7 +37,7 @@ import butterknife.OnClick;
 
 public class ApplyOppFragment extends BaseFragment<ExplorerOpptnyPresenter> implements IExploreView {
     private static OpportunityModel oppBean;
-    public static String KEY_OPP_BEAN = "key_opp";
+    public final static String KEY_OPP_BEAN = "key_opp";
     private static String sVenueID, performStartDate, performEndDate, opportunityID, performDate, performTime;
     private List<StyleModel> styleList;
     private PopupWindow mPopupWindow;

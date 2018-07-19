@@ -123,7 +123,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     @Bind(R.id.release_name)
     TextView mReleaseName;
 
-    @OnClick(R.id.release_tv_spotlight)
+    @OnClick({R.id.release_tv_spotlight, R.id.release_iv_help})
     public void spotLight() {
         SpotlightInfoFragment.launch(get());
     }
@@ -142,7 +142,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             return;
         }
         if (UIUtils.isEdittextEmpty(etStyle)) {
-            UIUtils.showBaseToast("Please choose show genre.");
+            UIUtils.showBaseToast("Please choose at least 1 genre.");
             return;
         }
         if (UIUtils.isEdittextEmpty(etTime)) {
@@ -300,12 +300,11 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         super.onResume();
         //spotlight
         if (Integer.parseInt(AppCacheData.getPerformerUserModel().getPackageCount()) > 0) {
-            tvSpotLightMoney.setVisibility(View.VISIBLE);
             tvSpotLightMoney.setText(AppCacheData.getPerformerUserModel().getPackageCount());
             cbUseSpotlight.setVisibility(View.VISIBLE);
 //            cbUseSpotlight.setChecked(true);
         } else {
-            tvSpotLightMoney.setVisibility(View.GONE);
+            tvSpotLightMoney.setText("0");
             cbUseSpotlight.setVisibility(View.GONE);
         }
     }
@@ -390,10 +389,10 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     }
 
     @Override
-    public void chooseTime(String startTime, String endTime, Calendar selectDate) {
+    public void chooseTime(String startTime, String endTime, Calendar selectDate, String showStartTime, String showEndTime) {
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;
-        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
+        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
     }
 }

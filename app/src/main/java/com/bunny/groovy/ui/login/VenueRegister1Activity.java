@@ -164,7 +164,7 @@ public class VenueRegister1Activity extends BaseActivity<SingUpPresenter> implem
         } else if (pwd.length() < 8) {
             UIUtils.showBaseToast("The password length less than 8.");
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("The password entered twice is not the same.");
+            UIUtils.showBaseToast("Passwords do not match.");
         } else if (TextUtils.isEmpty(publicName)) {
             UIUtils.showBaseToast("Please input venue name.");
         } else if (TextUtils.isEmpty(address)) {

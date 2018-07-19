@@ -108,7 +108,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     void next() {
         //拦截
         if (TextUtils.isEmpty(headImagePath)) {
-            UIUtils.showBaseToast("Please select your head image.");
+            UIUtils.showBaseToast("Please upload a profile image..");
             return;
         }
         if (TextUtils.isEmpty(etFullName.getTrimmedString())) {
@@ -123,10 +123,10 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
             UIUtils.showBaseToast("Please input zip code.");
             return;
         }
-        if (TextUtils.isEmpty(etWebsite.getTrimmedString())) {
-            UIUtils.showBaseToast("Please input website.");
-            return;
-        }
+//        if (TextUtils.isEmpty(etWebsite.getTrimmedString())) {
+//            UIUtils.showBaseToast("Please input website.");
+//            return;
+//        }
         //保存数据
         AppCacheData.getFileMap().put("userName", etFullName.getTrimmedString());
         AppCacheData.getFileMap().put("zipCode", etZipcode.getTrimmedString());

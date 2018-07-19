@@ -9,6 +9,7 @@ import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.ui.VenueMainActivity;
 import com.bunny.groovy.ui.login.LoginActivity;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -152,6 +153,7 @@ public class VenueRegisterPresenter extends BasePresenter<ISingUpView> {
 
             @Override
             protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("Account made successfully!");
                 mView.get().setResult(AppConstants.ACTIVITY_FINISH);
                 mView.get().finish();
                 mView.get().startActivity(new Intent(mView.get(), LoginActivity.class));

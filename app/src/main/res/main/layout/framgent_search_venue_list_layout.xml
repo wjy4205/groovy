@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="NO SEARCH RESULT"
+            android:text="NO SEARCH RESULTS"
             android:textColor="@color/common_grey"
             android:textSize="@dimen/text_size_big" />
     </FrameLayout>

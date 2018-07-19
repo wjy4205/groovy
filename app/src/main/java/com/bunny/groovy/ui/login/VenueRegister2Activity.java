@@ -242,7 +242,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
             if (!TextUtils.isEmpty(value)) {
                 String data[] = value.split(",");
                 for (String v : data) {
-                    if (TextUtils.equals(checkBox1.getText().toString(), v)) {
+                    if (TextUtils.equals("Exclude 21+", v)) {
                         checkBox1.setChecked(true);
                     } else if (TextUtils.equals(checkBox2.getText().toString(), v)) {
                         checkBox2.setChecked(true);
@@ -260,7 +260,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
                 public void onDismiss() {
                     StringBuilder stringBuilder = new StringBuilder();
                     if (checkBox1.isChecked()) {
-                        stringBuilder.append(checkBox1.getText().toString().trim());
+                        stringBuilder.append("Exclude 21+");
                     }
                     if (checkBox2.isChecked()) {
                         if (stringBuilder.length() > 0) stringBuilder.append(",");

@@ -129,8 +129,8 @@ public class ScheduleVenueAdapter extends RecyclerView.Adapter<ScheduleVenueAdap
                             }
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                            builder.setTitle("No promotional package");
-                            builder.setMessage("Whether to buy promotional package?");
+                            builder.setTitle("No Spotlight Credits");
+                            builder.setMessage("Would you like to purchase Spotlight Credits?");
                             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

@@ -28,7 +28,7 @@ public class MyFavoriteListFragment extends BaseListFragment<UserListPresenter, 
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "MY FAVORITE");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "FOLLOWING");
         FragmentContainerActivity.launch(from, MyFavoriteListFragment.class, bundle);
     }
 
@@ -75,7 +75,7 @@ public class MyFavoriteListFragment extends BaseListFragment<UserListPresenter, 
 
     @Override
     public void setNodata() {
-        setEmptyViewText("NO SHOWS");
+        setEmptyViewText("You aren't yet following any musicians! Find musicians you enjoy and follow them for updates and alerts.");
         setPageState(PageState.NODATA);
     }
 

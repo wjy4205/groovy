@@ -123,9 +123,11 @@ public class TimePopupWindow {
                 } else {
                     closeTimePop();
                     //设置开始结束时间
-                    startTime = mRealTimeList.get(loopviewFromTime.getSelectedItem());
-                    endTime = mRealTimeList.get(loopviewEndTime.getSelectedItem());
-                    if(mListener != null)mListener.chooseTime(startTime, endTime, mSelectDate);
+                    int fromIndex = loopviewFromTime.getSelectedItem();
+                    int endIndex = loopviewEndTime.getSelectedItem();
+                    startTime = mRealTimeList.get(fromIndex);
+                    endTime = mRealTimeList.get(endIndex);
+                    if(mListener != null)mListener.chooseTime(startTime, endTime, mSelectDate,mTimeClockList.get(fromIndex),mTimeClockList.get(endIndex));
 //                    etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
                 }
             }
@@ -249,6 +251,6 @@ public class TimePopupWindow {
     }
 
     public interface OnTimeConfirmListener {
-        public void chooseTime(String startTime,String endTime, Calendar selectDate);
+        public void chooseTime(String startTime,String endTime, Calendar selectDate, String startShowTime, String endShowTime);
     }
 }

@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20px"
-        android:text="@string/balance"
+        android:text="Balance:"
         android:textColor="@color/common_grey"
         android:textSize="@dimen/text_size_common"/>
 
@@ -35,7 +35,7 @@
         android:id="@+id/wallet_tv_recharge"
         style="@style/role_selected_text_style"
         android:layout_marginTop="50px"
-        android:text="RECHARGE"/>
+        android:text="ADD FUNDS"/>
 
     <TextView
         android:id="@+id/wallet_tv_withdraw"
@@ -45,11 +45,7 @@
 
     <TextView
         android:id="@+id/wallet_tv_bind_paypal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        style="@style/role_selected_text_style"
         android:layout_marginTop="40px"
-        android:text="BIND PAYPAL"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_big"/>
+        android:text="CONNECT WITH PAYPAL"/>M
 </LinearLayout>

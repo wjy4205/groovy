@@ -88,7 +88,7 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
             case R.id.wallet_tv_withdraw:
                 //提现
                 if (TextUtils.isEmpty(paypalAccount)) {
-                    UIUtils.showBaseToast("Please bind PayPal.");
+                    UIUtils.showBaseToast("Alert Sorry, you have not yet bound a Paypal account. Please first bind a Paypal account..");
                     return;
                 }
                 WithDrawFragment.launch(mActivity);

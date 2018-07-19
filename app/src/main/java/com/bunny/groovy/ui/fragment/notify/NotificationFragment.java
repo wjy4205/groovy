@@ -37,8 +37,8 @@ public class NotificationFragment extends BaseFragment {
 
     private int mType;
 
-    private String[] titleArray = new String[]{"OPPORTUNITY", "INVITE", "APPLY"};
-    private String[] titleAVenueArray = new String[]{"OPPORTUNITY", "APPLY", "INVITE"};
+    private String[] titleArray = new String[]{"OPPORTUNITY", "INVITES", "APPLY"};
+    private String[] titleAVenueArray = new String[]{"OPPORTUNITY", "APPLY", "INVITES"};
 
     private List<BaseListFragment> mFragments = new ArrayList<>();
 

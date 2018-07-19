@@ -55,7 +55,7 @@ public class DiscoverMusicianListAdapter extends RecyclerView.Adapter<DiscoverMu
         }
         holder.mTvName.setTextHeighLight(performerModel.getStageName(), keyword);
         holder.mTvStar.setText(Utils.getStar(performerModel.getStarLevel()));
-        holder.mTvType.setText(performerModel.getPerformTypeName() + " | " + performerModel.getDistance() + "mi");
+        holder.mTvType.setText(performerModel.getPerformTypeName() + " | " + (TextUtils.isEmpty(performerModel.getDistance()) ? "--" : (performerModel.getDistance() + "mi")));
 
         holder.mTvInvite.setTag(position);
         holder.mTvInvite.setOnClickListener(this);

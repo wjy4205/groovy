@@ -58,7 +58,7 @@ public class SignUpActivity extends BaseActivity<SingUpPresenter> implements ISi
             UIUtils.showBaseToast("Please input password again.");
             return;
         } else if (!pwd.equals(pwdAgain)) {
-            UIUtils.showBaseToast("The password entered twice is not the same.");
+            UIUtils.showBaseToast("Passwords do not match.");
             return;
         }
 

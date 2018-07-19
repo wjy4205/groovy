@@ -8,6 +8,7 @@ import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.ResultResponse;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
+import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IMeView;
 
@@ -86,6 +87,7 @@ public class VenueMePresenter extends BasePresenter<IMeView> {
 
             @Override
             protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("Information Updated");
                 mView.get().finish();
             }
 

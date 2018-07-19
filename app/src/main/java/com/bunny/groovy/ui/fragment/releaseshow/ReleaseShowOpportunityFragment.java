@@ -118,10 +118,10 @@ public class ReleaseShowOpportunityFragment extends BaseFragment<ReleaseShowOppo
     }
 
     @Override
-    public void chooseTime(String startTime, String endTime, Calendar selectDate) {
+    public void chooseTime(String startTime, String endTime, Calendar selectDate, String showStartTime, String showEndTime) {
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;
-        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime(), startTime) + "-" + endTime);
+        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
     }
 }

@@ -87,7 +87,7 @@
             android:drawableTop="@drawable/icon_home_two"
             android:gravity="center_horizontal"
             android:lines="2"
-            android:text="Discover Musician"
+            android:text="Discover Musicians"
             android:textColor="#ffffff"
             android:textSize="13sp" />
 

@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50px"
-        android:text="CALL-PHONE NUMBER"
+        android:text="INQUIRIES PHONE NUMBER:"
         android:textColor="@color/common_grey"
         android:textSize="@dimen/text_size_big"/>
 

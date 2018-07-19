@@ -77,9 +77,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="within 10M"
+            android:text="10mb Limit"
             android:textColor="@color/common_grey"
             android:textSize="@dimen/text_size_small"/>
+
+        <TextView
+            android:id="@+id/tv_music_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/common_grey"
+            android:textSize="@dimen/text_size_common"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,7 +104,7 @@
             android:id="@+id/et_select_style"
             style="@style/base_edit_text_style"
             android:layout_marginTop="20dp"
-            android:hint="YOUR STYLE"
+            android:hint="Your Genres"
             app:x_disableEmoji="true"
             android:focusable="false"
             android:maxLines="3"
@@ -105,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_marginTop="20dp"
-            android:text="MUSIC BIO"
+            android:text="MUSIC BIOGRAPHY"
             android:textColor="@color/common_grey"
             android:textSize="@dimen/text_size_common"/>
 
@@ -128,7 +138,7 @@
                 android:background="@null"
                 android:gravity="top"
                 android:textColor="@color/white"
-                android:hint="GIVE EVERYONE BRIEF IDEA OF WHO YOU ARE AND THE MUSIC YOU LIKE TO PLAY"
+                android:hint="Give everyone an idea of who you are and the music you like to play"
                 android:lineSpacingExtra="3dp"
                 android:lines="4"
                 android:maxLength="400"

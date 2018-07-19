@@ -27,7 +27,7 @@
     <com.xw.repo.XEditText
         android:id="@+id/et_signup_password_again"
         style="@style/base_edit_text_style"
-        android:hint="@string/password_again"
+        android:hint="CONFIRM PASSWORD"
         android:inputType="textPassword"
         app:x_disableEmoji="true"
         app:x_hidePwdDrawable="@drawable/login_closeeye"
@@ -57,7 +57,7 @@
             android:id="@+id/tv_have_no_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/already_have_an_account"
+            android:text="Already_have_an_account?"
             android:textColor="@color/common_grey" />
 
         <TextView

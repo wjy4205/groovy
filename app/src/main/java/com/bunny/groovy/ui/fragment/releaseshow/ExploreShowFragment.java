@@ -160,16 +160,15 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
             if (msg.what == 1) {
                 if (!TextUtils.isEmpty(mKeyword) && mGoogleApiClient.isConnected()) {
                     LatLngBounds bounds = null;
-//                    if (mLastLocation == null) {
-//                        bounds = new LatLngBounds(
-//                                new LatLng(AppConstants.DEFAULT_LATITUDE - 0.02, AppConstants.DEFAULT_LONGITUDE - 0.02),
-//                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
-//                    } else {
-                    bounds = new LatLngBounds(
-                            new LatLng(37.028521,-123.078089),
-                            new LatLng(38.186043, -121.853114)
-                    );
-//                    }
+                    if (mLastLocation == null) {
+                        bounds = new LatLngBounds(
+                                new LatLng(AppConstants.DEFAULT_LATITUDE - 0.02, AppConstants.DEFAULT_LONGITUDE - 0.02),
+                                new LatLng(AppConstants.DEFAULT_LATITUDE + 0.02, AppConstants.DEFAULT_LONGITUDE + 0.02));
+                    } else {
+                        bounds = new LatLngBounds(
+                                new LatLng(mLastLocation.getLatitude() - 0.02, mLastLocation.getLongitude() - 0.02),
+                                new LatLng(mLastLocation.getLatitude() + 0.02, mLastLocation.getLongitude() + 0.02));
+                    }
                     final PendingResult<AutocompletePredictionBuffer> results =
                             Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, mKeyword,
                                     bounds, new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE).build());

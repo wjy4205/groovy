@@ -45,7 +45,7 @@
 
     <TextView
         style="@style/common_text_style"
-        android:text="VENUE SERVICE（MULTI）" />
+        android:text="VENUE SERVICES" />
 
     <LinearLayout
         android:id="@+id/venue_service_group"

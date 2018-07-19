@@ -54,7 +54,7 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "RECHARGE");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "ADD FUNDS");
         FragmentContainerActivity.launch(from, RechargeFragment.class, bundle);
     }
 
@@ -163,7 +163,7 @@ public class RechargeFragment extends BaseFragment<RechargePresenter> implements
             }
         }catch (Exception e){}
         if (mAmount <= 0) {
-            UIUtils.showBaseToast("Input incorrect.");
+            UIUtils.showBaseToast("Please enter a valid amount.");
             return;
         }
         mPresenter.getToken();

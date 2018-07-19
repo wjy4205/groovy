@@ -67,8 +67,11 @@ public class UserMainListAdapter extends RecyclerView.Adapter<UserMainListAdapte
         //演出时间
         holder.mTvTime.setText(model.getPerformDate() + " " + model.getPerformTime());
         //距离
-        holder.mTvDistance.setText(model.getDistance() + "mi");
-
+        if (TextUtils.isEmpty(model.getDistance())) {
+            holder.mTvDistance.setText("--");
+        } else {
+            holder.mTvDistance.setText(model.getDistance() + "mi");
+        }
         //点击效果
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);

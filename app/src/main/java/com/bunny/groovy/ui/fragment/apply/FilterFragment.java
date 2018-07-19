@@ -99,6 +99,8 @@ public class FilterFragment extends BaseFragment {
             if (distance > 0) {
                 mSeekBar.setProgress(distance);
                 mTvDistance.setText(distance + "mi");
+            }else {
+                mTvDistance.setText("--");
             }
 //            String time = args.getString(KEY_START_TIME);
 //            if (!TextUtils.isEmpty(time)) {

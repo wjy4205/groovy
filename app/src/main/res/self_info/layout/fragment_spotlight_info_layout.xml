@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
         android:gravity="center"
-        android:text="Spotlight Credits let your show shine on Groovy map."
+        android:text="Spotlight credits let your show shine on the Show-Go map."
         android:textColor="@color/white"
         android:textSize="30px" />
 
@@ -19,18 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="57dp"
         android:gravity="center"
-        android:text="Your show will get a special icon and"
+        android:lineSpacingExtra="15dp"
+        android:text="Your show will get a special icon and be displayed at the top of the list view."
         android:textColor="@color/white"
         android:textSize="30px" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:text="be recommended and display first to users."
-        android:textColor="@color/white"
-        android:textSize="30px" />
 
     <TextView
         android:id="@+id/tv_spotlight"

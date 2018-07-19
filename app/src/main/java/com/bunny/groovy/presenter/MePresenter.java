@@ -135,6 +135,7 @@ public class MePresenter extends BasePresenter<IMeView> {
 
             @Override
             protected void onSuccess(Object response) {
+                UIUtils.showBaseToast("Information Updated");
                 MainActivity.launch(mView.get());
             }
 

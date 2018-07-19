@@ -41,7 +41,7 @@ public class FavoriteMusicianFragment extends BaseListFragment<VenueListPresente
 
     @Override
     public void setNodata() {
-        setEmptyViewText("NO SHOWS");
+        setEmptyViewText("You aren't yet following any musicians! Find musicians you enjoy and follow them for updates and alerts.");
         setPageState(PageState.NODATA);
     }
 

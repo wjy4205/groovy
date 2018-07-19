@@ -28,7 +28,7 @@
             <TextView
                 android:id="@+id/recharge_tv_paypal_key"
                 style="@style/common_text_style"
-                android:text="PRICE"
+                android:text="Price"
                 android:textSize="@dimen/text_size_small"/>
 
             <TextView
@@ -38,13 +38,13 @@
                 android:layout_toRightOf="@+id/recharge_tv_paypal_key"
                 android:textColor="@color/textAccent"
                 android:textSize="@dimen/text_size_small"
-                android:text="$10per"/>
+                android:text="$10//ea"/>
 
             <TextView
                 style="@style/common_text_style"
                 android:layout_below="@+id/spotlight_tv_per"
                 android:layout_marginTop="16px"
-                android:text="After promotion,the show will be displayed head"
+                android:text="Spotlighted shows get extra attention from users"
                 android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
 
@@ -57,7 +57,7 @@
         <TextView
             style="@style/common_text_style"
             android:layout_marginTop="50px"
-            android:text="NUMBER OF TERMS"
+            android:text="Quantity"
             android:textSize="@dimen/text_size_small"/>
 
         <LinearLayout
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="QUANTITY"
+                android:hint="#"
                 android:inputType="number"
                 android:paddingBottom="20px"
                 android:paddingTop="20px"

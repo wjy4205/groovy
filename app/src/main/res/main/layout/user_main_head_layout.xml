@@ -50,7 +50,7 @@
         android:id="@+id/nav_favortie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" My Favorite"
+        android:text="Following"
         android:textSize="14dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"

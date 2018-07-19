@@ -12,7 +12,7 @@
     <string name="email_phone">EMAIL / PHONE</string>
     <string name="login">LOGIN</string>
     <string name="next">NEXT</string>
-    <string name="already_have_an_account">Already Have An Account ?</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="verification_code">VERIFICATION CODE</string>
     <string name="sign_up">SIGN UP</string>
     <string name="tell_us">Tell Us About Yourself</string>
@@ -48,19 +48,19 @@
     <string name="venue_register_phone_or_email">BOOKING TELPHONE/E-MAIL</string>
     <string name="venue_register_password">PASSWORD</string>
     <string name="venue_register_password_again">PASSWORD AGAIN</string>
-    <string name="venue_register_name">PUBLIC NAME</string>
+    <string name="venue_register_name">VENUE NAME</string>
     <string name="venue_register_address">ADDRESS</string>
     <string name="venue_register_required">*REQUIRED</string>
 
     <string name="venue_register_code">VERIFICATION CODE</string>
     <string name="venue_register_service">VENUE SERVICE</string>
-    <string name="venue_register_booking_phone">BOOKING TELPHONE</string>
+    <string name="venue_register_booking_phone">ACCOUNT TELEPHONE</string>
     <string name="venue_register_booking_email">BOOKING EMAIL</string>
     <string name="venue_register_phone">VENUE TELPHONE</string>
     <string name="venue_register_website">WEBSITE</string>
     <string name="venue_info_fill_social">INTEGRATE SOCIAL MEDIAN</string>
-    <string name="venue_register_service_exclude">Exclude 21+</string>
+    <string name="venue_register_service_exclude">Shows are not 21+ only</string>
     <string name="venue_register_service_food">Serves Food</string>
     <string name="venue_register_service_alcohol">Serves Alcohol</string>
-    <string name="protocol_link">By signing up,I agree with &lt;font color="#7887eb"&gt;terms of the services&lt;/font&gt;</string>
+    <string name="protocol_link">By signing up I agree with &lt;font color="#7887eb"&gt;Terms of the Services&lt;/font&gt;</string>
 </resources>

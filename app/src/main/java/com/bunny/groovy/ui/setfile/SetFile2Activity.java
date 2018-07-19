@@ -82,6 +82,8 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
 
     @Bind(R.id.bt_play_music)
     Button btPlay;
+    @Bind(R.id.tv_music_name)
+    TextView mMusicNameView;
 
     @OnClick(R.id.bt_play_music)
     void playMusic() {
@@ -122,11 +124,11 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
     @OnClick(R.id.tv_next)
     void next() {
         if (TextUtils.isEmpty(etSelectStyle.getTrimmedString())) {
-            UIUtils.showBaseToast("Please select Style.");
+            UIUtils.showBaseToast("Please choose at least 1 genre.");
             return;
         }
         if (TextUtils.isEmpty(etBio.getText().toString())) {
-            UIUtils.showBaseToast("Please input Bio.");
+            UIUtils.showBaseToast("Please add a biography.");
             return;
         }
         AppCacheData.getFileMap().put("performTypeName", etSelectStyle.getTrimmedString());
@@ -290,6 +292,7 @@ public class SetFile2Activity extends BaseActivity<SetFilePresenter> implements 
         if (requestCode == 1 && resultCode == RESULT_OK) {
             if (data != null) {
                 mMusic_file = data.getParcelableExtra("music_file");
+                mMusicNameView.setText(mMusic_file.getTitle());
                 initMusicService();
             }
         } else if (requestCode == 2 && resultCode == AppConstants.ACTIVITY_FINISH) {

@@ -50,7 +50,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
             type = AppConstants.ACCOUNT_TYPE_EMAIL;
         } else {
             //不合法，提示用户
-            mView.showCheckResult(false, type, "Invalid phone or email!");
+            mView.showCheckResult(false, type, "Invalid phone or email. Please try again.");
             return;
         }
 
@@ -161,7 +161,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                UIUtils.showBaseToast("Register successfully！");
+                UIUtils.showBaseToast("Register successfully!");
                 mView.registerSuccess();
             }
 

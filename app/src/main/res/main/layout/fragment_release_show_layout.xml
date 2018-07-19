@@ -43,7 +43,7 @@
         <EditText
             android:id="@+id/release_et_style"
             style="@style/common_input_text"
-            android:hint="STYLE"/>
+            android:hint="SELECT"/>
     </LinearLayout>
 
     <TextView
@@ -101,10 +101,11 @@
         <TextView
             android:id="@+id/release_tv_spotlight"
             style="@style/common_text_style"
-            android:text="Spotlight This Show"
+            android:text="Spotlight this show"
             android:textColor="@color/accentPurple"/>
 
         <ImageView
+            android:id="@+id/release_iv_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16px"

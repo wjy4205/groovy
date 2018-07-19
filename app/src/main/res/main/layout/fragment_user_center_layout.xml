@@ -135,7 +135,7 @@
             android:id="@+id/me_tv_switch_to"
             style="@style/me_icon_text"
             android:drawableTop="@drawable/me_switch"
-            android:text="Switch to" />
+            android:text="Switch Role" />
 
         <TextView
             android:id="@+id/user_center_tv_settings"

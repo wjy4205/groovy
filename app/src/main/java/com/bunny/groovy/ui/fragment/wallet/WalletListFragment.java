@@ -26,7 +26,7 @@ public class WalletListFragment extends BaseListFragment<WalletListPresetner, Wa
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "WALLET DETAILS");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "TRANSACTION HISTORY");
         FragmentContainerActivity.launch(from, WalletListFragment.class, bundle);
     }
 
@@ -72,6 +72,7 @@ public class WalletListFragment extends BaseListFragment<WalletListPresetner, Wa
 
     @Override
     public void noData() {
+        setEmptyViewText("NO TRANSACTIONS MADE");
         setPageState(PageState.NODATA);
     }
 }

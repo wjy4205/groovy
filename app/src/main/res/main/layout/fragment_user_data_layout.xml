@@ -42,7 +42,16 @@
         <EditText
             android:id="@+id/user_name"
             style="@style/personal_data_input_text"
-            android:hint="NAME"/>
+            android:hint="NAME" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Your picture and name are displayed when you leave a review for a musician."
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_common" />
 
     </LinearLayout>
 </ScrollView>

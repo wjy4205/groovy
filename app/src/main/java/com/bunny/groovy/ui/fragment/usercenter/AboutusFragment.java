@@ -35,7 +35,7 @@ public class AboutusFragment extends BaseFragment {
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
 
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "ABOUT US");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "CONTACT US");
         FragmentContainerActivity.launch(from, AboutusFragment.class, bundle);
     }
 

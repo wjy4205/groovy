@@ -226,7 +226,7 @@ public class MeTimeFragment extends BaseFragment<TimePresenter> implements ITime
     }
 
     @Override
-    public void chooseTime(String startTime, String endTime, Calendar selectDate) {
+    public void chooseTime(String startTime, String endTime, Calendar selectDate, String showStartTime, String showEndTime) {
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;

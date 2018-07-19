@@ -67,7 +67,7 @@ public class SpotlightFragment extends BaseFragment<SpotlightPresenter> implemen
     public void initView(View rootView) {
         super.initView(rootView);
         mPackagePrice = Double.parseDouble(AppCacheData.getGlobalModel().getPackagePrice());
-        mSpotlightTvPer.setText("$" + mPackagePrice + "per");
+        mSpotlightTvPer.setText("$" + mPackagePrice + "/ea");
     }
 
     @Override

@@ -61,7 +61,7 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
 
     private List<BaseListFragment> mFragments = new ArrayList<>();
 
-    private String[] titleArray = new String[]{"MY FAVORITE", "SHOW HISTORY"};
+    private String[] titleArray = new String[]{"FOLLOWING", "SHOW HISTORY"};
 
 
     private PerformerUserModel mModel;

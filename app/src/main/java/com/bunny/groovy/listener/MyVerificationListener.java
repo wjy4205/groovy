@@ -22,7 +22,7 @@ public class MyVerificationListener implements VerificationListener {
 
     @Override
     public void onInitiated(InitiationResult initiationResult) {
-        UIUtils.showBaseToast("Send successful.");
+        UIUtils.showBaseToast("Verification code sent.");
         //跳转到下一页
         EventBus.getDefault().post(AppConstants.Code_Send_Success);
     }

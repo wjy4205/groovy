@@ -73,6 +73,7 @@ public class UserRegister2Activity extends BaseActivity<SingUpPresenter> impleme
     public void onVerifyEvent(String result) {
         switch (result) {
             case AppConstants.Code_Verify_Correct:
+                UIUtils.showToast("Account made successfully!");
                 HashMap<String, String> map = new HashMap<>();
                 map.put("userName", mName);
                 map.put("userPwd", mPassword);

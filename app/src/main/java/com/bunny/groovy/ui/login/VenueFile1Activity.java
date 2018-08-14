@@ -175,7 +175,8 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
             AppCacheData.getFileMap().put("telephone", mVenueTelPhone.getTrimmedString());
             AppCacheData.getFileMap().put("userEmail", mVenueEmail.getTrimmedString());
             AppCacheData.getFileMap().put("phoneNumber", mVenuePhone.getTrimmedString());
-            AppCacheData.getFileMap().put("venueTypeName", mVenueService.getTrimmedString());
+            String service1 = mVenueService.getTrimmedString().replace("Shows are not 21+ only","Exclude 21+");
+            AppCacheData.getFileMap().put("venueTypeName", service1);
             AppCacheData.getFileMap().put("longitude", mLongitude);
             AppCacheData.getFileMap().put("latitude", mLatitude);
             AppCacheData.getFileMap().put("placeID", mPlaceId);
@@ -226,7 +227,7 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
             if (!TextUtils.isEmpty(value)) {
                 String data[] = value.split(",");
                 for (String v : data) {
-                    if (TextUtils.equals(checkBox1.getText().toString(), v)) {
+                    if (TextUtils.equals("Exclude 21+", v)) {
                         checkBox1.setChecked(true);
                     } else if (TextUtils.equals(checkBox2.getText().toString(), v)) {
                         checkBox2.setChecked(true);
@@ -244,7 +245,7 @@ public class VenueFile1Activity extends BaseActivity<SingUpPresenter> implements
                 public void onDismiss() {
                     StringBuilder stringBuilder = new StringBuilder();
                     if (checkBox1.isChecked()) {
-                        stringBuilder.append(checkBox1.getText().toString().trim());
+                        stringBuilder.append(checkBox1.getText().toString());
                     }
                     if (checkBox2.isChecked()) {
                         if (stringBuilder.length() > 0) stringBuilder.append(",");

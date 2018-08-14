@@ -89,7 +89,8 @@ public class UserShowDetailFragment extends BaseFragment {
     TextView tvFood;
     @Bind(R.id.include_detail_tv_Cover_Charge)
     TextView tvCoverCharge;
-
+    @Bind(R.id.ll_face_layout)
+    View mFaceLayout;
     @Bind(R.id.performer_detail_tv_venueName)
     TextView mTvPerformerName2;
     @Bind(R.id.performer_detail_iv_head)
@@ -132,6 +133,11 @@ public class UserShowDetailFragment extends BaseFragment {
     public void go() {
         Utils.openWebGoogleNavi(getActivity(), model.getVenueLatitude(), model.getVenueLongitude());
         UserListPresenter.addPerformViewer(model.getPerformID());
+    }
+
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl(){
+        Utils.openUrl(mActivity, model.getVenueWebSite());
     }
 
     @OnClick(R.id.performer_facebook_page)
@@ -186,7 +192,7 @@ public class UserShowDetailFragment extends BaseFragment {
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
             if (!TextUtils.isEmpty(model.getDistance())) {
-                mTvDistance.setText(model.getDistance());
+                mTvDistance.setText(model.getDistance()  + "mi");
             } else {
                 mDistanceLinearLayout.setVisibility(View.GONE);
             }
@@ -205,6 +211,9 @@ public class UserShowDetailFragment extends BaseFragment {
             Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
                     .error(R.drawable.musicion_default_photo)
                     .into(mPerformerHead);
+            if (TextUtils.isEmpty(model.getVenueFacebook()) && TextUtils.isEmpty(model.getVenueTwitter())) {
+                mFaceLayout.setVisibility(View.GONE);
+            }
             //设置演出厅提供服务
             String venueTypeName = model.getVenueTypeName();
             if (!TextUtils.isEmpty(venueTypeName)) {

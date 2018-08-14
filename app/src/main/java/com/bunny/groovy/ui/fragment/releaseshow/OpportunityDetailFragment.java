@@ -102,6 +102,11 @@ public class OpportunityDetailFragment extends BaseFragment {
         Utils.openTwitter(mActivity,sParcelable.getTwitterAccount());
     }
 
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl(){
+        Utils.openUrl(mActivity, sParcelable.getWebSiteAddress());
+    }
+
     public static void launch(Activity activity, Bundle bundle) {
         sParcelable = bundle.getParcelable(KEY_OPPORTUNITY_BEAN);
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SHOW OPPORTUNITY");

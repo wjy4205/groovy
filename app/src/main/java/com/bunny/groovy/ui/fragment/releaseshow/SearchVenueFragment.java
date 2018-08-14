@@ -3,6 +3,8 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +27,19 @@ import com.bunny.groovy.presenter.SearchVenueListPresenter;
 import com.bunny.groovy.view.ISearchVenueList;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResolvingResultCallbacks;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.Task;
 import com.socks.library.KLog;
 
 import java.util.List;
@@ -41,7 +54,7 @@ import static android.app.Activity.RESULT_OK;
  * Author: Created by bayin on 2017/12/19.
  ****************************************/
 
-public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> implements ISearchVenueList {
+public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> implements ISearchVenueList, GoogleApiClient.ConnectionCallbacks {
 
     @Bind(R.id.et_search)
     EditText etSearch;
@@ -51,6 +64,8 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     @Bind(R.id.base_no_data)
     TextView mEmptyView;
 
+    private GoogleApiClient mGoogleApiClient;
+
     public static void launchForResult(Activity activity, Bundle bundle, int requestCode) {
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "SEARCH VENUE");
         FragmentContainerActivity.launchForResult(activity, SearchVenueFragment.class, bundle, requestCode);
@@ -59,6 +74,11 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+        mGoogleApiClient.connect();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.VERTICAL, false));
 
     }
@@ -106,6 +126,7 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     }
 
     int PLACE_PICKER_REQUEST = 1;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         search();
@@ -115,7 +136,7 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
     /**
      * 进入google自动搜索地址页面
      */
-    public void search(){
+    public void search() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
         try {
@@ -133,8 +154,8 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
                 //地点不为空，setData，finish自己
                 Place place = PlacePicker.getPlace(data, mActivity);
                 String toastMsg = String.format("Place: %s", place.getName());
-                KLog.a("Place:"+toastMsg);
-                mActivity.setResult(RESULT_OK,data);
+                KLog.a("Place:" + toastMsg);
+                mActivity.setResult(RESULT_OK, data);
                 mActivity.finish();
             }
         }
@@ -152,5 +173,15 @@ public class SearchVenueFragment extends BaseFragment<SearchVenueListPresenter> 
             mVenueListAdapter = new VenueListAdapter(list, etSearch.getText().toString().trim());
             mRecyclerView.setAdapter(mVenueListAdapter);
         } else mVenueListAdapter.refresh(list, etSearch.getText().toString().trim());
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
     }
 }

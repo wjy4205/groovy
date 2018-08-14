@@ -74,7 +74,7 @@ public class DiscoverMusicianFragment extends BaseFragment<DiscoverMusicianListP
 
     public static void launch(Activity activity) {
         Bundle bundle = new Bundle();
-        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DISCOVER MUSICIAN");
+        bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DISCOVER MUSICIANS");
         FragmentContainerActivity.launch(activity, DiscoverMusicianFragment.class, bundle);
     }
 

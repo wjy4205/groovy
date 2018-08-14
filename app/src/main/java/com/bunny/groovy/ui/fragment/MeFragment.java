@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -66,6 +67,13 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
     @Bind(R.id.me_play_music)
     ImageView mePlayButton;
 
+    @Bind(R.id.me_tv_facebook)
+    ImageView mFacebookView;
+    @Bind(R.id.me_tv_twitter)
+    ImageView mTwitterView;
+    @Bind(R.id.me_tv_cloud)
+    ImageView mCloudView;
+
     private List<BaseListFragment> mFragments = new ArrayList<>();
 
     private String[] titleArray = new String[]{"MY FAVORITE", "SHOW HISTORY"};
@@ -102,6 +110,12 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
         }
 
     };
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        setUserView(AppCacheData.getPerformerUserModel());
+    }
 
     @OnClick(R.id.me_play_music)
     public void playMusic() {
@@ -202,19 +216,25 @@ public class MeFragment extends BaseFragment<MePresenter> implements IMeView {
      */
     @Override
     public void setUserView(PerformerUserModel model) {
-        mModel = model;
-        tvName.setText(mModel.getUserName());
-        tvStyle.setText(model.getPerformTypeName());
-        tvScore.setText(Utils.getStar(model.getStarLevel()));
-        if(TextUtils.isEmpty(model.getHeadImg())){
-            ivHeader.setImageResource(R.drawable.musicion_default_photo);
-        }else {
-            Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
-                    .error(R.drawable.musicion_default_photo).into(ivHeader);
+        try {
+            mModel = model;
+            tvName.setText(mModel.getUserName());
+            tvStyle.setText(model.getPerformTypeName());
+            tvScore.setText(Utils.getStar(model.getStarLevel()));
+            if(TextUtils.isEmpty(model.getHeadImg())){
+                ivHeader.setImageResource(R.drawable.musicion_default_photo);
+            }else {
+                Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.musicion_default_photo)
+                        .error(R.drawable.musicion_default_photo).into(ivHeader);
+            }
+            //prepare music state
+            isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
+            mFacebookView.setImageResource(TextUtils.isEmpty(mModel.getFacebookAccount())? R.drawable.icon_facebook:R.drawable.user_facebook);
+            mTwitterView.setImageResource(TextUtils.isEmpty(mModel.getTwitterAccount())? R.drawable.icon_twiter:R.drawable.user_twiter);
+            mCloudView.setImageResource(TextUtils.isEmpty(mModel.getSoundcloudAccount())? R.drawable.icon_soundcloud:R.drawable.user_soundcloud);
+
+        }catch (Exception e){}
         }
-        //prepare music state
-        isHaveMusicFile = !TextUtils.isEmpty(model.getMusicFile());
-    }
 
     @Override
     public void showStylePop(List<StyleModel> modelList) {

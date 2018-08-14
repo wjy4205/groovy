@@ -26,6 +26,7 @@ public class FavoriteMusicianFragment extends BaseListFragment<VenueListPresente
     @Override
     public void setView(List<PerformerUserModel> o) {
         setNormalView();
+        setEmptyViewText("You aren't yet following any musicians! Find musicians you enjoy and follow them for updates and alerts.");
         if (mAdapter == null) {
             mAdapter = new CollectMusicianListAdapter(o);
             mRecyclerView.setAdapter(mAdapter);

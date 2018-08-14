@@ -48,11 +48,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="26dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.bunny.groovy.weidget.RoundedImageView
                 android:id="@+id/marker_iv_head"
                 android:layout_width="130px"
                 android:layout_height="130px"
-                android:src="@drawable/musicion_default_photo" />
+                android:scaleType="fitXY"
+                android:src="@drawable/venue_default_photo"
+                app:sriv_oval="true" />
 
             <FrameLayout
                 android:layout_width="0dp"

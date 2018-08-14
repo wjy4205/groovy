@@ -89,6 +89,8 @@ public class VenueShowDetailFragment extends BaseFragment {
     TextView mTvPerformerStars;
     @Bind(R.id.performer_me_play_music)
     ImageView mMusicView;
+    @Bind(R.id.ll_face_layout)
+    View mFaceLayout;
 
     @OnClick(R.id.include_detail_tv_tel)
     public void call() {
@@ -105,6 +107,11 @@ public class VenueShowDetailFragment extends BaseFragment {
     public void twitter() {
         if (!TextUtils.isEmpty(model.getVenueTwitter()))
             Utils.openTwitter(mActivity, model.getVenueTwitter());
+    }
+
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl(){
+        Utils.openUrl(mActivity, model.getVenueWebSite());
     }
 
     @OnClick(R.id.performer_facebook_page)
@@ -168,6 +175,9 @@ public class VenueShowDetailFragment extends BaseFragment {
             Glide.with(mActivity).load(model.getPerformerImg()).placeholder(R.drawable.musicion_default_photo)
                     .error(R.drawable.musicion_default_photo)
                     .into(mPerformerHead);
+            if (TextUtils.isEmpty(model.getVenueFacebook()) && TextUtils.isEmpty(model.getVenueTwitter())) {
+                mFaceLayout.setVisibility(View.GONE);
+            }
              /*mTvNotify.setVisibility(View.VISIBLE);
             String applyState = model.getPerformState();
             if ("1".equals(applyState)) {

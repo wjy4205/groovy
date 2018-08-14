@@ -73,6 +73,8 @@ public class ShowDetailFragment extends BaseFragment {
     TextView tvFood;
     @Bind(R.id.include_detail_tv_Cover_Charge)
     TextView tvCoverCharge;
+    @Bind(R.id.ll_face_layout)
+    View mFaceLayout;
 
     private static int type;
 
@@ -83,8 +85,13 @@ public class ShowDetailFragment extends BaseFragment {
 
     @OnClick(R.id.show_detail_iv_email)
     public void email() {
-        if (model!=null)
-        Utils.sendEmail(mActivity, model.getVenueEmail());
+        if (model != null)
+            Utils.sendEmail(mActivity, model.getVenueEmail());
+    }
+
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl() {
+        Utils.openUrl(mActivity, model.getWebSiteAddress());
     }
 
     @OnClick(R.id.facebook_page)
@@ -102,7 +109,7 @@ public class ShowDetailFragment extends BaseFragment {
 
     public static void launch(Activity from, Bundle bundle) {
         model = bundle.getParcelable(KEY_SHOW_BEAN);
-        if(model == null) return;
+        if (model == null) return;
         bundle.putString(FragmentContainerActivity.FRAGMENT_TITLE, "DETAILS");
         type = bundle.getInt("type", -1);
         FragmentContainerActivity.launch(from, ShowDetailFragment.class, bundle);
@@ -127,9 +134,9 @@ public class ShowDetailFragment extends BaseFragment {
             mTvVenueName_2.setText(model.getVenueName());
             mTvStyle.setText(model.getPerformType());
             mTvTime.setText(model.getPerformTime());
-            if(TextUtils.isEmpty(model.getDistance())){
+            if (TextUtils.isEmpty(model.getDistance())) {
                 mTvDistance.setText("--");
-            }else {
+            } else {
                 mTvDistance.setText(model.getDistance() + "mi");
             }
             mTvDesc.setText(model.getPerformDesc());
@@ -140,6 +147,9 @@ public class ShowDetailFragment extends BaseFragment {
             Glide.with(mActivity).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
                     .error(R.drawable.venue_default_photo)
                     .into(mHead);
+            if (TextUtils.isEmpty(model.getFacebookAccount()) && TextUtils.isEmpty(model.getTwitterAccount())) {
+                mFaceLayout.setVisibility(View.GONE);
+            }
             switch (type) {
                 case 0://演出机会
                     mTvNotify.setVisibility(View.VISIBLE);

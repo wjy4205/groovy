@@ -102,6 +102,11 @@ public class InviteDetailsFragment extends BaseFragment {
         Utils.sendEmail(mActivity, sModel.getVenueEmail());
     }
 
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl(){
+        Utils.openUrl(mActivity, sModel.getWebSiteAddress());
+    }
+
     @OnClick(R.id.invite_tv_reject)
     public void reject() {//拒绝
         ApiService apiService = ApiRetrofit.getInstance().getApiService();

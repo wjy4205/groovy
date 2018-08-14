@@ -2,10 +2,12 @@ package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import com.bunny.groovy.listener.PermissionListener;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.model.StyleModel;
 import com.bunny.groovy.presenter.UserMePresenter;
+import com.bunny.groovy.ui.fragment.spotlight.SpotlightFragment;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.IMeView;
@@ -95,11 +98,27 @@ public class UserDataFragment extends BaseFragment<UserMePresenter> implements I
             if (TextUtils.isEmpty(mEtName.getText().toString())) {
                 UIUtils.showBaseToast("Please input name.");
             } else {
-                HashMap<String, String> ma = new HashMap<>();
-                ma.put("userName", mEtName.getText().toString());
-                if (!TextUtils.isEmpty(headImagePath))
-                    ma.put("imgfile", headImagePath);
-                mPresenter.updateUserInfo(ma);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                builder.setTitle("Update");
+                builder.setMessage("Are you sure you want to change your info?");
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        HashMap<String, String> ma = new HashMap<>();
+                        ma.put("userName", mEtName.getText().toString());
+                        if (!TextUtils.isEmpty(headImagePath))
+                            ma.put("imgfile", headImagePath);
+                        mPresenter.updateUserInfo(ma);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         }
         return super.onOptionsItemSelected(item);

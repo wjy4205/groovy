@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:button="@drawable/selector_venue_service_checkbox"
             android:paddingLeft="10dp"
-            android:text="Exclude 21+"
+            android:text="Shows are not 21+ only"
             android:textColor="@color/white" />
 
         <CheckBox

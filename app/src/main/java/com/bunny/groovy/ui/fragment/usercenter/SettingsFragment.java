@@ -2,6 +2,7 @@ package com.bunny.groovy.ui.fragment.usercenter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -93,8 +94,12 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        boolean isDiscover = (boolean) SharedPreferencesUtils.getUserParam(mActivity, AppConstants.KEY_DISCOVER, true);
-        sbDiscover.setChecked(isDiscover);
+        try {
+            boolean isDiscover = (boolean) SharedPreferencesUtils.getUserParam(mActivity, AppConstants.KEY_DISCOVER, true);
+            sbDiscover.setChecked(isDiscover);
+        } catch (Exception e) {
+        }
+
         sbNotify.setChecked(true);
         int type = Utils.parseInt(AppCacheData.getPerformerUserModel().getUserType());
         if (AppConstants.USER_TYPE_NORMAL == type) {
@@ -105,62 +110,32 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
         }
         sbDiscover.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                if (isChecked) {
-                    ApiRetrofit.getInstance().getApiService()
-                            .updateDiscover("0")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<ResultResponse<Object>>() {
-                                @Override
-                                public void onCompleted() {
+            public void onCheckedChanged(SwitchButton view, final boolean isChecked) {
+                ApiRetrofit.getInstance().getApiService()
+                        .updateDiscover(isChecked ? "0" : "1")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<ResultResponse<Object>>() {
+                            @Override
+                            public void onCompleted() {
 
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(ResultResponse<Object> response) {
+                                if (response.isSuccess()) {
+                                    UIUtils.showBaseToast("Success.");
+                                    SharedPreferencesUtils.setUserParam(mActivity, AppConstants.KEY_DISCOVER, isChecked);
+                                } else {
+                                    UIUtils.showBaseToast("Failure.");
                                 }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(ResultResponse<Object> response) {
-                                    if (response.isSuccess()) {
-                                        UIUtils.showBaseToast("Success.");
-                                        SharedPreferencesUtils.setUserParam(mActivity, AppConstants.KEY_DISCOVER, true);
-                                    } else {
-                                        UIUtils.showBaseToast("Failure.");
-                                        SharedPreferencesUtils.setUserParam(mActivity, AppConstants.KEY_DISCOVER, false);
-                                    }
-                                }
-                            });
-                } else {
-                    ApiRetrofit.getInstance().getApiService()
-                            .updateDiscover("1")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<ResultResponse<Object>>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(ResultResponse<Object> response) {
-                                    if (response.isSuccess()) {
-                                        UIUtils.showBaseToast("Success.");
-                                        SharedPreferencesUtils.setUserParam(mActivity, AppConstants.KEY_DISCOVER, false);
-                                    } else {
-                                        UIUtils.showBaseToast("Failure.");
-                                        SharedPreferencesUtils.setUserParam(mActivity, AppConstants.KEY_DISCOVER, true);
-                                    }
-                                }
-                            });
-                }
+                            }
+                        });
             }
         });
     }

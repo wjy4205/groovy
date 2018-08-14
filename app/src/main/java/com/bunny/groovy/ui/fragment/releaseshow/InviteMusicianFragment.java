@@ -147,6 +147,6 @@ public class InviteMusicianFragment extends BaseFragment<InviteMusicianPresenter
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;
-        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
+        etTime.setText(DateUtils.getTimeDialogformat(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
     }
 }

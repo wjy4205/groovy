@@ -363,17 +363,7 @@ public class VenueScheduleFragment extends BaseFragment<VenueSchedulePresenter> 
      */
     @Subscribe
     public void refresh(VenueShowModel model) {
-        List<VenueShowModel> list = mVenueScheduleModel.getShowModelList(String.valueOf(mWeek));
-        for (VenueShowModel showModel : list) {
-            if (TextUtils.equals(showModel.getPerformID(), model.getPerformID())) {
-                showModel.setPerformStartDate(model.getPerformStartDate());
-                showModel.setPerformEndDate(model.getPerformEndDate());
-                showModel.setPerformType(model.getPerformType());
-                showModel.setPerformDesc(model.getPerformDesc());
-            }
-            break;
-        }
-        mAdapter.refresh(list);
+        refreshUI();
     }
 
     @Override

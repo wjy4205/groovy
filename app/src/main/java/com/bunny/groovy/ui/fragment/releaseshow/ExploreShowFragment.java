@@ -432,7 +432,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 if (mMarkerLayout.getVisibility() == View.VISIBLE) {
                     try {
                         mMarkerLayout.setVisibility(View.GONE);
-                        mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+//                        mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
                     } catch (Exception e) {
                     }
                 }
@@ -459,11 +459,11 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                     if (info != null) {
                         if (isMarkerShowing) {
                             mMarkerLayout.setVisibility(View.GONE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+//                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
                         } else {
                             setMarkerData(info);
                             mMarkerLayout.setVisibility(View.VISIBLE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
+//                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
                         }
                         isMarkerShowing = !isMarkerShowing;
                     }
@@ -474,10 +474,10 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                         mMarkerLayout.setVisibility(View.VISIBLE);
                         isMarkerShowing = true;
                         //把上个marker的icon设置小图标
-                        if (lastMarkerSelected >= 0)
-                            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
+//                        if (lastMarkerSelected >= 0)
+//                            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity));
                         //设置当前点击的marker大图片
-                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
+//                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity_selected));
                     }
                 }
                 lastMarkerSelected = clickedIndex;
@@ -578,7 +578,7 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                 loc = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
                 Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
                         .draggable(false)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_opportunity)));
+                        .icon(BitmapDescriptorFactory.fromResource(getIcon(model.getVenueTypeName()))));
                 marker.setTag(model);
                 mMarkerList.add(marker);
             }
@@ -593,6 +593,16 @@ public class ExploreShowFragment extends BaseFragment<ExplorerOpptnyPresenter> i
                     R.drawable.shape_item_divider_line));
             mRecyclerView.setAdapter(mAdapter);
         } else mAdapter.refresh(mOpportunityModelList);
+    }
+
+    private int getIcon(String type) {
+        if (!TextUtils.isEmpty(type)) {
+            String t[] = type.split(",");
+            if(AppConstants.STYLE_ICONS.containsKey(t[0].toUpperCase())){
+                return AppConstants.STYLE_ICONS.get(t[0].toUpperCase());
+            }
+        }
+        return R.drawable.icon_show;
     }
 
     /**

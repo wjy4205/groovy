@@ -72,6 +72,7 @@ public class StyleGridAdapter extends RecyclerView.Adapter<StyleGridAdapter.Styl
                 if (styleModel.isChecked()) {
                     holder.mTvCheckBox.setBackgroundResource(R.drawable.btn_square);
                     mDataList.get(position).setChecked(false);
+                    removeStyle(mDataList.get(position).getTypeName());
                 } else {
                     mCount = 0;
                     for (StyleModel model :
@@ -84,26 +85,42 @@ public class StyleGridAdapter extends RecyclerView.Adapter<StyleGridAdapter.Styl
                     }
                     holder.mTvCheckBox.setBackgroundResource(R.drawable.btn_square_selected);
                     mDataList.get(position).setChecked(true);
+                    addStyle(mDataList.get(position).getTypeName());
                 }
             }
         });
+    }
+
+    public String getSelectStyles(){
+        return mSelectStyle;
+    }
+
+    public void removeStyle(String title){
+        if(!TextUtils.isEmpty(mSelectStyle)){
+            String styles[] = mSelectStyle.split(",");
+            StringBuilder stringBuilder = new StringBuilder();
+            for(String style:styles){
+                if(!TextUtils.equals(title, style)){
+                    if(stringBuilder.length()!= 0) stringBuilder.append(",");
+                    stringBuilder.append(style);
+                }
+            }
+            mSelectStyle = stringBuilder.toString();
+        }
+    }
+
+    public void addStyle(String title){
+        if(!TextUtils.isEmpty(mSelectStyle)) {
+            mSelectStyle += "," + title;
+        }else {
+            mSelectStyle = title;
+        }
     }
 
     @Override
     public int getItemCount() {
         if (mDataList != null) return mDataList.size();
         return 0;
-    }
-
-    public String getSelectStyles() {
-        mSelectStyle = "";
-        for (int i = 0; i < mDataList.size(); i++) {
-            if (mDataList.get(i).isChecked())
-                mSelectStyle = mSelectStyle + mDataList.get(i).getTypeName() + ",";
-        }
-        if (mSelectStyle.length() > 0)
-            return mSelectStyle.substring(0, mSelectStyle.length() - 1);
-        return mSelectStyle;
     }
 
     public void selectAll(boolean select) {

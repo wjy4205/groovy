@@ -3,6 +3,8 @@ package com.bunny.groovy.ui.fragment.venue;
 import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -58,6 +60,11 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
 
     @Bind(R.id.user_center_pagetabstrip)
     SlidingTabLayout pagerTabStrip;
+
+    @Bind(R.id.me_tv_facebook)
+    ImageView mFacebookView;
+    @Bind(R.id.me_tv_twitter)
+    ImageView mTwitterView;
 
     private List<BaseListFragment> mFragments = new ArrayList<>();
 
@@ -115,6 +122,12 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
     }
 
     @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        setUserView(AppCacheData.getPerformerUserModel());
+    }
+
+    @Override
     protected void loadData() {
         //获取用户数据
         mPresenter.requestUserData();
@@ -159,16 +172,22 @@ public class VenueMeFragment extends BaseFragment<VenueMePresenter> implements I
      */
     @Override
     public void setUserView(PerformerUserModel model) {
-        mModel = model;
-        tvName.setText(mModel.getUserName());
-        tvStyle.setText(model.getVenueAddress());
-        tvScore.setText(Utils.getStar(model.getVenueScore()));
-        if (TextUtils.isEmpty(model.getHeadImg())) {
-            ivHeader.setImageResource(R.drawable.venue_default_photo);
-        } else {
-            Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
-                    .error(R.drawable.venue_default_photo).into(ivHeader);
-        }
+        try {
+
+            mModel = model;
+            tvName.setText(mModel.getUserName());
+            tvStyle.setText(model.getVenueAddress());
+            tvScore.setText(Utils.getStar(model.getVenueScore()));
+            if (TextUtils.isEmpty(model.getHeadImg())) {
+                ivHeader.setImageResource(R.drawable.venue_default_photo);
+            } else {
+                Glide.with(getActivity()).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
+                        .error(R.drawable.venue_default_photo).into(ivHeader);
+            }
+            mFacebookView.setImageResource(TextUtils.isEmpty(mModel.getFacebookAccount())? R.drawable.icon_facebook:R.drawable.user_facebook);
+            mTwitterView.setImageResource(TextUtils.isEmpty(mModel.getTwitterAccount())? R.drawable.icon_twiter:R.drawable.user_twiter);
+
+        }catch (Exception e){}
     }
 
     @Override

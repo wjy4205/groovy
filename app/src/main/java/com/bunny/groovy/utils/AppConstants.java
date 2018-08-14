@@ -1,5 +1,9 @@
 package com.bunny.groovy.utils;
 
+import com.bunny.groovy.R;
+
+import java.util.HashMap;
+
 /****************************************
  * 功能说明:  app常量类
  *
@@ -60,4 +64,21 @@ public class AppConstants {
 
     public static String KEY_DISCOVER = "key_discover";
 
+    public static final HashMap<String,Integer> STYLE_ICONS;
+
+    static {
+        STYLE_ICONS = new HashMap();
+        STYLE_ICONS.put("ROCK", R.drawable.icon_rock);
+        STYLE_ICONS.put("INDIE", R.drawable.icon_indie);
+        STYLE_ICONS.put("R&B", R.drawable.icon_randb);
+        STYLE_ICONS.put("BLUES", R.drawable.icon_blues);
+        STYLE_ICONS.put("JAZZ", R.drawable.icon_jazz);
+        STYLE_ICONS.put("FOLK", R.drawable.icon_folk);
+        STYLE_ICONS.put("COUNTRY", R.drawable.icon_country);
+        STYLE_ICONS.put("RAP/HIP-HOP", R.drawable.icon_rap);
+        STYLE_ICONS.put("ELECTRONIC/DJ", R.drawable.icon_electronic_dj);
+        STYLE_ICONS.put("METAL", R.drawable.icon_metal);
+        STYLE_ICONS.put("CLASSICAL", R.drawable.icon_classical);
+        STYLE_ICONS.put("POP", R.drawable.icon_pop);
+    }
 }

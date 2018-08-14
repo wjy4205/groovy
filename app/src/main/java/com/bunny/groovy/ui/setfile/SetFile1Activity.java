@@ -108,7 +108,7 @@ public class SetFile1Activity extends BaseActivity<SetFilePresenter> implements 
     void next() {
         //拦截
         if (TextUtils.isEmpty(headImagePath)) {
-            UIUtils.showBaseToast("Please upload a profile image..");
+            UIUtils.showBaseToast("Please upload a profile image.");
             return;
         }
         if (TextUtils.isEmpty(etFullName.getTrimmedString())) {

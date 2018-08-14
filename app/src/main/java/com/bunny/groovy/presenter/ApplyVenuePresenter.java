@@ -112,7 +112,7 @@ public class ApplyVenuePresenter extends BasePresenter<IApplyVenueView> {
             protected void onSuccess(Object response) {
                 UIUtils.showBaseToast("Update successfully.");
                 int type = Integer.parseInt(AppCacheData.getPerformerUserModel().getUserType());
-                if (type == 2) {
+//                if (type == 2) {
                     //编辑后刷新演出厅用户日程列表
                     VenueShowModel model = new VenueShowModel();
                     model.setPerformID(fieldMap.get("performID"));
@@ -121,7 +121,7 @@ public class ApplyVenuePresenter extends BasePresenter<IApplyVenueView> {
                     model.setPerformStartDate(fieldMap.get("performStartDate"));
                     model.setPerformEndDate(fieldMap.get("performEndDate"));
                     EventBus.getDefault().post(model);
-                }
+//                }
                 mView.get().finish();
             }
 

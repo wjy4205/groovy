@@ -280,6 +280,6 @@ public class UserFilterFragment extends BaseFragment<ApplyVenuePresenter> implem
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;
-        mEtTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
+        mEtTime.setText(DateUtils.getTimeDialogformat(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
     }
 }

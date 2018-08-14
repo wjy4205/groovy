@@ -155,6 +155,19 @@ public class Utils {
         activity.startActivity(intent);
     }
 
+    public static void openUrl(Activity activity, String url) {
+        if (!TextUtils.isEmpty(url)) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri content_url = Uri.parse(url);
+                intent.setData(content_url);
+                activity.startActivity(intent);
+            } catch (Exception e) {
+                UIUtils.showBaseToast("Failed to open this url.");
+            }
+        }
+    }
+
     /**
      * 扫描本地音频文件
      *
@@ -271,6 +284,7 @@ public class Utils {
         SharedPreferencesUtils.setUserParam(context, AppConstants.KEY_USERID, model.getUserID());
         SharedPreferencesUtils.setUserParam(context, AppConstants.KEY_USER_TYPE, model.getUserType());
         AppCacheData.setPerformerUserModel(model);
+        SharedPreferencesUtils.setUserParam(context, AppConstants.KEY_DISCOVER, TextUtils.equals(model.getIsMaskedSearch(), "0"));
     }
 
     /**

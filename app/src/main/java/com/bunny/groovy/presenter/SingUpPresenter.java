@@ -72,7 +72,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
                                 new SubscriberCallBack<ResultResponse>(mView.get()) {
                                     @Override
                                     protected void onSuccess(ResultResponse response) {
-                                        UIUtils.showBaseToast("Code send to your E-mail successfully.");
+                                        UIUtils.showBaseToast("Verification code sent.");
                                         mView.nextStep();
                                     }
 
@@ -161,7 +161,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.performerRegister(account, pwd, phone, email), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                UIUtils.showBaseToast("Register successfully!");
+                UIUtils.showBaseToast("Account made successfully!");
                 mView.registerSuccess();
             }
 
@@ -180,7 +180,7 @@ public class SingUpPresenter extends BasePresenter<ISingUpView> {
         addSubscription(apiService.ordinaryFrontUserRegister(map), new SubscriberCallBack<ResultResponse>(mView.get()) {
             @Override
             protected void onSuccess(ResultResponse response) {
-                UIUtils.showBaseToast("Register successfully！");
+                UIUtils.showBaseToast("Account made successfully！");
                 mView.registerSuccess();
             }
 

@@ -46,6 +46,7 @@ import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.utils.Utils;
 import com.bunny.groovy.view.IUserMainView;
+import com.bunny.groovy.weidget.RoundedImageView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -99,6 +100,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         OnMapReadyCallback, TextWatcher, GoogleApiClient.ConnectionCallbacks,
         IUserMainView<UserMainModel> {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
+
     int FILTER_REQUEST_CODE = 1;
     int PLACE_PICKER_REQUEST = 2;
     int OPEN_GPS_REQUEST_CODE = 1024;
@@ -119,7 +121,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     @Bind(R.id.marker_tv_date)
     TextView mTvDate;
     @Bind(R.id.marker_iv_head)
-    ImageView mHeadImg;
+    RoundedImageView mHeadImg;
     @Bind(R.id.marker_tv_score)
     TextView mTvScore;
     @Bind(R.id.marker_tv_venue_name)
@@ -148,6 +150,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
     @Bind(R.id.map_ll_search)
     LinearLayout searchLayout;
     private GoogleApiClient mGoogleApiClient;
+
 
     private FusedLocationProviderClient mLocationClient;
     private LocationRequest mLocationRequest;
@@ -393,8 +396,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
         mTvDistance.setText(bean.getDistance() + "mi");
         mTvStyle.setText(bean.getPerformType());
         mTvScore.setText(Utils.getStar(bean.getVenueScore()));
-        Glide.with(mActivity).load(bean.getVenueImg()).error(R.drawable.venue_default_photo)
-                .placeholder(R.drawable.venue_default_photo).into(mHeadImg);
+        Glide.with(mActivity).load(bean.getVenueImg())
+                .placeholder(R.drawable.venue_default_photo).dontAnimate().into(mHeadImg);
     }
 
     private int lastMarkerSelected = -2;//上一个显示的marker index
@@ -415,7 +418,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 if (mMarkerLayout.getVisibility() == View.VISIBLE) {
                     try {
                         mMarkerLayout.setVisibility(View.GONE);
-                        mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+//                        mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
                     } catch (Exception e) {
                     }
                 }
@@ -442,11 +445,11 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                     if (info != null) {
                         if (isMarkerShowing) {
                             mMarkerLayout.setVisibility(View.GONE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+//                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
                         } else {
                             setMarkerData(info);
                             mMarkerLayout.setVisibility(View.VISIBLE);
-                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show_selected));
+//                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show_selected));
                         }
                         isMarkerShowing = !isMarkerShowing;
                     }
@@ -457,10 +460,10 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                         mMarkerLayout.setVisibility(View.VISIBLE);
                         isMarkerShowing = true;
                         //把上个marker的icon设置小图标
-                        if (lastMarkerSelected >= 0)
-                            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+//                        if (lastMarkerSelected >= 0)
+//                            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
                         //设置当前点击的marker大图片
-                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show_selected));
+//                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show_selected));
                     }
                 }
                 lastMarkerSelected = clickedIndex;
@@ -585,7 +588,7 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
 
     public void hideMarkLayout() {
         if (lastMarkerSelected >= 0) {
-            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
+//            mMarkerList.get(lastMarkerSelected).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show));
             lastMarkerSelected = -2;
         }
         mMarkerLayout.setVisibility(View.INVISIBLE);
@@ -728,10 +731,11 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                 lastMarkerSelected = -1;
                 for (int i = 0; i < performDetailList.size(); i++) {
                     PerformDetail model = performDetailList.get(i);
+
                     loc = new LatLng(Double.parseDouble(model.getVenueLatitude()), Double.parseDouble(model.getVenueLongitude()));
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc)
                             .draggable(false)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_show)));
+                            .icon(BitmapDescriptorFactory.fromResource(getIcon(model))));
                     marker.setTag(model);
                     mMarkerList.add(marker);
                 }
@@ -746,6 +750,17 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                     R.drawable.shape_item_divider_line));
             mRecyclerView.setAdapter(mAdapter);
         } else mAdapter.refresh(userMainModel.allPerformList);
+    }
+
+    private int getIcon(PerformDetail model) {
+        String type = model.getPerformType();
+        if (!TextUtils.isEmpty(type)) {
+            String t[] = type.split(",");
+            if(AppConstants.STYLE_ICONS.containsKey(t[0].toUpperCase())){
+                return AppConstants.STYLE_ICONS.get(t[0].toUpperCase());
+            }
+        }
+        return R.drawable.icon_show;
     }
 
     @Override
@@ -821,7 +836,8 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                                     @Override
                                     public void onResult(PlaceBuffer places) {
                                         try {
-                                            if(places == null)UIUtils.showBaseToast("Get location failed.");
+                                            if (places == null)
+                                                UIUtils.showBaseToast("Get location failed.");
                                             if (places.getStatus().isSuccess() && places.getCount() > 0) {
                                                 final Place myPlace = places.get(0);
                                                 mLastLocation.setLatitude(myPlace.getLatLng().latitude);
@@ -829,10 +845,12 @@ public class UserMainFragment extends BaseFragment<UserListPresenter> implements
                                                 updateCurrentLocation();
                                             }
                                             places.release();
-                                        }catch (Exception e){}
+                                        } catch (Exception e) {
+                                        }
                                     }
                                 });
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     mSearchContentLayout.setVisibility(View.GONE);
                 }
             });

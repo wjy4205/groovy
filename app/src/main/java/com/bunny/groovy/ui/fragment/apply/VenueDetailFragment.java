@@ -71,6 +71,11 @@ public class VenueDetailFragment extends BaseFragment<VenueDetailPresenter> impl
         ApplyVenueFragment.launch(mActivity, bundle);
     }
 
+    @OnClick(R.id.include_detail_tv_email)
+    public void openUrl(){
+        Utils.openUrl(mActivity, venueModel.getWebSiteAddress());
+    }
+
     @OnClick(R.id.include_detail_tv_tel)
     public void call() {
         Utils.CallPhone(mActivity, venueModel.getPhoneNumber());

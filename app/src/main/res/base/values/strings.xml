@@ -62,5 +62,5 @@
     <string name="venue_register_service_exclude">Shows are not 21+ only</string>
     <string name="venue_register_service_food">Serves Food</string>
     <string name="venue_register_service_alcohol">Serves Alcohol</string>
-    <string name="protocol_link">By signing up I agree with &lt;font color="#7887eb"&gt;Terms of the Services&lt;/font&gt;</string>
+    <string name="protocol_link">By signing up I agree with the &lt;font color="#7887eb"&gt;Terms of Service&lt;/font&gt;</string>
 </resources>

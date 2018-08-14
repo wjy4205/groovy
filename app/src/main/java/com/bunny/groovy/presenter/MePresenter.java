@@ -47,7 +47,6 @@ public class MePresenter extends BasePresenter<IMeView> {
                     protected void onSuccess(PerformerUserModel response) {
                         response.setUserType(String.valueOf(AppConstants.USER_TYPE_MUSICIAN));
                         mView.setUserView(response);
-
                         Utils.initLoginData(mView.get(),response);
                     }
 

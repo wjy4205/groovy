@@ -231,7 +231,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                     new SubscriberCallBack<ResultResponse>(mView.get()) {
                         @Override
                         protected void onSuccess(ResultResponse response) {
-                            UIUtils.showBaseToast("Code send to your E-mail successfully.");
+                            UIUtils.showBaseToast("Verification code sent.");
                         }
 
                         @Override

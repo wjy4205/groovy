@@ -50,7 +50,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="Your picture and name are displayed when you leave a review for a musician."
-            android:textColor="@color/red"
+            android:textColor="@color/common_grey"
             android:textSize="@dimen/text_size_common" />
 
     </LinearLayout>

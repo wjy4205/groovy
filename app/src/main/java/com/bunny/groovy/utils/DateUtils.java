@@ -123,6 +123,11 @@ public class DateUtils {
         return dateFormat.format(date);
     }
 
+    public static String getTimeDialogformat(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ");
+        return dateFormat.format(date);
+    }
+
 
     public static int getScreenWidth(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

@@ -1,7 +1,9 @@
 package com.bunny.groovy.ui.fragment.wallet;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +17,8 @@ import com.bunny.groovy.base.FragmentContainerActivity;
 import com.bunny.groovy.model.PerformerUserModel;
 import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.UIUtils;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -88,7 +92,16 @@ public class WalletFragment extends BaseFragment<PayPalPresenter> implements IPa
             case R.id.wallet_tv_withdraw:
                 //提现
                 if (TextUtils.isEmpty(paypalAccount)) {
-                    UIUtils.showBaseToast("Alert Sorry, you have not yet bound a Paypal account. Please first bind a Paypal account..");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                    builder.setTitle("Alert");
+                    builder.setMessage("Sorry, you have not yet bound a Paypal account. Please first bind a Paypal account.");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                     return;
                 }
                 WithDrawFragment.launch(mActivity);

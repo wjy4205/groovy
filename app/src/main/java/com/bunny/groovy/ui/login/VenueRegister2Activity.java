@@ -19,6 +19,7 @@ import com.bunny.groovy.api.ApiConstants;
 import com.bunny.groovy.base.BaseActivity;
 import com.bunny.groovy.listener.VerifyEvent;
 import com.bunny.groovy.presenter.VenueRegisterPresenter;
+import com.bunny.groovy.utils.AppCacheData;
 import com.bunny.groovy.utils.AppConstants;
 import com.bunny.groovy.utils.UIUtils;
 import com.bunny.groovy.view.ISingUpView;
@@ -204,8 +205,9 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
     public void onVerifyEvent(String result) {
         switch (result) {
             case AppConstants.Code_Verify_Correct:
+                String service1 = mVenueService.getTrimmedString().replace("Shows are not 21+ only","Exclude 21+");
                 mPresenter.registerVenue(mPublicName, mPassword, mEditPhone.getTrimmedString(), mEditEmail.getTrimmedString(),
-                        mEditCode.getTrimmedString(), mVenueService.getTrimmedString(), mAddress, mVenuePhone.getTrimmedString(),
+                        mEditCode.getTrimmedString(), service1, mAddress, mVenuePhone.getTrimmedString(),
                         mVenueWebsite.getTrimmedString(), mLongitude, mLatitude, mPlaceId, mVenueTwitter.getTrimmedString()
                         , mVenueFacebook.getTrimmedString(), mHeadUrl);
                 break;
@@ -260,7 +262,7 @@ public class VenueRegister2Activity extends BaseActivity<VenueRegisterPresenter>
                 public void onDismiss() {
                     StringBuilder stringBuilder = new StringBuilder();
                     if (checkBox1.isChecked()) {
-                        stringBuilder.append("Exclude 21+");
+                        stringBuilder.append("Shows are not 21+ only");
                     }
                     if (checkBox2.isChecked()) {
                         if (stringBuilder.length() > 0) stringBuilder.append(",");

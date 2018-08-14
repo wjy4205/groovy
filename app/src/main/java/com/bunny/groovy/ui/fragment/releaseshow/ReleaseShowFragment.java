@@ -2,10 +2,14 @@ package com.bunny.groovy.ui.fragment.releaseshow;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,7 +41,15 @@ import com.bunny.groovy.weidget.TimePopupWindow;
 import com.bunny.groovy.weidget.datepick.DatePickerHelper;
 import com.bunny.groovy.weidget.loopview.LoopView;
 import com.bunny.groovy.weidget.loopview.OnItemSelectedListener;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResolvingResultCallbacks;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.PlacePhotoResult;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +73,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2017/12/16.
  */
 
-public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implements ISetFileView, TimePopupWindow.OnTimeConfirmListener {
+public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implements ISetFileView, TimePopupWindow.OnTimeConfirmListener, GoogleApiClient.ConnectionCallbacks {
 
     private PopupWindow mPopupWindow;
     private StyleGridAdapter mAdatper;
@@ -74,6 +86,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     private Place mPlace;
     private int mType;
     private TimePopupWindow mTimePop;
+
+    private GoogleApiClient mGoogleApiClient;
 
     public static void launch(Activity from) {
         Bundle bundle = new Bundle();
@@ -190,6 +204,8 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         if (cbUseSpotlight.isChecked()) {
             map.put("isOpportunity", "1");
         } else map.put("isOpportunity", "0");
+        if (mPlace != null)
+            map.put("placeID", mPlace.getId());
         mPresenter.releaseShow(map, mType);
     }
 
@@ -227,6 +243,7 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
     public void onChooseVenue(VenueModel model) {
         mVenueModel = model;
         if (model != null) {
+            mPlace = null;
             etVenue.setText(model.getVenueName());
             venueInfoLayout.setVisibility(View.VISIBLE);
             Glide.with(get()).load(model.getHeadImg()).placeholder(R.drawable.venue_default_photo)
@@ -236,7 +253,17 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
             tvVenueAddress.setText(model.getVenueAddress());
             tvVenuePhone.setText(model.getPhoneNumber());
         } else {
-            venueInfoLayout.setVisibility(View.GONE);
+            if (mPlace == null) {
+                venueInfoLayout.setVisibility(View.GONE);
+            } else {
+                etVenue.setText(mPlace.getName());
+                venueInfoLayout.setVisibility(View.VISIBLE);
+                tvVenueName.setText(mPlace.getName());
+                tvVenueScore.setText(String.valueOf(mPlace.getRating()));
+                tvVenueAddress.setText(mPlace.getAddress());
+                tvVenuePhone.setText(mPlace.getPhoneNumber());
+            }
+
         }
     }
 
@@ -293,6 +320,11 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         //禁用编辑
         etStyle.setFocusable(false);
         etTime.setFocusable(false);
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -383,7 +415,59 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 mPlace = PlacePicker.getPlace(data, mActivity);
-                etVenue.setText(mPlace.getName());
+                onChooseVenue(null);
+                getPhotos(mPlace);
+            }
+        }
+    }
+
+    private void getPhotos(Place place) {
+        Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, place.getId()).setResultCallback(new ResolvingResultCallbacks<PlacePhotoMetadataResult>(mActivity, 1000) {
+            @Override
+            public void onSuccess(@NonNull PlacePhotoMetadataResult placePhotoMetadataResult) {
+                PlacePhotoMetadataBuffer buffer = placePhotoMetadataResult.getPhotoMetadata();
+                try {
+                    PlacePhotoMetadata data = buffer.get(0);
+                    data.getPhoto(mGoogleApiClient).setResultCallback(new ResolvingResultCallbacks<PlacePhotoResult>(mActivity, 111) {
+                        @Override
+                        public void onSuccess(@NonNull PlacePhotoResult placePhotoResult) {
+                            Bitmap bitmap = placePhotoResult.getBitmap();
+                            venueHeadImg.setImageBitmap(bitmap);
+                            Log.d("wjy", "bitmap:" + placePhotoResult.toString());
+                        }
+
+                        @Override
+                        public void onUnresolvableFailure(@NonNull Status status) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                }
+
+            }
+
+            @Override
+            public void onUnresolvableFailure(@NonNull Status status) {
+
+            }
+        });
+    }
+
+    private final static String TYPE_NAME_1[] = new String[]{"bar", "night_club", "cafe", "casino", "liquor_store", "restaurant"};
+    private final static String TYPE_NAME_2[] = new String[]{"cafe", "restaurant", "meal_delivery", "meal_takeaway", "bakery"};
+
+    private void setType() {
+        String name = mPlace.getName().toString();
+        for (String t : TYPE_NAME_1) {
+            if (name.contains(t)) {
+                etStyle.setText("Serves alcohol");
+                return;
+            }
+        }
+        for (String t : TYPE_NAME_1) {
+            if (name.contains(t)) {
+                etStyle.setText("Serves food");
+                return;
             }
         }
     }
@@ -393,6 +477,16 @@ public class ReleaseShowFragment extends BaseFragment<ReleasePresenter> implemen
         mStartTime = startTime;
         mEndTime = endTime;
         mSelectDate = selectDate;
-        etTime.setText(DateUtils.getFormatTime(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
+        etTime.setText(DateUtils.getTimeDialogformat(mSelectDate.getTime()) + showStartTime + "-" + showEndTime);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
     }
 }
